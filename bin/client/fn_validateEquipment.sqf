@@ -26,7 +26,7 @@ _find = {
 // Cycle through all unlocked weapons and check if they exit in the equip array, if not, add them
 if (count cl_equipConfigurations != 0) then {
 	// Get all unlockable weapons
-	_configs = "true" configClasses (missionConfigFile >> "Unlocks");
+	_configs = "true" configClasses (missionConfigFile >> "Unlocks" >> format["%1", side player]);
 
 	// Populate cl_equipConfigurations with all possible weapons
 	for "_i" from 0 to (count _configs - 1) step 1 do
@@ -53,8 +53,8 @@ if (sv_usingDatabase) then {
 		_classname = _x select 0;
 
 		// Check if unlocked
-		_isConfig = isClass(missionConfigFile >> "Unlocks" >> _classname);
-		_isUnlocked = (getNumber(missionConfigFile >> "Unlocks" >> _classname >> "exp")) <= cl_exp;
+		_isConfig = isClass(missionConfigFile >> "Unlocks" >> format["%1", side player] >> _classname);
+		_isUnlocked = (getNumber(missionConfigFile >> "Unlocks" >> format["%1", side player] >> _classname >> "exp")) <= cl_exp;
 
 		if (_isConfig && _isUnlocked) then {
 			_validatedArray pushBack _x;

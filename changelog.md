@@ -1,6 +1,8 @@
 + [ADDED] Name tagging with different colors for grouped and ungrouped allies;
 + [ADDED] Changelog;
 + [ADDED] The beep frequency now intensifies slightly < 20s and intensifies noticebly < 5s;
++ [ADDED] Weapons available to exclusive factions;
+
 
 * [CHANGED] Moved objectives outside collapsable buildings/hardly reachable places:
       *Environment 1* Stage 2 objective location;

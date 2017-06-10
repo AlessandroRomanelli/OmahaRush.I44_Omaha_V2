@@ -78,8 +78,8 @@ if (playerSide == WEST) then {
 };
 
 // Shared items
-player addItem "ItemGPS";
-player assignItem "ItemGPS";
+/*player addItem "ItemGPS";
+player assignItem "ItemGPS";*/
 
 // Markers
 [] spawn client_fnc_updateMarkers;

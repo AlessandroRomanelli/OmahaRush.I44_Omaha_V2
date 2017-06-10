@@ -61,7 +61,7 @@ diag_log str cl_equipConfigurations;
 	if (_x select 0 != "") then {
 
 		// Add weapon to list of weapons
-		if ((getText(missionConfigFile >> "Unlocks" >> (_x select 0) >> "type")) == "primary") then {
+		if ((getText(missionConfigFile >> "Unlocks" >> format["%1", side player] >> (_x select 0) >> "type")) == "primary") then {
 
 			diag_log "2";
 			(_d displayCtrl 3) lbAdd (([(_x select 0)] call client_fnc_weaponDetails) select 1);

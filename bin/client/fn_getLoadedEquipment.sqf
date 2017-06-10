@@ -29,7 +29,7 @@ _find = {
 // Returns default if nothing was selected
 if (count cl_equipConfigurations == 0) then {
 	// Get all unlockable weapons
-	_configs = "true" configClasses (missionConfigFile >> "Unlocks");
+	_configs = "true" configClasses (missionConfigFile >> "Unlocks" >> format["%1", side player]);
 
 	// Populare cl_equipConfigurations with all possible weapons
 	for "_i" from 0 to (count _configs - 1) step 1 do
@@ -45,7 +45,7 @@ if (count cl_equipConfigurations == 0) then {
 
 			// Get all attachments (ONLY FOR DEBUG)
 			_attachments = [];
-			_attachmentConfigs = "true" configClasses (missionConfigFile >> "Unlocks" >> (configName (_configs select _i)) >> "attachments");
+			_attachmentConfigs = "true" configClasses (missionConfigFile >> "Unlocks" >> format["%1", side player] >> (configName (_configs select _i)) >> "attachments");
 			for "_f" from 0 to (count _attachmentConfigs - 1) step 1 do
 			{
 				_attachments pushBack (configName (_attachmentConfigs select _f));

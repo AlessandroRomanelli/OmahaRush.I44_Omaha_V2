@@ -22,7 +22,11 @@ if (true) then {
 	_primaryClassname = _primary select 0;
 	_primaryAttachements = _primary select 1;
 
-	_primaryAmmo = getText(missionConfigFile >> "Unlocks" >> _primaryClassname >> "ammo");
+	_primaryAmmo = getText(missionConfigFile >> "Unlocks" >> format["%1", side player] >> _primaryClassname >> "ammo");
+
+	if (_primaryAttachements select 0 == "LIB_ACC_GL_M7") then {
+		player addMagazines ["LIB_1Rnd_G_M9A1", 2];
+	};
 
 	// Give ammo
 	if (!_noMags) then {
@@ -43,9 +47,9 @@ if (true) then {
 	} forEach _primaryAttachements;
 
 	// Sniper scope perk
-	if (cl_classPerk == "recon_scope") then {
+	/*if (cl_classPerk == "recon_scope") then {
 		player addPrimaryWeaponItem "optic_KHS_blk";
-	};
+	};*/
 };
 
 if (true) then {
@@ -54,7 +58,7 @@ if (true) then {
 	_secondaryClassname = _secondary select 0;
 	_secondaryAttachements = _secondary select 1;
 
-	_secondaryAmmo = getText(missionConfigFile >> "Unlocks" >> _secondaryClassname >> "ammo");
+	_secondaryAmmo = getText(missionConfigFile >> "Unlocks" >> format["%1", side player] >> _secondaryClassname >> "ammo");
 
 	// Give ammo
 	if (!_noMags) then {

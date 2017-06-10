@@ -45,7 +45,7 @@ lbClear (_d displayCtrl 3);
 
 // Load all weapons into the listbox
 {
-	if ((getText(missionConfigFile >> "Unlocks" >> (_x select 0) >> "type")) == "secondary") then {
+	if ((getText(missionConfigFile >> "Unlocks" >> format["%1", side player] >> (_x select 0) >> "type")) == "secondary") then {
 		(_d displayCtrl 3) lbAdd (([(_x select 0)] call client_fnc_weaponDetails) select 1);
 		(_d displayCtrl 3) lbSetPicture [(lbSize (_d displayCtrl 3)) - 1, (([(_x select 0)] call client_fnc_weaponDetails) select 2)];
 		(_d displayCtrl 3) lbSetData [(lbSize (_d displayCtrl 3)) - 1, _x select 0];

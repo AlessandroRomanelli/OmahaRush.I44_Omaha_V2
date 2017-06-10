@@ -83,7 +83,7 @@ _sideSelected = false;
 	if (_x select 0 == _equippedClassname) then {
 		_allUnlockedAttachments = _x select 2;
 
-		_attachmentsConfig = (missionConfigFile >> "Unlocks" >> _equippedClassname >> "attachments");
+		_attachmentsConfig = (missionConfigFile >> "Unlocks" >> format["%1", side player] >> _equippedClassname >> "attachments");
 
 		// Loop through all attachments found and put them into their listboxes
 		{
