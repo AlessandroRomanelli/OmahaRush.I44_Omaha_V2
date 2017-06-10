@@ -23,13 +23,13 @@ switch (_class) do
 	{
 		_ret = getArray(missionConfigFile >> "CfgPerks" >> "ClassPerks" >> "Medic" >> _perkName >> "instructions");
 	};
-	case "machinegunner":
+	case "support":
 	{
-		_ret = getArray(missionConfigFile >> "CfgPerks" >> "ClassPerks" >> "MachineGunner" >> _perkName >> "instructions");
+		_ret = getArray(missionConfigFile >> "CfgPerks" >> "ClassPerks" >> "Support" >> _perkName >> "instructions");
 	};
-	case "recon":
+	case "assault":
 	{
-		_ret = getArray(missionConfigFile >> "CfgPerks" >> "ClassPerks" >> "Recon" >> _perkName >> "instructions");
+		_ret = getArray(missionConfigFile >> "CfgPerks" >> "ClassPerks" >> "Assault" >> _perkName >> "instructions");
 	};
 	case "engineer":
 	{

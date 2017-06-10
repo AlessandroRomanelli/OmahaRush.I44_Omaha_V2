@@ -69,7 +69,7 @@ if (param[0,false,[false]]) then {
 [] spawn client_fnc_objectiveActionUpdate;
 
 // Clean our spawnbeacons
-_beacon = player getVariable ["recon_beacon_obj", objNull];
+_beacon = player getVariable ["assault_beacon_obj", objNull];
 if (!isNull _beacon) then {
 	deleteVehicle _beacon;
 };

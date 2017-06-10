@@ -21,13 +21,13 @@ switch (_class) do
 	{
 		_perkData = profileNamespace getVariable ["rr_perks_medic", ["defibrillator",""]];
 	};
-	case "machinegunner":
+	case "support":
 	{
-		_perkData = profileNamespace getVariable ["rr_perks_machinegunner", ["ammo",""]];
+		_perkData = profileNamespace getVariable ["rr_perks_support", ["ammo",""]];
 	};
-	case "recon":
+	case "assault":
 	{
-		_perkData = profileNamespace getVariable ["rr_perks_recon", ["spawnbeacon",""]];
+		_perkData = profileNamespace getVariable ["rr_perks_assault", ["spawnbeacon",""]];
 	};
 	case "engineer":
 	{
@@ -44,13 +44,13 @@ switch (_class) do
 	{
 		_classConfigs = "true" configClasses (missionConfigFile >> "CfgPerks" >> "ClassPerks" >> "Medic");
 	};
-	case "machinegunner":
+	case "support":
 	{
-		_classConfigs = "true" configClasses (missionConfigFile >> "CfgPerks" >> "ClassPerks" >> "MachineGunner");
+		_classConfigs = "true" configClasses (missionConfigFile >> "CfgPerks" >> "ClassPerks" >> "Support");
 	};
-	case "recon":
+	case "assault":
 	{
-		_classConfigs = "true" configClasses (missionConfigFile >> "CfgPerks" >> "ClassPerks" >> "Recon");
+		_classConfigs = "true" configClasses (missionConfigFile >> "CfgPerks" >> "ClassPerks" >> "Assault");
 	};
 	case "engineer":
 	{

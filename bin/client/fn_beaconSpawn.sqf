@@ -20,7 +20,7 @@ cl_beacon_used = cl_beacon_used + 1;
 // Too many uses?
 if (cl_beacon_used >= 5) then {
 	// Delete beacon
-	_beacon = player getVariable ["recon_beacon_obj", objNull];
+	_beacon = player getVariable ["assault_beacon_obj", objNull];
 	if (!isNull _beacon) then {
 		deleteVehicle _beacon;
 	};

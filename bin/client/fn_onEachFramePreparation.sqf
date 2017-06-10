@@ -15,13 +15,13 @@ _getIcon = {
 	_icon = if (_unit getVariable ["class",""] == "medic") then {
 		"pictures\assault.paa"
 	} else {
-		if (_unit getVariable ["class",""] == "machinegunner") then {
-			"pictures\machinegunner.paa"
+		if (_unit getVariable ["class",""] == "support") then {
+			"pictures\support.paa"
 		} else {
 			if (_unit getVariable ["class",""] == "engineer") then {
 				"pictures\engineer.paa"
 			} else {
-				"pictures\recon.paa"
+				"pictures\assault.paa"
 			};
 		};
 	};
@@ -49,7 +49,7 @@ while {true} do {
 				if ((group _x) == (group player)) then {
 					// Does this unit provide a beacon
 					if (cl_inSpawnMenu) then {
-						_beacon = _x getVariable ["recon_beacon_obj", objNull];
+						_beacon = _x getVariable ["assault_beacon_obj", objNull];
 						if (!isNull _beacon) then {
 							_squad_beacons pushBack [(getPosATLVisual _beacon), format["%1's Spawnbeacon", (_x getVariable ["name", ""])]];
 						};
@@ -81,7 +81,7 @@ while {true} do {
 
 	// Own beacon?
 	if (cl_inSpawnMenu) then {
-		_myBeacon = player getVariable ["recon_beacon_obj", objNull];
+		_myBeacon = player getVariable ["assault_beacon_obj", objNull];
 		if (!isNull _myBeacon) then {
 			_squad_beacons pushBack [(getPosATLVisual _myBeacon), format["%1's Spawnbeacon", (player getVariable ["name", ""])]];
 		};

@@ -108,7 +108,7 @@ switch (_value) do
 
 		// Get unit to spawn at
 		_unit = (units group player) select _value;
-		_beacon = _unit getVariable ["recon_beacon_obj", objNull];
+		_beacon = _unit getVariable ["assault_beacon_obj", objNull];
 
 		if (_data == "beacon") then {
 			// Spawn at object

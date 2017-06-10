@@ -37,14 +37,14 @@ if (isServer) then {
 			_time = _time - 1;
 			sv_cur_obj say3D "beep";
 			if (_time < 5) then {
-				sleep 0.425;
+				sleep 0.3;
 				sv_cur_obj say3D "beep";
-				sleep 0.425;
+				sleep 0.3;
 			} else {
 				if (_time < 20) then {
-					sleep 0.637;
+					sleep 0.65;
 					sv_cur_obj say3D "beep";
-					sleep 0.637;
+					sleep 0.65;
 				} else {
 					sleep 1;
 				}

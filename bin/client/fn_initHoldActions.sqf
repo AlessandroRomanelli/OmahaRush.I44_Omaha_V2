@@ -59,8 +59,8 @@ diag_log "Setting up handlers... 1";
 _id = [
 /* 0 object */							player,
 /* 1 action title */					"Replenish Own Ammunition",
-/* 2 idle icon */						"pictures\machinegunner.paa",
-/* 3 progress icon */					"pictures\machinegunner.paa",
+/* 2 idle icon */						"pictures\support.paa",
+/* 3 progress icon */					"pictures\support.paa",
 /* 4 condition to show */				"cl_classPerk == 'ammo' && [] call mg_conditionShowOnMyself",
 /* 5 condition for action */			"true",
 /* 6 code executed on start */			{cl_lastActionTarget = player;},
@@ -81,8 +81,8 @@ diag_log "Setting up handlers... 2";
 _id = [
 /* 0 object */							player,
 /* 1 action title */					"Replenish Ammunition",
-/* 2 idle icon */						"pictures\machinegunner.paa",
-/* 3 progress icon */					"pictures\machinegunner.paa",
+/* 2 idle icon */						"pictures\support.paa",
+/* 3 progress icon */					"pictures\support.paa",
 /* 4 condition to show */				"cl_classPerk == 'ammo' && (cursorObject distance _this) < 3 && alive cursorObject && !(cursorObject getVariable ['ammo_restored',false]) && (side cursorObject) == playerSide && (cursorObject isKindOf 'Man')",
 /* 5 condition for action */			"!(cursorObject getVariable ['ammo_restored',false])",
 /* 6 code executed on start */			{cl_lastActionTarget = cursorObject;},
@@ -188,8 +188,8 @@ diag_log "Setting up handlers... 6";
 _id = [
 /* 0 object */							player,
 /* 1 action title */					"Replenish Vehicle Ammunition",
-/* 2 idle icon */						"pictures\machinegunner.paa",
-/* 3 progress icon */					"pictures\machinegunner.paa",
+/* 2 idle icon */						"pictures\support.paa",
+/* 3 progress icon */					"pictures\support.paa",
 /* 4 condition to show */				"cl_classPerk == 'ammo' && (cursorObject distance _this) < 3 && alive cursorObject && !(cursorObject getVariable ['ammo_restored',false]) && ((typeOf cursorObject) in cl_vehicleAmmoTypes)",
 /* 5 condition for action */			"!(cursorObject getVariable ['ammo_restored',false])",
 /* 6 code executed on start */			{cl_lastActionTarget = cursorObject;},

@@ -14,7 +14,7 @@ _beacon = param[0,objNull,[objNull]];
 _ret = objNull;
 
 {
-	if (_x getVariable ["recon_beacon_obj", objNull] == _beacon) then {
+	if (_x getVariable ["assault_beacon_obj", objNull] == _beacon) then {
 		_ret = _x;
 	};
 } forEach AllPlayers;

@@ -33,7 +33,7 @@ _index = -1;
 {
 	_index = _index + 1;
 
-	if ((isPlayer _x && _x distance sv_cur_obj < 1500 && alive _x) || (_x == player) || (!isNull (_x getVariable ["recon_beacon_obj", objNUll]))) then {
+	if ((isPlayer _x && _x distance sv_cur_obj < 1500 && alive _x) || (_x == player) || (!isNull (_x getVariable ["assault_beacon_obj", objNUll]))) then {
 		_add = false;
 
 		if (alive _x) then {
@@ -48,7 +48,7 @@ _index = -1;
 			};
 		};
 
-		_beacon = _x getVariable ["recon_beacon_obj", objNull];
+		_beacon = _x getVariable ["assault_beacon_obj", objNull];
 		if (!isNull _beacon) then {
 			_add = true;
 		};

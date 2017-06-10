@@ -24,10 +24,6 @@ if (true) then {
 
 	_primaryAmmo = getText(missionConfigFile >> "Unlocks" >> format["%1", side player] >> _primaryClassname >> "ammo");
 
-	if (_primaryAttachements select 0 == "LIB_ACC_GL_M7") then {
-		player addMagazines ["LIB_1Rnd_G_M9A1", 2];
-	};
-
 	// Give ammo
 	if (!_noMags) then {
 		// Extended ammo perk
@@ -47,7 +43,7 @@ if (true) then {
 	} forEach _primaryAttachements;
 
 	// Sniper scope perk
-	/*if (cl_classPerk == "recon_scope") then {
+	/*if (cl_classPerk == "assault_scope") then {
 		player addPrimaryWeaponItem "optic_KHS_blk";
 	};*/
 };
@@ -91,6 +87,25 @@ if (true) then {
 	};
 	player addWeapon "launch_B_Titan_tna_F";
 };*/
+
+if (cl_class == "assault" && cl_classPerk == "grenadier") then {
+	switch (side player) do {
+		case west: {
+			if (cl_squadPerk == "extended_ammo") then {
+				for "_i" from 1 to 2 do {player addItem "LIB_shg24";};
+			} else {
+				player addItem "LIB_shg24";
+			};
+		};
+		case independent: {
+			if (cl_squadPerk == "extended_ammo") then {
+				for "_i" from 1 to 2 do {player addItem "LIB_US_Mk_2";};
+			} else {
+				player addItem "LIB_US_Mk_2";
+			};
+		};
+	};
+};
 
 if (cl_class == "engineer" && cl_classPerk == "perkAT") then {
 	switch (side player) do {

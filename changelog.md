@@ -2,6 +2,7 @@
 + [ADDED] Changelog;
 + [ADDED] The beep frequency now intensifies slightly < 20s and intensifies noticebly < 5s;
 + [ADDED] Weapons available to exclusive factions;
++ [ADDED] Grenadier perk;
 
 
 * [CHANGED] Moved objectives outside collapsable buildings/hardly reachable places:
@@ -13,7 +14,7 @@
       *Environment 1* Stage 3 defender spawn;
 
 * [CHANGED] Medic revive time speeded up by 4x, now taking only 0.5s;
-* [CHANGED] MachineGunner role to Support;
+* [CHANGED] Support role to Support;
 * [CHANGED] Terrain scenery
 
 - [REMOVED] Bolt-actions to prevent code-breaking events;

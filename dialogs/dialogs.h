@@ -471,7 +471,7 @@ class rr_spawnmenu {
 		class RscPicture_1201667: RscPicture
 		{
 			idc = 1201;
-			text = "pictures\machinegunner.paa";
+			text = "pictures\support.paa";
 			x = 0.835156 * safezoneW + safezoneX;
 			y = 0.632 * safezoneH + safezoneY;
 			w = 0.0309375 * safezoneW;
@@ -480,7 +480,7 @@ class rr_spawnmenu {
 		class RscPicture_12022323: RscPicture
 		{
 			idc = 1202;
-			text = "pictures\recon.paa";
+			text = "pictures\assault.paa";
 			x = 0.835156 * safezoneW + safezoneX;
 			y = 0.688 * safezoneH + safezoneY;
 			w = 0.0309375 * safezoneW;
@@ -507,7 +507,7 @@ class rr_spawnmenu {
 			colorText[] = {1,1,1,1};
 			colorBackground[] = {0.12,0.14,0.16,0.8};
 		};
-		class btnDeployMachineGunner: RscButtonMenu
+		class btnDeploySupport: RscButtonMenu
 		{
 			idc = 202;
 

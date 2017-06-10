@@ -19,13 +19,13 @@ switch (_requestedClass) do
 	{
 		["medic"] spawn client_fnc_spawnPlayer;
 	};
-	case "machinegunner":
+	case "support":
 	{
-		["machinegunner"] spawn client_fnc_spawnPlayer;
+		["support"] spawn client_fnc_spawnPlayer;
 	};
-	case "recon":
+	case "assault":
 	{
-		["recon"] spawn client_fnc_spawnPlayer;
+		["assault"] spawn client_fnc_spawnPlayer;
 	};
 	case "engineer":
 	{

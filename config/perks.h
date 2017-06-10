@@ -39,14 +39,22 @@ class CfgPerks {
 				instructions[] = {"AMMUNITION PACK", "Hold your ACTION key (Space) to replenish other units/vehicles ammunition. If you are out of ammo you may replenish your own."};
 			};
 		};
-		class Recon {
+		class Assault {
+
+			class grenadier {
+				displayName = "Grenadier";
+				picture = "";
+				description = "Allows you to carry a fragmentation grenade, lethal for anybody who finds himself within a couple of meters from the blast.";
+				instructions[] = {"GRENADIER", "Press G to throw your frag grenade. Beware of your surroundings when doing so, make sure not to endanger your team mates when throwing it."};
+			};
+
 			class spawnbeacon {
 				displayName = "Rally points";
 				picture = "";
 				description = "Allows you to create spawn points for your squad to deploy at more efficient locations";
 				instructions[] = {"RALLYPOINT", "Press H to deploy your spawn beacon. Only one spawnbeacon is allowed per squad. Squad members will then be able to spawn on it."};
 			};
-			/*class recon_scope {
+			/*class assault_scope {
 				displayName = "Marksman Scope";
 				picture = "";
 				description = "Replaces your currently attached scope with a Khali long range sniper scope (if compatible with your weapon)";

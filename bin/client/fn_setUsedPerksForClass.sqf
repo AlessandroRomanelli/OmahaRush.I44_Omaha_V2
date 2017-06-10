@@ -45,13 +45,13 @@ switch (_class) do
 	{
 		profileNamespace setVariable ["rr_perks_medic", _dataArray];
 	};
-	case "machinegunner":
+	case "support":
 	{
-		profileNamespace setVariable ["rr_perks_machinegunner", _dataArray];
+		profileNamespace setVariable ["rr_perks_support", _dataArray];
 	};
-	case "recon":
+	case "assault":
 	{
-		profileNamespace setVariable ["rr_perks_recon", _dataArray];
+		profileNamespace setVariable ["rr_perks_assault", _dataArray];
 	};
 	case "engineer":
 	{

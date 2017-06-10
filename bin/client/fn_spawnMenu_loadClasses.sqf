@@ -28,13 +28,13 @@ _l ctrlAddEventHandler ["LBSelChanged", {
 			((findDisplay 5000) displayCtrl 301) ctrlEnable true;
 		};
 
-		case "machinegunner":
+		case "support":
 		{
 			((findDisplay 5000) displayCtrl 301) ctrlSetText "CHANGE CLASS/SQUAD PERKS";
 			((findDisplay 5000) displayCtrl 301) ctrlEnable true;
 		};
 
-		case "recon":
+		case "assault":
 		{
 			((findDisplay 5000) displayCtrl 301) ctrlSetText "CHANGE CLASS/SQUAD PERKS";
 			((findDisplay 5000) displayCtrl 301) ctrlEnable true;
@@ -59,13 +59,13 @@ _l ctrlAddEventHandler ["LBSelChanged", {
 _l lbAdd "Field Medic";
 _l lbSetData [(lbSize _l) - 1, "medic"];
 
-// Machine Gunner
-_l lbAdd "Machine Gunner";
-_l lbSetData [(lbSize _l) - 1, "machinegunner"];
+// Support
+_l lbAdd "Support";
+_l lbSetData [(lbSize _l) - 1, "support"];
 
-// Recon
-_l lbAdd "Recon";
-_l lbSetData [(lbSize _l) - 1, "recon"];
+// Assault
+_l lbAdd "Assault";
+_l lbSetData [(lbSize _l) - 1, "assault"];
 
 // Engineer
 _l lbAdd "Engineer";

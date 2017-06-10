@@ -39,13 +39,13 @@ switch (_class) do
 	{
 		_classConfigs = "true" configClasses (missionConfigFile >> "CfgPerks" >> "ClassPerks" >> "Medic");
 	};
-	case "machinegunner":
+	case "support":
 	{
-		_classConfigs = "true" configClasses (missionConfigFile >> "CfgPerks" >> "ClassPerks" >> "MachineGunner");
+		_classConfigs = "true" configClasses (missionConfigFile >> "CfgPerks" >> "ClassPerks" >> "Support");
 	};
-	case "recon":
+	case "assault":
 	{
-		_classConfigs = "true" configClasses (missionConfigFile >> "CfgPerks" >> "ClassPerks" >> "Recon");
+		_classConfigs = "true" configClasses (missionConfigFile >> "CfgPerks" >> "ClassPerks" >> "Assault");
 	};
 	case "engineer":
 	{

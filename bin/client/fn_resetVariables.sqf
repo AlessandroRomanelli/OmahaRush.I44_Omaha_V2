@@ -43,7 +43,7 @@ cl_onEachFrame_team_members = [];
 cl_onEachFrame_team_reviveable = [];
 
 // Any beacons left?
-_beacon = player getVariable ["recon_beacon_obj", objNull];
+_beacon = player getVariable ["assault_beacon_obj", objNull];
 if (!isNull _beacon) then {
 	deleteVehicle _beacon;
 };
@@ -84,13 +84,13 @@ if (isNil "rr_iconrenderer_executed") then {
 									_icon = if (_x getVariable ["class",""] == "medic") then {
 										"pictures\assault.paa"
 									} else {
-										if (_x getVariable ["class",""] == "machinegunner") then {
-											"pictures\machinegunner.paa"
+										if (_x getVariable ["class",""] == "support") then {
+											"pictures\support.paa"
 										} else {
 											if (_x getVariable ["class",""] == "engineer") then {
 												"pictures\engineer.paa"
 											} else {
-												"pictures\recon.paa"
+												"pictures\assault.paa"
 											};
 										};
 									};
@@ -101,7 +101,7 @@ if (isNil "rr_iconrenderer_executed") then {
 									drawIcon3D[format["%1%2",MISSION_ROOT, _icon], [1,1,1,_alpha], _pos, 1.5, 1.5, 0, (_x getVariable ["name", ""]), 2, 0.04, "PuristaMedium", "center", true];
 
 									// Draw spawn beacons
-									_beacon = _x getVariable ["recon_beacon_obj", objNull];
+									_beacon = _x getVariable ["assault_beacon_obj", objNull];
 									if (!isNull _beacon) then {
 										drawIcon3D[format["%1%2",MISSION_ROOT, _icon], [1,1,1,_alpha], (getPosATLVisual _beacon), 1.5, 1.5, 0, format["%1's Spawnbeacon", (_x getVariable ["name", ""])], 2, 0.04, "PuristaMedium", "center", true];
 									};
@@ -111,10 +111,10 @@ if (isNil "rr_iconrenderer_executed") then {
 								_icon = if (_x getVariable ["class",""] == "medic") then {
 									"pictures\assault.paa"
 								} else {
-									if (_x getVariable ["class",""] == "machinegunner") then {
-										"pictures\machinegunner.paa"
+									if (_x getVariable ["class",""] == "support") then {
+										"pictures\support.paa"
 									} else {
-										"pictures\recon.paa"
+										"pictures\assault.paa"
 									};
 								};
 
@@ -140,7 +140,7 @@ if (isNil "rr_iconrenderer_executed") then {
 				} else {
 					if (cl_inSpawnMenu) then {
 						if ((group _x) == (group player)) then {
-							_beacon = _x getVariable ["recon_beacon_obj", objNull];
+							_beacon = _x getVariable ["assault_beacon_obj", objNull];
 							if (!isNull _beacon) then {
 								drawIcon3D["", [1,1,1,_alpha], (getPosATLVisual _beacon), 1.5, 1.5, 0, format["%1's Spawnbeacon", (_x getVariable ["name", ""])], 2, 0.04, "PuristaMedium", "center", true];
 							};

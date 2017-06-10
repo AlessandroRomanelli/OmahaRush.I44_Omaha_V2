@@ -139,7 +139,7 @@ class Maps {
 			};
 			class Stage2 {
 				class Spawns {
-					defenders[] = {3794.65,2649.86,0};
+					defenders[] = {3510.1,2182.14,0};
 					attackers[] = {3789.66,2660.17,0};
 				};
 				class Objective {

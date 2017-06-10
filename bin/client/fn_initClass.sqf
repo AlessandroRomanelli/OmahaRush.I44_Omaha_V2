@@ -20,12 +20,12 @@ player setVariable ["class", cl_class, true];
 
 // Spawn beacon code
 rc_spawnBeacon = {
-	if (isNull (player getVariable ["recon_beacon_obj",objNull]) || (diag_tickTime - ((player getVariable ["recon_beacon_obj",objNull]) getVariable ["deployment_tick", 0])) > 180) then {
-		if (({!isNull (_x getVariable ["recon_beacon_obj", objNull])} count (units group player)) < 1) then {
+	if (isNull (player getVariable ["assault_beacon_obj",objNull]) || (diag_tickTime - ((player getVariable ["assault_beacon_obj",objNull]) getVariable ["deployment_tick", 0])) > 180) then {
+		if (({!isNull (_x getVariable ["assault_beacon_obj", objNull])} count (units group player)) < 1) then {
 			if (player distance sv_cur_obj < 75 || (player distance (getMarkerPos cl_enemySpawnMarker)) < 100) then {
 				["Your spawnbeacon may not be placed here"] spawn client_fnc_displayError;
 			} else {
-				_existingBeacon = (player getVariable ["recon_beacon_obj",objNull]);
+				_existingBeacon = (player getVariable ["assault_beacon_obj",objNull]);
 
 				// Delete existing beacon
 				if (!isNull _existingBeacon) then {
@@ -40,7 +40,7 @@ rc_spawnBeacon = {
 				_beacon setDir (direction player);
 
 				// Vars
-				player setVariable ["recon_beacon_obj", _beacon, true];
+				player setVariable ["assault_beacon_obj", _beacon, true];
 				_beacon setVariable ["deployment_tick", diag_tickTime];
 				_beacon setVariable ["owner", player, true];
 
@@ -60,14 +60,14 @@ rc_spawnBeacon = {
 			["Your squad already has a spawn beacon placed down"] spawn client_fnc_displayError;
 		};
 	} else {
-		//["Destroy your old beacon or wait " + (diag_tickTime - ((player getVariable ["recon_beacon_obj",objNull]) getVariable ["deployment_tick", 0])) + " more seconds to deploy a new beacon"] spawn client_fnc_displayError;
-		[format["Destroy your old beacon or wait %1 more seconds to deploy a new beacon", round (180 - (diag_tickTime - ((player getVariable ["recon_beacon_obj",objNull]) getVariable ["deployment_tick", 0])))]] spawn client_fnc_displayError;
+		//["Destroy your old beacon or wait " + (diag_tickTime - ((player getVariable ["assault_beacon_obj",objNull]) getVariable ["deployment_tick", 0])) + " more seconds to deploy a new beacon"] spawn client_fnc_displayError;
+		[format["Destroy your old beacon or wait %1 more seconds to deploy a new beacon", round (180 - (diag_tickTime - ((player getVariable ["assault_beacon_obj",objNull]) getVariable ["deployment_tick", 0])))]] spawn client_fnc_displayError;
 	};
 };
 
 
-// Recon // Allow others to destroy other beacons
-(findDisplay 46) displayRemoveEventHandler ["KeyDown",player getVariable ["recon_beacon_keyhandler_id", -1]];
+// Assault // Allow others to destroy other beacons
+(findDisplay 46) displayRemoveEventHandler ["KeyDown",player getVariable ["assault_beacon_keyhandler_id", -1]];
 if (true) then {
 	// Add action to deploy a spawn beacon
 	_id = (findDisplay 46) displayAddEventHandler ["KeyDown",{
@@ -80,7 +80,7 @@ if (true) then {
 			if (cursorObject isKindOf "Land_Laptop_device_F" && player distance cursorObject < 2) then {
 
 				// Our teams beacon
-				if ((([cursorObject] call client_fnc_getBeaconOwner) getVariable ["side", sideUnknown]) == playerSide || cursorObject == (player getVariable ["recon_beacon_obj", objNull])) then {
+				if ((([cursorObject] call client_fnc_getBeaconOwner) getVariable ["side", sideUnknown]) == playerSide || cursorObject == (player getVariable ["assault_beacon_obj", objNull])) then {
 					if (([cursorObject] call client_fnc_getBeaconOwner) == player) then {
 						// Were the owner, destroy it!
 						deleteVehicle cursorObject;
@@ -98,8 +98,8 @@ if (true) then {
 					[15] spawn client_fnc_addPoints;
 				};
 			} else {
-				// check if were recon and we have the spawnbeacon perk, then place beacon
-				if (cl_class == "recon") then {
+				// check if were assault and we have the spawnbeacon perk, then place beacon
+				if (cl_class == "assault") then {
 					if (cl_classPerk == "spawnbeacon") then {
 						if (vehicle player == player) then {
 							[] spawn rc_spawnBeacon;
@@ -112,5 +112,5 @@ if (true) then {
 		};
 		_h
 	}];
-	player setVariable ["recon_beacon_keyhandler_id", _id];
+	player setVariable ["assault_beacon_keyhandler_id", _id];
 };
