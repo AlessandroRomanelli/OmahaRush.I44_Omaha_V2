@@ -1,0 +1,217 @@
+// Debug
+enableDebugConsole = 1;
+
+// Functions
+class CfgFunctions {
+    #include "bin\functions.h"
+};
+
+// RemoteExec Filters
+class CfgRemoteExec {
+    class Functions {
+        mode = 1;
+        jip = 1;
+        #include "bin\restrictions.h"
+    };
+
+    class Commands
+    {
+        mode = 1;
+        class setFuel {allowedTargets = 0;};
+    };
+};
+
+// Configs
+#include "config\master.h"
+#include "config\unlocks_van.h"
+#include "config\perks.h"
+#include "config\maps.h"
+
+onPauseScript[] = {client_fnc_saveStatistics};
+
+// Revive?
+//respawnTemplates[] = {"Revive"};
+//reviveDelay = 5;
+//reviveForceRespawnDelay = 5;
+//reviveBleedOutDelay = 10;
+
+// Disable debriefing
+debriefing = 0;
+
+showHUD[] = {
+    1,   // Scripted HUD (same as showHUD command)
+    0,  // Vehicle + soldier info
+    0,  // Vehicle radar [HIDDEN]
+    0,  // Vehicle compass [HIDDEN]
+    0,  // Tank direction indicator
+    1,   // Commanding menu
+    0,  // Group Bar
+    1    // HUD Weapon Cursors
+};
+
+// Wreck remover
+wreckManagerMode = 1;
+wreckLimit = 1;
+wreckRemovalMinTime = 5;
+wreckRemovalMaxTime = 5;
+
+// Header
+class Header
+{
+	gameType = DM; // Game type, see 'class' columns in the table below
+	minPlayers = 2; //min # of players the mission supports
+	maxPlayers = 60; //max # of players the mission supports
+};
+
+// Channels
+disableChannels[]={0,1,2,3,4};
+
+// Sounds
+class CfgSounds {
+    sounds[] = {};
+    class kill {
+        name = "kill";
+        sound[] = {"\sounds\kill.ogg", 0.7, 1};
+        titles[] = {};
+    };
+    class levelup {
+        name = "levelup";
+        sound[] = {"\sounds\levelup.ogg", 0.7, 1};
+        titles[] = {};
+    };
+    class ending {
+        name = "ending";
+        sound[] = {"\sounds\ending.ogg", 0.5, 1};
+        titles[] = {};
+    };
+    class arm
+    {
+        name = "arm";
+        sound[] = {"\sounds\arm.ogg", 1.0, 1};
+        titles[] = {};
+    };
+    class ribbon_ending
+    {
+        name = "ribbon_ending";
+        sound[] = {"\sounds\ribbon_ending.ogg", 1.0, 1};
+        titles[] = {};
+    };
+    class unlock_epic
+    {
+        name = "ribbon_epic";
+        sound[] = {"\sounds\ribbon_epic.ogg", 1.0, 1};
+        titles[] = {};
+    };
+    class ribbon_ingame
+    {
+        name = "arm";
+        sound[] = {"\sounds\ribbon_ingame.ogg", 1.0, 1};
+        titles[] = {};
+    };
+    class intro
+    {
+        name = "intro";
+        sound[] = {"\sounds\intro.ogg", 1.5, 1};
+        titles[] = {};
+    };
+    class beep
+    {
+        name = "beep";
+        sound[] = {"\sounds\beep.ogg", 3.0, 1};
+        titles[] = {};
+    };
+    class tug_beep
+    {
+        name = "tug_beep";
+        sound[] = {"\sounds\tug_beep.ogg", 0.2, 1};
+        titles[] = {};
+    };
+    class missile_incoming
+    {
+        name = "missile_incoming";
+        sound[] = {"\sounds\tug_beep.ogg", 1.0, 1};
+        titles[] = {};
+    };
+};
+
+// Other hpps
+#include "dialogs\common.h"
+
+// Dialogs
+#include "dialogs\dialogs.h"
+
+// Additional RscTitles
+class RscTitles {
+    #include "dialogs\titles.h"
+};
+
+// Skip the role selection screen
+joinUnassigned = 1;
+
+// Disable Ai
+disabledAI = 1;
+
+// Respawn
+respawnDelay = 15;
+respawn = "BASE";
+respawnDialog = 0;
+
+// Make corpses despawn
+corpseLimit = 1;
+corpseRemovalMinTime = 1;
+corpseRemovalMaxTime = 1;
+corpseManagerMode = 1;
+
+// Debriefing
+class CfgDebriefing
+{
+    class MatchEnd
+    {
+        title = "MATCH ENDED";
+        subtitle = "";
+        description = "";
+        pictureBackground = "";
+        picture = "";
+        pictureColor[] = {0.96,0.65,0.12,0.8};
+    };
+
+    class JoinWEST
+    {
+        title = "AUTO TEAM BALANCE";
+        subtitle = "YOU HAVE BEEN AUTO TEAM BALANCED";
+        description = "Please return to the lobby and join the WEST (Defender/Blue) team! (Your progress has been saved)";
+        pictureBackground = "";
+        picture = "";
+        pictureColor[] = {0.96,0.65,0.12,0.8};
+    };
+
+    class Joinindependent
+    {
+        title = "AUTO TEAM BALANCE";
+        subtitle = "YOU HAVE BEEN AUTO TEAM BALANCED";
+        description = "Please return to the lobby and join the independent (Attacker/Green) team! (Your progress has been saved)";
+        pictureBackground = "";
+        picture = "";
+        pictureColor[] = {0.96,0.65,0.12,0.8};
+    };
+
+    class teamFullindependent
+    {
+        title = "AUTO TEAM BALANCE";
+        subtitle = "THIS TEAM HAS TOO MANY PLAYERS";
+        description = "Please return to the lobby and join independent (Attackers/Green) team.";
+        pictureBackground = "";
+        picture = "";
+        pictureColor[] = {0.96,0.65,0.12,0.8};
+    };
+
+    class teamFullWEST
+    {
+        title = "AUTO TEAM BALANCE";
+        subtitle = "THIS TEAM HAS TOO MANY PLAYERS";
+        description = "Please return to the lobby and join WEST (Defender/Blue) team.";
+        pictureBackground = "";
+        picture = "";
+        pictureColor[] = {0.96,0.65,0.12,0.8};
+    };
+};

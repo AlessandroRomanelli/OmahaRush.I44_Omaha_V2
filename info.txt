@@ -1,0 +1,63 @@
+Todo
+//- Auto Team Balancer VERSCHOBEN
+- Match history
++ Website
++ Change spawnbeacon to laptop
++ Spawn spawnbeacon on player
++ Limit to one spawnbeacon per squad
++ Give maps time and date and fog value
++ Add time limit to each match
++ Display dead units to medics
++ Delete bodies on respawn
++ display ammo count of vehicle
+- Add MLG sound easter egg
++ fix spawn beacons not being destroyable
++ earplugs
++ move 115 to later weapons
++ increase amount of unlocks at the beginning
++ remove Georgetown (?)
++ added compass
++ added autoteambalancer
+
+- magazines count appear
++ group chat enable text
++ helicopter missile warning
++ helicopter anti measures
++ increase despawn time for helis 30 -> 40
++ limit spawn beacon pos
+- focus teambalancer on single teammaters
++ Tanouka first stage attacker spawn moved further away
++ post processing effects for testing
++ points depending on destroyed/defended mcoms
++ spawn god mode reduced to 3 from 5 seconds
++ shot down helis give you points +85
+- aa titan thermal disable // apparently not possible :/
++ dont allow team balanced players to join the same team
++ weapons with e.g. gl can be used for infinite ammo // Not a bug
++ disallow players to be in the spawn
++ add rcos
++ add assists
++ random unkillable units standing at spawns has been fixed
++ massive performance issues after several rounds forcing players to restart their game client has been fixed
++ players spawning on the debug island will now be teleported to the HQ (preventing bugged spawns)
++ weapon list has been streched and contains more weapons now
++ mk20 is now also available as a starting weapon
++ icons now do not lag behind anymore
+
++ countermeasure keys are now localized and inherit from the arma 3 configuration
++ anti boosting measures
++ restricted areas are now applied 30 seconds after an mcom has been destroyed meaning
++ fixed a bug where vehicles would no respawn
++ attachments are now unlocked every 2300 points instead of 1500
++ spawn camera now updates if the mcom gets destroyed while being in the spawn screen
+
++ spawn beacon placement radius around mcom increased to 75 from 40 meters
++ added hint that informs about spawn restrictions
++ 15 matches will now be played until the server restarts
++ added visual warning at top right if the its the last round before a restart
++ helicopter flares now tank rockets for 3.5 instead of 5 seconds
++ spawn beacons cannot be placed near enemy spawns anymore (100 meter radius)
++ pawnee now has 2000 rounds instead of 5000
++ Blue Pearl has been added back to the active map list
++ stage vehicles now properly respawn
++ rooftop objective has been moved
