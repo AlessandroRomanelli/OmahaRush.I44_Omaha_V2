@@ -139,11 +139,11 @@ class Maps {
 			};
 			class Stage2 {
 				class Spawns {
-					defenders[] = {3416.85,2251.48,0};
+					defenders[] = {3794.65,2649.86,0};
 					attackers[] = {3789.66,2660.17,0};
 				};
 				class Objective {
-					positionATL[] = {[464.06,2322.56,0.413357};
+					positionATL[] = {3464.06,2322.56,0.413357};
 					dir = 210;
 					classname = "LIB_GerRadio";
 				};
@@ -212,7 +212,7 @@ class Maps {
 			};
 			class Stage3 {
 				class Spawns {
-					defenders[] = {2984.47,2162.72,0};
+					defenders[] = {2918.24,2168.87,0};
 					attackers[] = {3472.72,2315.33,0};
 				};
 				class Objective {
@@ -277,11 +277,11 @@ class Maps {
 			};
 			class Stage4 {
 				class Spawns {
-					defenders[] = {2630.13,1977.81,0};
+					defenders[] = {2622.98,2002.16,0};
 					attackers[] = {2981.77,2180.17,0};
 				};
 				class Objective {
-					positionATL[] = {2669,2145.5,12.29};
+					positionATL[] = {2698.49,2144.07,1.3528};
 					dir = 309;
 					classname = "LIB_GerRadio";
 				};

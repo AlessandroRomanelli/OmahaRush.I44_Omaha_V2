@@ -31,7 +31,7 @@ class CfgPerks {
 				instructions[] = {"EPINEPHRINE", "Downed friendly units will be marked on your screen. Get to their body and use your ACTION key (Space) to revive them."};
 			};
 		};
-		class MachineGunner {
+		class Support {
 			class ammo {
 				displayName = "Ammunition";
 				picture = "";
