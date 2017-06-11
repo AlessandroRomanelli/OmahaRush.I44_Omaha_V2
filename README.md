@@ -1,11 +1,14 @@
+#Changelog V0.62.9
+
 + [ADDED] Bad weather and night time environments;
 + [ADDED] Bright nights;
-+ [ADDED] Grenade adapter for the M1 Garand;
-+ [ADDED] Demolition perk;
++ [ADDED] Grenadier perk:
+            Grenade adapter for the M1 Garand now gives you rifle grenades;
++ [ADDED] Explosives Specialist perk:
+            Explosives charges and different backpacks are given to set up ambush and kill zones;
 + [ADDED] Name tagging with different colors for grouped and ungrouped allies;
 + [ADDED] Weapons available to exclusive factions;
-+ [ADDED] Grenadier perk;
-+ [ADDED] Scenery for *Environment 1* Stage 1 to decrease the amount of open space;
++ [ADDED] Scenery for *Environment 1* Stage 1 to decrease the amount of open space attackers have to go through;
 
 * [CHANGED] Restricted area time limit increased to 15s;
 * [CHANGED] Fallback time reduced to 60s;
@@ -22,3 +25,4 @@
 
 - [REMOVED] Bolt-actions to prevent code-breaking;
 - [REMOVED] Machineguns to preserve game balance;
+- [REMOVED] Panther to preserve game balance;
