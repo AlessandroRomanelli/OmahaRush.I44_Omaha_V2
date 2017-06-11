@@ -131,6 +131,8 @@ if (sv_gameStatus in [1,2]) then {
 	[player] remoteExec ["server_fnc_getMatchTime", 2];
 };
 
+CHBN_adjustBrightness = 1;
+
 // Keyhandler
 [] spawn client_fnc_initKeyHandler;
 

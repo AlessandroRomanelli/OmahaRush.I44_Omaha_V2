@@ -12,10 +12,10 @@ scriptName "fn_restrictedArea";
 _entryTime = diag_tickTime;
 
 // Wait until time is out or were out again
-waitUntil {((diag_tickTime - _entryTime) > 8) || (player distance (getMarkerPos cl_enemySpawnMarker)) > 100};
+waitUntil {((diag_tickTime - _entryTime) > 15) || (player distance (getMarkerPos cl_enemySpawnMarker)) > 100};
 
 // Evaluate
-if (diag_tickTime - _entryTime > 8) then {
+if (diag_tickTime - _entryTime > 15) then {
 	player setDamage 1;
 	["You have been killed for remaining in a restricted area"] spawn client_fnc_displayError;
 };

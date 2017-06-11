@@ -1,10 +1,14 @@
++ [ADDED] Bad weather and night time environments;
++ [ADDED] Bright nights;
++ [ADDED] Grenade adapter for the M1 Garand;
++ [ADDED] Demolition perk;
 + [ADDED] Name tagging with different colors for grouped and ungrouped allies;
-+ [ADDED] Changelog;
-+ [ADDED] The beep frequency now intensifies slightly < 20s and intensifies noticebly < 5s;
 + [ADDED] Weapons available to exclusive factions;
 + [ADDED] Grenadier perk;
++ [ADDED] Scenery for *Environment 1* Stage 1 to decrease the amount of open space;
 
-
+* [CHANGED] Restricted area time limit increased to 15s;
+* [CHANGED] Fallback time reduced to 60s;
 * [CHANGED] Moved objectives outside collapsable buildings/hardly reachable places:
       *Environment 1* Stage 2 objective location;
       *Environment 1* Stage 3 objective location;
@@ -15,6 +19,6 @@
 
 * [CHANGED] Medic revive time speeded up by 4x, now taking only 0.5s;
 * [CHANGED] Support role to Support;
-* [CHANGED] Terrain scenery
 
-- [REMOVED] Bolt-actions to prevent code-breaking events;
+- [REMOVED] Bolt-actions to prevent code-breaking;
+- [REMOVED] Machineguns to preserve game balance;

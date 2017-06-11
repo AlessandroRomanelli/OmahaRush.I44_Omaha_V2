@@ -102,7 +102,6 @@ if (isServer) then {
 	};
 };
 
-// Local sound loop
 if (!_wasServer) then {
 	[] spawn {
 		_time = 71;

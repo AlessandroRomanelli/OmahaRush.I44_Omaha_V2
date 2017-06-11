@@ -88,7 +88,17 @@ if (true) then {
 	player addWeapon "launch_B_Titan_tna_F";
 };*/
 
-if (cl_class == "assault" && cl_classPerk == "grenadier") then {
+if (cl_classPerk == "grenadier") then {
+	_primary = _equipInfo select 0;
+	_primaryAttachements = _primary select 1;
+	if ("LIB_ACC_GL_M7" in _primaryAttachements) then {
+		if (cl_squadperk == "extended_ammo") then {
+			for "_i" from 1 to 3 do {player addItem "LIB_1Rnd_G_M9A1";};
+		}	else {
+			player addItem "LIB_1Rnd_G_M9A1";
+		};
+	};
+
 	switch (side player) do {
 		case west: {
 			if (cl_squadPerk == "extended_ammo") then {
@@ -104,6 +114,22 @@ if (cl_class == "assault" && cl_classPerk == "grenadier") then {
 				player addItem "LIB_US_Mk_2";
 			};
 		};
+	};
+};
+
+if (cl_classPerk == "demolition") then {
+	removeBackpack player;
+	if (side player == west) then {
+		player addBackpack "B_LIB_GER_Backpack";
+	} else {
+		player addBackpack "B_LIB_US_Backpack";
+	};
+	if (cl_squadPerk == "extended_ammo") then {
+		for "_i" from 1 to 2 do {player addItemToBackpack "LIB_Ladung_Big_MINE_mag";};
+		for "_i" from 1 to 2 do {player addItemToBackpack "LIB_Ladung_Small_MINE_mag";};
+	} else {
+		for "_i" from 1 to 4 do {player addItemToBackpack "LIB_Ladung_Big_MINE_mag";};
+		for "_i" from 1 to 4 do {player addItemToBackpack "LIB_Ladung_Small_MINE_mag";};
 	};
 };
 

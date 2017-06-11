@@ -48,7 +48,7 @@ class Unlocks {
 			class attachments {};
 			};
 
-		class LIB_MG34_PT {
+		/*class LIB_MG34_PT {
 			ammo = "LIB_75Rnd_792x57";
 			exp = 25000;
 			type = "primary";
@@ -62,7 +62,7 @@ class Unlocks {
 			type = "primary";
 
 			class attachments {};
-			};
+			};*/
 
 		class LIB_M1895 {
 			ammo = "LIB_7Rnd_762x38";
@@ -96,13 +96,13 @@ class Unlocks {
 			class attachments {};
 			};
 
-		class LIB_DP28 {
+		/*class LIB_DP28 {
 			ammo = "LIB_47Rnd_762x54";
 			exp = 60000;
 			type = "primary";
 
 			class attachments {};
-			};
+			};*/
 
 		class LIB_PTRD {
 			ammo = "LIB_1Rnd_145x114";
@@ -166,13 +166,13 @@ class Unlocks {
 			};
 		};
 
-		class LIB_M1919A6 {
+		/*class LIB_M1919A6 {
 			ammo = "LIB_50Rnd_762x63";
 			exp = 120000;
 			type = "primary";
 
 			class attachments {};
-		};
+		};*/
 	};
 
 	class  guer {
@@ -190,7 +190,11 @@ class Unlocks {
 			exp = 0;
 			type = "primary";
 
-			class attachments {};
+			class attachments {
+				class LIB_ACC_GL_M7 {
+					type = "muzzle";
+				};
+			};
 		};
 
 		class LIB_Colt_M1911 {
@@ -237,13 +241,13 @@ class Unlocks {
 			};
 		};
 
-		class LIB_M1919A6 {
+		/*class LIB_M1919A6 {
 			ammo = "LIB_50Rnd_762x63";
 			exp = 40000;
 			type = "primary";
 
 			class attachments {};
-		};
+		};*/
 
 		class LIB_M1895 {
 			ammo = "LIB_7Rnd_762x38";
@@ -277,13 +281,13 @@ class Unlocks {
 			class attachments {};
 		};
 
-		class LIB_DP28 {
+		/*class LIB_DP28 {
 			ammo = "LIB_47Rnd_762x54";
 			exp = 65000;
 			type = "primary";
 
 			class attachments {};
-		};
+		};*/
 
 		class LIB_PTRD {
 			ammo = "LIB_1Rnd_145x114";
@@ -333,7 +337,7 @@ class Unlocks {
 			class attachments {};
 		};
 
-		class LIB_MG34_PT {
+		/*class LIB_MG34_PT {
 			ammo = "LIB_75Rnd_792x57";
 			exp = 110000;
 			type = "primary";
@@ -347,7 +351,7 @@ class Unlocks {
 			type = "primary";
 
 			class attachments {};
-		};
+		};*/
 	};
 };
 

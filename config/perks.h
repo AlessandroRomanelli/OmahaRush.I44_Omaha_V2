@@ -72,8 +72,15 @@ class CfgPerks {
 				displayName = "Anti-Tank Launcher";
 				picture = "";
 				description = "Deploys you with an AT launcher capable penetrating even the thickest armor.";
-				instructions[] = {"AT LAUNCHER", "Use your AT launcher to destroy enemy ground vehicles."};
+				instructions[] = {"AT LAUNCHER", "Use your AT rocket launcher to destroy enemy ground vehicles."};
 			};
+			class demolition {
+				displayName = "Explosives Expert";
+				picture = "";
+				description = "Allows you to plant explosives and set up deadly ambushes for the enemy team.";
+				instructions[]= {"EXPLOSIVES EXPERT", "Use the explosives to set up ambushes for the enemy team."};
+			};
+
 			/*class perkAA {
 				displayName = "Anti-Air Launcher";
 				picture = "";

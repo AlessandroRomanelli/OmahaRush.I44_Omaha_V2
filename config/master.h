@@ -14,7 +14,7 @@ class GeneralConfig {
 	PerformanceRestart = 1;
 
 	// After how many matches?
-	MatchCount = 10;
+	MatchCount = 6;
 
 	// (or) After how many seconds?
 	MatchTime = 18000;
@@ -29,7 +29,7 @@ class GeneralConfig {
 	AutoTeamBalanceAtDifference = 5;
 
 	// Fall back time for defenders
-	FallBackSeconds = 120;
+	FallBackSeconds = 60;
 
 	// ServerCommandPassword
 	commandPassword = "viper12";
