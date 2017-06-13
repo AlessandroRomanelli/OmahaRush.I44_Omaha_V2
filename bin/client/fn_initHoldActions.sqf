@@ -103,7 +103,7 @@ diag_log "Setting up handlers... 3";
 _cond = "";
 _text = "";
 _completion = {};
-if ((player getVariable ["side", sideUnknown]) == WEST) then {
+if ((player getVariable "gameSide") == "defenders") then {
 	_text = "Disarm Explosives";
 	_cond = "(cursorObject distance _this) < 2 && (cursorObject getVariable ['armed',false]) && (cursorObject == sv_cur_obj)";
 	_completion = {if (cursorObject distance player < 2) then {[] spawn client_fnc_disarmMCOM;};};

@@ -99,9 +99,6 @@ if (sv_gameCycle % 2 == 0) then {
   };
 };
 
-
-
-
 // Init group client
 ["InitializePlayer", [player]] call BIS_fnc_dynamicGroups;
 

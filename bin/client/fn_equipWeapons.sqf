@@ -121,13 +121,18 @@ if (cl_classPerk == "demolition") then {
 	removeBackpack player;
 	if (player getVariable "gameSide" == "defenders") then {
 		player addBackpack "B_LIB_GER_Backpack";
+		if (cl_squadPerk == "extended_ammo") then {
+			for "_i" from 1 to 2 do {player addItemToBackpack "LIB_TMI_42_MINE_mag";};
+		} else {
+			player addItemToBackpack "LIB_Ladung_Big_MINE_mag";
+		};
 	} else {
 		player addBackpack "B_LIB_US_Backpack";
-	};
-	if (cl_squadPerk == "extended_ammo") then {
-		player addItemToBackpack "LIB_Ladung_Big_MINE_mag";
-	} else {
-		for "_i" from 1 to 2 do {player addItemToBackpack "LIB_Ladung_Big_MINE_mag";};
+		if (cl_squadPerk == "extended_ammo") then {
+			for "_i" from 1 to 2 do {player addItemToBackpack "LIB_US_M1A1_ATMINE_mag";};
+		} else {
+			player addItemToBackpack "LIB_US_M1A1_ATMINE_mag";
+		};
 	};
 };
 

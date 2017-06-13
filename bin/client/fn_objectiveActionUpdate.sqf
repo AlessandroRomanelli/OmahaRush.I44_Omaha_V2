@@ -26,7 +26,7 @@ _stage = [] call client_fnc_getCurrentStageString;
 _cond = "";
 _text = "";
 _completion = {};
-if ((player getVariable ["side", sideUnknown]) == WEST) then {
+if ((player getVariable "gameSide") == "defenders") then {
 	_text = "Disarm Explosives";
 	_cond = "(_target distance _this) < 2 && (_target getVariable ['armed',false])";
 	_completion = {if (_target distance player < 2) then {[] spawn client_fnc_disarmMCOM;};};

@@ -163,6 +163,21 @@ if (isNil "rr_iconrenderer_executed") then {
 		};
 		*/
 
+		//Keeping the role updated
+		if (sv_gameCycle % 2 == 0) then {
+		  if (playerSide == WEST) then {
+		    player setVariable ["gameSide", "defenders", true];
+		  } else {
+		    player setVariable ["gameSide", "attackers", true];
+		  };
+		} else {
+		  if (playerSide == WEST) then {
+		    player setVariable ["gameSide", "attackers", true];
+		  } else {
+		    player setVariable ["gameSide", "defenders", true];
+		  };
+		};
+
 		// Objectives
 		_pos = getPosATLVisual sv_cur_obj;
 		_pos set [2, (_pos select 2) + 0.5];
