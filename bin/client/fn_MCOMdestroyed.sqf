@@ -14,7 +14,7 @@ scriptName "fn_MCOMdestroyed";
 
 // Update the last-mcom-destroyed time
 //cl_blockSpawnUntil = diag_tickTime + (getNumber(missionConfigFile >> "GeneralConfig" >> "FallBackSeconds"));
-//cl_blockSpawnForSide = independent;
+//cl_blockSpawnForSide = "attackers";
 //[] spawn client_fnc_displaySpawnRestriction;
 
 // Update spawn cam

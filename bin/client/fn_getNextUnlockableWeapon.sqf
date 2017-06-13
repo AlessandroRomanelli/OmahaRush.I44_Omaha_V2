@@ -11,7 +11,7 @@ scriptName "fn_getNextUnlockableWeapon";
 if (isServer && !hasInterface) exitWith {};
 
 // Get all unlocks
-_unlocks = "true" configClasses (missionConfigFile >> "Unlocks" >> format["%1", side player]);
+_unlocks = "true" configClasses (missionConfigFile >> "Unlocks" >> player getVariable "gameSide");
 
 // Lets look for the last item we unlocked
 _lastUnlock = "";
@@ -36,12 +36,12 @@ _lowest = 999999999999999999;
 // Now lets check if we found something
 _bottomExp = 0;
 if (_lastUnlock != "") then {
-	_bottomExp = getNumber(missionConfigFile >> "Unlocks" >> format["%1", side player] >> _lastUnlock >> "exp");
+	_bottomExp = getNumber(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> _lastUnlock >> "exp");
 };
 
 _topExp = 0;
 if (_nextUnlock != "") then {
-	_topExp = getNumber(missionConfigFile >> "Unlocks" >> format["%1", side player] >> _nextUnlock >> "exp");
+	_topExp = getNumber(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> _nextUnlock >> "exp");
 };
 
 if (_topExp == 0) then {

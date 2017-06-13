@@ -1,5 +1,5 @@
 class Unlocks {
-	class west {
+	class defenders {
 		class LIB_FLARE_PISTOL {
 			ammo = "LIB_1Rnd_flare_white";
 			exp = 0;
@@ -175,7 +175,7 @@ class Unlocks {
 		};*/
 	};
 
-	class  guer {
+	class  attackers {
 
 		class LIB_FLARE_PISTOL {
 			ammo = "LIB_1Rnd_flare_white";

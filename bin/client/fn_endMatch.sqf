@@ -61,13 +61,13 @@ showCinemaBorder false;
 
 // Display message
 if (_winners == "attackers") then {
-	if (playerSide == WEST) then {
+	if (player getVariable "gameSide" == "defenders") then {
 		["THE ENEMY TEAM HAS WON THE GAME"] spawn client_fnc_displayObjectiveMessage;
 	} else {
 		["YOUR TEAM HAS WON THE GAME"] spawn client_fnc_displayObjectiveMessage;
 	};
 } else {
-	if (playerSide != WEST) then {
+	if (player getVariable "gameSide" != "defenders") then {
 		["THE ENEMY TEAM HAS WON THE GAME"] spawn client_fnc_displayObjectiveMessage;
 	} else {
 		["YOUR TEAM HAS WON THE GAME"] spawn client_fnc_displayObjectiveMessage;

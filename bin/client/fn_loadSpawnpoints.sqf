@@ -17,7 +17,7 @@ _d = findDisplay 5000;
 lbClear (_d displayCtrl 9);
 
 // Load HQ spawnpoint
-if (playerSide == WEST) then {
+if (player getVariable "gameSide" == "defenders") then {
 	(_d displayCtrl 9) lbAdd "Defender HQ";
 } else {
 	(_d displayCtrl 9) lbAdd "Attacker HQ";
@@ -84,7 +84,7 @@ if (lbCurSel (_d displayCtrl 9) == -1) then {
 
 // Get configs of vehicles we can spawn at (PERSISTENT ONES)
 _configs = [];
-if (playerSide == WEST) then {
+if (player getVariable "gameSide" == "defenders") then {
 	_configs append ("true" configClasses (missionConfigFile >> "Maps" >> sv_map >> "PersistentVehicles" >> "Defender"));
 	_configs append ("true" configClasses (missionConfigFile >> "Maps" >> sv_map >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Vehicles" >> "Defender"));
 } else {

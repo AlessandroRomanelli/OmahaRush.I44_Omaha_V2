@@ -25,7 +25,7 @@ _sideWithMoreUnits = if (_unitsAttacker <= _unitsDefender) then {WEST} else {ind
 _maxDiff = getNumber(missionConfigFile >> "GeneralConfig" >> "AutoTeamBalanceAtDifference");
 
 if (playerSide == _sideWithMoreUnits AND _diff > 2) then {
-	if (playerSide == WEST) then {
+	if (player getVariable "gameSide" == "defenders") then {
 		endMission "teamFullindependent";
 	} else {
 		endMission "teamFullWEST";

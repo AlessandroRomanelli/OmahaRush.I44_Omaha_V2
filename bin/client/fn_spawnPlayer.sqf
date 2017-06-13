@@ -11,7 +11,7 @@ scriptName "fn_spawnPlayer";
 if (isServer && !hasInterface) exitWith {};
 
 // Check if spawning is currently allowed and if we are the side thats not allowed to spawn
-if ((missionNamespace getVariable ["cl_blockSpawnUntil", diag_tickTime]) - diag_tickTime > 0 && ((missionNamespace getVariable ["cl_blockSpawnForSide", sideUnknown]) == (player getVariable ["side", sideUnknown]))) exitWith {
+if ((missionNamespace getVariable ["cl_blockSpawnUntil", diag_tickTime]) - diag_tickTime > 0 && ((missionNamespace getVariable "cl_blockSpawnForSide") == (player getVariable "gameSide"))) exitWith {
 	[format ["SPAWNING ALLOWED IN %1", [(missionNamespace getVariable ["cl_blockSpawnUntil", diag_tickTime]) - diag_tickTime, "MM:SS"] call bis_fnc_secondsToString]] spawn client_fnc_displayError;
 };
 
@@ -60,10 +60,10 @@ cl_spawn_succ = {
 	// Run check if we have been moved to an OK position, if not, move us to our HQ, failed spawn as it seems...
 	if (player distance cl_safePos < 100) then {
 		// we are on the debug island, move us to our hq as our spawn is bugged apparently
-		if (playerSide == WEST) then {
-			player setPos (getMarkerPos "mobile_respawn_west");
+		if (player getVariable "gameSide" == "defenders") then {
+			player setPos (getMarkerPos "mobile_respawn_defenders");
 		} else {
-			player setPos (getMarkerPos "mobile_respawn_independent");
+			player setPos (getMarkerPos "mobile_respawn_attackers");
 		};
 	};
 };

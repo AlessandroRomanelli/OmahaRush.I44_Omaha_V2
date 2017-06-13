@@ -63,7 +63,7 @@ cl_inSpawnMenu = true;
 [] spawn client_fnc_disableChannels;
 
 // Give player clothes
-if (playerSide == WEST) then {
+if (player getVariable "gameSide" == "defenders") then {
 	player forceAddUniform (getText(missionConfigFile >> "Soldiers" >> "Defenders" >> "uniform"));
 	player addGoggles (getText(missionConfigFile >> "Soldiers" >> "Defenders" >> "goggles"));
 	player addHeadgear (getText(missionConfigFile >> "Soldiers" >> "Defenders" >> "headgear"));
@@ -92,7 +92,7 @@ _stage = "null";
 while {_stage == "null"} do {
 	_stage = [] call client_fnc_getCurrentStageString;
 };
-_side = if (playerSide == WEST) then {"defenders"} else {"attackers"};
+_side = player getVariable "gameSide";
 _pos = getArray(missionConfigFile >> "Maps" >> sv_map >> "Stages" >> _stage >> "Spawns" >> _side);
 
 // Determine point between current pos and target pos

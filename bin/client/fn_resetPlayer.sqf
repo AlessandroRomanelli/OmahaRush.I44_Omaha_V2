@@ -37,7 +37,7 @@ if (true) then {
 
 	// Fill data from objects
 	{
-		if ((_x getVariable ["side", sideUnknown]) == WEST) then {
+		if ((_x getVariable "gameSide") == "defenders") then {
 			_allInfoDefenders pushBack [_x getVariable ["points", 0], _x getVariable ["kills", 0], _x getVariable ["deaths", 0], (_x getVariable ["name", ""])];
 		} else {
 			_allInfoAttackers pushBack [_x getVariable ["points", 0], _x getVariable ["kills", 0], _x getVariable ["deaths", 0], (_x getVariable ["name", ""])];
@@ -101,7 +101,7 @@ _mcomsExploded = 0;
 
 // Do not allow spawning within the first 30 seconds
 cl_blockSpawnUntil = diag_tickTime + (getNumber(missionConfigFile >> "GeneralConfig" >> "FallBackSeconds"));
-cl_blockSpawnForSide = independent;
+cl_blockSpawnForSide = "attackers";
 [] spawn client_fnc_displaySpawnRestriction;
 
 
@@ -116,12 +116,12 @@ cl_blockSpawnForSide = independent;
 	sleep 3;
 	{
 		if (_x) then {
-			if (playerSide == independent) then {
+			if (player getVariable "gameSide" == "attackers") then {
 				["<t size='1.3' color='#FFFFFF'>OBJECTIVE DESTROYED BONUS</t>", 150] spawn client_fnc_pointfeed_add;
 				[150] spawn client_fnc_addPoints;
 			};
 		} else {
-			if (playerSide == WEST) then {
+			if (player getVariable "gameSide" == "defenders") then {
 				["<t size='1.3' color='#FFFFFF'>OBJECTIVE DEFENDED BONUS</t>", 150] spawn client_fnc_pointfeed_add;
 				[150] spawn client_fnc_addPoints;
 			};

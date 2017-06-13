@@ -34,7 +34,7 @@ cl_squadPerk = "";
 cl_actionIDs = [];
 cl_mcomDefAtt = 0;
 cl_pointsBelowMinimumPlayers = 0;
-cl_enemySpawnMarker = if (playerSide == WEST) then {"mobile_respawn_independent"} else {"mobile_respawn_west"};
+cl_enemySpawnMarker = if (player getVariable "gameSide" == "defenders") then {"mobile_respawn_attackers"} else {"mobile_respawn_defenders"};
 cl_blockTimer = false;
 TEMPWARNING = nil;
 cl_onEachFrame_squad_members = [];
@@ -55,7 +55,7 @@ if (!isNull _beacon) then {
 400 cutRsc ["rr_objective_gui","PLAIN"];
 
 // Setup the objective icon at the top
-if (playerSide == WEST) then {
+if (player getVariable "gameSide" == "defenders") then {
 	disableSerialization;
 	_d = uiNamespace getVariable ["rr_objective_gui", displayNull];
 	(_d displayCtrl 0) ctrlSetText "pictures\objective_defender.paa";
@@ -167,7 +167,7 @@ if (isNil "rr_iconrenderer_executed") then {
 		_pos = getPosATLVisual sv_cur_obj;
 		_pos set [2, (_pos select 2) + 0.5];
 
-		if (playerSide == WEST) then {
+		if (player getVariable "gameSide" == "defenders") then {
 			drawIcon3D [format ["%1pictures\objective_defender.paa",MISSION_ROOT],[1,1,1,1],_pos,1.5,1.5,0,format["Defend (%1m)", round(player distance sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
 		} else {
 			drawIcon3D [format ["%1pictures\objective_attacker.paa",MISSION_ROOT],[1,1,1,1],_pos,1.5,1.5,0,format["Attack (%1m)", round(player distance sv_cur_obj)],2,0.04, "PuristaLight", "center", true];

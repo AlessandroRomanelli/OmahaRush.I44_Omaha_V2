@@ -83,7 +83,24 @@ cl_viewDistance = viewDistance;
 [] spawn client_fnc_onEachFramePreparation;
 
 // Used for determining if a player is on our side since side _x returns civilian if someone is dead
-player setVariable ["side",playerSide, true];
+player setVariable ["side", playerSide, true];
+
+if (sv_gameCycle % 2 == 0) then {
+  if (playerSide == WEST) then {
+    player setVariable ["gameSide", "defenders", true];
+  } else {
+    player setVariable ["gameSide", "attackers", true];
+  };
+} else {
+  if (playerSide == WEST) then {
+    player setVariable ["gameSide", "attackers", true];
+  } else {
+    player setVariable ["gameSide", "defenders", true];
+  };
+};
+
+
+
 
 // Init group client
 ["InitializePlayer", [player]] call BIS_fnc_dynamicGroups;
@@ -94,20 +111,20 @@ if (getNumber(missionConfigFile >> "GeneralConfig" >> "debug") == 1) then {
 };
 
 // Create markers
-if (playerSide == WEST) then {
-	_marker1 = createMarkerLocal ["mobile_respawn_west",[0,0]];
+if (player getVariable "gameSide" == "defenders") then {
+	_marker1 = createMarkerLocal ["mobile_respawn_defenders",[0,0]];
 	_marker1 setMarkerTypeLocal "b_unknown";
 	_marker1 setMarkerTextLocal " Defenders HQ";
 
-	_marker2 = createMarkerLocal ["mobile_respawn_independent",[0,0]];
+	_marker2 = createMarkerLocal ["mobile_respawn_attackers",[0,0]];
 	_marker2 setMarkerTypeLocal "o_unknown";
 	_marker2 setMarkerTextLocal " Attackers HQ";
 } else {
-	_marker1 = createMarkerLocal ["mobile_respawn_west",[0,0]];
+	_marker1 = createMarkerLocal ["mobile_respawn_defenders",[0,0]];
 	_marker1 setMarkerTypeLocal "o_unknown";
 	_marker1 setMarkerTextLocal " Defenders HQ";
 
-	_marker2 = createMarkerLocal ["mobile_respawn_independent",[0,0]];
+	_marker2 = createMarkerLocal ["mobile_respawn_attackers",[0,0]];
 	_marker2 setMarkerTypeLocal "b_unknown";
 	_marker2 setMarkerTextLocal " Attackers HQ";
 };
@@ -119,8 +136,8 @@ _marker2 setMarkerTextLocal " Objective";
 _marker2 setMarkerColorLocal "ColorBlack";
 
 // Safepos markers (make sure units will not plop up on the battlefield)
-_safeMarker1 = createMarkerLocal ["respawn_west", cl_safePos];
-_safeMarker1 = createMarkerLocal ["respawn_guerrila", cl_safePos];
+_safeMarker1 = createMarkerLocal ["respawn_defenders", cl_safePos];
+_safeMarker1 = createMarkerLocal ["respawn_attackers", cl_safePos];
 
 // Markers
 [true] spawn client_fnc_updateMarkers;

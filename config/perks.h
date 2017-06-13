@@ -11,7 +11,7 @@ class CfgPerks {
 			description = "Deploys you with more ammunition";
 		};
 		/*class extended_vest {
-			displayName = "Bullet independent";
+			displayName = "Bullet resistance";
 			picture = "";
 			description = "Allows you to sustain more damage before being taken out";
 		};*/

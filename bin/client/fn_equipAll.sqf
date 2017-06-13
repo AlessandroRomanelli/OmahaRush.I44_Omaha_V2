@@ -11,7 +11,7 @@ scriptName "fn_equipAll";
 if (isServer && !hasInterface) exitWith {};
 
 // Give player loadout
-if (playerSide == WEST) then {
+if (player getVariable "gameSide" == "defenders") then {
 	_uniform = (getText(missionConfigFile >> "Soldiers" >> "Defenders" >> "uniform"));
 	_goggles = (getText(missionConfigFile >> "Soldiers" >> "Defenders" >> "goggles"));
 	_vest = (getText(missionConfigFile >> "Soldiers" >> "Defenders" >> "vest"));

@@ -35,7 +35,7 @@ if (count _weaponInfo == 0) then {
 _unlockedAttachments = _weaponInfo select 2;
 
 // Cycle through unlockable items via config and create a list of classnames that could be unlocked
-_attachmentConfigs = "true" configClasses (missionConfigFile >> "Unlocks" >> format["%1", side player] >> (_weaponInfo select 0) >> "attachments");
+_attachmentConfigs = "true" configClasses (missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> (_weaponInfo select 0) >> "attachments");
 
 _unlockableAttachments = [];
 

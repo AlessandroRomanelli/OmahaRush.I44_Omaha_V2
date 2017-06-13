@@ -21,6 +21,6 @@ cl_matchTimer_thread = [_time] spawn client_fnc_matchTimer;
 // If the prohibitedTime is greater than 0, make sure we also cant spawn
 if (_spawningProhibitedFor > 0) then {
 	cl_blockSpawnUntil = diag_tickTime + _spawningProhibitedFor;
-	cl_blockSpawnForSide = independent;
+	cl_blockSpawnForSide = "attackers";
 	[] spawn client_fnc_displaySpawnRestriction;
 };

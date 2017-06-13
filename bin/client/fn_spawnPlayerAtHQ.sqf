@@ -15,7 +15,7 @@ closeDialog 0;
 
 // Get spawn position
 _HQPos = [0,0,0];
-if (playerSide == WEST) then {
+if (player getVariable "gameSide" == "defenders") then {
 	_HQPos = getArray(missionConfigFile >> "Maps" >> sv_map >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Spawns" >> "defenders");
 } else {
 	_HQPos = getArray(missionConfigFile >> "Maps" >> sv_map >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Spawns" >> "attackers");
@@ -88,7 +88,7 @@ cl_gui_thread = [] spawn client_fnc_startIngameGUI;
 [] spawn cl_spawn_succ;
 
 // Display help hint
-if (playerSide == WEST) then {
+if (player getVariable "gameSide" == "defenders") then {
 	["DEFENDER", "Defend the radio stations and kill all attackers trying to destroy them. Each killed attacker reduces their tickets. If it reaches zero, they have lost."] spawn client_fnc_hint;
 } else {
 	["ATTACKER", "Attack the radio stations and blow them up, protect them for 60 seconds and move on before you run out of tickets. Each death reduces your ticket count."] spawn client_fnc_hint;

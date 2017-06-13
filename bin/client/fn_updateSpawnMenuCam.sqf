@@ -18,7 +18,7 @@ _stage = "null";
 while {_stage == "null"} do {
 	_stage = [] call client_fnc_getCurrentStageString;
 };
-_side = if (playerSide == WEST) then {"defenders"} else {"attackers"};
+_side = if (player getVariable "gameSide" == "defenders") then {"defenders"} else {"attackers"};
 _pos = getArray(missionConfigFile >> "Maps" >> sv_map >> "Stages" >> _stage >> "Spawns" >> _side);
 
 // Determine point between current pos and target pos

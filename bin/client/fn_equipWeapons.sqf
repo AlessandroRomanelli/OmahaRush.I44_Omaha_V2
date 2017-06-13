@@ -22,7 +22,7 @@ if (true) then {
 	_primaryClassname = _primary select 0;
 	_primaryAttachements = _primary select 1;
 
-	_primaryAmmo = getText(missionConfigFile >> "Unlocks" >> format["%1", side player] >> _primaryClassname >> "ammo");
+	_primaryAmmo = getText(missionConfigFile >> "Unlocks" >> format["%1", player getVariable "gameSide"] >> _primaryClassname >> "ammo");
 
 	// Give ammo
 	if (!_noMags) then {
@@ -54,7 +54,7 @@ if (true) then {
 	_secondaryClassname = _secondary select 0;
 	_secondaryAttachements = _secondary select 1;
 
-	_secondaryAmmo = getText(missionConfigFile >> "Unlocks" >> format["%1", side player] >> _secondaryClassname >> "ammo");
+	_secondaryAmmo = getText(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> _secondaryClassname >> "ammo");
 
 	// Give ammo
 	if (!_noMags) then {
@@ -99,15 +99,15 @@ if (cl_classPerk == "grenadier") then {
 		};
 	};
 
-	switch (side player) do {
-		case west: {
+	switch (player getVariable "gameSide") do {
+		case "defenders": {
 			if (cl_squadPerk == "extended_ammo") then {
 				for "_i" from 1 to 2 do {player addItem "LIB_shg24";};
 			} else {
 				player addItem "LIB_shg24";
 			};
 		};
-		case independent: {
+		case "attackers": {
 			if (cl_squadPerk == "extended_ammo") then {
 				for "_i" from 1 to 2 do {player addItem "LIB_US_Mk_2";};
 			} else {
@@ -119,23 +119,21 @@ if (cl_classPerk == "grenadier") then {
 
 if (cl_classPerk == "demolition") then {
 	removeBackpack player;
-	if (side player == west) then {
+	if (player getVariable "gameSide" == "defenders") then {
 		player addBackpack "B_LIB_GER_Backpack";
 	} else {
 		player addBackpack "B_LIB_US_Backpack";
 	};
 	if (cl_squadPerk == "extended_ammo") then {
-		for "_i" from 1 to 2 do {player addItemToBackpack "LIB_Ladung_Big_MINE_mag";};
-		for "_i" from 1 to 2 do {player addItemToBackpack "LIB_Ladung_Small_MINE_mag";};
+		player addItemToBackpack "LIB_Ladung_Big_MINE_mag";
 	} else {
-		for "_i" from 1 to 4 do {player addItemToBackpack "LIB_Ladung_Big_MINE_mag";};
-		for "_i" from 1 to 4 do {player addItemToBackpack "LIB_Ladung_Small_MINE_mag";};
+		for "_i" from 1 to 2 do {player addItemToBackpack "LIB_Ladung_Big_MINE_mag";};
 	};
 };
 
 if (cl_class == "engineer" && cl_classPerk == "perkAT") then {
-	switch (side player) do {
-		case independent: {
+	switch (player getVariable "gameSide") do {
+		case "attackers": {
 			player addBackpack "B_LIB_US_RocketBag_Empty";
 
 			// Extended ammo perk
@@ -146,7 +144,7 @@ if (cl_class == "engineer" && cl_classPerk == "perkAT") then {
 			};
 			player addWeapon "LIB_M1A1_Bazooka";
 		};
-		case west: {
+		case "defenders": {
 			player addBackpack "B_LIB_GER_Panzer_Empty";
 			// Extended ammo perk
 			if (cl_squadPerk == "extended_ammo") then {

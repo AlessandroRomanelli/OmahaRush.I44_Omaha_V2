@@ -27,7 +27,7 @@ if (true) then {
 	_primaryClassname = _primary select 0;
 	_primaryAttachements = _primary select 1;
 
-	_primaryAmmo = getText(missionConfigFile >> "Unlocks" >> format["%1", side player] >> _primaryClassname >> "ammo");
+	_primaryAmmo = getText(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> _primaryClassname >> "ammo");
 
 	// Give ammo
 	player addMagazines [_primaryAmmo, 2];
@@ -39,7 +39,7 @@ if (true) then {
 	_secondaryClassname = _secondary select 0;
 	_secondaryAttachements = _secondary select 1;
 
-	_secondaryAmmo = getText(missionConfigFile >> "Unlocks" >> format["%1", side player] >> _secondaryClassname >> "ammo");
+	_secondaryAmmo = getText(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> _secondaryClassname >> "ammo");
 
 	// Give ammo
 	player addMagazines [_secondaryAmmo, 2];
