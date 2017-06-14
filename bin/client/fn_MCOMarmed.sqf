@@ -36,18 +36,12 @@ if (isServer) then {
 		while {sv_cur_obj getVariable ["armed",false] && _time >= 0} do {
 			_time = _time - 1;
 			sv_cur_obj say3D "beep";
-			if (_time < 5) then {
-				sleep 0.3;
+			if (_time < 20) then {
+				sleep 0.425;
 				sv_cur_obj say3D "beep";
-				sleep 0.3;
+				sleep 0.425;
 			} else {
-				if (_time < 20) then {
-					sleep 0.65;
-					sv_cur_obj say3D "beep";
-					sleep 0.65;
-				} else {
-					sleep 1;
-				};
+				sleep 0.85;
 			};
 		};
 
@@ -102,26 +96,24 @@ if (isServer) then {
 	};
 };
 
+// Local sound loop
 if (!_wasServer) then {
 	[] spawn {
 		_time = 71;
 		while {sv_cur_obj getVariable ["armed",false] && _time >= 0} do {
 			_time = _time - 1;
 			sv_cur_obj say3D "beep";
-			if (_time < 5) then {
-				sleep 0.3;
+			if (_time < 20) then {
+				sleep 0.425;
 				sv_cur_obj say3D "beep";
-				sleep 0.3;
+				sleep 0.425;
 			} else {
-				if (_time < 20) then {
-					sleep 0.65;
-					sv_cur_obj say3D "beep";
-					sleep 0.65;
-				} else {
-					sleep 1;
-				};
+				sleep 0.85;
 			};
 		};
+	};
+};
+
 
 // Did we plant? Should be give ourself points?
 if (_planter == player) then {

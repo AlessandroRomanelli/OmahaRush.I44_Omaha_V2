@@ -14,7 +14,7 @@ class GeneralConfig {
 	PerformanceRestart = 1;
 
 	// After how many matches?
-	MatchCount = 6;
+	MatchCount = 10;
 
 	// (or) After how many seconds?
 	MatchTime = 18000;

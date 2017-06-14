@@ -136,9 +136,6 @@ _marker2 setMarkerColorLocal "ColorBlack";
 _safeMarker1 = createMarkerLocal ["respawn_defenders", cl_safePos];
 _safeMarker1 = createMarkerLocal ["respawn_attackers", cl_safePos];
 
-// Markers
-[true] spawn client_fnc_updateMarkers;
-
 // Get time from server IF the match is already going or is about to, if not, it doesnt really matter
 if (sv_gameStatus in [1,2]) then {
 	cl_matchTime = 0;

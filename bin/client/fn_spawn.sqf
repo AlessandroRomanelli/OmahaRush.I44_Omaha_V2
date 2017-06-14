@@ -48,6 +48,24 @@ if (getNumber(missionConfigFile >> "GeneralConfig" >> "PerformanceRestart") == 1
 // Set player to safe location
 player setPos cl_safePos;
 
+//Keeping the role updated
+if (sv_gameCycle % 2 == 0) then {
+	if (playerSide == WEST) then {
+		player setVariable ["gameSide", "defenders", true];
+	} else {
+		player setVariable ["gameSide", "attackers", true];
+	};
+} else {
+	if (playerSide == WEST) then {
+		player setVariable ["gameSide", "attackers", true];
+	} else {
+		player setVariable ["gameSide", "defenders", true];
+	};
+};
+
+// Markers
+[true] spawn client_fnc_updateMarkers;
+
 // Hide hud
 showHUD [true,false,false,false,false,true,false,true,false];
 

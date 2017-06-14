@@ -19,7 +19,7 @@ skipTime -24;
 skipTime 24;
 
 // Slow down ingame time
-setTimeMultiplier 0.1;
+setTimeMultiplier 5;
 
 // Set rain and fog
 0 setRain 0;

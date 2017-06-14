@@ -47,7 +47,7 @@ if (param[0,false,[false]]) then {
 	[] call client_fnc_updateMarkers;
 
 	// If we are attacker, block the next mcom for now
-	if (side (group player) == independent) then {
+	if (player getVariable "gameSide" == "attackers") then {
 		cl_enemySpawnMarker = "objective";
 	};
 

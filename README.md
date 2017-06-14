@@ -1,3 +1,20 @@
+#Changelog V0.63.1
++ [ADDED] Team switch at the end of each round (attackers <=> defenders);
++ [ADDED] More complex scenery for *Environment 1* Stage 1 to favor attackers;
++ [ADDED] *Environment 2*;
++ [ADDED] Ladders to exit trenches with more ease;
++ [ADDED] Gap in the "bush fences" for the players to go through;
++ [ADDED] Music changes depending on winner;
+
+* [FIXED] Restricted areas;
+* [FIXED] Doubled objects on objectives causing players not to be able to interact with objective;
+* [CHANGED] M4A3_76 replaced by the M4A3_75;
+* [CHANGED] Explosives specialist to carry AT-Mines;
+* [CHANGED] Tickets reduced from 100 to 75;
+* [CHANGED] Round time increased from 10m to 15m;
+
+- [REMOVED] Ponds of water to avoid light artifacts;
+
 #Changelog V0.62.9
 
 + [ADDED] Bad weather and night time environments;
@@ -21,8 +38,8 @@
       *Environment 1* Stage 3 defender spawn;
 
 * [CHANGED] Medic revive time speeded up by 4x, now taking only 0.5s;
-* [CHANGED] Support role to Support;
+* [CHANGED] MachineGunner role to Support;
 
 - [REMOVED] Bolt-actions to prevent code-breaking;
-- [REMOVED] Machineguns to preserve game balance;
+- [REMOVED] MGs to preserve game balance;
 - [REMOVED] Panther to preserve game balance;

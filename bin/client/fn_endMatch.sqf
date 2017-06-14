@@ -24,7 +24,11 @@ while {dialog} do {
 };
 
 // Play sound!
-playSound "ending";
+if (_winners == "attackers") then {
+	playSound "endingAtk";
+} else {
+	playSound "endingDef";
+};
 
 // Save stats
 [] spawn client_fnc_saveStatistics;

@@ -84,6 +84,16 @@ class CfgSounds {
         sound[] = {"\sounds\ending.ogg", 0.5, 1};
         titles[] = {};
     };
+    class endingDef {
+        name = "endingDef";
+        sound[] = {"\sounds\endingDef.ogg", 1, 1};
+        titles[] = {};
+    };
+    class endingAtk {
+        name = "endingAtk";
+        sound[] = {"\sounds\endingAtk.ogg", 1, 1};
+        titles[] = {};
+    };
     class arm
     {
         name = "arm";
