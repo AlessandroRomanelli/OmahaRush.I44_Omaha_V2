@@ -68,8 +68,8 @@ if (true) then {
 
 // If we have OnTenRestart enabled, WARN THE PLAYER
 if ((getNumber(missionConfigFile >> "GeneralConfig" >> "PerformanceRestart") == 1 && sv_gameCycle >= ((getNumber(missionConfigFile >> "GeneralConfig" >> "MatchCount")) - 1)) && sv_dedicatedEnvironment) then {
-	((uiNamespace getVariable ["rr_timer", displayNull]) displayCtrl 0) ctrlSetStructuredText parseText "<t size='2' color='#FE4629' shadow='2' align='center'>THIS SERVER WILL RESTART NOW</t>";
-	sleep 100;
+	((uiNamespace getVariable ["rr_timer", displayNull]) displayCtrl 0) ctrlSetStructuredText parseText "<t size='2' color='#FE4629' shadow='2' align='center'>THE SERVER IS CHANGING MAP</t>";
+	sleep 30;
 } else {
 // While loop
 	while {_time > 0} do {

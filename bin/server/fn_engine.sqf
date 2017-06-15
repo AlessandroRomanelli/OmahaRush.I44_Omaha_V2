@@ -94,12 +94,21 @@ while {true} do {
 	[["sv_gameCycle"]] spawn server_fnc_updateVars;
 	[format["Cycle %1 has been finished", sv_gameCycle]] spawn server_fnc_log;
 
+	_missions = 	 [
+										"WW2Rush_1.I44_Omaha_V2",
+										"WW2Rush_2.I44_Omaha_V2",
+										"WW2Rush_1.Panovo"
+								 ];
+	_currentMission = [format["%1.%2", missionName, worldName]];
+
+	_missionsPool = _missions - _currentMission;
+
 	// If we have OnMatchEndRestart enabled, restart the mission rather than just keep running
 	if (((getNumber(missionConfigFile >> "GeneralConfig" >> "PerformanceRestart") == 1 && sv_gameCycle >= getNumber(missionConfigFile >> "GeneralConfig" >> "MatchCount")) || ((getNumber(missionConfigFile >> "GeneralConfig" >> "MatchTime") != -1) && (getNumber(missionConfigFile >> "GeneralConfig" >> "MatchTime") <= diag_tickTime))) && isDedicated) then {
 		["Attempting to restart mission...."] spawn server_fnc_log;
 		sleep 1;
 		with uiNamespace do {
-			(getText(missionConfigFile >> "GeneralConfig" >> "commandPassword")) serverCommand "#shutdown";
+			(getText(missionConfigFile >> "GeneralConfig" >> "commandPassword")) serverCommand format["#mission %1", selectRandom _missionsPool];
 		};
 	};
 };

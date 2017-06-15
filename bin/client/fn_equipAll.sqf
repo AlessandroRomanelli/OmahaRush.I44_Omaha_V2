@@ -44,14 +44,14 @@ if (cl_squadPerk == "extended_vest") then {
 
 // Smoke grenade?
 if (cl_squadPerk == "smoke_grenades") then {
-	player addItem "SmokeShell"
+	for "_i" from 1 to 2 do {player addItem "SmokeShell";};
 };
 
 // Give weapons
 [] spawn client_fnc_equipWeapons;
 
 // Shared items
-player addItem "ItemGPS";
-player assignITem "ItemGPS";
+player addItem "ItemMap";
+player assignITem "ItemMap";
 player addItem "ItemCompass";
 player assignItem "ItemCompass";

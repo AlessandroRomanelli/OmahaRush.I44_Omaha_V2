@@ -124,7 +124,7 @@ if (cl_classPerk == "demolition") then {
 		if (cl_squadPerk == "extended_ammo") then {
 			for "_i" from 1 to 2 do {player addItemToBackpack "LIB_TMI_42_MINE_mag";};
 		} else {
-			player addItemToBackpack "LIB_Ladung_Big_MINE_mag";
+			player addItemToBackpack "LIB_TMI_42_MINE_mag";
 		};
 	} else {
 		player addBackpack "B_LIB_US_Backpack";

@@ -1,3 +1,19 @@
+#Changelog V0.63.2
++ [ADDED] Randomized time and dynamic weather;
++ [ADDED] Teams will have to play both sides and then the map will be changed;
++ [ADDED] Map playlist;
++ [ADDED] Automated change after 2 rounds are played;
++ [ADDED] Omaha1 Map (US vs GER);
++ [ADDED] Omaha2 Map (US vs GER);
++ [ADDED] Panovo Map (GER vs SOV);
+
+* [CHANGED] Time acceleration boosted up to 10x;
+* [CHANGED] Smoke perk allows user to have two smokes instead of only one;
+* [CHANGED] When player doesn't select a weapon, the basic rifle with 3 mags will be given to him;
+
+- [REMOVED] *Environments*;
+- [REMOVED] GPS Item;
+
 #Changelog V0.63.1
 + [ADDED] Team switch at the end of each round (attackers <=> defenders);
 + [ADDED] More complex scenery for *Environment 1* Stage 1 to favor attackers;

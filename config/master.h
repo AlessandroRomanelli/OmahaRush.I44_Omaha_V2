@@ -14,13 +14,13 @@ class GeneralConfig {
 	PerformanceRestart = 1;
 
 	// After how many matches?
-	MatchCount = 10;
+	MatchCount = 2;
 
 	// (or) After how many seconds?
 	MatchTime = 18000;
 
 	// Load weather of specific map?
-	LoadWeather = 1;
+	LoadWeather = 0;
 
 	// Should the auto team balancer be running?
 	AutoTeamBalancer = 1;

@@ -21,7 +21,7 @@ skipTime -24;
 skipTime 24;
 
 // Slow down ingame time
-setTimeMultiplier 0.1;
+setTimeMultiplier 10;
 
 // Apply values
 setDate _time;

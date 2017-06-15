@@ -42,7 +42,7 @@ cl_assistsInfo = [];
 // If the server will restart after this round, display a visual warning at the top right
 if (getNumber(missionConfigFile >> "GeneralConfig" >> "PerformanceRestart") == 1 && sv_gameCycle >= ((getNumber(missionConfigFile >> "GeneralConfig" >> "MatchCount")) - 1)) then {
 	15 cutRsc ["rr_topRightWarning", "PLAIN"];
-	((uiNamespace getVariable ["rr_topRightWarning", displayNull]) displayCtrl 0) ctrlSetStructuredText parseText "<t size='1.2' color='#FE4629' shadow='2' align='right'>LAST ROUND BEFORE RESTART</t>"
+	((uiNamespace getVariable ["rr_topRightWarning", displayNull]) displayCtrl 0) ctrlSetStructuredText parseText "<t size='1.2' color='#FE4629' shadow='2' align='right'>LAST ROUND BEFORE MAP CHANGE</t>"
 };
 
 // Set player to safe location
@@ -125,7 +125,13 @@ setViewDistance 1000;
 
 // DUMMY WEAPON SO THE PLAYER DOESNT PLAY THE ANIMATION WHEN HE SPAWNS
 removeAllWeapons player;
-player addWeaponGlobal "LIB_M1_Garand";
+if (player getVariable "gameSide" == "defenders") then {
+	player addWeaponGlobal "LIB_G43";
+	for "_i" from 1 to 3 do {player addItem "LIB_10Rnd_792x57"};
+} else {
+	player addWeaponGlobal "LIB_M1_Garand";
+	for "_i" from 1 to 3 do {player addItem "LIB_8Rnd_762x63"};
+};
 
 // Create spawn cam
 _created = false;
