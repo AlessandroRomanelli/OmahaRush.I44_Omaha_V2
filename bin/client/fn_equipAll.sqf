@@ -22,7 +22,7 @@ if (player getVariable "gameSide" == "defenders") then {
 	if (_goggles != "") then {player addGoggles _goggles;};
 	if (_vest != "") then {player addVest _vest;};
 	if (_headgear != "") then {player addHeadgear _headgear;};
-	if (_backpack != "") then {player addBackpack _backpack;};
+	if (_backpack != "") then {removeBackpackGlobal player;player addBackpack _backpack;};
 } else {
 	_uniform = (getText(missionConfigFile >> "Soldiers" >> "Attackers" >> "uniform"));
 	_goggles = (getText(missionConfigFile >> "Soldiers" >> "Attackers" >> "goggles"));
@@ -34,7 +34,7 @@ if (player getVariable "gameSide" == "defenders") then {
 	if (_goggles != "") then {player addGoggles _goggles;};
 	if (_vest != "") then {player addVest _vest;};
 	if (_headgear != "") then {player addHeadgear _headgear;};
-	if (_backpack != "") then {player addBackpack _backpack;};
+	if (_backpack != "") then {removeBackpackGlobal player;player addBackpack _backpack;};
 };
 
 // Vest perk handler

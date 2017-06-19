@@ -54,7 +54,7 @@ if (param[0,false,[false]]) then {
 	sleep 6.5;
 	[format["DEFENDERS HAVE %1 SECONDS TO FALL BACK", getNumber(missionConfigFile >> "GeneralConfig" >> "FallBackSeconds")]] spawn client_fnc_displayObjectiveMessage;
 	sleep ((getNumber(missionConfigFile >> "GeneralConfig" >> "FallBackSeconds")) - 6.5);
-	if (side (group player) == independent) then {
+	if (player getVariable "gameSide" == "attackers") then {
 		["NEW OBJECTIVE HAS BEEN ASSIGNED, PUSH!"] spawn client_fnc_displayObjectiveMessage;
 	} else {
 		["NEW OBJECTIVE HAS BEEN ASSIGNED, DEFEND!"] spawn client_fnc_displayObjectiveMessage;

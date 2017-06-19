@@ -38,6 +38,7 @@ cl_assistsInfo = [];
 
 // Delete layers that may be still there
 60001 cutRsc ["default", "PLAIN"];
+[] spawn client_fnc_resetVariables;
 
 // If the server will restart after this round, display a visual warning at the top right
 if (getNumber(missionConfigFile >> "GeneralConfig" >> "PerformanceRestart") == 1 && sv_gameCycle >= ((getNumber(missionConfigFile >> "GeneralConfig" >> "MatchCount")) - 1)) then {
@@ -63,8 +64,32 @@ if (sv_gameCycle % 2 == 0) then {
 	};
 };
 
+// Start top objective gui
+400 cutRsc ["rr_objective_gui","PLAIN"];
+
+if (player getVariable "gameSide" == "defenders") then {
+	_marker1 = createMarkerLocal ["mobile_respawn_defenders",[0,0]];
+	_marker1 setMarkerTypeLocal "b_unknown";
+	_marker1 setMarkerTextLocal " Defenders HQ";
+
+	_marker2 = createMarkerLocal ["mobile_respawn_attackers",[0,0]];
+	_marker2 setMarkerTypeLocal "o_unknown";
+	_marker2 setMarkerTextLocal " Attackers HQ";
+} else {
+	_marker1 = createMarkerLocal ["mobile_respawn_defenders",[0,0]];
+	_marker1 setMarkerTypeLocal "o_unknown";
+	_marker1 setMarkerTextLocal " Defenders HQ";
+
+	_marker2 = createMarkerLocal ["mobile_respawn_attackers",[0,0]];
+	_marker2 setMarkerTypeLocal "b_unknown";
+	_marker2 setMarkerTextLocal " Attackers HQ";
+};
+
 // Markers
 [true] spawn client_fnc_updateMarkers;
+
+// Start top objective gui
+400 cutRsc ["rr_objective_gui","PLAIN"];
 
 // Hide hud
 showHUD [true,false,false,false,false,true,false,true,false];

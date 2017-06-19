@@ -97,7 +97,8 @@ while {true} do {
 	_missions = 	 [
 										"WW2Rush_1.I44_Omaha_V2",
 										"WW2Rush_2.I44_Omaha_V2",
-										"WW2Rush_1.Panovo"
+										"WW2Rush_1.Panovo",
+										"WW2Rush_1.I44_Merderet_Winter"
 								 ];
 	_currentMission = [format["%1.%2", missionName, worldName]];
 
@@ -108,7 +109,7 @@ while {true} do {
 		["Attempting to restart mission...."] spawn server_fnc_log;
 		sleep 1;
 		with uiNamespace do {
-			(getText(missionConfigFile >> "GeneralConfig" >> "commandPassword")) serverCommand format["#mission %1", selectRandom _missionsPool];
+			(getText(missionConfigFile >> "GeneralConfig" >> "commandPassword")) serverCommand format["#mission %1 custom", selectRandom _missionsPool];
 		};
 	};
 };

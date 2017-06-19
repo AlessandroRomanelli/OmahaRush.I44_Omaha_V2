@@ -20,6 +20,11 @@ _exp = cl_exp;
 cl_points = cl_points + _toAdd; // Round based exp
 cl_exp = cl_exp + _toAdd;
 
+// Lets share our stats with the others
+player setVariable ["kills",cl_kills,true];
+player setVariable ["deaths",cl_deaths,true];
+player setVariable ["points",cl_points,true];
+
 // Add exp for validation if we have less than 6 players online
 if (count AllPlayers <= 6) then {
 	cl_pointsBelowMinimumPlayers = cl_pointsBelowMinimumPlayers + _toAdd;

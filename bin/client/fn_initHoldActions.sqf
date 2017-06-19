@@ -105,12 +105,12 @@ _text = "";
 _completion = {};
 if ((player getVariable "gameSide") == "defenders") then {
 	_text = "Disarm Explosives";
-	_cond = "(cursorObject distance _this) < 2 && (cursorObject getVariable ['armed',false]) && (cursorObject == sv_cur_obj)";
-	_completion = {if (cursorObject distance player < 2) then {[] spawn client_fnc_disarmMCOM;};};
+	_cond = "(cursorObject distance _this) < 4 && (cursorObject getVariable ['armed',false]) && (cursorObject == sv_cur_obj)";
+	_completion = {if (cursorObject distance player < 4) then {[] spawn client_fnc_disarmMCOM;};};
 } else {
 	_text = "Plant Explosives";
-	_cond = "(cursorObject distance _this) < 2 && !(cursorObject getVariable ['armed',false]) && (cursorObject == sv_cur_obj)";
-	_completion = {if (cursorObject distance player < 2) then {[] spawn client_fnc_armMCOM;};};
+	_cond = "(cursorObject distance _this) < 4 && !(cursorObject getVariable ['armed',false]) && (cursorObject == sv_cur_obj)";
+	_completion = {if (cursorObject distance player < 4) then {[] spawn client_fnc_armMCOM;};};
 };
 
 diag_log "Setting up handlers... 4";

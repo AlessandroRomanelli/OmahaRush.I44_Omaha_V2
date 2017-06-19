@@ -1,6 +1,6 @@
 class Maps {
 	class Environment1 {
-    tickets = 75;
+    tickets = 100;
     roundTime = 900;
 
 		date[] = {1944,6,6,12,30};
@@ -12,7 +12,7 @@ class Maps {
 			class Attacker {
 				class attack_tank {
 					displayName = "M4A3 Sherman";
-					classname = "LIB_M4A3_75";
+					classname = "LIB_M4A3_75_Tubes";
 					respawnTime = 300;
 					positionATL[] = {3295.83,3108.93,0};
 					dir = 172;

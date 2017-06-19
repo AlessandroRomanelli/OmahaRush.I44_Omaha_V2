@@ -1,3 +1,29 @@
+#Changelog V0.63.4
++ [ADDED] Scoreboard now accessible by pressing "TAB";
++ [ADDED] Merderet River (Winter) map, GER vs US;
++ [ADDED] M1 Garand Rifle grenade for everyone, grenadiers get 2, grenadiers with ammo perk get 3;
++ [ADDED] AT Grenade to grenadiers, 2 with ammo perk;
+
+* [CHANGED] Weapon progression, now handguns are unlocked before other rifles;
+* [CHANGED] Increased the radius to activate the explosives on the radio stations, should make actions easier;
+* [CHANGED] AT Mines replaced with working ones (TM-44 AT Mine);
+
+* [FIXED] Backpack being dropped on the ground when spawning *needs testing*
+* [FIXED] Panzershrek only having one round, 1 without perk, 3 with perk;
+* [FIXED] Render display errors when switching sides (Map markers and GUI);
+
+#Changelog V0.63.3
++ [ADDED] Panovo Map scenery;
+
+* [CHANGED] Weapon progression, different starter rifle but same unlocks for everybody;
+* [CHANGED] Defenders spawn at Spawn 4 of Omaha_2 to give attackers more room for sieging the radio station;
+* [FIXED] Engineer AT now carries 2 missiles for the Bazooka, too;
+* [FIXED] Mission difficulty changing to recruit when changing mission, custom is enforced;
+* [FIXED] Backpacks dropping on the ground when spawning;
+* [FIXED] Friendly-fire issue causing players not being able to spawn on player who have killed enemy players
+          because flagged as team-killers by the game engine. GRNFOR is how hostile to BLUFOR.
+* [FIXED] Panovo objects being APEX dependencies;
+
 #Changelog V0.63.2
 + [ADDED] Randomized time and dynamic weather;
 + [ADDED] Teams will have to play both sides and then the map will be changed;
