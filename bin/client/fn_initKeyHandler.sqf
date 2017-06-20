@@ -13,7 +13,7 @@ player setVariable ["scoreboardHidden", true];
 
 cl_soundLevel = 1;
 (findDisplay 46) displayAddEventHandler ["KeyUp", {
-	if ((_this select 1) == 15) then {
+	if ((_this select 1) == 15 && (sv_gameStatus in [1,2])) then {
 		player setVariable ["scoreboardHidden", true];
 		60001 cutRsc ["default", "PLAIN"];
 	};
@@ -21,7 +21,7 @@ cl_soundLevel = 1;
 
 (findDisplay 46) displayAddEventHandler ["KeyDown", {
 
-	if ((_this select 1) == 15) then {
+	if ((_this select 1) == 15 && (sv_gameStatus in [1,2])) then {
 		// Lets fill the scoreboard
 		if (player getVariable "scoreboardHidden") then {
 			player setVariable ["scoreboardHidden", false];

@@ -10,6 +10,11 @@ scriptName "fn_spawn";
 #define __filename "fn_spawn.sqf"
 if (isServer && !hasInterface) exitWith {};
 
+if (player getVariable ["firstSpawn", true]) then {
+	player setVariable ["firstSpawn", false];
+	playSound "introSong";
+};
+
 // Not too fast
 if (diag_tickTime - (missionNamespace getVariable ["cl_spawnmenu_lastStartTick", 0]) < 1) exitWith {};
 cl_spawnmenu_lastStartTick = diag_tickTime;
@@ -38,7 +43,17 @@ cl_assistsInfo = [];
 
 // Delete layers that may be still there
 60001 cutRsc ["default", "PLAIN"];
-[] spawn client_fnc_resetVariables;
+
+400 cutRsc ["rr_objective_gui","PLAIN"];
+// Setup the objective icon at the top
+if (player getVariable "gameSide" == "defenders") then {
+	disableSerialization;
+	_d = uiNamespace getVariable ["rr_objective_gui", displayNull];
+	(_d displayCtrl 0) ctrlSetText "pictures\objective_defender.paa";
+};
+
+14 cutRsc ["rr_bottomTS3", "PLAIN"];
+((uiNamespace getVariable ["rr_bottomTS3", displayNull]) displayCtrl 0) ctrlSetStructuredText parseText "<t size='1.2' color='#FFFFFF' shadow='2' align='left'><t color='#990000'>TS3</t>: 85.236.101.154:11727</t>";
 
 // If the server will restart after this round, display a visual warning at the top right
 if (getNumber(missionConfigFile >> "GeneralConfig" >> "PerformanceRestart") == 1 && sv_gameCycle >= ((getNumber(missionConfigFile >> "GeneralConfig" >> "MatchCount")) - 1)) then {
@@ -64,9 +79,6 @@ if (sv_gameCycle % 2 == 0) then {
 	};
 };
 
-// Start top objective gui
-400 cutRsc ["rr_objective_gui","PLAIN"];
-
 if (player getVariable "gameSide" == "defenders") then {
 	_marker1 = createMarkerLocal ["mobile_respawn_defenders",[0,0]];
 	_marker1 setMarkerTypeLocal "b_unknown";
@@ -87,9 +99,6 @@ if (player getVariable "gameSide" == "defenders") then {
 
 // Markers
 [true] spawn client_fnc_updateMarkers;
-
-// Start top objective gui
-400 cutRsc ["rr_objective_gui","PLAIN"];
 
 // Hide hud
 showHUD [true,false,false,false,false,true,false,true,false];
@@ -262,7 +271,7 @@ disableSerialization;
 if (isNil "TEMPWARNING") then {
 	// TEMPRARY WARNING TODO
 	createDialog "rr_info_box";
-	((findDisplay 10000) displayCtrl 0) ctrlSetStructuredText parseText "<t size='1' color='#FFFFFF' shadow='2' align='left'><t font='PuristaBold'>No.4 Normandy Rush Version</t><br/>0.62.6<br/><br/><t font='PuristaBold'>No.4 CDO Discord</t><br/><a href='https://discord.gg/GxTEsRb'>Join</a><br/><br/><t font='PuristaBold'>Official Website</t><br/><a href='https://alessandroromanelli.github.io/No4-Bootstrap-example/'>Open</a></t>";
+	((findDisplay 10000) displayCtrl 0) ctrlSetStructuredText parseText "<t size='1' color='#FFFFFF' shadow='2' align='left'><t font='PuristaBold'>No.4 WW2 Rush Version</t><br/>0.62.6<br/><br/><t font='PuristaBold'>No.4 CDO Discord</t><br/><a href='https://discord.gg/GxTEsRb'>Join</a><br/><br/><t font='PuristaBold'>Official Website</t><br/><a href='https://alessandroromanelli.github.io/No4-Bootstrap-example/'>Open</a></t>";
 	TEMPWARNING = true;
 };
 

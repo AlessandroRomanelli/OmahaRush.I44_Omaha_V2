@@ -188,6 +188,130 @@ class rr_timer
 	};
 };
 
+class rr_scoreboard
+{
+	idd = -1;
+	movingEnable = 1;
+	enableSimulation = 1;
+	fadeout=0.1;
+	fadein=0.1;
+	duration = 9999999;
+	onLoad = "uiNamespace setVariable ['rr_scoreboard',_this select 0];";
+
+	class controlsBackground {};
+
+	class controls
+	{
+		class RscStructuredText_1100: RscStructuredText
+		{
+			idc = 0;
+			x = 0.29375 * safezoneW + safezoneX;
+			y = 0.245 * safezoneH + safezoneY;
+			w = 0.4125 * safezoneW;
+			h = 0.088 * safezoneH;
+		};
+
+		/* SCOREBOARD */
+		class RscText_1000: RscText
+		{
+			idc = -1;
+			x = 0.247962 * safezoneW + safezoneX;
+			y = 0.34534 * safezoneH + safezoneY;
+			w = 0.499125 * safezoneW;
+			h = 0.462 * safezoneH;
+			colorBackground[] = {0,0,0,0.8};
+		};
+		class RscText_1001: RscText
+		{
+			idc = -1;
+			text = " DEFENDERS"; //--- ToDo: Localize;
+			x = 0.247344 * safezoneW + safezoneX;
+			y = 0.346 * safezoneH + safezoneY;
+			w = 0.249562 * safezoneW;
+			h = 0.022 * safezoneH;
+			colorBackground[] = {0.18,0.51,0.95};
+		};
+		class RscText_1002: RscText
+		{
+			idc = -1;
+			text = " ATTACKERS"; //--- ToDo: Localize;
+			x = 0.497938 * safezoneW + safezoneX;
+			y = 0.346 * safezoneH + safezoneY;
+			w = 0.249562 * safezoneW;
+			h = 0.022 * safezoneH;
+			colorBackground[] = {0.4,0,0,1};
+		};
+		class RscText_10023: RscText
+		{
+			idc = -1;
+			x = 0.247344 * safezoneW + safezoneX;
+			y = 0.3702 * safezoneH + safezoneY;
+			w = 0.249563 * safezoneW;
+			h = 0.4378 * safezoneH;
+			colorBackground[] = {0.12,0.14,0.16,0.8};
+			shadow = 2;
+		};
+		class RscText_10024: RscText
+		{
+			idc = -1;
+			x = 0.497938 * safezoneW + safezoneX;
+			y = 0.3702 * safezoneH + safezoneY;
+			w = 0.249563 * safezoneW;
+			h = 0.4378 * safezoneH;
+			colorBackground[] = {0.12,0.14,0.16,0.8};
+			shadow = 2;
+		};
+		class RscText_1003: RscListNBox
+		{
+			idc = 1;
+			x = 0.247344 * safezoneW + safezoneX;
+			y = 0.3702 * safezoneH + safezoneY;
+			w = 0.249563 * safezoneW;
+			h = 0.4378 * safezoneH;
+
+			colorBackground[] = {0.18,0.51,0.95};
+			columns[] = {0.001, 0.06, 0.6, 0.7, 0.8};
+			color[] = {1, 1, 1, 1};
+			colorScrollbar[] = {0.95, 0.95, 0.95, 1};
+			colorSelect[] = {0.95, 0.95, 0.95, 1};
+			colorSelect2[] = {0.95, 0.95, 0.95, 1};
+			colorSelectBackground[] = {0, 0, 0, 1};
+			colorSelectBackground2[] = {0.8784, 0.8471, 0.651, 1};
+			drawSideArrows = 0;
+			idcLeft = -1;
+			idcRight = -1;
+			maxHistoryDelay = 1;
+			rowHeight = 0;
+			soundSelect[] = {"", 0.1, 1};
+			period = 1;
+		};
+		class RscText_1004: RscListNBox
+		{
+			idc = 2;
+			x = 0.497938 * safezoneW + safezoneX;
+			y = 0.3702 * safezoneH + safezoneY;
+			w = 0.249563 * safezoneW;
+			h = 0.4378 * safezoneH;
+
+			colorBackground[] = {0.96,0.65,0.12,0.8};
+			columns[] = {0.001, 0.06, 0.6, 0.7, 0.8};
+			color[] = {1, 1, 1, 1};
+			colorScrollbar[] = {0.95, 0.95, 0.95, 1};
+			colorSelect[] = {0.95, 0.95, 0.95, 1};
+			colorSelect2[] = {0.95, 0.95, 0.95, 1};
+			colorSelectBackground[] = {0, 0, 0, 1};
+			colorSelectBackground2[] = {0.8784, 0.8471, 0.651, 1};
+			drawSideArrows = 0;
+			idcLeft = -1;
+			idcRight = -1;
+			maxHistoryDelay = 1;
+			rowHeight = 0;
+			soundSelect[] = {"", 0.1, 1};
+			period = 1;
+		};
+	};
+};
+
 class rr_restrictedArea
 {
 	idd = -1;
@@ -324,6 +448,31 @@ class rr_topRightWarning
 			x = 0.645406 * safezoneW + safezoneX;
 			y = 0.016 * safezoneH + safezoneY;
 			w = 0.345469 * safezoneW;
+			h = 0.044 * safezoneH;
+		};
+	};
+};
+
+class rr_bottomTS3
+{
+	idd = -1;
+	movingEnable = 1;
+	enableSimulation = 1;
+	fadeout=0;
+	fadein=0;
+	duration = 999999999999;
+	onLoad = "uiNamespace setVariable ['rr_bottomTS3',_this select 0];";
+
+	class controlsBackground {};
+
+	class controls
+	{
+		class RscStructuredText_1100: RscStructuredText
+		{
+			idc = 0;
+			x = 0.427812 * safezoneW + safezoneX;
+			y = 0.94 * safezoneH + safezoneY;
+			w = 0.139219 * safezoneW;
 			h = 0.044 * safezoneH;
 		};
 	};

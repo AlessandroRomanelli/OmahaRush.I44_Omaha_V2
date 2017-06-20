@@ -74,6 +74,51 @@ class CfgSounds {
         sound[] = {"\sounds\kill.ogg", 0.7, 1};
         titles[] = {};
     };
+    class introSong {
+        name = "introSong";
+        sound[] = {"\sounds\join.ogg", 3, 1};
+        titles[] = {};
+    };
+    class attackOrder_1 {
+        name = "attackOrder_1";
+        sound[] = {"\sounds\attackOrder_1.ogg", 3, 1};
+        titles[] = {};
+    };
+    class attackOrder_2 {
+        name = "attackOrder_2";
+        sound[] = {"\sounds\attackOrder_2.ogg", 3, 1};
+        titles[] = {};
+    };
+    class attackOrder_3 {
+        name = "attackOrder_3";
+        sound[] = {"\sounds\attackOrder_3.ogg", 3, 1};
+        titles[] = {};
+    };
+    class attackOrder_4 {
+        name = "attackOrder_4";
+        sound[] = {"\sounds\attackOrder_4.ogg", 3, 1};
+        titles[] = {};
+    };
+    class defendOrder_1 {
+        name = "defendOrder_1";
+        sound[] = {"\sounds\defendOrder_1.ogg", 3, 1};
+        titles[] = {};
+    };
+    class defendOrder_2 {
+        name = "defendOrder_2";
+        sound[] = {"\sounds\defendOrder_2.ogg", 3, 1};
+        titles[] = {};
+    };
+    class defendOrder_3 {
+        name = "defendOrder_3";
+        sound[] = {"\sounds\defendOrder_3.ogg", 3, 1};
+        titles[] = {};
+    };
+    class defendOrder_4 {
+        name = "defendOrder_4";
+        sound[] = {"\sounds\defendOrder_4.ogg", 3, 1};
+        titles[] = {};
+    };
     class levelup {
         name = "levelup";
         sound[] = {"\sounds\levelup.ogg", 0.7, 1};
@@ -97,7 +142,7 @@ class CfgSounds {
     class arm
     {
         name = "arm";
-        sound[] = {"\sounds\arm.ogg", 1.0, 1};
+        sound[] = {"\sounds\arm.ogg", 1.0, 1, 25};
         titles[] = {};
     };
     class ribbon_ending
@@ -127,7 +172,7 @@ class CfgSounds {
     class beep
     {
         name = "beep";
-        sound[] = {"\sounds\beep.ogg", 3.0, 1};
+        sound[] = {"\sounds\beep.ogg", 3.0, 1, 200};
         titles[] = {};
     };
     class tug_beep

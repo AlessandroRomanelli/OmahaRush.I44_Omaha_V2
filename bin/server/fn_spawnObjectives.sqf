@@ -16,7 +16,7 @@ if (true) then {
 	_dir = getNumber(missionConfigFile >> "Maps" >> sv_map >> "Stages" >> "Stage1" >> "Objective" >> "dir");
 
 	_obj = createVehicle [_class, _posATL, [], 0, "CAN_COLLIDE"];
-
+	_obj allowDamage false;
 	_obj setDir _dir;
 	_obj setPosATL _posATL;
 
@@ -31,7 +31,7 @@ if (true) then {
 	_dir = getNumber(missionConfigFile >> "Maps" >> sv_map >> "Stages" >> "Stage2" >> "Objective" >> "dir");
 
 	_obj = createVehicle [_class, _posATL, [], 0, "CAN_COLLIDE"];
-
+	_obj allowDamage false;
 	_obj setDir _dir;
 	_obj setPosATL _posATL;
 	sv_stage2_obj = _obj;
@@ -45,7 +45,7 @@ if (true) then {
 	_dir = getNumber(missionConfigFile >> "Maps" >> sv_map >> "Stages" >> "Stage3" >> "Objective" >> "dir");
 
 	_obj = createVehicle [_class, _posATL, [], 0, "CAN_COLLIDE"];
-
+	_obj allowDamage false;
 	_obj setDir _dir;
 	_obj setPosATL _posATL;
 	sv_stage3_obj = _obj;
@@ -59,7 +59,7 @@ if (true) then {
 	_dir = getNumber(missionConfigFile >> "Maps" >> sv_map >> "Stages" >> "Stage4" >> "Objective" >> "dir");
 
 	_obj = createVehicle [_class, _posATL, [], 0, "CAN_COLLIDE"];
-
+	_obj allowDamage false;
 	_obj setDir _dir;
 	_obj setPosATL _posATL;
 	sv_stage4_obj = _obj;

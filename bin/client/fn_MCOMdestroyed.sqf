@@ -17,6 +17,12 @@ scriptName "fn_MCOMdestroyed";
 //cl_blockSpawnForSide = "attackers";
 //[] spawn client_fnc_displaySpawnRestriction;
 
+// Clean our spawnbeacons
+_beacon = player getVariable ["assault_beacon_obj", objNull];
+if (!isNull _beacon) then {
+	deleteVehicle _beacon;
+};
+
 // Update spawn cam
 [] spawn client_fnc_updateSpawnMenuCam;
 
@@ -55,8 +61,10 @@ if (param[0,false,[false]]) then {
 	[format["DEFENDERS HAVE %1 SECONDS TO FALL BACK", getNumber(missionConfigFile >> "GeneralConfig" >> "FallBackSeconds")]] spawn client_fnc_displayObjectiveMessage;
 	sleep ((getNumber(missionConfigFile >> "GeneralConfig" >> "FallBackSeconds")) - 6.5);
 	if (player getVariable "gameSide" == "attackers") then {
+		playSound format["attackOrder_%1", floor random 4+1];
 		["NEW OBJECTIVE HAS BEEN ASSIGNED, PUSH!"] spawn client_fnc_displayObjectiveMessage;
 	} else {
+		playSound format["defendOrder_%1", floor random 4+1];
 		["NEW OBJECTIVE HAS BEEN ASSIGNED, DEFEND!"] spawn client_fnc_displayObjectiveMessage;
 	};
 	[] spawn _animate;
@@ -67,9 +75,3 @@ if (param[0,false,[false]]) then {
 
 // Reload mcom interaction
 [] spawn client_fnc_objectiveActionUpdate;
-
-// Clean our spawnbeacons
-_beacon = player getVariable ["assault_beacon_obj", objNull];
-if (!isNull _beacon) then {
-	deleteVehicle _beacon;
-};

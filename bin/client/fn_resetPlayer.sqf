@@ -15,6 +15,7 @@ disableSerialization;
 // Make sure we dont run twice
 if (missionNamespace getVariable ["cl_resetPlayerRunning", false]) exitWith {};
 cl_resetPlayerRunning = true;
+player setVariable ["firstSpawn", true];
 
 // Get mcoms
 _mcoms = [sv_stage1_obj getVariable ["armed", false], sv_stage2_obj getVariable ["armed", false], sv_stage3_obj getVariable ["armed", false], sv_stage4_obj getVariable ["armed", false]];
