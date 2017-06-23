@@ -1,3 +1,9 @@
+OnLoadName="No.4 CDO WW2 Rush";
+onLoadMission = "Battlefield brought to ArmA3";
+author = "A. Roman"
+onLoadMissionTime = 0;
+
+
 // Debug
 enableDebugConsole = 1;
 
@@ -64,7 +70,7 @@ class Header
 };
 
 // Channels
-disableChannels[]={0,1,2,3,4};
+disableChannels[]={{0, true, true},{1, false, true},{2, true, true},{3, false, false},{4, false, false}, {5, false, false}};
 
 // Sounds
 class CfgSounds {

@@ -33,3 +33,11 @@ All your progress is saved in our database, your progression will be saved and y
 ## Mods required:
 * **IFA3**
 * **Cup Terrains - Core**
+
+## Credits
+Mission originally created by:
+ƒ(OPTiX) https://steamcommunity.com/id/ryanthett
+as RushRedux: https://steamcommunity.com/sharedfiles/filedetails/?id=779552248
+
+Adapted, modified and further developed by:
+A.Roman http://steamcommunity.com/id/0110180294/
