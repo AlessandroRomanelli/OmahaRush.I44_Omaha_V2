@@ -98,7 +98,8 @@ while {true} do {
 										"WW2Rush_1.I44_Omaha_V2",
 										"WW2Rush_2.I44_Omaha_V2",
 										"WW2Rush_1.Panovo",
-										"WW2Rush_1.I44_Merderet_Winter"
+										"WW2Rush_1.I44_Merderet_Winter",
+										"WW2Rush_1.Baranow"
 								 ];
 	_currentMission = [format["%1.%2", missionName, worldName]];
 

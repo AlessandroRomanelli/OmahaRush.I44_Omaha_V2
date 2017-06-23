@@ -67,8 +67,6 @@ player addEventHandler ["Hit",{
 // Hit
 player addEventHandler ["Hit",
 {
-	//(_this select 2) remoteExec ["client_fnc_MPHit",_this select 1];
-
 	// Stop any hp regeneration thread
 	if (!isNil "client_hpregeneration_thread") then {
 		terminate client_hpregeneration_thread;
@@ -157,6 +155,18 @@ player addEventHandler ["Killed",{
 	};
 }];*/
 
+player addEventHandler ["HitPart", {
+ for "_i" from 0 to count _this do {
+  { _target = _x select 0;
+   _hitSelection = _x select 5;
+   	if ("head" in _hitSelection) then {
+    	_target setDamage 1;
+			(-0.03122) remoteExec ["client_fnc_MPHit", _this select 1];
+		};
+  } forEach _this select _i;
+ };
+}];
+
 // Handledamage
 player addEventHandler ["HandleDamage",{
 	_damage = _this select 2;
@@ -164,6 +174,27 @@ player addEventHandler ["HandleDamage",{
 	// Dont allow team damage
 	if ((driver vehicle (_this select 3)) getVariable ["side",sideUnknown] == (player getVariable ["side",sideUnknown]) && ((_this select 3) != player)) then {
 		_damage = damage player;
+	};
+
+	// Return damage
+	_damage
+}];
+
+// Handledamage
+player addEventHandler ["HandleDamage",{
+	_projectile = _this select 4;
+	_damage = _this select 2;
+	_source = _this select 3;
+	_gear = getUnitLoadout _source;
+	_weapons = _gear select 0;
+	_rifle = _weapons select 0;
+	_smgs = ["LIB_M1928_Thompson", "LIB_M1A1_Thompson", "LIB_MP40", "LIB_M1928A1_Thompson", "LIB_M1928A1_Thompson", "LIB_PPSh41_m", "LIB_MP44"];
+	if (_rifle in _smgs) then {
+		_damage = _damage/3;
+	};
+	
+	if (_projectile != "") then {
+		(_damage) remoteExec ["client_fnc_MPHit",_this select 3];
 	};
 
 	// Return damage
@@ -190,13 +221,10 @@ player addEventHandler ["GetInMan", {
 		if ({alive _x} count (crew (_this select 0)) > 0 && !((_this select 0) getVariable ["disabled", false])) then {
 			//hint "2";
 			if (((driver (_this select 0)) getVariable ["side", sideUnknown]) != ((_this select 1) getVariable ["side", sideUnknown])) then {
-				if ((_this select 2) > 0) then {
-					//hint "3";
+				if !(canMove (_this select 0)) then {
+					//hint "4";
 					(_this select 0) setVariable ["disabled", true];
-					if !(canMove (_this select 0) && ((_this select 2) > 0.3)) then {
-						//hint "4";
-						[] remoteExec ["client_fnc_vehicleDisabled", (_this select 1)];
-					};
+					[] remoteExec ["client_fnc_vehicleDisabled", (_this select 1)];
 				};
 			};
 		};

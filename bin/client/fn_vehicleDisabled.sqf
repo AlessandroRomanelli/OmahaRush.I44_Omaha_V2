@@ -9,5 +9,5 @@ scriptName "fn_vehicleDisabled";
 --------------------------------------------------------------------*/
 #define __filename "fn_vehicleDisabled.sqf"
 
-["<t size='1.3' color='#FFFFFF'>VEHICLE DISABLED</t>", 85] spawn client_fnc_pointfeed_add;
-[85] spawn client_fnc_addPoints;
+["<t size='1.3' color='#FFFFFF'>VEHICLE DISABLED</t>", 200] spawn client_fnc_pointfeed_add;
+[200] spawn client_fnc_addPoints;

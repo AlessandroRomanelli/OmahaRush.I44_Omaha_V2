@@ -22,6 +22,6 @@ if (_damage < 70) then {
 	25 cutRsc ["hm_hit","PLAIN"];
 };
 
-if (_damage >= 70) then {
+if (_damage == -0.03122) then {
 	26 cutRsc ["hm_headshot","PLAIN"];
 };

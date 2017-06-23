@@ -470,7 +470,8 @@ class rr_bottomTS3
 		class RscStructuredText_1100: RscStructuredText
 		{
 			idc = 0;
-			x = 0.427812 * safezoneW + safezoneX;
+			x = 0.4303905 * safezoneW + safezoneX;
+
 			y = 0.94 * safezoneH + safezoneY;
 			w = 0.139219 * safezoneW;
 			h = 0.044 * safezoneH;
