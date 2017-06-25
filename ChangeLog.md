@@ -1,15 +1,21 @@
 #Changelog V0.63.7
 + [ADDED] Autosave of statistics when pressing "ESC";
-+ [ADDED] Custom Damage handler for SMGs and AT rockets & grenades;
++ [ADDED] Custom Damage handler for SMGs (2-3 hits to kill);
++ [ADDED] Custom damage for AT rockets & grenades;
 + [ADDED] Tank destroy detection w/ kill marker (300pts);
 + [ADDED] Vehicle/Tank disable detection w/ hit marker (100pts for vehicle, 200pts for armor);
 + [ADDED] Headshot detection(+50pts) insta-kill;
 + [ADDED] Command chat w/ VoN;
 + [ADDED] Hit markers for non lethal hits;
++ [ADDED] Command chat for comms between team leaders;
++ [ADDED] Rally points can now be destroyed by their creators in order to be repositioned;
++ [ADDED] 3D HUD Name rendering of allies;
 
++ [ADDED] Name filtering and reformatting to prevent MySQL errors;
+
+* [CHANGED] Alarm should now be louder;
 * [CHANGED] Weapon progression, SMGs easier to unlock;
 * [FIXED] Comm channels;
-* [FIXED] Bulletproof tents, replaced with vanilla ones;
 
 - [REMOVED] Sidechat;
 - [REMOVED] TT33 & P38;

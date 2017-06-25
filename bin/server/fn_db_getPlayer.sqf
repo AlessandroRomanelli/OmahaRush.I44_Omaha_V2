@@ -15,13 +15,21 @@ _player = param[0,objNull,[objNull]];
 // Exceptions
 if (isNull _player) exitWith {};
 
+_pName = name _player;
+if (_name find "'" != -1) then {
+	_pName = _pName splitString "";
+	{if (_x == "'") then {_pName deleteAt _forEachIndex}} forEach _pName;
+	_pName = _pName joinString "";
+};
+
+
 // Code
 _query = format["SELECT kills, deaths, exp, equipConfigurations, equipLoaded FROM players WHERE steamid='%1'",getPlayerUID _player];
 _playerData = [_query,2] call server_fnc_db_asyncCall;
 
 if(count _playerData == 0) then {
 	// Player does not exist in DB, create him
-	_query = format["INSERT INTO players(name, steamid, kills, deaths, equipConfigurations, equipLoaded, exp) VALUES ('%1',%2,0,0,'[]','%3', 0)", name _player, getPlayerUID _player, [true,str (["","",""])] call server_fnc_db_prepareString];
+	_query = format["INSERT INTO players(name, steamid, kills, deaths, equipConfigurations, equipLoaded, exp) VALUES ('%1',%2,0,0,'[]','%3', 0)", _pName, getPlayerUID _player, [true,str (["","",""])] call server_fnc_db_prepareString];
 	[_query,1] call server_fnc_db_asyncCall;
 	uisleep 1;
 

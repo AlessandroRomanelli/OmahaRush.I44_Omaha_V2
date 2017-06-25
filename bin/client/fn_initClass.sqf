@@ -23,7 +23,7 @@ rc_spawnBeacon = {
 	if (isNull (player getVariable ["assault_beacon_obj",objNull]) || (diag_tickTime - ((player getVariable ["assault_beacon_obj",objNull]) getVariable ["deployment_tick", 0])) > 180) then {
 		if (({!isNull (_x getVariable ["assault_beacon_obj", objNull])} count (units group player)) < 1) then {
 			if (player distance sv_cur_obj < 75 || (player distance (getMarkerPos cl_enemySpawnMarker)) < 100) then {
-				["Your spawnbeacon may not be placed here"] spawn client_fnc_displayError;
+				["Your rally point may not be placed here"] spawn client_fnc_displayError;
 			} else {
 				_existingBeacon = (player getVariable ["assault_beacon_obj",objNull]);
 
@@ -48,7 +48,7 @@ rc_spawnBeacon = {
 				[_beacon] remoteExec ["client_fnc_spawnBeaconSoundLoop"];
 
 				// Message
-				["BEACON DEPLOYED", "Your spawn beacon has been deployed. Squad members can now spawn at it. It will get destroyed upon receiving damage."] spawn client_fnc_hint;
+				["RALLY POINT DEPLOYED", "Your rally point has been deployed. Squad members can now spawn at it. It will get destroyed upon receiving damage."] spawn client_fnc_hint;
 
 				// Reset counter
 				cl_beacon_used = 0;
@@ -57,7 +57,7 @@ rc_spawnBeacon = {
 				[_beacon] remoteExec ["client_fnc_beaconEventHandler", 0];
 			};
 		} else {
-			["Your squad already has a spawn beacon placed down"] spawn client_fnc_displayError;
+			["Your squad already has a rally point placed down"] spawn client_fnc_displayError;
 		};
 	} else {
 		//["Destroy your old beacon or wait " + (diag_tickTime - ((player getVariable ["assault_beacon_obj",objNull]) getVariable ["deployment_tick", 0])) + " more seconds to deploy a new beacon"] spawn client_fnc_displayError;
@@ -77,24 +77,24 @@ if (true) then {
 		if (_keyCode == 35 && (alive player)) then {
 			_myClass = player getVariable ["class",""];
 
-			if (cursorObject isKindOf "Land_Laptop_device_F" && player distance cursorObject < 2) then {
+			if (cursorObject isKindOf "Vysilacka" && player distance cursorObject < 2) then {
 
 				// Our teams beacon
 				if ((([cursorObject] call client_fnc_getBeaconOwner) getVariable ["side", sideUnknown]) == playerSide || cursorObject == (player getVariable ["assault_beacon_obj", objNull])) then {
 					if (([cursorObject] call client_fnc_getBeaconOwner) == player) then {
 						// Were the owner, destroy it!
 						deleteVehicle cursorObject;
-						["You have removed your beacon"] spawn client_fnc_displayInfo;
+						["You have destroyed your rally point"] spawn client_fnc_displayInfo;
 					} else {
 						// Were not the owner and its on our team, error!
-						["This spawn beacon is owned by a team member"] spawn client_fnc_displayError;
+						["This rally point is owned by a team member"] spawn client_fnc_displayError;
 						diag_log "5";
 					};
 				} else {
 					// not on our team, destroy it!
 					deleteVehicle cursorObject;
 					// Points!
-					["<t size='1.3' color='#FFFFFF'>SPAWN BEACON DESTROYED</t>", 15] spawn client_fnc_pointfeed_add;
+					["<t size='1.3' color='#FFFFFF'>RALLY POINT DESTROYED</t>", 15] spawn client_fnc_pointfeed_add;
 					[15] spawn client_fnc_addPoints;
 				};
 			} else {

@@ -32,9 +32,9 @@ _beacon addEventHandler ["HitPart", {
 	deleteVehicle _beacon;
 
 	// Points!
-	["<t size='1.3' color='#FFFFFF'>RADIO STATION DESTROYED</t>", 15] spawn client_fnc_pointfeed_add;
+	["<t size='1.3' color='#FFFFFF'>RALLY POINT DESTROYED</t>", 15] spawn client_fnc_pointfeed_add;
 	[15] spawn client_fnc_addPoints;
 
 	// Send an information to the owner
-	["Your radio station has been destroyed"] remoteExec ["client_fnc_displayError", _owner];
+	["Your rally point has been destroyed"] remoteExec ["client_fnc_displayError", _owner];
 }];

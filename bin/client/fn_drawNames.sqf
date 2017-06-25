@@ -1,13 +1,8 @@
-addMissionEventHandler ["Draw3D", {
+TAGS = addMissionEventHandler ["Draw3D", {
     {
-      if !(isPlayer _x && {alive _x} && {side _x == side player}) exitWith {};
         if (side _x == side player && {alive _x}) then {
-            _dist = (player distance _x) / 15;
-            if ({group _x == group player} && {alive _x}) then {
-              _color = [0.2,0.9,0.2,1];
-            } else {
-              _color = [0,0.3,0.6,1];
-            };
+            _dist = (player distance _x) / 5;
+            _color = getArray (configFile/'CfgInGameUI'/'SideColors'/'colorFriendly');
             if (cursorTarget != _x) then {
                 _color set [3, 1 - _dist]
             };
@@ -31,5 +26,5 @@ addMissionEventHandler ["Draw3D", {
                 'PuristaMedium'
             ];
         };
-    } count allUnits - [player];
+    } count playableUnits - [player];
 }];

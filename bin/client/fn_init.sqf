@@ -29,6 +29,9 @@ if (hasInterface) then {
     };
 };
 
+
+
+
 // Player name
 player setVariable ["name", name player, true];
 
