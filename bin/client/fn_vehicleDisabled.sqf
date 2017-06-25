@@ -9,5 +9,26 @@ scriptName "fn_vehicleDisabled";
 --------------------------------------------------------------------*/
 #define __filename "fn_vehicleDisabled.sqf"
 
-["<t size='1.3' color='#FFFFFF'>VEHICLE DISABLED</t>", 200] spawn client_fnc_pointfeed_add;
-[200] spawn client_fnc_addPoints;
+_points = _this;
+
+
+if (_points == 300) exitWith {
+  27 cutRsc ["hm_kill","PLAIN"];
+  ["<t size='1.3' color='#FFFFFF'>ARMOR DESTROYED</t>", _points] spawn client_fnc_pointfeed_add;
+  [_points] spawn client_fnc_addPoints;
+};
+if (_points == 200) exitWith {
+  25 cutRsc ["hm_hit","PLAIN"];
+  ["<t size='1.3' color='#FFFFFF'>ARMOR DISABLED</t>", _points] spawn client_fnc_pointfeed_add;
+  [_points] spawn client_fnc_addPoints;
+};
+if (_points == 150) exitWith {
+  27 cutRsc ["hm_kill","PLAIN"];
+  ["<t size='1.3' color='#FFFFFF'>VEHICLE DESTROYED</t>", _points] spawn client_fnc_pointfeed_add;
+  [_points] spawn client_fnc_addPoints;
+};
+if (_points == 100) exitWith {
+  25 cutRsc ["hm_hit","PLAIN"];
+  ["<t size='1.3' color='#FFFFFF'>VEHICLE DISABLED</t>", _points] spawn client_fnc_pointfeed_add;
+  [_points] spawn client_fnc_addPoints;
+};

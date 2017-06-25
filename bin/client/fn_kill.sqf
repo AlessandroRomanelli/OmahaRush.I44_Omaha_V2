@@ -9,36 +9,32 @@ scriptName "fn_kill";
 --------------------------------------------------------------------*/
 #define __filename "fn_kill.sqf"
 if (isServer && !hasInterface) exitWith {};
+_victim = param[0,objNull,[objNull]];
 
-// Display hit marker
--0.03184 call client_fnc_MPHit;
-
-_personIKilled = param[0,objNull,[objNull]];
-
-if (playerSide == (_personIKilled getVariable ["side",civilian])) exitWith {};
+if (playerSide == (_victim getVariable ["side",civilian])) exitWith {};
 
 // Increase kills
 cl_kills = cl_kills + 1;
 cl_total_kills = cl_total_kills + 1;
 
 // Get seat in vehicle
-_possibleTurrentIndex = -2;
+_seat = -2;
 if ((vehicle player) != player) then {
 	_v = vehicle player;
 
 	// Check if we are the driver
 	if ((driver _v) == player) then {
-		_possibleTurrentIndex = -1;
+		_seat = -1;
 	};
 
 	// Check if we are the gunner
 	if ((gunner _v) == player) then {
-		_possibleTurrentIndex = 0;
+		_seat = 0;
 	};
 };
 
 // Pushback into render array
-_curWeapon = if (_possibleTurrentIndex in [-1, 0]) then {
+_curWeapon = if (_seat in [-1, 0]) then {
 	currentWeapon (vehicle player)
 } else {
 	currentWeapon player
@@ -54,13 +50,24 @@ if (_curWeapon != "") then {
 
 _points = 100;
 
+// Display hit marker
+_HSkill = "";
+if (_victim getVariable ["wasHS", false]) then {
+	-0.03122 call client_fnc_MPHit;
+	_victim setVariable ["wasHS", false, true];
+	_HSkill = "<br/><t size='1.0' color='#FFFFFF'>HEADSHOT BONUS</t>";
+	_points = _points + 50;
+} else {
+	-0.03184 call client_fnc_MPHit;
+};
+
 // Any additional points?
 _distanceKill = "";
-if (_personIKilled distance player > 50) then {
+if (_victim distance player > 50) then {
 	_distanceKill = "<br/><t size='1.0' color='#FFFFFF'>LONG RANGE KILL</t>";
 
 	// very far shot?
-	if (_personIKilled distance player > 120) then {
+	if (_victim distance player > 120) then {
 		_distanceKill = _distanceKill + "<br/><t size='1.0' color='#FFFFFF'>MARKSMAN BONUS</t>";
 		_points = _points + 50;
 	};
@@ -69,7 +76,7 @@ if (_personIKilled distance player > 50) then {
 	_points = _points + 15;
 };
 _objectiveKill = "";
-if ((player distance sv_cur_obj) < 20 || (_personIKilled distance sv_cur_obj) < 20) then {
+if ((player distance sv_cur_obj) < 20 || (_victim distance sv_cur_obj) < 20) then {
 	if (player getVariable "gameSide" == "defenders") then {
 		_objectiveKill = "<br/><t size='1.0' color='#FFFFFF'>OBJECTIVE DEFENDER</t>";
 	} else {
@@ -81,5 +88,5 @@ if ((player distance sv_cur_obj) < 20 || (_personIKilled distance sv_cur_obj) < 
 };
 
 // We've done good! Give me points
-["<t size='1.3'>[" + _reason + "] <t color='#FE251B'>" + (_personIKilled getVariable ["name", ""]) + "</t></t>" + _distanceKill + _objectiveKill, _points] spawn client_fnc_pointfeed_add;
+["<t size='1.3'>[" + _reason + "] <t color='#FE251B'>" + (_victim getVariable ["name", ""]) + "</t></t>" + _HSkill + _distanceKill + _objectiveKill, _points] spawn client_fnc_pointfeed_add;
 [_points] spawn client_fnc_addPoints;

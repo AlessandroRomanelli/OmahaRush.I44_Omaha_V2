@@ -24,7 +24,7 @@ _mcoms = [sv_stage1_obj getVariable ["armed", false], sv_stage2_obj getVariable 
 _time = getNumber(missionConfigFile >> "GeneralConfig" >> "lobbyTime");
 
 // Enable global voice
-0 enableChannel [true, true];
+ 0 enableChannel [true, true];
 
 // Bring up ui for timer
 60001 cutRsc ["rr_timer", "PLAIN"];
@@ -87,7 +87,7 @@ camDestroy cl_exitcam_object;
 player switchCamera "INTERNAL";
 
 // Disable global voice
-0 enableChannel [true, false];
+ 0 enableChannel [false, false];
 
 // count objectives
 _mcomsExploded = 0;

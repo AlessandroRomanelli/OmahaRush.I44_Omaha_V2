@@ -10,6 +10,8 @@ scriptName "fn_spawn";
 #define __filename "fn_spawn.sqf"
 if (isServer && !hasInterface) exitWith {};
 
+player setVariable ["isAlive", true];
+
 if (player getVariable ["firstSpawn", true]) then {
 	player setVariable ["firstSpawn", false];
 	playSound "introSong";
@@ -271,7 +273,7 @@ disableSerialization;
 if (isNil "TEMPWARNING") then {
 	// TEMPRARY WARNING TODO
 	createDialog "rr_info_box";
-	((findDisplay 10000) displayCtrl 0) ctrlSetStructuredText parseText "<t size='1' color='#FFFFFF' shadow='2' align='left'><t font='PuristaBold'>No.4 WW2 Rush Version</t><br/>0.62.6<br/><br/><t font='PuristaBold'>No.4 CDO Discord</t><br/><a href='https://discord.gg/GxTEsRb'>Join</a><br/><br/><t font='PuristaBold'>Official Website</t><br/><a href='https://alessandroromanelli.github.io/No4-Bootstrap-example/'>Open</a></t>";
+	((findDisplay 10000) displayCtrl 0) ctrlSetStructuredText parseText "<t size='1' color='#FFFFFF' shadow='2' align='left'><t font='PuristaBold'>No.4 WW2 Rush Version</t><br/>0.62.7<br/><br/><t font='PuristaBold'>No.4 CDO Discord</t><br/><a href='https://discord.gg/GxTEsRb'>Join</a><br/><br/><t font='PuristaBold'>Official Website</t><br/><a href='https://alessandroromanelli.github.io/No4-Bootstrap-example/'>Open</a></t>";
 	TEMPWARNING = true;
 };
 
