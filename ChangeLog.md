@@ -1,4 +1,5 @@
 #Changelog V0.63.7
++ [ADDED] Ardennes terrain;
 + [ADDED] Autosave of statistics when pressing "ESC";
 + [ADDED] Custom Damage handler for SMGs (2-3 hits to kill);
 + [ADDED] Custom damage for AT rockets & grenades;

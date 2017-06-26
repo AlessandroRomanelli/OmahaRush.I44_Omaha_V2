@@ -16,7 +16,7 @@ _player = param[0,objNull,[objNull]];
 if (isNull _player) exitWith {};
 
 _pName = name _player;
-if (_name find "'" != -1) then {
+if (_pName find "'" != -1) then {
 	_pName = _pName splitString "";
 	{if (_x == "'") then {_pName deleteAt _forEachIndex}} forEach _pName;
 	_pName = _pName joinString "";

@@ -1,6 +1,6 @@
 OnLoadName="No.4 CDO WW2 Rush";
 onLoadMission = "Battlefield brought to ArmA3";
-author = "A. Roman"
+author = "A. Roman";
 onLoadMissionTime = 0;
 
 

@@ -112,7 +112,9 @@ player addEventHandler ["Killed",{
 
 		// Send message to killer that he killed someone
 		if ((_this select 0) != _killer && !isNull (_this select 0) && (!isNull _killer)) then {
-			[_this select 0] remoteExec ["client_fnc_kill",_killer];
+			if ((_this select 0) getVariable ["isAlive", true]) then {
+				[_this select 0] remoteExec ["client_fnc_kill", _killer];
+			};
 			//Log time of death
 			(_this select 0) setVariable ["lastDeath", diag_tickTime];
 			// you have been killed by message
@@ -168,7 +170,10 @@ player addEventHandler ["HitPart", {
 			(_x select 0) setVariable ["wasHS", true, true];
 			// Kill the target
 	  	(_x select 0) setDamage 1;
-			[_x select 0] remoteExec ["client_fnc_kill",_x select 1];
+			if ((_x select 0) getVariable ["isAlive", true]) then {
+				[_x select 0] remoteExec ["client_fnc_kill",_x select 1];
+				(_x select 0)  setVariable ["isAlive", false];
+			};
 		};
 	} forEach _this;
 }];
@@ -183,6 +188,7 @@ player addEventHandler ["HandleDamage", {
  //SMG array
  _smgs = ["LIB_M1928_Thompson", "LIB_M1A1_Thompson", "LIB_MP40", "LIB_M1928A1_Thompson", "LIB_M1928A1_Thompson", "LIB_PPSh41_m", "LIB_MP44"];
  if (_rifle in _smgs) then {
+	 if ((driver vehicle _s) getVariable ["side",sideUnknown] == (_u getVariable ["side",sideUnknown]) && (_s != player)) exitWith {};
 	 //Get the time of last hit
   _lastHit = _u getVariable ["lastHit", 0];
 	//If the time between last hit and new hit is more than 1/10 of a second
@@ -213,6 +219,7 @@ player addEventHandler ["HandleDamage", {
 
  //Handle friendlyfire
  if ((driver vehicle _s) getVariable ["side",sideUnknown] == (_u getVariable ["side",sideUnknown]) && (_s != player)) then {
+	_u setVariable ["unitDmg", damage _u];
   _damage = damage _u;
  };
  _damage
