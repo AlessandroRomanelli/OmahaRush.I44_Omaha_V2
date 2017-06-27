@@ -10,11 +10,6 @@ scriptName "fn_refreshTickets";
 #define __filename "fn_refreshTickets.sqf"
 
 _tickets = getNumber(missionConfigFile >> "Maps" >> sv_map >> "tickets");
-if (count allPlayers < 6) then {
-  _tickets = 25;
-} else {
-  _tickets = (count allPlayers)/2*8;
-};
 
 // Set tickets
 sv_tickets = _tickets;

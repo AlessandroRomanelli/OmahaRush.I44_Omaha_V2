@@ -169,12 +169,6 @@ player addEventHandler ["HitPart", {
 		// If the headshot is the hit selection
 	 	if ("head" in (_x select 5)) then {
 			(_x select 0) setVariable ["wasHS", true];
-			// Kill the target
-	  	(_x select 0) setDamage 1;
-			if ((_x select 0) getVariable ["isAlive", true]) then {
-				[_x select 0, true] remoteExec ["client_fnc_kill",_x select 1];
-				(_x select 0)  setVariable ["isAlive", false];
-			};
 		};
 	} forEach _this;
 }];
@@ -192,16 +186,20 @@ player addEventHandler ["HandleDamage", {
  _pistols =	  ["LIB_Colt_M1911", "LIB_M1895", "LIB_P08"];
  if (_rifle in _smgs) then {
 	 //[shooter, target, base damage, long distance, short distance]
-	 [_s, _u, 30, 0, 0] call client_fnc_damageHandler;
+	 [_s, _u, 23, 0, 0] call client_fnc_damageHandler;
+	 //Set the default damage to 0
+	 _damage = 0;
  };
  if (_rifle in _semiAutos) then {
 	 [_s, _u, 60, 50, 15] call client_fnc_damageHandler;
+	 //Set the default damage to 0
+	 _damage = 0;
  };
  if (_rifle in _pistols) then {
 	 [_s, _u, 15, 0, 0] call client_fnc_damageHandler;
+	 //Set the default damage to 0
+	 _damage = 0;
  };
- //Set the default damage to 0
- _damage = 0;
 
  //Handle friendlyfire
  if ((driver vehicle _s) getVariable ["side",sideUnknown] == (_u getVariable ["side",sideUnknown]) && (_s != player)) then {
@@ -216,11 +214,11 @@ player addEventHandler ["GetInMan", {
 	_vehicle = _this select 2;
 
 	// Add handler
-	if (_vehicle isKindOf "Air") then {
+	/*if (_vehicle isKindOf "Air") then {
 		// Make sure helicopters and planes get warned about incoming missiles and that the active defense system for pilots is activated!
 		_vehicle removeAllEventHandlers "IncomingMissile";
 		[_vehicle] spawn client_fnc_addAirVehicleHandlers;
-	};
+	};*/
 
 	// Always make sure we have an hit eventhandler
 	_vehicle removeAllEventHandlers "HandleDamage";

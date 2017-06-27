@@ -2,9 +2,11 @@
 + [ADDED] Custom damage for all weapons;
 + [ADDED] "Sweet spot" mechanic to all semi autos and BAR;
 + [ADDED] Dynamic tickets now vary depending on server population;
++ [ADDED] Planes on Panovo;
 
-* [CHANGED] Disable/Destruction Detection of vehicles **Needs testing**
+
 - [REMOVED] Random damages for SMG, base damage is now fixed but varies depending on distance;
+- [REMOVED] Bombs from planes;
 
     HTK TABLE (Hits To Kill):
 
@@ -23,7 +25,6 @@
 + [ADDED] damageHandler function for all weapons;
 - [REMOVED] Savestatics from keydown "ESC", deprecated;
 - [REMOVED] PublicVariable being published on every hit, should improve network stability;
-* [REWORKED] HS detection;
 CODE//
 
 * [CHANGED] Omaha Rush_1 bushes are no longer simple objects and can no be driven over;

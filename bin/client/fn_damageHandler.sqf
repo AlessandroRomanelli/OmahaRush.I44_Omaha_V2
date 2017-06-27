@@ -43,9 +43,13 @@ if ((diag_tickTime - _lastHit) > 0.1) then {
     _dmg remoteExec ["client_fnc_MPHit", _s];
   };
 
-  if (_unitHP + _dmg >= 1 && _u getVariable ["isAlive", true] && !(_u getVariable["wasHS", false])) then {
+  if (_unitHP + _dmg >= 1 && _u getVariable ["isAlive", true]) then {
    _u setVariable ["isAlive", false];
-   [_u, false] remoteExec ["client_fnc_kill",_s];
+   if (!(_u getVariable["wasHS", false])) then {
+     [_u, false] remoteExec ["client_fnc_kill",_s];
+   } else {
+     [_u, true] remoteExec ["client_fnc_kill",_s];
+   };
   };
   //Store the new unit HP
   _u setVariable ["unitDmg", _unitHP + _dmg];

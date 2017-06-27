@@ -91,7 +91,7 @@ if (true) then {
 _primary = _equipInfo select 0;
 _primaryAttachements = _primary select 1;
 if ("LIB_ACC_GL_M7" in _primaryAttachements) then {
-	player addItem "LIB_1Rnd_G_M9A1";
+	player addItem "LIB_1Rnd_G_Mk2";
 };
 
 if (cl_classPerk == "grenadier") then {
@@ -99,9 +99,9 @@ if (cl_classPerk == "grenadier") then {
 	_primaryAttachements = _primary select 1;
 	if ("LIB_ACC_GL_M7" in _primaryAttachements) then {
 		if (cl_squadperk == "extended_ammo") then {
-			for "_i" from 1 to 3 do {player addItem "LIB_1Rnd_G_M9A1";};
+			for "_i" from 1 to 3 do {player addItem "LIB_1Rnd_G_Mk2";};
 		}	else {
-			for "_i" from 1 to 2 do {player addItem "LIB_1Rnd_G_M9A1";};
+			for "_i" from 1 to 2 do {player addItem "LIB_1Rnd_G_Mk2";};
 		};
 	};
 

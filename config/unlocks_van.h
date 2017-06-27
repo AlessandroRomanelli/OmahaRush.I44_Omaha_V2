@@ -63,7 +63,7 @@ class Unlocks {
 
 		class  LIB_M1A1_Thompson {
 			ammo = "LIB_30Rnd_45ACP";
-			exp = 20000;
+			exp = 5000;
 			type = "primary";
 
 			class attachments {};

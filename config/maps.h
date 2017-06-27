@@ -1,6 +1,6 @@
 class Maps {
 	class Environment1 {
-    tickets = 100;
+    tickets = 200;
     roundTime = 900;
 
 		date[] = {1944,6,6,12,30};
@@ -52,14 +52,14 @@ class Maps {
 							dir = 171;
 							script = "";
 						};
-						class a_htank_1_2 {
+						/*class a_htank_1_2 {
 							displayName = "M4A3 Sherman";
 							classname = "LIB_M4A3_76";
 							respawnTime = 300;
 							positionATL[] = {3289.8,3105.82,0.549654};
 							dir = 171;
 							script = "";
-						};
+						};*/
 						class a_ltank_1_1 {
 							displayName = "M3 Stuart";
 							classname = "LIB_M3A3_Stuart";
@@ -68,14 +68,14 @@ class Maps {
 							dir = 171;
 							script = "";
 						};
-						class a_ltank_1_2 {
+						/*class a_ltank_1_2 {
 							displayName = "M3 Stuart";
 							classname = "LIB_M3A3_Stuart";
 							respawnTime = 150;
 							positionATL[] = {3276.56,3104.39,0.605019};
 							dir = 171;
 							script = "";
-						};
+						};*/
 						class a_car_1_1 {
 							displayName = "M3 Scout Car";
 							classname = "LIB_US_Scout_M3_FFV";
@@ -130,25 +130,25 @@ class Maps {
 							displayName = "PzKpfW VI 'Tiger I'";
 							classname = "LIB_PzKpfwVI_E_2";
 							respawnTime = 300;
-							positionATL[] = {3802.88,2661.71,0};
-							dir = 336;
-							script = 'this setVariable ["color",4]';
+							positionATL[] = {3777.16,2636.84,0};
+							dir = 0;
+							script = "_this select 0 setObjectTextureGlobal [0, 'WW2\Assets_t\Vehicles\Tanks_t\IF_PzKpfwVI_E\Body_Tarn52c_co.paa']; _this select 0 setObjectTextureGlobal [2, 'WW2\Assets_t\Vehicles\Tanks_t\IF_PzKpfwVI_E\Turret_Tarn52c_co.paa']";
 						};
-						class d_htank_1_2 {
+						/*class d_htank_1_2 {
 							displayName = "PzKpfW VI 'Tiger I'";
 							classname = "LIB_PzKpfwVI_E_2";
 							respawnTime = 300;
-							positionATL[] = {3802.88,2661.71,0};
-							dir = 336;
-							script = 'this setVariable ["color",4]';
-						};
+							positionATL[] = {3784.43,2636.88,0};
+							dir = 0;
+							script = "_this select 0 setObjectTextureGlobal [0, 'WW2\Assets_t\Vehicles\Tanks_t\IF_PzKpfwVI_E\Body_Tarn52c_co.paa']; _this select 0 setObjectTextureGlobal [2, 'WW2\Assets_t\Vehicles\Tanks_t\IF_PzKpfwVI_E\Turret_Tarn52c_co.paa']";
+						};*/
 						class d_truck_1_1 {
 							displayName = "SdKfz 251 MG42";
 							classname = "LIB_SdKfz251_FFV";
 							respawnTime = 60;
 							positionATL[] = {3767.01,2640.85,0};
 							dir = 9;
-							script = 'this setVariable ["color",4]';
+							script = "_this select 0 setObjectTextureGlobal [0, 'WW2\Assets_t\Vehicles\WheeledAPC_t\IF_SdKfz251\Hull_Feldgrau_co.paa']; _this select 0 setObjectTextureGlobal [1, 'WW2\Assets_t\Vehicles\WheeledAPC_t\IF_SdKfz251\Interrior_co.paa']";
 						};
 						class d_truck_1_2 {
 							displayName = "SdKfz 251 MG42";
@@ -156,7 +156,7 @@ class Maps {
 							respawnTime = 60;
 							positionATL[] = {3762.1,2641.67,0};
 							dir = 9;
-							script = 'this setVariable ["color",4]';
+							script = "_this select 0 setObjectTextureGlobal [0, 'WW2\Assets_t\Vehicles\WheeledAPC_t\IF_SdKfz251\Hull_Feldgrau_co.paa']; _this select 0 setObjectTextureGlobal [1, 'WW2\Assets_t\Vehicles\WheeledAPC_t\IF_SdKfz251\Interrior_co.paa']";
 						};
 						class d_car_1_1 {
 							displayName = "Kubelwagen";
@@ -164,7 +164,7 @@ class Maps {
 							respawnTime = 5;
 							positionATL[] = {3760.03,2665.06,0};
 							dir = 155;
-							script = 'this setVariable ["color",2]';
+							script = "_this select 0 setObjectTextureGlobal [0, 'WW2\Assets_t\Vehicles\Cars_t\IF_Kfz1\Kubelwagen_Main_Sernyt_co.paa']; _this select 0 setObjectTextureGlobal [1, 'WW2\Assets_t\Vehicles\Cars_t\IF_Kfz1\Kubelwagen_Interior_Sernyt_co.paa']";
 						};
 						class d_car_1_2 {
 							displayName = "Kubelwagen";
@@ -172,7 +172,7 @@ class Maps {
 							respawnTime = 5;
 							positionATL[] = {3756.39,2663.41,0};
 							dir = 155;
-							script = 'this setVariable ["color",2]';
+							script = "_this select 0 setObjectTextureGlobal [0, 'WW2\Assets_t\Vehicles\Cars_t\IF_Kfz1\Kubelwagen_Main_Sernyt_co.paa']; _this select 0 setObjectTextureGlobal [1, 'WW2\Assets_t\Vehicles\Cars_t\IF_Kfz1\Kubelwagen_Interior_Sernyt_co.paa']";
 						};
 						class d_car_1_3 {
 							displayName = "Kubelwagen";
@@ -180,7 +180,7 @@ class Maps {
 							respawnTime = 5;
 							positionATL[] = {3752.89,2661.87,0};
 							dir = 155;
-							script = 'this setVariable ["color",2]';
+							script = "_this select 0 setObjectTextureGlobal [0, 'WW2\Assets_t\Vehicles\Cars_t\IF_Kfz1\Kubelwagen_Main_Sernyt_co.paa']; _this select 0 setObjectTextureGlobal [1, 'WW2\Assets_t\Vehicles\Cars_t\IF_Kfz1\Kubelwagen_Interior_Sernyt_co.paa']";
 						};
 						class d_car_1_4 {
 							displayName = "Kubelwagen";
@@ -188,7 +188,7 @@ class Maps {
 							respawnTime = 5;
 							positionATL[] = {3749.24,2660.21,0};
 							dir = 155;
-							script = 'this setVariable ["color",2]';
+							script = "_this select 0 setObjectTextureGlobal [0, 'WW2\Assets_t\Vehicles\Cars_t\IF_Kfz1\Kubelwagen_Main_Sernyt_co.paa']; _this select 0 setObjectTextureGlobal [1, 'WW2\Assets_t\Vehicles\Cars_t\IF_Kfz1\Kubelwagen_Interior_Sernyt_co.paa']";
 						};
 					};
 				};
@@ -213,14 +213,14 @@ class Maps {
 							dir = 182;
 							script = "";
 						};
-						class a_htank_2_2 {
+						/*class a_htank_2_2 {
 							displayName = "M4A3 Sherman";
 							classname = "LIB_M4A3_76";
 							respawnTime = 300;
 							positionATL[] = {3800.4,2846.55,0};
 							dir = 182;
 							script = "";
-						};
+						};*/
 						class a_ltank_2_1 {
 							displayName = "M3 Stuart";
 							classname = "LIB_M3A3_Stuart";
@@ -229,14 +229,14 @@ class Maps {
 							dir = 182;
 							script = "";
 						};
-						class a_ltank_2_2 {
+						/*class a_ltank_2_2 {
 							displayName = "M3 Stuart";
 							classname = "LIB_M3A3_Stuart";
 							respawnTime = 150;
 							positionATL[] = {3787.04,2847.52,3.8147e-006};
 							dir = 182;
 							script = "";
-						};
+						};*/
 						class a_car_2_1 {
 							displayName = "M3 Scout Car";
 							classname = "LIB_US_Scout_M3_FFV";
@@ -293,23 +293,23 @@ class Maps {
 							respawnTime = 300;
 							positionATL[] = {3237.1,2131.24,0};
 							dir = 255;
-							script = 'this setVariable ["color",4]';
+							script = "_this select 0 setObjectTextureGlobal [0, 'WW2\Assets_t\Vehicles\Tanks_t\IF_PzKpfwVI_E\Body_Tarn52c_co.paa']; _this select 0 setObjectTextureGlobal [2, 'WW2\Assets_t\Vehicles\Tanks_t\IF_PzKpfwVI_E\Turret_Tarn52c_co.paa']";
 						};
-						class d_htank_2_2 {
+						/*class d_htank_2_2 {
 							displayName = "PzKpfW VI 'Tiger I'";
 							classname = "LIB_PzKpfwVI_E_2";
 							respawnTime = 300;
 							positionATL[] = {3235.69,2137.67,0};
 							dir = 255;
-							script = 'this setVariable ["color",4]';
-						};
+							script = "_this select 0 setObjectTextureGlobal [0, 'WW2\Assets_t\Vehicles\Tanks_t\IF_PzKpfwVI_E\Body_Tarn52c_co.paa']; _this select 0 setObjectTextureGlobal [2, 'WW2\Assets_t\Vehicles\Tanks_t\IF_PzKpfwVI_E\Turret_Tarn52c_co.paa']";
+						};*/
 						class d_truck_2_1 {
 							displayName = "SdKfz 251 MG42";
 							classname = "LIB_SdKfz251_FFV";
 							respawnTime = 60;
 							positionATL[] = {3252.42,2162.41,0};
 							dir = 13;
-							script = 'this setVariable ["color",4]';
+							script = "_this select 0 setObjectTextureGlobal [0, 'WW2\Assets_t\Vehicles\WheeledAPC_t\IF_SdKfz251\Hull_Feldgrau_co.paa']; _this select 0 setObjectTextureGlobal [1, 'WW2\Assets_t\Vehicles\WheeledAPC_t\IF_SdKfz251\Interrior_co.paa']";
 						};
 						class d_truck_2_2 {
 							displayName = "SdKfz 251 MG42";
@@ -317,7 +317,7 @@ class Maps {
 							respawnTime = 60;
 							positionATL[] = {3257.3,2161.23,0};
 							dir = 13;
-							script = 'this setVariable ["color",4]';
+							script = "_this select 0 setObjectTextureGlobal [0, 'WW2\Assets_t\Vehicles\WheeledAPC_t\IF_SdKfz251\Hull_Feldgrau_co.paa']; _this select 0 setObjectTextureGlobal [1, 'WW2\Assets_t\Vehicles\WheeledAPC_t\IF_SdKfz251\Interrior_co.paa']";
 						};
 						class d_car_2_1 {
 							displayName = "Kubelwagen";
@@ -325,7 +325,7 @@ class Maps {
 							respawnTime = 5;
 							positionATL[] = {3257.14,2137.18,0};
 							dir = 87;
-							script = 'this setVariable ["color",2]';
+							script = "_this select 0 setObjectTextureGlobal [0, 'WW2\Assets_t\Vehicles\Cars_t\IF_Kfz1\Kubelwagen_Main_Sernyt_co.paa']; _this select 0 setObjectTextureGlobal [1, 'WW2\Assets_t\Vehicles\Cars_t\IF_Kfz1\Kubelwagen_Interior_Sernyt_co.paa']";
 						};
 						class d_car_2_2 {
 							displayName = "Kubelwagen";
@@ -333,7 +333,7 @@ class Maps {
 							respawnTime = 5;
 							positionATL[] = {3257.32,2133.19,0};
 							dir = 87;
-							script = 'this setVariable ["color",2]';
+							script = "_this select 0 setObjectTextureGlobal [0, 'WW2\Assets_t\Vehicles\Cars_t\IF_Kfz1\Kubelwagen_Main_Sernyt_co.paa']; _this select 0 setObjectTextureGlobal [1, 'WW2\Assets_t\Vehicles\Cars_t\IF_Kfz1\Kubelwagen_Interior_Sernyt_co.paa']";
 						};
 						class d_car_2_3 {
 							displayName = "Kubelwagen";
@@ -341,7 +341,7 @@ class Maps {
 							respawnTime = 5;
 							positionATL[] = {3257.51,2129.48,0};
 							dir = 87;
-							script = 'this setVariable ["color",2]';
+							script = "_this select 0 setObjectTextureGlobal [0, 'WW2\Assets_t\Vehicles\Cars_t\IF_Kfz1\Kubelwagen_Main_Sernyt_co.paa']; _this select 0 setObjectTextureGlobal [1, 'WW2\Assets_t\Vehicles\Cars_t\IF_Kfz1\Kubelwagen_Interior_Sernyt_co.paa']";
 						};
 						class d_car_2_4 {
 							displayName = "Kubelwagen";
@@ -349,7 +349,7 @@ class Maps {
 							respawnTime = 5;
 							positionATL[] = {3257.62,2125.5,0.0168953};
 							dir = 87;
-							script = 'this setVariable ["color",2]';
+							script = "_this select 0 setObjectTextureGlobal [0, 'WW2\Assets_t\Vehicles\Cars_t\IF_Kfz1\Kubelwagen_Main_Sernyt_co.paa']; _this select 0 setObjectTextureGlobal [1, 'WW2\Assets_t\Vehicles\Cars_t\IF_Kfz1\Kubelwagen_Interior_Sernyt_co.paa']";
 						};
 					};
 				};
@@ -374,14 +374,14 @@ class Maps {
 							dir = 100;
 							script = "";
 						};
-						class a_htank_3_2 {
+						/*class a_htank_3_2 {
 							displayName = "M4A3 Sherman";
 							classname = "LIB_M4A3_76";
 							respawnTime = 300;
 							positionATL[] = {3389.06,2333.7,0};
 							dir = 100;
 							script = "";
-						};
+						};*/
 						class a_ltank_3_1 {
 							displayName = "M3 Stuart";
 							classname = "LIB_M3A3_Stuart";
@@ -390,14 +390,14 @@ class Maps {
 							dir = 100;
 							script = "";
 						};
-						class a_ltank_3_2 {
+						/*class a_ltank_3_2 {
 							displayName = "M3 Stuart";
 							classname = "LIB_M3A3_Stuart";
 							respawnTime = 150;
 							positionATL[] = {3387.26,2320.37,0.0155563};
 							dir = 100;
 							script = "";
-						};
+						};*/
 						class a_car_3_1 {
 							displayName = "M3 Scout Car";
 							classname = "LIB_US_Scout_M3_FFV";
@@ -454,7 +454,7 @@ class Maps {
 							respawnTime = 300;
 							positionATL[] = {2879.01,2043.61,0};
 							dir = 268;
-							script = 'this setVariable ["color",4]';
+							script = "_this select 0 setObjectTextureGlobal [0, 'WW2\Assets_t\Vehicles\Tanks_t\IF_PzKpfwVI_E\Body_Tarn52c_co.paa']; _this select 0 setObjectTextureGlobal [2, 'WW2\Assets_t\Vehicles\Tanks_t\IF_PzKpfwVI_E\Turret_Tarn52c_co.paa']";
 						};
 						class d_htank_3_2 {
 							displayName = "PzKpfW VI 'Tiger I'";
@@ -462,7 +462,7 @@ class Maps {
 							respawnTime = 300;
 							positionATL[] = {2857.98,2042.17,0};
 							dir = 88;
-							script = 'this setVariable ["color",4]';
+							script = "_this select 0 setObjectTextureGlobal [0, 'WW2\Assets_t\Vehicles\Tanks_t\IF_PzKpfwVI_E\Body_Tarn52c_co.paa']; _this select 0 setObjectTextureGlobal [2, 'WW2\Assets_t\Vehicles\Tanks_t\IF_PzKpfwVI_E\Turret_Tarn52c_co.paa']";
 						};
 						class d_truck_3_1 {
 							displayName = "SdKfz 251 MG42";
@@ -470,7 +470,7 @@ class Maps {
 							respawnTime = 60;
 							positionATL[] = {2827.11,2065.36,0};
 							dir = 90;
-							script = 'this setVariable ["color",4]';
+							script = "_this select 0 setObjectTextureGlobal [0, 'WW2\Assets_t\Vehicles\WheeledAPC_t\IF_SdKfz251\Hull_Feldgrau_co.paa']; _this select 0 setObjectTextureGlobal [1, 'WW2\Assets_t\Vehicles\WheeledAPC_t\IF_SdKfz251\Interrior_co.paa']";
 						};
 						class d_truck_3_2 {
 							displayName = "SdKfz 251 MG42";
@@ -478,7 +478,7 @@ class Maps {
 							respawnTime = 60;
 							positionATL[] = {2827.17,2059.36,0};
 							dir = 90;
-							script = 'this setVariable ["color",4]';
+							script = "_this select 0 setObjectTextureGlobal [0, 'WW2\Assets_t\Vehicles\WheeledAPC_t\IF_SdKfz251\Hull_Feldgrau_co.paa']; _this select 0 setObjectTextureGlobal [1, 'WW2\Assets_t\Vehicles\WheeledAPC_t\IF_SdKfz251\Interrior_co.paa']";
 						};
 						class d_car_3_1 {
 							displayName = "Kubelwagen";
@@ -486,7 +486,7 @@ class Maps {
 							respawnTime = 5;
 							positionATL[] = {2845.97,2051.8,0.613754};
 							dir = 0;
-							script = 'this setVariable ["color",2]';
+							script = "_this select 0 setObjectTextureGlobal [0, 'WW2\Assets_t\Vehicles\Cars_t\IF_Kfz1\Kubelwagen_Main_Sernyt_co.paa']; _this select 0 setObjectTextureGlobal [1, 'WW2\Assets_t\Vehicles\Cars_t\IF_Kfz1\Kubelwagen_Interior_Sernyt_co.paa']";
 						};
 						class d_car_3_2 {
 							displayName = "Kubelwagen";
@@ -494,7 +494,7 @@ class Maps {
 							respawnTime = 5;
 							positionATL[] = {2841.92,2051.83,0.262367};
 							dir = 0;
-							script = 'this setVariable ["color",2]';
+							script = "_this select 0 setObjectTextureGlobal [0, 'WW2\Assets_t\Vehicles\Cars_t\IF_Kfz1\Kubelwagen_Main_Sernyt_co.paa']; _this select 0 setObjectTextureGlobal [1, 'WW2\Assets_t\Vehicles\Cars_t\IF_Kfz1\Kubelwagen_Interior_Sernyt_co.paa']";
 						};
 						class d_car_3_3 {
 							displayName = "Kubelwagen";
@@ -502,7 +502,7 @@ class Maps {
 							respawnTime = 5;
 							positionATL[] = {2838.21,2051.88,0.0939941};
 							dir = 0;
-							script = 'this setVariable ["color",2]';
+							script = "_this select 0 setObjectTextureGlobal [0, 'WW2\Assets_t\Vehicles\Cars_t\IF_Kfz1\Kubelwagen_Main_Sernyt_co.paa']; _this select 0 setObjectTextureGlobal [1, 'WW2\Assets_t\Vehicles\Cars_t\IF_Kfz1\Kubelwagen_Interior_Sernyt_co.paa']";
 						};
 						class d_car_3_4 {
 							displayName = "Kubelwagen";
@@ -510,7 +510,7 @@ class Maps {
 							respawnTime = 5;
 							positionATL[] = {2834.12,2051.83,0};
 							dir = 0;
-							script = 'this setVariable ["color",2]';
+							script = "_this select 0 setObjectTextureGlobal [0, 'WW2\Assets_t\Vehicles\Cars_t\IF_Kfz1\Kubelwagen_Main_Sernyt_co.paa']; _this select 0 setObjectTextureGlobal [1, 'WW2\Assets_t\Vehicles\Cars_t\IF_Kfz1\Kubelwagen_Interior_Sernyt_co.paa']";
 						};
 					};
 				};
@@ -535,14 +535,14 @@ class Maps {
 							dir = 358;
 							script = "";
 						};
-						class a_htank_4_2 {
+						/*class a_htank_4_2 {
 							displayName = "M4A3 Sherman";
 							classname = "LIB_M4A3_76";
 							respawnTime = 300;
 							positionATL[] = {3080.13,2141.23,0};
 							dir = 358;
 							script = "";
-						};
+						};*/
 						class a_ltank_4_1 {
 							displayName = "M3 Stuart";
 							classname = "LIB_M3A3_Stuart";
@@ -551,14 +551,14 @@ class Maps {
 							dir = 358;
 							script = "";
 						};
-						class a_ltank_4_2 {
+						/*class a_ltank_4_2 {
 							displayName = "M3 Stuart";
 							classname = "LIB_M3A3_Stuart";
 							respawnTime = 150;
 							positionATL[] = {3067.04,2140.1,0};
 							dir = 358;
 							script = "";
-						};
+						};*/
 						class a_car_4_1 {
 							displayName = "M3 Scout Car";
 							classname = "LIB_US_Scout_M3_FFV";
@@ -615,23 +615,23 @@ class Maps {
 							respawnTime = 300;
 							positionATL[] = {2467.74,1992.85,0};
 							dir = 326;
-							script = 'this setVariable ["color",4]';
+							script = "_this select 0 setObjectTextureGlobal [0, 'WW2\Assets_t\Vehicles\Tanks_t\IF_PzKpfwVI_E\Body_Tarn52c_co.paa']; _this select 0 setObjectTextureGlobal [2, 'WW2\Assets_t\Vehicles\Tanks_t\IF_PzKpfwVI_E\Turret_Tarn52c_co.paa']";
 						};
-						class d_htank_4_2 {
+						/*class d_htank_4_2 {
 							displayName = "PzKpfW VI 'Tiger I'";
 							classname = "LIB_PzKpfwVI_E_2";
 							respawnTime = 300;
 							positionATL[] = {2462.15,1989.18,0};
 							dir = 326;
-							script = 'this setVariable ["color",4]';
-						};
+							script = "_this select 0 setObjectTextureGlobal [0, 'WW2\Assets_t\Vehicles\Tanks_t\IF_PzKpfwVI_E\Body_Tarn52c_co.paa']; _this select 0 setObjectTextureGlobal [2, 'WW2\Assets_t\Vehicles\Tanks_t\IF_PzKpfwVI_E\Turret_Tarn52c_co.paa']";
+						};*/
 						class d_truck_4_1 {
 							displayName = "SdKfz 251 MG42";
 							classname = "LIB_SdKfz251_FFV";
 							respawnTime = 60;
 							positionATL[] = {2431.81,2016.96,0.0039444};
 							dir = 330;
-							script = 'this setVariable ["color",4]';
+							script = "_this select 0 setObjectTextureGlobal [0, 'WW2\Assets_t\Vehicles\WheeledAPC_t\IF_SdKfz251\Hull_Feldgrau_co.paa']; _this select 0 setObjectTextureGlobal [1, 'WW2\Assets_t\Vehicles\WheeledAPC_t\IF_SdKfz251\Interrior_co.paa']";
 						};
 						class d_truck_4_2 {
 							displayName = "SdKfz 251 MG42";
@@ -639,7 +639,7 @@ class Maps {
 							respawnTime = 60;
 							positionATL[] = {2426.65,2013.89,0};
 							dir = 330;
-							script = 'this setVariable ["color",4]';
+							script = "_this select 0 setObjectTextureGlobal [0, 'WW2\Assets_t\Vehicles\WheeledAPC_t\IF_SdKfz251\Hull_Feldgrau_co.paa']; _this select 0 setObjectTextureGlobal [1, 'WW2\Assets_t\Vehicles\WheeledAPC_t\IF_SdKfz251\Interrior_co.paa']";
 						};
 						class d_car_4_1 {
 							displayName = "Kubelwagen";
@@ -647,7 +647,7 @@ class Maps {
 							respawnTime = 5;
 							positionATL[] = {2424.6,2004.97,0};
 							dir = 241;
-							script = 'this setVariable ["color",2]';
+							script = "_this select 0 setObjectTextureGlobal [0, 'WW2\Assets_t\Vehicles\Cars_t\IF_Kfz1\Kubelwagen_Main_Sernyt_co.paa']; _this select 0 setObjectTextureGlobal [1, 'WW2\Assets_t\Vehicles\Cars_t\IF_Kfz1\Kubelwagen_Interior_Sernyt_co.paa']";
 						};
 						class d_car_4_2 {
 							displayName = "Kubelwagen";
@@ -655,7 +655,7 @@ class Maps {
 							respawnTime = 5;
 							positionATL[] = {2426.5,2001.37,0};
 							dir = 241;
-							script = 'this setVariable ["color",2]';
+							script = "_this select 0 setObjectTextureGlobal [0, 'WW2\Assets_t\Vehicles\Cars_t\IF_Kfz1\Kubelwagen_Main_Sernyt_co.paa']; _this select 0 setObjectTextureGlobal [1, 'WW2\Assets_t\Vehicles\Cars_t\IF_Kfz1\Kubelwagen_Interior_Sernyt_co.paa']";
 						};
 						class d_car_4_3 {
 							displayName = "Kubelwagen";
@@ -663,7 +663,7 @@ class Maps {
 							respawnTime = 5;
 							positionATL[] = {2428.17,1998.03,0};
 							dir = 241;
-							script = 'this setVariable ["color",2]';
+							script = "_this select 0 setObjectTextureGlobal [0, 'WW2\Assets_t\Vehicles\Cars_t\IF_Kfz1\Kubelwagen_Main_Sernyt_co.paa']; _this select 0 setObjectTextureGlobal [1, 'WW2\Assets_t\Vehicles\Cars_t\IF_Kfz1\Kubelwagen_Interior_Sernyt_co.paa']";
 						};
 						class d_car_4_4 {
 							displayName = "Kubelwagen";
@@ -671,7 +671,7 @@ class Maps {
 							respawnTime = 5;
 							positionATL[] = {2430.27,1994.49,0};
 							dir = 241;
-							script = 'this setVariable ["color",2]';
+							script = "_this select 0 setObjectTextureGlobal [0, 'WW2\Assets_t\Vehicles\Cars_t\IF_Kfz1\Kubelwagen_Main_Sernyt_co.paa']; _this select 0 setObjectTextureGlobal [1, 'WW2\Assets_t\Vehicles\Cars_t\IF_Kfz1\Kubelwagen_Interior_Sernyt_co.paa']";
 						};
 					};
 				};
