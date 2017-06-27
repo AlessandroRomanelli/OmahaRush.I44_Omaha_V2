@@ -95,6 +95,7 @@ player addEventHandler ["Killed",{
 	//Avoiding more than one time each 1/10 of a second
 	if (diag_tickTime - _lastDeath > 0.1) then {
 		(_this select 0) setVariable ["unitDmg", 0];
+		(_this select 0) setVariable ["wasHS", false];
 		// Increase deaths
 		cl_deaths = cl_deaths + 1;
 		cl_total_deaths = cl_total_deaths + 1;
@@ -113,7 +114,8 @@ player addEventHandler ["Killed",{
 		// Send message to killer that he killed someone
 		if ((_this select 0) != _killer && !isNull (_this select 0) && (!isNull _killer)) then {
 			if ((_this select 0) getVariable ["isAlive", true]) then {
-				[_this select 0] remoteExec ["client_fnc_kill", _killer];
+				[_this select 0, false] remoteExec ["client_fnc_kill", _killer];
+				(_x select 0)  setVariable ["isAlive", false];
 			};
 			//Log time of death
 			(_this select 0) setVariable ["lastDeath", diag_tickTime];
@@ -166,12 +168,11 @@ player addEventHandler ["HitPart", {
 	{
 		// If the headshot is the hit selection
 	 	if ("head" in (_x select 5)) then {
-			// Set a variable on the victim, it was HS
-			(_x select 0) setVariable ["wasHS", true, true];
+			(_x select 0) setVariable ["wasHS", true];
 			// Kill the target
 	  	(_x select 0) setDamage 1;
 			if ((_x select 0) getVariable ["isAlive", true]) then {
-				[_x select 0] remoteExec ["client_fnc_kill",_x select 1];
+				[_x select 0, true] remoteExec ["client_fnc_kill",_x select 1];
 				(_x select 0)  setVariable ["isAlive", false];
 			};
 		};
@@ -184,38 +185,23 @@ player addEventHandler ["HandleDamage", {
  _damage = _this select 2;
  _s = _this select 3;
  //Get the shooter's rifle
- _rifle = ((getUnitLoadout _s) select 0) select 0;
+ _rifle = currentWeapon (vehicle _s);
  //SMG array
- _smgs = ["LIB_M1928_Thompson", "LIB_M1A1_Thompson", "LIB_MP40", "LIB_M1928A1_Thompson", "LIB_M1928A1_Thompson", "LIB_PPSh41_m", "LIB_MP44"];
+ _smgs = 			["LIB_M1928_Thompson", "LIB_M1A1_Thompson", "LIB_MP40", "LIB_M1928A1_Thompson", "LIB_M1928A1_Thompson", "LIB_PPSh41_m", "LIB_MP44"];
+ _semiAutos = ["LIB_G43", "LIB_M1_Garand", "LIB_SVT_40", "LIB_M1918A2_BAR"];
+ _pistols =	  ["LIB_Colt_M1911", "LIB_M1895", "LIB_P08"];
  if (_rifle in _smgs) then {
-	 if ((driver vehicle _s) getVariable ["side",sideUnknown] == (_u getVariable ["side",sideUnknown]) && (_s != player)) exitWith {};
-	 //Get the time of last hit
-  _lastHit = _u getVariable ["lastHit", 0];
-	//If the time between last hit and new hit is more than 1/10 of a second
-  if ((diag_tickTime - _lastHit) > 0.1) then {
-		//Get damage between 0.2 and 0.35 (Worst case: 3 hits, best case: 2 hits, average: 3-4 hits)
-   _dmg = (floor random [33,50,33])/100;
-	 //Get the current damage of the victim, if the variable is undefined, sets it to 0
-	 _unitHP = _u getVariable ["unitDmg", 0];
-	 //Sets the damage of the unit to its current HP + the damage caused by the smg
-   _u setDamage (_unitHP + _dmg);
-	 //If the bullet is defined,
-   if ((_this select 4) != "") then {
-		 //Send a hit marker to the shooter
-    _dmg remoteExec ["client_fnc_MPHit", _s];
-   };
-	 if (_unitHP + _dmg >= 1 && _u getVariable ["isAlive", true]) then {
-		_u setVariable ["isAlive", false];
-		[_u] remoteExec ["client_fnc_kill",_s];
-	 };
-	 //Store the new unit HP
-	 _u setVariable ["unitDmg", _unitHP + _dmg];
-	 //Store the time of last hit
-	 _u setVariable ["lastHit", diag_tickTime];
-  };
-	//Set the default damage output of SMGs to 0
-  _damage = 0;
+	 //[shooter, target, base damage, long distance, short distance]
+	 [_s, _u, 30, 0, 0] call client_fnc_damageHandler;
  };
+ if (_rifle in _semiAutos) then {
+	 [_s, _u, 60, 50, 15] call client_fnc_damageHandler;
+ };
+ if (_rifle in _pistols) then {
+	 [_s, _u, 15, 0, 0] call client_fnc_damageHandler;
+ };
+ //Set the default damage to 0
+ _damage = 0;
 
  //Handle friendlyfire
  if ((driver vehicle _s) getVariable ["side",sideUnknown] == (_u getVariable ["side",sideUnknown]) && (_s != player)) then {
@@ -241,6 +227,9 @@ player addEventHandler ["GetInMan", {
 	_vehicle addEventHandler ["HandleDamage", {
 		_v = _this select 0;
 		_s = _this select 3;
+		if (!isNull _s) then {
+			_v setVariable ["shooter", _s];
+		};
 		if (_v isKindOf "Tank") then {
 			_damage = _this select 2;
 			_damage = 0;
@@ -253,7 +242,7 @@ player addEventHandler ["GetInMan", {
 					_vehDmg = _v getVariable ["vehDmg", 0];
 					_v setDamage (_vehDmg + _dmg);
 					if (damage _v > 0.85) then {
-						300 remoteExec ["client_fnc_vehicleDisabled", _s];
+						300 remoteExec ["client_fnc_vehicleDisabled", (_v getVariable ["shooter", objNull])];
 					};
 					_v setVariable ["vehDmg", _vehDmg + _dmg];
 				};
@@ -265,7 +254,7 @@ player addEventHandler ["GetInMan", {
 					_v setHitPointDamage ["HitLTrack", _vehDmg + 0.5];
 					_v setHitPointDamage ["HitRTrack", _vehDmg + 0.5];
 					if (damage _v > 0.85) then {
-						300 remoteExec ["client_fnc_vehicleDisabled", _s];
+						300 remoteExec ["client_fnc_vehicleDisabled", (_v getVariable ["shooter", objNull])];
 					};
 					_v setVariable ["vehDmg", _vehDmg + _dmg];
 				};
@@ -280,7 +269,14 @@ player addEventHandler ["GetInMan", {
 		_v = _this select 0;
 		_s = _this select 3;
 		if ({alive _x} count (crew _v) > 0 && !(_v getVariable ["disabled", false])) then {
-			if (((driver _v) getVariable ["side", sideUnknown]) != (_s getVariable ["side", sideUnknown])) then {
+			if (!(driver _v == objNull)) then {
+				_crewPl = driver _v;
+			} else {
+				if (!(gunner _v) == objNull) then {
+					_crewPl = gunner _v;
+				};
+			};
+			if ((_crewPl getVariable ["side", sideUnknown]) != (_s getVariable ["side", sideUnknown])) then {
 				if (!(canMove _v)) then {
 					_v setVariable ["disabled", true];
 					if (_v isKindOf "Tank") exitWith {

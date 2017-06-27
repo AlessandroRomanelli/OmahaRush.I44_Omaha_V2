@@ -95,6 +95,7 @@ class Maverick_Functions_Client {
 		class displaySpawnRestriction {};
 		class moveUnitIntoVehicle {};
 		class drawNames {};
+		class damageHandler {};
 		class brightNight {postInit = 1;};
 
 		// Pointfeed

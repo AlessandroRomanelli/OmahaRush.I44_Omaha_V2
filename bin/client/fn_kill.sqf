@@ -10,6 +10,7 @@ scriptName "fn_kill";
 #define __filename "fn_kill.sqf"
 if (isServer && !hasInterface) exitWith {};
 _victim = param[0,objNull,[objNull]];
+_wasHS = param[1, false];
 
 if (playerSide == (_victim getVariable ["side",civilian])) exitWith {};
 
@@ -52,9 +53,8 @@ _points = 100;
 
 // Display hit marker
 _HSkill = "";
-if (_victim getVariable ["wasHS", false]) then {
+if (_wasHS) then {
 	-0.03122 call client_fnc_MPHit;
-	_victim setVariable ["wasHS", false, true];
 	_HSkill = "<br/><t size='1.0' color='#FFFFFF'>HEADSHOT BONUS</t>";
 	_points = _points + 50;
 } else {

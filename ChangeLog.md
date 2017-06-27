@@ -1,3 +1,30 @@
+#Changelog V0.63.8
++ [ADDED] Custom damage for all weapons;
++ [ADDED] "Sweet spot" mechanic to all semi autos and BAR;
++ [ADDED] Dynamic tickets now vary depending on server population;
+
+- [REMOVED] Random damages for SMG, base damage is now fixed but varies depending on distance;
+
+    HTK TABLE (Hits To Kill):
+
+                0m to 13m     |        13m to 50m     |       past 50m        |
+      SMGs         1          |             2         |           3/4         |
+                              |                       |                       |
+                0m to 15m     |        15m to 50m     |       50m to 135m     |     past 135m
+      SEMIs        2          |             1         |            2          |         3
+                              |                       |                       |
+                0m to 15m     |        15m to 33m     |       33m to 50m      |
+      PISTOLs      2          |             3         |            4          |
+
+//CODE
++ [ADDED] damageHandler function for all weapons;
+- [REMOVED] Savestatics from keydown "ESC", deprecated;
+- [REMOVED] PublicVariable being published on every hit, should improve network stability;
+* [REWORKED] HS detection;
+
+* [FIXED] Players are no longer allowed to spawn without having picked a weapon first;
+
+
 #Changelog V0.63.7
 + [ADDED] Ardennes terrain;
 + [ADDED] Autosave of statistics when pressing "ESC";

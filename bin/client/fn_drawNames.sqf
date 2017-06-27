@@ -1,7 +1,7 @@
 TAGS = addMissionEventHandler ["Draw3D", {
     {
         if (side _x == side player && {alive _x}) then {
-            _dist = (player distance _x) / 5;
+            _dist = (player distance _x) / 15;
             _color = getArray (configFile/'CfgInGameUI'/'SideColors'/'colorFriendly');
             if (cursorTarget != _x) then {
                 _color set [3, 1 - _dist]

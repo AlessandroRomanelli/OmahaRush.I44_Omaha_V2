@@ -26,4 +26,5 @@ class client_fnc_vehicleDisabled			{allowedTargets = 2;};
 class bis_fnc_execvm {allowedTargets = 0;};
 class bis_fnc_dynamicgroups {allowedTargets = 0;};
 class bis_fnc_effectKilledSecondaries {allowedTargets = 0;};
+class bis_fnc_curatorrespawn {allowedTargets = 0;};
 class sv_tryrespawn {allowedTargets = 0;};

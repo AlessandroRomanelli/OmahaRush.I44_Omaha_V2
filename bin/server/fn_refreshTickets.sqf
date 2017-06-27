@@ -9,7 +9,7 @@ scriptName "fn_refreshTickets";
 --------------------------------------------------------------------*/
 #define __filename "fn_refreshTickets.sqf"
 
-_tickets = getNumber(missionConfigFile >> "Maps" >> sv_map >> "tickets");
+_tickets = ceil(count allPlayers*7.5);
 
 // Set tickets
 sv_tickets = _tickets;

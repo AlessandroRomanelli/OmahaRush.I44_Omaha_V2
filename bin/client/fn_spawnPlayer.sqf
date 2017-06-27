@@ -15,6 +15,10 @@ if ((missionNamespace getVariable ["cl_blockSpawnUntil", diag_tickTime]) - diag_
 	[format ["SPAWNING ALLOWED IN %1", [(missionNamespace getVariable ["cl_blockSpawnUntil", diag_tickTime]) - diag_tickTime, "MM:SS"] call bis_fnc_secondsToString]] spawn client_fnc_displayError;
 };
 
+if (cl_equipClassnames select 0 == "") exitWith {
+	 ["YOU NEED TO CHOOSE A WEAPON BEFORE SPAWNING"] spawn client_fnc_displayError;
+};
+
 disableSerialization;
 _d = findDisplay 5000;
 

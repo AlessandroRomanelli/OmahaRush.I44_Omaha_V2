@@ -71,11 +71,6 @@ cl_soundLevel = 1;
 		};
 	};
 
-	if ((_this select 1) == 1) then {
-		_h = true;
-		[] spawn client_fnc_saveStatistics;
-	};
-
 	// Earplugs
 	if ((_this select 1) == 21) then {
 		_h = true;
