@@ -3,9 +3,12 @@
 + [ADDED] "Sweet spot" mechanic to all semi autos and BAR;
 + [ADDED] Dynamic tickets now vary depending on server population;
 
+* [CHANGED] Disable/Destruction Detection of vehicles **Needs testing**
 - [REMOVED] Random damages for SMG, base damage is now fixed but varies depending on distance;
 
     HTK TABLE (Hits To Kill):
+
+                            **=== HEADSHOTS are ALWAYS 1 hit ===**
 
                 0m to 13m     |        13m to 50m     |       past 50m        |
       SMGs         1          |             2         |           3/4         |
