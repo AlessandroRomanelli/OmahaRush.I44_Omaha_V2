@@ -10,14 +10,14 @@ class Maps {
 
 		class PersistentVehicles {
 			class Attacker {
-				class attack_tank {
+				/*class attack_tank {
 					displayName = "M4A3 Sherman";
 					classname = "LIB_M4A3_75_Tubes";
 					respawnTime = 300;
 					positionATL[] = {3295.83,3108.93,0};
 					dir = 172;
 					script = "";
-				};
+				};*/
 			};
 			class Defender {/*
 				class defend_tank {
@@ -35,7 +35,7 @@ class Maps {
 			class Stage1 {
 				class Spawns {
 					defenders[] = {3791.36,2659.82,0};
-					attackers[] = {3290.68,3119.68,0};
+					attackers[] = {3305.7,3098.55,0};
 				};
 				class Objective {
 					positionATL[] = {3876.55,2839.54,0.493347};
@@ -44,63 +44,159 @@ class Maps {
 				};
 				class Vehicles {
 					class Attacker {
-						class a_truck_1_1 {
-							displayName = "M3 Halftrack";
-							classname = "LIB_US_M3_Halftrack";
-							respawnTime = 60;
-							positionATL[] = {3263.32,3112.22,0};
-							dir = 163;
+						class a_htank_1_1 {
+							displayName = "M4A3 Sherman";
+							classname = "LIB_M4A3_76";
+							respawnTime = 300;
+							positionATL[] = {3296.32,3106.73,0.461218};
+							dir = 171;
+							script = "";
+						};
+						class a_htank_1_2 {
+							displayName = "M4A3 Sherman";
+							classname = "LIB_M4A3_76";
+							respawnTime = 300;
+							positionATL[] = {3289.8,3105.82,0.549654};
+							dir = 171;
+							script = "";
+						};
+						class a_ltank_1_1 {
+							displayName = "M3 Stuart";
+							classname = "LIB_M3A3_Stuart";
+							respawnTime = 150;
+							positionATL[] = {3282.61,3105.24,0.711};
+							dir = 171;
+							script = "";
+						};
+						class a_ltank_1_2 {
+							displayName = "M3 Stuart";
+							classname = "LIB_M3A3_Stuart";
+							respawnTime = 150;
+							positionATL[] = {3276.56,3104.39,0.605019};
+							dir = 171;
 							script = "";
 						};
 						class a_car_1_1 {
-							displayName = "Willys MB";
-							classname = "LIB_US_Willys_MB";
-							respawnTime = 30;
-							positionATL[] = {3285.9,3111.23,0};
-							dir = 196;
+							displayName = "M3 Scout Car";
+							classname = "LIB_US_Scout_M3_FFV";
+							respawnTime = 60;
+							positionATL[] = {3323.94,3078.71,0.603941};
+							dir = 247;
 							script = "";
 						};
 						class a_car_1_2 {
-							displayName = "Willys MB";
-							classname = "LIB_US_Willys_MB";
-							respawnTime = 30;
-							positionATL[] = {3288.24,3110.57,0};
-							dir = 196;
+							displayName = "M3 Scout Car";
+							classname = "LIB_US_Scout_M3_FFV";
+							respawnTime = 60;
+							positionATL[] = {3322.03,3083.14,0.606327};
+							dir = 247;
 							script = "";
 						};
 						class a_car_1_3 {
 							displayName = "Willys MB";
 							classname = "LIB_US_Willys_MB";
-							respawnTime = 30;
-							positionATL[] = {3290.67,3109.86,0};
-							dir = 196;
+							respawnTime = 5;
+							positionATL[] = {3320.26,3087.99,0.38327};
+							dir = 247;
+							script = "";
+						};
+						class a_car_1_4 {
+							displayName = "Willys MB";
+							classname = "LIB_US_Willys_MB";
+							respawnTime = 5;
+							positionATL[] = {3319.12,3090.68,0.493919};
+							dir = 247;
+							script = "";
+						};
+						class a_car_1_5 {
+							displayName = "Willys MB";
+							classname = "LIB_US_Willys_MB";
+							respawnTime = 5;
+							positionATL[] = {3317.8,3093.75,0.395409};
+							dir = 247;
+							script = "";
+						};
+						class a_car_1_6 {
+							displayName = "Willys MB";
+							classname = "LIB_US_Willys_MB";
+							respawnTime = 5;
+							positionATL[] = {3316.66,3096.46,0.344191};
+							dir = 247;
 							script = "";
 						};
 					};
 					class Defender {
-						class d_truck_1_1 {
-							displayName = "Kubelwagen";
-							classname = "LIB_Kfz1";
-							respawnTime = 30;
+						class d_htank_1_1 {
+							displayName = "PzKpfW VI 'Tiger I'";
+							classname = "LIB_PzKpfwVI_E_2";
+							respawnTime = 300;
 							positionATL[] = {3802.88,2661.71,0};
-							dir = 272;
-							script = "";
+							dir = 336;
+							script = 'this setVariable ["color",4]';
+						};
+						class d_htank_1_2 {
+							displayName = "PzKpfW VI 'Tiger I'";
+							classname = "LIB_PzKpfwVI_E_2";
+							respawnTime = 300;
+							positionATL[] = {3802.88,2661.71,0};
+							dir = 336;
+							script = 'this setVariable ["color",4]';
+						};
+						class d_truck_1_1 {
+							displayName = "SdKfz 251 MG42";
+							classname = "LIB_SdKfz251_FFV";
+							respawnTime = 60;
+							positionATL[] = {3767.01,2640.85,0};
+							dir = 9;
+							script = 'this setVariable ["color",4]';
 						};
 						class d_truck_1_2 {
+							displayName = "SdKfz 251 MG42";
+							classname = "LIB_SdKfz251_FFV";
+							respawnTime = 60;
+							positionATL[] = {3762.1,2641.67,0};
+							dir = 9;
+							script = 'this setVariable ["color",4]';
+						};
+						class d_car_1_1 {
 							displayName = "Kubelwagen";
-							classname = "LIB_Kfz1";
-							respawnTime = 30;
-							positionATL[] = {3802.74,2657.74,0};
-							dir = 272;
-							script = "";
+							classname = "LIB_Kfz1_Hood";
+							respawnTime = 5;
+							positionATL[] = {3760.03,2665.06,0};
+							dir = 155;
+							script = 'this setVariable ["color",2]';
+						};
+						class d_car_1_2 {
+							displayName = "Kubelwagen";
+							classname = "LIB_Kfz1_Hood";
+							respawnTime = 5;
+							positionATL[] = {3756.39,2663.41,0};
+							dir = 155;
+							script = 'this setVariable ["color",2]';
+						};
+						class d_car_1_3 {
+							displayName = "Kubelwagen";
+							classname = "LIB_Kfz1_Hood";
+							respawnTime = 5;
+							positionATL[] = {3752.89,2661.87,0};
+							dir = 155;
+							script = 'this setVariable ["color",2]';
+						};
+						class d_car_1_4 {
+							displayName = "Kubelwagen";
+							classname = "LIB_Kfz1_Hood";
+							respawnTime = 5;
+							positionATL[] = {3749.24,2660.21,0};
+							dir = 155;
+							script = 'this setVariable ["color",2]';
 						};
 					};
 				};
 			};
 			class Stage2 {
 				class Spawns {
-					defenders[] = {3510.1,2182.14,0};
-					attackers[] = {3800.27,2845.98,0};
+					defenders[] = {3261,2148.77,0};
+					attackers[] = {3809.26,2861.61,0};
 				};
 				class Objective {
 					positionATL[] = {3464.06,2322.56,0.413357};
@@ -109,63 +205,159 @@ class Maps {
 				};
 				class Vehicles {
 					class Attacker {
-						class a_truck_2_1 {
-							displayName = "M3 Halftrack";
-							classname = "LIB_US_M3_Halftrack";
-							respawnTime = 120;
-							positionATL[] = {3788.83,2848.6,0};
-							dir = 134;
+						class a_htank_2_1 {
+							displayName = "M4A3 Sherman";
+							classname = "LIB_M4A3_76";
+							respawnTime = 300;
+							positionATL[] = {3806.92,2846.21,0};
+							dir = 182;
+							script = "";
+						};
+						class a_htank_2_2 {
+							displayName = "M4A3 Sherman";
+							classname = "LIB_M4A3_76";
+							respawnTime = 300;
+							positionATL[] = {3800.4,2846.55,0};
+							dir = 182;
+							script = "";
+						};
+						class a_ltank_2_1 {
+							displayName = "M3 Stuart";
+							classname = "LIB_M3A3_Stuart";
+							respawnTime = 150;
+							positionATL[] = {3793.15,2847.2,0};
+							dir = 182;
+							script = "";
+						};
+						class a_ltank_2_2 {
+							displayName = "M3 Stuart";
+							classname = "LIB_M3A3_Stuart";
+							respawnTime = 150;
+							positionATL[] = {3787.04,2847.52,3.8147e-006};
+							dir = 182;
 							script = "";
 						};
 						class a_car_2_1 {
-							displayName = "Willys MB";
-							classname = "LIB_US_Willys_MB";
-							respawnTime = 30;
-							positionATL[] = {3780.94,2842.25,0};
-							dir = 134;
+							displayName = "M3 Scout Car";
+							classname = "LIB_US_Scout_M3_FFV";
+							respawnTime = 60;
+							positionATL[] = {3779.34,2840.95,3.8147e-006};
+							dir = 151;
 							script = "";
 						};
 						class a_car_2_2 {
-							displayName = "Willys MB";
-							classname = "LIB_US_Willys_MB";
-							respawnTime = 30;
-							positionATL[] = {3783.06,2844.42,0};
-							dir = 134;
+							displayName = "M3 Scout Car";
+							classname = "LIB_US_Scout_M3_FFV";
+							respawnTime = 60;
+							positionATL[] = {3775.11,2838.07,3.8147e-006};
+							dir = 151;
 							script = "";
 						};
 						class a_car_2_3 {
 							displayName = "Willys MB";
 							classname = "LIB_US_Willys_MB";
-							respawnTime = 30;
-							positionATL[] = {3785.17,2846.58,0};
-							dir = 134;
+							respawnTime = 5;
+							positionATL[] = {3769.39,2820.95,0};
+							dir = 84;
+							script = "";
+						};
+						class a_car_2_4 {
+							displayName = "Willys MB";
+							classname = "LIB_US_Willys_MB";
+							respawnTime = 5;
+							positionATL[] = {3769.25,2817.72,0};
+							dir = 84;
+							script = "";
+						};
+						class a_car_2_5 {
+							displayName = "Willys MB";
+							classname = "LIB_US_Willys_MB";
+							respawnTime = 5;
+							positionATL[] = {3769.59,2814.4,0};
+							dir = 84;
+							script = "";
+						};
+						class a_car_2_6 {
+							displayName = "Willys MB";
+							classname = "LIB_US_Willys_MB";
+							respawnTime = 5;
+							positionATL[] = {3769.91,2811.49,0};
+							dir = 84;
 							script = "";
 						};
 					};
 					class Defender {
+						class d_htank_2_1 {
+							displayName = "PzKpfW VI 'Tiger I'";
+							classname = "LIB_PzKpfwVI_E_2";
+							respawnTime = 300;
+							positionATL[] = {3237.1,2131.24,0};
+							dir = 255;
+							script = 'this setVariable ["color",4]';
+						};
+						class d_htank_2_2 {
+							displayName = "PzKpfW VI 'Tiger I'";
+							classname = "LIB_PzKpfwVI_E_2";
+							respawnTime = 300;
+							positionATL[] = {3235.69,2137.67,0};
+							dir = 255;
+							script = 'this setVariable ["color",4]';
+						};
+						class d_truck_2_1 {
+							displayName = "SdKfz 251 MG42";
+							classname = "LIB_SdKfz251_FFV";
+							respawnTime = 60;
+							positionATL[] = {3252.42,2162.41,0};
+							dir = 13;
+							script = 'this setVariable ["color",4]';
+						};
+						class d_truck_2_2 {
+							displayName = "SdKfz 251 MG42";
+							classname = "LIB_SdKfz251_FFV";
+							respawnTime = 60;
+							positionATL[] = {3257.3,2161.23,0};
+							dir = 13;
+							script = 'this setVariable ["color",4]';
+						};
 						class d_car_2_1 {
 							displayName = "Kubelwagen";
-							classname = "LIB_Kfz1";
-							respawnTime = 30;
-							positionATL[] = {3500.13,2184.07,0.212822};
-							dir = 281;
-							script = "";
+							classname = "LIB_Kfz1_Hood";
+							respawnTime = 5;
+							positionATL[] = {3257.14,2137.18,0};
+							dir = 87;
+							script = 'this setVariable ["color",2]';
 						};
 						class d_car_2_2 {
 							displayName = "Kubelwagen";
-							classname = "LIB_Kfz1";
-							respawnTime = 30;
-							positionATL[] = {3499.29,2180.79,0.277283};
-							dir = 300;
-							script = "";
+							classname = "LIB_Kfz1_Hood";
+							respawnTime = 5;
+							positionATL[] = {3257.32,2133.19,0};
+							dir = 87;
+							script = 'this setVariable ["color",2]';
+						};
+						class d_car_2_3 {
+							displayName = "Kubelwagen";
+							classname = "LIB_Kfz1_Hood";
+							respawnTime = 5;
+							positionATL[] = {3257.51,2129.48,0};
+							dir = 87;
+							script = 'this setVariable ["color",2]';
+						};
+						class d_car_2_4 {
+							displayName = "Kubelwagen";
+							classname = "LIB_Kfz1_Hood";
+							respawnTime = 5;
+							positionATL[] = {3257.62,2125.5,0.0168953};
+							dir = 87;
+							script = 'this setVariable ["color",2]';
 						};
 					};
 				};
 			};
 			class Stage3 {
 				class Spawns {
-					defenders[] = {2918.24,2168.87,0};
-					attackers[] = {3398.22,2361.33,0};
+					defenders[] = {2823.85,2052.54,0};
+					attackers[] = {3384.33,2346.33,0};
 				};
 				class Objective {
 					positionATL[] = {3112.5,2155.75,0};
@@ -174,55 +366,151 @@ class Maps {
 				};
 				class Vehicles {
 					class Attacker {
-						class a_truck_3_1 {
-							displayName = "M3 Halftrack";
-							classname = "LIB_US_M3_Halftrack";
-							respawnTime = 120;
-							positionATL[] = {3390.35,2349.8,0};
-							dir = 134;
+						class a_htank_3_1 {
+							displayName = "M4A3 Sherman";
+							classname = "LIB_M4A3_76";
+							respawnTime = 300;
+							positionATL[] = {3390.27,2340.19,0};
+							dir = 100;
+							script = "";
+						};
+						class a_htank_3_2 {
+							displayName = "M4A3 Sherman";
+							classname = "LIB_M4A3_76";
+							respawnTime = 300;
+							positionATL[] = {3389.06,2333.7,0};
+							dir = 100;
+							script = "";
+						};
+						class a_ltank_3_1 {
+							displayName = "M3 Stuart";
+							classname = "LIB_M3A3_Stuart";
+							respawnTime = 150;
+							positionATL[] = {3388.37,2326.39,0};
+							dir = 100;
+							script = "";
+						};
+						class a_ltank_3_2 {
+							displayName = "M3 Stuart";
+							classname = "LIB_M3A3_Stuart";
+							respawnTime = 150;
+							positionATL[] = {3387.26,2320.37,0.0155563};
+							dir = 100;
 							script = "";
 						};
 						class a_car_3_1 {
-							displayName = "Willys MB";
-							classname = "LIB_US_Willys_MB";
-							respawnTime = 30;
-							positionATL[] = {3391.59,2352.8,0};
-							dir = 134;
+							displayName = "M3 Scout Car";
+							classname = "LIB_US_Scout_M3_FFV";
+							respawnTime = 60;
+							positionATL[] = {3378.75,2352.69,0};
+							dir = 243;
 							script = "";
 						};
 						class a_car_3_2 {
-							displayName = "Willys MB";
-							classname = "LIB_US_Willys_MB";
-							respawnTime = 30;
-							positionATL[] = {3393.71,2354.97,0};
-							dir = 134;
+							displayName = "M3 Scout Car";
+							classname = "LIB_US_Scout_M3_FFV";
+							respawnTime = 60;
+							positionATL[] = {3376.46,2357.02,0};
+							dir = 243;
 							script = "";
 						};
 						class a_car_3_3 {
 							displayName = "Willys MB";
 							classname = "LIB_US_Willys_MB";
-							respawnTime = 30;
-							positionATL[] = {3395.82,2357.13,0};
-							dir = 134;
+							respawnTime = 5;
+							positionATL[] = {3374.37,2361.79,0};
+							dir = 243;
+							script = "";
+						};
+						class a_car_3_4 {
+							displayName = "Willys MB";
+							classname = "LIB_US_Willys_MB";
+							respawnTime = 5;
+							positionATL[] = {3373.05,2364.39,0};
+							dir = 243;
+							script = "";
+						};
+						class a_car_3_5 {
+							displayName = "Willys MB";
+							classname = "LIB_US_Willys_MB";
+							respawnTime = 5;
+							positionATL[] = {3371.55,2367.28,0};
+							dir = 243;
+							script = "";
+						};
+						class a_car_3_6 {
+							displayName = "Willys MB";
+							classname = "LIB_US_Willys_MB";
+							respawnTime = 5;
+							positionATL[] = {3370.22,2369.9,0};
+							dir = 243;
 							script = "";
 						};
 					};
 					class Defender {
+						class d_htank_3_1 {
+							displayName = "PzKpfW VI 'Tiger I'";
+							classname = "LIB_PzKpfwVI_E_2";
+							respawnTime = 300;
+							positionATL[] = {2879.01,2043.61,0};
+							dir = 268;
+							script = 'this setVariable ["color",4]';
+						};
+						class d_htank_3_2 {
+							displayName = "PzKpfW VI 'Tiger I'";
+							classname = "LIB_PzKpfwVI_E_2";
+							respawnTime = 300;
+							positionATL[] = {2857.98,2042.17,0};
+							dir = 88;
+							script = 'this setVariable ["color",4]';
+						};
+						class d_truck_3_1 {
+							displayName = "SdKfz 251 MG42";
+							classname = "LIB_SdKfz251_FFV";
+							respawnTime = 60;
+							positionATL[] = {2827.11,2065.36,0};
+							dir = 90;
+							script = 'this setVariable ["color",4]';
+						};
+						class d_truck_3_2 {
+							displayName = "SdKfz 251 MG42";
+							classname = "LIB_SdKfz251_FFV";
+							respawnTime = 60;
+							positionATL[] = {2827.17,2059.36,0};
+							dir = 90;
+							script = 'this setVariable ["color",4]';
+						};
 						class d_car_3_1 {
 							displayName = "Kubelwagen";
-							classname = "LIB_Kfz1";
-							respawnTime = 30;
-							positionATL[] = {2958,2162.25,0};
-							dir = 162;
-							script = "";
+							classname = "LIB_Kfz1_Hood";
+							respawnTime = 5;
+							positionATL[] = {2845.97,2051.8,0.613754};
+							dir = 0;
+							script = 'this setVariable ["color",2]';
 						};
 						class d_car_3_2 {
 							displayName = "Kubelwagen";
-							classname = "LIB_Kfz1";
-							respawnTime = 30;
-							positionATL[] = {2961.5,2162.75,0};
-							dir = 170;
-							script = "";
+							classname = "LIB_Kfz1_Hood";
+							respawnTime = 5;
+							positionATL[] = {2841.92,2051.83,0.262367};
+							dir = 0;
+							script = 'this setVariable ["color",2]';
+						};
+						class d_car_3_3 {
+							displayName = "Kubelwagen";
+							classname = "LIB_Kfz1_Hood";
+							respawnTime = 5;
+							positionATL[] = {2838.21,2051.88,0.0939941};
+							dir = 0;
+							script = 'this setVariable ["color",2]';
+						};
+						class d_car_3_4 {
+							displayName = "Kubelwagen";
+							classname = "LIB_Kfz1_Hood";
+							respawnTime = 5;
+							positionATL[] = {2834.12,2051.83,0};
+							dir = 0;
+							script = 'this setVariable ["color",2]';
 						};
 					};
 				};
@@ -230,7 +518,7 @@ class Maps {
 			class Stage4 {
 				class Spawns {
 					defenders[] = {2622.98,2002.16,0};
-					attackers[] = {3107.8,2149.14,0};
+					attackers[] = {3111.25,2168.77,0};
 				};
 				class Objective {
 					positionATL[] = {2698.49,2144.07,1.3528};
@@ -239,63 +527,151 @@ class Maps {
 				};
 				class Vehicles {
 					class Attacker {
-						class a_truck_4_1 {
-							displayName = "M3 Halftrack";
-							classname = "LIB_US_M3_Halftrack";
-							respawnTime = 120;
-							positionATL[] = {3090.37,2187.6,0};
-							dir = 267;
+						class a_htank_4_1 {
+							displayName = "M4A3 Sherman";
+							classname = "LIB_M4A3_76";
+							respawnTime = 300;
+							positionATL[] = {3086.73,2141.37,0};
+							dir = 358;
 							script = "";
 						};
-						class a_truck_4_2 {
-							displayName = "M3 Halftrack";
-							classname = "LIB_US_M3_Halftrack";
-							respawnTime = 120;
-							positionATL[] = {3090.51,2183.62,0};
-							dir = 267;
+						class a_htank_4_2 {
+							displayName = "M4A3 Sherman";
+							classname = "LIB_M4A3_76";
+							respawnTime = 300;
+							positionATL[] = {3080.13,2141.23,0};
+							dir = 358;
+							script = "";
+						};
+						class a_ltank_4_1 {
+							displayName = "M3 Stuart";
+							classname = "LIB_M3A3_Stuart";
+							respawnTime = 150;
+							positionATL[] = {3073.15,2140.19,0};
+							dir = 358;
+							script = "";
+						};
+						class a_ltank_4_2 {
+							displayName = "M3 Stuart";
+							classname = "LIB_M3A3_Stuart";
+							respawnTime = 150;
+							positionATL[] = {3067.04,2140.1,0};
+							dir = 358;
 							script = "";
 						};
 						class a_car_4_1 {
-							displayName = "Willys MB";
-							classname = "LIB_US_Willys_MB";
-							respawnTime = 30;
-							positionATL[] = {3091.78,2180.57,0};
-							dir = 267;
+							displayName = "M3 Scout Car";
+							classname = "LIB_US_Scout_M3_FFV";
+							respawnTime = 60;
+							positionATL[] = {3090.56,2175,0};
+							dir = 270;
 							script = "";
 						};
 						class a_car_4_2 {
-							displayName = "Willys MB";
-							classname = "LIB_US_Willys_MB";
-							respawnTime = 30;
-							positionATL[] = {3091.89,2177.55,0};
-							dir = 267;
+							displayName = "M3 Scout Car";
+							classname = "LIB_US_Scout_M3_FFV";
+							respawnTime = 60;
+							positionATL[] = {3090.53,2179.82,0};
+							dir = 270;
 							script = "";
 						};
 						class a_car_4_3 {
 							displayName = "Willys MB";
 							classname = "LIB_US_Willys_MB";
-							respawnTime = 30;
-							positionATL[] = {3092,2174.53,0};
-							dir = 267;
+							respawnTime = 5;
+							positionATL[] = {3090.78,2185.07,0};
+							dir = 270;
+							script = "";
+						};
+						class a_car_4_4 {
+							displayName = "Willys MB";
+							classname = "LIB_US_Willys_MB";
+							respawnTime = 5;
+							positionATL[] = {3090.82,2187.97,0};
+							dir = 270;
+							script = "";
+						};
+						class a_car_4_5 {
+							displayName = "Willys MB";
+							classname = "LIB_US_Willys_MB";
+							respawnTime = 5;
+							positionATL[] = {3090.83,2191.3,0};
+							dir = 270;
+							script = "";
+						};
+						class a_car_4_6 {
+							displayName = "Willys MB";
+							classname = "LIB_US_Willys_MB";
+							respawnTime = 5;
+							positionATL[] = {3090.83,2194.24,0};
+							dir = 270;
 							script = "";
 						};
 					};
 					class Defender {
+						class d_htank_4_1 {
+							displayName = "PzKpfW VI 'Tiger I'";
+							classname = "LIB_PzKpfwVI_E_2";
+							respawnTime = 300;
+							positionATL[] = {2467.74,1992.85,0};
+							dir = 326;
+							script = 'this setVariable ["color",4]';
+						};
+						class d_htank_4_2 {
+							displayName = "PzKpfW VI 'Tiger I'";
+							classname = "LIB_PzKpfwVI_E_2";
+							respawnTime = 300;
+							positionATL[] = {2462.15,1989.18,0};
+							dir = 326;
+							script = 'this setVariable ["color",4]';
+						};
+						class d_truck_4_1 {
+							displayName = "SdKfz 251 MG42";
+							classname = "LIB_SdKfz251_FFV";
+							respawnTime = 60;
+							positionATL[] = {2431.81,2016.96,0.0039444};
+							dir = 330;
+							script = 'this setVariable ["color",4]';
+						};
+						class d_truck_4_2 {
+							displayName = "SdKfz 251 MG42";
+							classname = "LIB_SdKfz251_FFV";
+							respawnTime = 60;
+							positionATL[] = {2426.65,2013.89,0};
+							dir = 330;
+							script = 'this setVariable ["color",4]';
+						};
 						class d_car_4_1 {
 							displayName = "Kubelwagen";
-							classname = "LIB_Kfz1";
-							respawnTime = 30;
-							positionATL[] = {2669.09,2034.4,0};
-							dir = 342;
-							script = "";
+							classname = "LIB_Kfz1_Hood";
+							respawnTime = 5;
+							positionATL[] = {2424.6,2004.97,0};
+							dir = 241;
+							script = 'this setVariable ["color",2]';
 						};
 						class d_car_4_2 {
 							displayName = "Kubelwagen";
-							classname = "LIB_Kfz1";
-							respawnTime = 30;
-							positionATL[] = {2665.53,2033.9,0};
-							dir = 342;
-							script = "";
+							classname = "LIB_Kfz1_Hood";
+							respawnTime = 5;
+							positionATL[] = {2426.5,2001.37,0};
+							dir = 241;
+							script = 'this setVariable ["color",2]';
+						};
+						class d_car_4_3 {
+							displayName = "Kubelwagen";
+							classname = "LIB_Kfz1_Hood";
+							respawnTime = 5;
+							positionATL[] = {2428.17,1998.03,0};
+							dir = 241;
+							script = 'this setVariable ["color",2]';
+						};
+						class d_car_4_4 {
+							displayName = "Kubelwagen";
+							classname = "LIB_Kfz1_Hood";
+							respawnTime = 5;
+							positionATL[] = {2430.27,1994.49,0};
+							dir = 241;
+							script = 'this setVariable ["color",2]';
 						};
 					};
 				};

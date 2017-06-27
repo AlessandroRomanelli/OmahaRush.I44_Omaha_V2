@@ -24,7 +24,9 @@
 - [REMOVED] Savestatics from keydown "ESC", deprecated;
 - [REMOVED] PublicVariable being published on every hit, should improve network stability;
 * [REWORKED] HS detection;
+CODE//
 
+* [CHANGED] Omaha Rush_1 bushes are no longer simple objects and can no be driven over;
 * [FIXED] Players are no longer allowed to spawn without having picked a weapon first;
 
 

@@ -283,11 +283,11 @@ player addEventHandler ["GetInMan", {
 						200 remoteExec ["client_fnc_vehicleDisabled", _s];
 					};
 					if ((_this select 0) isKindOf "Car") exitWith {
-						if ((damage _v) > 0.85) then {
-							150 remoteExec ["client_fnc_vehicleDisabled", _s];
-						};
 						100 remoteExec ["client_fnc_vehicleDisabled", _s];
 					};
+				};
+				if (damage _v > 0.9) then {
+					150 remoteExec ["client_fnc_vehicleDisabled", _s];
 				};
 			};
 		};

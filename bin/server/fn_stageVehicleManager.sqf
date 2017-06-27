@@ -98,7 +98,7 @@ sv_stage_spawnVehicle = {
 	// Run init script
 	_script = getText(_config >> "script");
 	_compiled = compile _script;
-	[] call _compiled;
+	[_vehicle] call _compiled;
 
 	// Pushback into array that holds all vehicles
 	sv_stageVehicles pushBack _vehicle;
