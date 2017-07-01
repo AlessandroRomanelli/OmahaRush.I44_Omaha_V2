@@ -1,15 +1,21 @@
-#Changelog V0.63.9
+#Changelog V0.64.0
++ [ADDED] Bolt-Action rifles;
 + [ADDED] Statics support;
 + [ADDED] Restricted zones for both attackers and defenders who must now stay within the boundaries;
     Attackers can no longer carry out extreme flanks and come up behind the defenders;
     Defenders can no longer venture far away from the objective, where their focus should belong;
 + [ADDED] Map markers to display the new restricted areas;
 + [ADDED] The attackers can no longer push past their newly created attackers HQ until the defenders' fallback time has elapsed;
+    Should prevent unfair head start of the next stage for the attackers and give more time to the defenders to settle down;
 
+
+* [CHANGED] Optmized how publicVariable are broadcasted over the network, should keep desync to a minimum;
 * [CHANGED] Fallback time increased to 90s;
 * [CHANGED] Upon objective destruction, defenders are given enough time to fallback, even though they are next to a the enemy spawn they will not be killed until the fallback time has elapsed;
 * [CHANGED] Headshot detection;
 
+* [FIXED] OnEachFrame command improperly used was causing issues when firing bolt-activated rifles;
+* [FIXED] Reward point system for when the match ends: attackers were awarded with the defenders points and viceversa;
 * [FIXED] Bug where engineer would repair the tank but the next missile would still blow up the tank (vehicleHP not being reset);
 * [FIXED] Deaths with no explaination and fall damage;
 * [FIXED] Timing of the fallback messages;

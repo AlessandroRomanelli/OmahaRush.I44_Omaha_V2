@@ -70,8 +70,7 @@ waitUntil {!isNil "sv_tickets" && !isNil "sv_tickets_total"};
 if (isNil "rr_iconrenderer_executed") then {
 	rr_iconrenderer_executed = true;
 	//["rr_spawn_iconrenderer", "onEachFrame"] call bis_fnc_removeStackedEventHandler;
-	//["rr_spawn_iconrenderer", "onEachFrame", {
-	onEachFrame {
+	["rr_spawn_iconrenderer", "onEachFrame", {
 		/*{
 			if (side _x == playerSide) then {
 				if (alive _x) then {
@@ -295,9 +294,7 @@ if (isNil "rr_iconrenderer_executed") then {
 				};
 			};
 		};
-
-	};
-	//}] call BIS_fnc_addStackedEventHandler;
+	}] call BIS_fnc_addStackedEventHandler;
 };
 
 // Pointfeed init

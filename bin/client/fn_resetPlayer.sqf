@@ -15,7 +15,7 @@ disableSerialization;
 // Make sure we dont run twice
 if (missionNamespace getVariable ["cl_resetPlayerRunning", false]) exitWith {};
 cl_resetPlayerRunning = true;
-player setVariable ["firstSpawn", true];
+
 
 // Get mcoms
 _mcoms = [sv_stage1_obj getVariable ["armed", false], sv_stage2_obj getVariable ["armed", false], sv_stage3_obj getVariable ["armed", false], sv_stage4_obj getVariable ["armed", false]];
@@ -117,12 +117,12 @@ cl_blockSpawnForSide = "attackers";
 	sleep 3;
 	{
 		if (_x) then {
-			if (player getVariable "gameSide" == "attackers") then {
+      if (player getVariable "gameSide" == "defenders") then {
 				["<t size='1.3' color='#FFFFFF'>OBJECTIVE DESTROYED BONUS</t>", 150] spawn client_fnc_pointfeed_add;
 				[150] spawn client_fnc_addPoints;
 			};
 		} else {
-			if (player getVariable "gameSide" == "defenders") then {
+			if (player getVariable "gameSide" == "attackers") then {
 				["<t size='1.3' color='#FFFFFF'>OBJECTIVE DEFENDED BONUS</t>", 150] spawn client_fnc_pointfeed_add;
 				[150] spawn client_fnc_addPoints;
 			};

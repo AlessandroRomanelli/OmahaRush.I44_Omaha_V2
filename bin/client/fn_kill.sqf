@@ -18,6 +18,8 @@ if (playerSide == (_victim getVariable ["side",civilian])) exitWith {};
 cl_kills = cl_kills + 1;
 cl_total_kills = cl_total_kills + 1;
 
+player setVariable ["kills",cl_kills,true];
+
 // Get seat in vehicle
 _seat = -2;
 if ((vehicle player) != player) then {

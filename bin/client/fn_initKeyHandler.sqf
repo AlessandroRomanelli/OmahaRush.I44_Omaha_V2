@@ -29,11 +29,6 @@ cl_soundLevel = 1;
 			// Bring up ui for timer
 			60001 cutRsc ["rr_scoreboard", "PLAIN"];
 
-			// Lets share our stats with the others
-			player setVariable ["kills",cl_kills,true];
-			player setVariable ["deaths",cl_deaths,true];
-			player setVariable ["points",cl_points,true];
-
 			_allInfoAttackers = [];
 			_allInfoDefenders = [];
 			_nAttacker = 0;

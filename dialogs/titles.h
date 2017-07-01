@@ -351,7 +351,7 @@ class rr_restrictedArea
 			y = 0.357 * safezoneH + safezoneY;
 			w = 0.381563 * safezoneW;
 			h = 0.286 * safezoneH;
-			text = "<br/><t size='2' color='#FFFFFF' shadow='2' align='center' t font='PuristaBold'>RESTRICTED AREA</t><br/><t size='1.3' color='#FFFFFF' shadow='2' align='center'>RETURN NOW OR YOU WILL BE KILLED</t>";
+			text = "<br/><br/><br/><t size='2.5' color='#FFFFFF' shadow='2' align='center' t font='PuristaBold'>RESTRICTED AREA</t><br/><t size='2' color='#FFFFFF' shadow='2' align='center'>RETURN NOW OR YOU WILL BE KILLED</t>";
 		};
 	};
 };

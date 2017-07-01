@@ -43,11 +43,11 @@ class GeneralConfig {
 
 class Soldiers {
 	class Attackers {
-		uniform = "U_LIB_US_AB_Uniform_M42_Flag";
+		uniform = "U_LIB_US_Rangers_Uniform";
 		goggles = "G_LIB_GER_Gloves5";
-		headgear = "H_LIB_US_AB_Helmet_NCO_1";
+		headgear = "H_LIB_US_Rangers_Helmet_ns";
 		vest = "V_LIB_US_Vest_Grenadier";
-		backpack = "B_LIB_US_M36_Rope";
+		backpack = "B_LIB_US_Backpack";
 	};
 	class Defenders {
 		uniform = "U_LIB_GER_Soldier_camo5";
