@@ -2,6 +2,9 @@ class GeneralConfig {
 	// Debugging
 	debug = 1;
 
+	//Objective radius
+	objectiveRadius = 200;
+
 	// Database information
 	// DB Name: RushRedux
 
@@ -26,10 +29,10 @@ class GeneralConfig {
 	AutoTeamBalancer = 1;
 
 	// At what team difference should the team balancer force switches?
-	AutoTeamBalanceAtDifference = 5;
+	AutoTeamBalanceAtDifference = 3;
 
 	// Fall back time for defenders
-	FallBackSeconds = 60;
+	FallBackSeconds = 90;
 
 	// ServerCommandPassword
 	commandPassword = "viper12";

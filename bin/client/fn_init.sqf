@@ -114,6 +114,8 @@ if (getNumber(missionConfigFile >> "GeneralConfig" >> "debug") == 1) then {
 };
 
 // Create markers
+_objRange = getNumber (missionConfigFile >> "GeneralConfig" >> "objectiveRadius");
+
 if (player getVariable "gameSide" == "defenders") then {
 	_marker1 = createMarkerLocal ["mobile_respawn_defenders",[0,0]];
 	_marker1 setMarkerTypeLocal "b_unknown";
@@ -133,10 +135,39 @@ if (player getVariable "gameSide" == "defenders") then {
 };
 
 // Objective markers
-_marker2 = createMarkerLocal ["objective",[0,0]];
-_marker2 setMarkerTypeLocal "mil_objective";
-_marker2 setMarkerTextLocal " Objective";
-_marker2 setMarkerColorLocal "ColorBlack";
+_marker3 = createMarkerLocal ["objective",[0,0]];
+_marker3 setMarkerTypeLocal "mil_objective";
+_marker3 setMarkerTextLocal " Objective";
+_marker3 setMarkerColorLocal "ColorBlack";
+
+// Trigger restricted area
+_marker4 = createMarkerLocal ["warnLineDef", [0,0]];
+_marker4 setMarkerTypeLocal "Empty";
+_marker4 setMarkerTextLocal "";
+_marker4 setMarkerShapeLocal "RECTANGLE";
+_marker4 setMarkerBrushLocal "Solid";
+_marker4 setMarkerColorLocal "ColorRed";
+_marker4 setMarkerSizeLocal [250, 2.5];
+_marker4 setMarkerDirLocal 0;
+
+// Trigger restricted area
+_marker5 = createMarkerLocal ["warnLineAtk", [0,0]];
+_marker5 setMarkerTypeLocal "Empty";
+_marker5 setMarkerTextLocal "";
+_marker5 setMarkerShapeLocal "RECTANGLE";
+_marker5 setMarkerBrushLocal "Solid";
+_marker5 setMarkerColorLocal "ColorRed";
+_marker5 setMarkerSizeLocal [250, 2.5];
+_marker5 setMarkerDirLocal 0;
+
+warnAreaAtk setTriggerArea [750, 150, 0, true, -1];
+warnAreaAtk setTriggerActivation ["ANYPLAYER", "PRESENT", true];
+warnAreaAtk setTriggerStatements ['(player getVariable ["gameSide", "defenders"] == "attackers") && this', "", ""];
+
+warnAreaDef setTriggerArea [750, 150, 0, true, -1];
+warnAreaDef setTriggerActivation ["ANYPLAYER", "PRESENT", true];
+warnAreaDef setTriggerStatements ['(player getVariable ["gameSide", "attackers"] == "defenders") && this', "", ""];
+
 
 // Safepos markers (make sure units will not plop up on the battlefield)
 _safeMarker1 = createMarkerLocal ["respawn_defenders", cl_safePos];

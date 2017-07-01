@@ -148,14 +148,14 @@ _completed = {
 	cl_lastActionTarget setVariable ["ammo_restored",true];
 
 	// Restore ammo depending on type of vehicle
-	switch (typeOf cl_lastActionTarget) do
+	/*switch (typeOf cl_lastActionTarget) do
 	{
 		case "B_Heli_Light_01_armed_F":
 		{
 			cl_lastActionTarget setAmmo ["M134_minigun", 2000];
 			//_target addMagazine "120Rnd_CMFlare_Chaff_Magazine";
 		};
-	};
+	};*/
 
 	[cl_lastActionTarget] spawn {
 		sleep 120;
@@ -169,7 +169,7 @@ _completedEngineer = {
 	if (player distance cl_lastActionTarget > 5) exitWith {};
 	["<t size='1.3' color='#FFFFFF'>VEHICLE REPAIRED</t>", 50] spawn client_fnc_pointfeed_add;
 	[50] spawn client_fnc_addPoints;
-
+	cl_lastActionTarget setVariable ["vehDmg", 0];
 	// Make sure we cant spam it
 	cl_lastActionTarget setVariable ["repaired",true];
 	cl_lastActionTarget setDamage 0;

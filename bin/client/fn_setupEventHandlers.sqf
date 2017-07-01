@@ -91,11 +91,10 @@ player addEventHandler ["Hit",
 
 // Killed
 player addEventHandler ["Killed",{
-	_lastDeath = (_this select 0) getVariable ["lastDeath", 0];
+	_lastDeath = (_this select 0) getVariable ["lastDeath", 0];	
 	//Avoiding more than one time each 1/10 of a second
 	if (diag_tickTime - _lastDeath > 0.1) then {
 		(_this select 0) setVariable ["unitDmg", 0];
-		(_this select 0) setVariable ["wasHS", false];
 		// Increase deaths
 		cl_deaths = cl_deaths + 1;
 		cl_total_deaths = cl_total_deaths + 1;
@@ -114,7 +113,12 @@ player addEventHandler ["Killed",{
 		// Send message to killer that he killed someone
 		if ((_this select 0) != _killer && !isNull (_this select 0) && (!isNull _killer)) then {
 			if ((_this select 0) getVariable ["isAlive", true]) then {
-				[_this select 0, false] remoteExec ["client_fnc_kill", _killer];
+				if ((_this select 0) getVariable ["wasHS", false]) then {
+					[_this select 0, true] remoteExec ["client_fnc_kill", _killer];
+					(_this select 0) setVariable ["wasHS", false];
+				} else {
+					[_this select 0, false] remoteExec ["client_fnc_kill", _killer];
+				};
 				(_x select 0)  setVariable ["isAlive", false];
 			};
 			//Log time of death
@@ -178,28 +182,35 @@ player addEventHandler ["HandleDamage", {
  _u = _this select 0;
  _damage = _this select 2;
  _s = _this select 3;
+ _p = _this select 4;
  //Get the shooter's rifle
  _rifle = currentWeapon (vehicle _s);
  //SMG array
  _smgs = 			["LIB_M1928_Thompson", "LIB_M1A1_Thompson", "LIB_MP40", "LIB_M1928A1_Thompson", "LIB_M1928A1_Thompson", "LIB_PPSh41_m", "LIB_MP44"];
  _semiAutos = ["LIB_G43", "LIB_M1_Garand", "LIB_SVT_40", "LIB_M1918A2_BAR"];
  _pistols =	  ["LIB_Colt_M1911", "LIB_M1895", "LIB_P08"];
- if (_rifle in _smgs) then {
+ if (_rifle in _smgs && _s != player) then {
 	 //[shooter, target, base damage, long distance, short distance]
 	 [_s, _u, 23, 0, 0] call client_fnc_damageHandler;
 	 //Set the default damage to 0
 	 _damage = 0;
  };
- if (_rifle in _semiAutos) then {
+ if (_rifle in _semiAutos && _s != player) then {
 	 [_s, _u, 60, 50, 15] call client_fnc_damageHandler;
 	 //Set the default damage to 0
 	 _damage = 0;
  };
- if (_rifle in _pistols) then {
+ if (_rifle in _pistols && _s != player) then {
 	 [_s, _u, 15, 0, 0] call client_fnc_damageHandler;
 	 //Set the default damage to 0
 	 _damage = 0;
  };
+
+ /*if (_p == "") then {
+	 _damage = damage _u;
+ } else {
+	 _damage
+ };*/
 
  //Handle friendlyfire
  if ((driver vehicle _s) getVariable ["side",sideUnknown] == (_u getVariable ["side",sideUnknown]) && (_s != player)) then {

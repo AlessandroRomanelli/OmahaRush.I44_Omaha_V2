@@ -18,6 +18,7 @@ _HQPos2 = getArray(missionConfigFile >> "Maps" >> sv_map >> "Stages" >> ([] call
 "mobile_respawn_attackers" setMarkerPosLocal _HQPos2;
 
 if (player getVariable "gameSide" == "defenders") then {
+	cl_enemySpawnMarker = "";
 	"mobile_respawn_defenders" setMarkerTypeLocal "b_unknown";
 	"mobile_respawn_defenders" setMarkerTextLocal " Defenders HQ";
 
@@ -32,11 +33,3 @@ if (player getVariable "gameSide" == "defenders") then {
 };
 
 "objective" setMarkerPosLocal getPos sv_cur_obj;
-
-// After 30 seconds update the areas we are not allowed to enter
-if (!_updateRestrictedZonesNow && (player getVariable "gameSide" == "defenders")) then {
-	sleep (getNumber(missionConfigFile >> "GeneralConfig" >> "FallBackSeconds"));
-};
-
-// Update enemy base marker name
-cl_enemySpawnMarker = if (player getVariable "gameSide" == "defenders") then {"mobile_respawn_attackers"} else {"mobile_respawn_defenders"};

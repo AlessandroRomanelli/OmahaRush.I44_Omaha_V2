@@ -11,6 +11,8 @@ scriptName "fn_spawn";
 if (isServer && !hasInterface) exitWith {};
 
 player setVariable ["isAlive", true];
+player setVariable ["wasHS", false];
+player setVariable ["unitDmg", 0];
 
 if (player getVariable ["firstSpawn", true]) then {
 	player setVariable ["firstSpawn", false];
@@ -136,7 +138,7 @@ if (player getVariable "gameSide" == "defenders") then {
 player assignItem "ItemGPS";*/
 
 // Markers
-[] spawn client_fnc_updateMarkers;
+[] call client_fnc_updateRestrictions;
 
 // Wait until the objectives are available
 waitUntil {!isNil "sv_stage1_obj" && !isNil "sv_stage2_obj" && !isNil "sv_stage3_obj" && !isNil "sv_stage4_obj"};
@@ -161,13 +163,6 @@ setViewDistance 1000;
 
 // DUMMY WEAPON SO THE PLAYER DOESNT PLAY THE ANIMATION WHEN HE SPAWNS
 removeAllWeapons player;
-if (player getVariable "gameSide" == "defenders") then {
-	player addWeaponGlobal "LIB_G43";
-	for "_i" from 1 to 3 do {player addItem "LIB_10Rnd_792x57"};
-} else {
-	player addWeaponGlobal "LIB_M1_Garand";
-	for "_i" from 1 to 3 do {player addItem "LIB_8Rnd_762x63"};
-};
 
 // Create spawn cam
 _created = false;
@@ -273,7 +268,7 @@ disableSerialization;
 if (isNil "TEMPWARNING") then {
 	// TEMPRARY WARNING TODO
 	createDialog "rr_info_box";
-	((findDisplay 10000) displayCtrl 0) ctrlSetStructuredText parseText "<t size='1' color='#FFFFFF' shadow='2' align='left'><t font='PuristaBold'>No.4 WW2 Rush Version</t><br/>0.62.7<br/><br/><t font='PuristaBold'>No.4 CDO Discord</t><br/><a href='https://discord.gg/GxTEsRb'>Join</a><br/><br/><t font='PuristaBold'>Official Website</t><br/><a href='https://alessandroromanelli.github.io/No4-Bootstrap-example/'>Open</a></t>";
+	((findDisplay 10000) displayCtrl 0) ctrlSetStructuredText parseText "<t size='1' color='#FFFFFF' shadow='2' align='left'><t font='PuristaBold'>No.4 WW2 Rush Version</t><br/>0.63.9<br/><br/><t font='PuristaBold'>No.4 CDO Discord</t><br/><a href='https://discord.gg/GxTEsRb'>Join</a><br/><br/><t font='PuristaBold'>Official Website</t><br/><a href='https://alessandroromanelli.github.io/No4-Bootstrap-example/'>Open</a></t>";
 	TEMPWARNING = true;
 };
 

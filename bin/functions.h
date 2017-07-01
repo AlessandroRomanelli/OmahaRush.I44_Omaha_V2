@@ -47,6 +47,8 @@ class Maverick_Functions_Client {
 		class getUnlockableAttachments {};
 		class squadSpawn {};
 		class updateMarkers {};
+		class updateRestrictions {};
+		class updateLine {};
 		class giveStatistics {};
 		class saveStatistics {};
 		class say3D {};
@@ -86,6 +88,8 @@ class Maverick_Functions_Client {
 		class vehicleDisabled {};
 		class displayKeyBindingHint {};
 		class restrictedArea {};
+		class restrictedAreaDefenders {};
+		class restrictedAreaAttackers {};
 		class initMatchTimer {};
 		class displayCountermeasureKeys {};
 		class validatePointsEarned {};

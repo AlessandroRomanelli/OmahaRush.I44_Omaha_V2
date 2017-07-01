@@ -23,6 +23,7 @@ if (!isNil "sv_persistentVehicles") then {
 
 // Delete all objects that are not players
 {
+	if (_x isKindOf "StaticWeapon") exitWith {};
 	if (!isPlayer _x) then {
 		deleteVehicle _x;
 	};

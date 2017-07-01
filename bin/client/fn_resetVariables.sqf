@@ -42,6 +42,8 @@ cl_onEachFrame_squad_beacons = [];
 cl_onEachFrame_team_members = [];
 cl_onEachFrame_team_reviveable = [];
 
+objRadius = getNumber(missionConfigFile >> "GeneralConfig" >> "objectiveRadius");
+
 // Any beacons left?
 _beacon = player getVariable ["assault_beacon_obj", objNull];
 if (!isNull _beacon) then {
@@ -263,14 +265,37 @@ if (isNil "rr_iconrenderer_executed") then {
 		_HUD_grenades     ctrlSetText format ["%1m", currentZeroing player];
 
 		// warning if we are too close to the enemy spawn
-		if (alive player) then {
+		if (alive player && !(vehicle player isKindOf "Air")) then {
 			if (player distance (getMarkerPos cl_enemySpawnMarker) < 100) then {
-				30 cutRsc ["rr_restrictedArea", "PLAIN"];
+				30 cutRsc ["rr_restrictedAreaSpawn", "PLAIN"];
 				if (isNil "cl_restrictedArea_thread") then {
 					cl_restrictedArea_thread = [] spawn client_fnc_restrictedArea;
 				};
 			};
 		};
+
+		if (alive player && !(vehicle player isKindOf "Air")) then {
+			if (player getVariable ["gameSide", "attackers"] == "attackers") then {
+				if (vehicle player in (list warnAreaAtk)) then {
+					30 cutRsc ["rr_restrictedArea", "PLAIN"];
+					if (isNil "cl_restrictedAreaAttackers_thread") then {
+						cl_restrictedAreaAttackers_thread = [] spawn client_fnc_restrictedAreaAttackers;
+					};
+				};
+			};
+		};
+
+		if (alive player && !(vehicle player isKindOf "Air")) then {
+			if (player getVariable ["gameSide", "defenders"] == "defenders") then {
+				if (vehicle player in (list warnAreaDef)) then {
+					30 cutRsc ["rr_restrictedArea", "PLAIN"];
+					if (isNil "cl_restrictedAreaDefenders_thread") then {
+						cl_restrictedAreaDefenders_thread = [] spawn client_fnc_restrictedAreaDefenders;
+					};
+				};
+			};
+		};
+
 	};
 	//}] call BIS_fnc_addStackedEventHandler;
 };
