@@ -14,7 +14,7 @@ if (isServer && !hasInterface) exitWith {};
 if (player getVariable "gameSide" == "defenders") then {
 	_uniform = (getText(missionConfigFile >> "Soldiers" >> "Defenders" >> "uniform"));
 	_goggles = (getText(missionConfigFile >> "Soldiers" >> "Defenders" >> "goggles"));
-	_vest = (getText(missionConfigFile >> "Soldiers" >> "Defenders" >> "vest"));
+	_vest		 = (getText(missionConfigFile >> "Soldiers" >> "Defenders" >> "vest"));
 	_headgear = (getText(missionConfigFile >> "Soldiers" >> "Defenders" >> "headgear"));
 	_backpack = (getText(missionConfigFile >> "Soldiers" >> "Defenders" >> "backpack"));
 
@@ -22,7 +22,7 @@ if (player getVariable "gameSide" == "defenders") then {
 	if (_goggles != "") then {player addGoggles _goggles;};
 	if (_vest != "") then {player addVest _vest;};
 	if (_headgear != "") then {player addHeadgear _headgear;};
-	if (_backpack != "") then {removeBackpackGlobal player;player addBackpack _backpack;};
+	if (_backpack != "") then {removeBackpackGlobal player; player addBackpack _backpack;};
 } else {
 	_uniform = (getText(missionConfigFile >> "Soldiers" >> "Attackers" >> "uniform"));
 	_goggles = (getText(missionConfigFile >> "Soldiers" >> "Attackers" >> "goggles"));
@@ -38,9 +38,9 @@ if (player getVariable "gameSide" == "defenders") then {
 };
 
 // Vest perk handler
-if (cl_squadPerk == "extended_vest") then {
+/* if (cl_squadPerk == "extended_vest") then {
 	player addVest "V_Press_F";
-};
+}; */
 
 // Smoke grenade?
 if (cl_squadPerk == "smoke_grenades") then {

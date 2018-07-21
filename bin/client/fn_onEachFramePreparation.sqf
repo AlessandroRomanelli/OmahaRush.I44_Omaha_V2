@@ -12,20 +12,12 @@ scriptName "fn_onEachFramePreparation";
 // Inline function to determine icon
 _getIcon = {
 	_unit = param[0,objNull,[objNull]];
-	_icon = if (_unit getVariable ["class",""] == "medic") then {
-		"pictures\assault.paa"
-	} else {
-		if (_unit getVariable ["class",""] == "support") then {
-			"pictures\support.paa"
-		} else {
-			if (_unit getVariable ["class",""] == "engineer") then {
-				"pictures\engineer.paa"
-			} else {
-				"pictures\assault.paa"
-			};
-		};
+	_icon = call {
+		if (_unit getVariable ["class",""] == "medic") exitWith {"pictures\medic.paa"};
+		if (_unit getVariable ["class",""] == "engineer") exitWith {"pictures\engineer.paa"};
+		if (_unit getVariable ["class",""] == "support") exitWith {"pictures\support.paa"};
+		"pictures\assault.paa";
 	};
-
 	_icon
 };
 
@@ -51,7 +43,7 @@ while {true} do {
 					if (cl_inSpawnMenu) then {
 						_beacon = _x getVariable ["assault_beacon_obj", objNull];
 						if (!isNull _beacon) then {
-							_squad_beacons pushBack [(getPosATLVisual _beacon), format["%1's Spawnbeacon", (_x getVariable ["name", ""])]];
+							_squad_beacons pushBack [(getPosATLVisual _beacon), format["%1's Spawnbeacon", name _x]];
 						};
 					};
 
@@ -59,38 +51,38 @@ while {true} do {
 					if (alive _x) then {
 						// The player should not be on the debug island
 						if (_x distance cl_safePos > 200) then {
-							_alpha = [1, 0.55] select (_x distance player > 50);
-							_squad_members pushBack [_x, (_x getVariable ["name", ""]), format["%1%2",MISSION_ROOT, [_x] call _getIcon], _alpha];
+							_alpha = [0.75, 0.55] select (_x distance player > 50);
+							_squad_members pushBack [_x, name _x, format["%1%2",MISSION_ROOT, [_x] call _getIcon], _alpha];
 						};
 					};
 				} else {
 					if (_x distance cl_safePos > 200 && alive _x) then {
 						if (cl_inSpawnMenu || ((vehicle player) isKindOf "Air")) then {
-							_team_members pushBack [_x, format["%1pictures\teammate.paa",MISSION_ROOT]];
+							_team_members pushBack [_x, name _x, format["%1pictures\teammate.paa",MISSION_ROOT]];
 						} else {
 							// Only teammates within 100 meters
 							if (_x distance player < 100 || _x == (driver vehicle cursorObject) || _x == (driver vehicle cursorTarget)) then {
-								_team_members pushBack [_x, format["%1pictures\teammate.paa",MISSION_ROOT]];
+								_team_members pushBack [_x, name _x, format["%1pictures\teammate.paa",MISSION_ROOT]];
 							};
 						};
 					};
 				};
 			};
 		};
-	} forEach AllPlayers;
+	} forEach AllUnits;
 
 	// Own beacon?
 	if (cl_inSpawnMenu) then {
 		_myBeacon = player getVariable ["assault_beacon_obj", objNull];
 		if (!isNull _myBeacon) then {
-			_squad_beacons pushBack [(getPosATLVisual _myBeacon), format["%1's Spawnbeacon", (player getVariable ["name", ""])]];
+			_squad_beacons pushBack [(getPosATLVisual _myBeacon), format["%1's Spawnbeacon", name player]];
 		};
 	};
 
 	// Medics
 	if (cl_class == "medic" && cl_classPerk == "defibrillator") then {
 		{
-			if (_x distance player < 25) then {
+			if (alive player && _x distance player < 25) then {
 				if (_x getVariable ["side", sideUnknown] == playerSide) then {
 					_toBeRevived pushBack [_x, format["%1pictures\revive.paa",MISSION_ROOT]];
 				};

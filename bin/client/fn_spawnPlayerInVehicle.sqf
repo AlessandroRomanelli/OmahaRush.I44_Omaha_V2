@@ -118,9 +118,9 @@ if (_vehicle isKindOf "Air") then {
 
 // Display help hint
 if (player getVariable "gameSide" == "defenders") then {
-	["DEFENDER", "Defend the radio stations and kill all attackers trying to destroy them. Each killed attacker reduces their tickets. If it reaches zero, they have lost."] spawn client_fnc_hint;
+	["DEFENDER", "Defend the objectives and kill all attackers trying to destroy them. Each killed attacker reduces their tickets. If it reaches zero, they have lost."] spawn client_fnc_hint;
 } else {
-	["ATTACKER", "Attack the radio stations and plant explosives on them, hold them for 60 seconds and move on before you run out of tickets. Each death reduces your ticket count."] spawn client_fnc_hint;
+	["ATTACKER", "Attack the objectives and plant explosives on them, hold them for 60 seconds and move on before you run out of tickets. Each death reduces your ticket count."] spawn client_fnc_hint;
 };
 
 // Display instructions hint for currently selected perk

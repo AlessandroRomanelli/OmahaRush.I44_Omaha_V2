@@ -14,14 +14,12 @@ if (sv_cur_obj getVariable ["armed",false]) exitWith {};
 if (!alive player) exitWith {};
 
 // Set armed
+sv_cur_obj setVariable ["arming",false,true];
 sv_cur_obj setVariable ["armed",true,true];
 
 // Give points
 ["<t size='1.3' color='#FFFFFF'>EXPLOSIVES ARMED</t><br/><t size='1.0' color='#FFFFFF'>Objective Attacker</t>", 225] spawn client_fnc_pointfeed_add;
 [225] spawn client_fnc_addPoints;
-
-// Animate
-[sv_cur_obj,1] call BIS_fnc_dataTerminalAnimate;
 
 // Inform everyone that the mcom has been planted
 [player] remoteExec ["client_fnc_MCOMarmed", 0];

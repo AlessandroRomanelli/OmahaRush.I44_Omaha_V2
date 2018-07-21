@@ -13,7 +13,8 @@ if (isServer && !hasInterface) exitWith {};
 disableSerialization;
 
 // Spawn menu display listbox
-_l = (findDisplay 5000) displayCtrl 300;
+_d = findDisplay 5000;
+_l = _d displayCtrl 300;
 
 // Allow listbox selection changes to update our "customize class" button (some classes are not customizeable atm so theres no reason for people to be able to click it)
 _l ctrlAddEventHandler ["LBSelChanged", {
@@ -52,6 +53,11 @@ _l ctrlAddEventHandler ["LBSelChanged", {
 
 	// Save class so any other scripts can instantly get our currently selected class // Please note that broadcasting this will be done only when actually spawning
 	cl_class = _class;
+
+	cl_equipClassnames set [0, ""];
+	cl_spawnmenu_currentWeaponSelectionState = 0; // Nothing open
+	[] spawn client_fnc_spawnMenu_displayPrimaryWeaponSelection;
+	[] spawn client_fnc_populateSpawnMenu;
 }];
 
 // Add default classes

@@ -17,7 +17,7 @@ _queryStmt = param [0,"",[""]];
 _mode = param [1,1,[0]];
 _multiarr = param [2,false,[false]];
 
-_result = "extDB2" callExtension format["%1:%2:%3",_mode, sv_db_id, _queryStmt];
+_result = "extDB3" callExtension format["%1:%2:%3",_mode, sv_db_id, _queryStmt];
 
 if(_mode == 1) exitWith {
 	true;
@@ -35,16 +35,16 @@ _loop = true;
 
 while{_loop} do
 {
-	_queryResult = "extDB2" callExtension format["4:%1", _key];
+	_queryResult = "extDB3" callExtension format["4:%1", _key];
 	switch(_queryResult) do {
 
 		case "[5]": {
 
-			// extDB2 returned that result is Multi-Part Message
+			// extDB3 returned that result is Multi-Part Message
 			_queryResult = "";
 
 			while{true} do {
-				_pipe = "extDB2" callExtension format["5:%1", _key];
+				_pipe = "extDB3" callExtension format["5:%1", _key];
 				if(_pipe == "") exitWith {_loop = false};
 				_queryResult = _queryResult + _pipe;
 			};

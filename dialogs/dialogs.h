@@ -23,9 +23,9 @@ class rr_spawnmenu {
 			h = 0.132 * safezoneH;
 			colorBackground[] = {0.12,0.14,0.16,0.8};
 		};
-		class RscText_1001: RscText
+		class primary_description: RscStructuredText
 		{
-			idc = -1;
+			idc = 1001;
 			x = 0.00499997 * safezoneW + safezoneX;
 			y = 0.4252 * safezoneH + safezoneY;
 			w = 0.154687 * safezoneW;
@@ -50,9 +50,9 @@ class rr_spawnmenu {
 			h = 0.132 * safezoneH;
 			colorBackground[] = {0.12,0.14,0.16,0.8};
 		};
-		class RscText_1004: RscText
+		class secondary_description: RscStructuredText
 		{
-			idc = -1;
+			idc = 1004;
 			x = 0.00499997 * safezoneW + safezoneX;
 			y = 0.6364 * safezoneH + safezoneY;
 			w = 0.154687 * safezoneW;
@@ -103,14 +103,14 @@ class rr_spawnmenu {
 			w = 0.149531 * safezoneW;
 			h = 0.101 * safezoneH;
 		};
-		class textPrimaryAttachments: RscStructuredText
+		/* class textPrimaryAttachments: RscStructuredText
 		{
 			idc = 6;
 			x = 0.00706247 * safezoneW + safezoneX;
 			y = 0.4296 * safezoneH + safezoneY;
 			w = 0.149531 * safezoneW;
 			h = 0.0572 * safezoneH;
-		};
+		}; */
 		class textHandgun: RscStructuredText
 		{
 			idc = 7;
@@ -119,14 +119,14 @@ class rr_spawnmenu {
 			w = 0.149531 * safezoneW;
 			h = 0.101 * safezoneH;
 		};
-		class textHandgunAttachments: RscStructuredText
+		/* class textHandgunAttachments: RscStructuredText
 		{
 			idc = 8;
 			x = 0.00706244 * safezoneW + safezoneX;
 			y = 0.6408 * safezoneH + safezoneY;
 			w = 0.149531 * safezoneW;
 			h = 0.0572 * safezoneH;
-		};
+		}; */
 		/*class RscText_1006: RscText
 		{
 			idc = -1;
@@ -306,7 +306,7 @@ class rr_spawnmenu {
 			shadow = 0;
 			font = "PuristaMedium";
 		};
-		class RscButtonMenu_2401: RscButtonMenu
+		/* class RscButtonMenu_2401: RscButtonMenu
 		{
 			idc = 13;
 			text = "CUSTOMIZE"; //--- ToDo: Localize;
@@ -325,7 +325,7 @@ class rr_spawnmenu {
 			w = 0.061875 * safezoneW;
 			h = 0.0242 * safezoneH;
 			colorBackground[] = {0.96,0.65,0.12,0.8};
-		};
+		}; */
 
 		/* new ui */
 		class RscText_1000513: RscText
@@ -607,7 +607,27 @@ class rr_spawnmenu {
 		    colorSelectBackground[] = {0.96,0.65,0.12,0.8};
 		    colorSelectBackground2[] = {0.96,0.65,0.12,0.8};
 		};
+    class RscStructuredText_1105: RscStructuredText
+    {
+    	idc = 2001;
+    	text = ""; //--- ToDo: Localize;
+      x = 0.00964063 * safezoneW + safezoneX;
+    	y = 0.67512 * safezoneH + safezoneY;
+    	w = 0.1475 * safezoneW;
+    	h = 0.0210741 * safezoneH;
+    	colorBackground[] = {-1,-1,-1,0};
     };
+    class RscStructuredText_1106: RscStructuredText
+    {
+    	idc = 2002;
+    	text = ""; //--- ToDo: Localize;
+      x = 0.00706249 * safezoneW + safezoneX;
+    	y = 0.4681 * safezoneH + safezoneY;
+    	w = 0.150573 * safezoneW;
+    	h = 0.022926 * safezoneH;
+    	colorBackground[] = {-1,-1,-1,0};
+    };
+  };
 };
 
 class rr_info_box {

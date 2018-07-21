@@ -19,7 +19,7 @@ _planter = param[0,objNull,[objNull]];
 [] spawn client_fnc_objectiveArmedGUIAnimation;
 
 // Info
-["EXPLOSIVES ARMED","The radio station has been armed. Attackers will not lose tickets while it is."] spawn client_fnc_hint;
+["EXPLOSIVES ARMED","The objective has been armed. Attackers will not lose tickets while it is."] spawn client_fnc_hint;
 
 // Start sound loop if we are the server
 _wasServer = false;
@@ -34,7 +34,11 @@ if (isServer) then {
 		// Countdown
 		_time = 71; // Original time 71 = 60 seconds (95 = 80 seconds)
 		while {sv_cur_obj getVariable ["armed",false] && _time >= 0} do {
-			_time = _time - 1;
+			if (sv_cur_obj getVariable ["arming", false]) then {
+				_time = _time;
+			} else {
+				_time = _time - 1;
+			};
 			sv_cur_obj say3D "beep";
 			if (_time < 20) then {
 				sleep 0.425;
@@ -126,7 +130,7 @@ if (_planter == player) then {
 	if (_objective == sv_cur_obj) exitWith {};
 
 	// We made it work yay
-	["<t size='1.3' color='#FFFFFF'>RADIO STATION DESTROYED</t>", 400] spawn client_fnc_pointfeed_add;
+	["<t size='1.3' color='#FFFFFF'>OBJECTIVE DESTROYED</t>", 400] spawn client_fnc_pointfeed_add;
 	[400] spawn client_fnc_addPoints;
 };
 

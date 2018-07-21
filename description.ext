@@ -193,6 +193,18 @@ class CfgSounds {
         sound[] = {"\sounds\tug_beep.ogg", 1.0, 1};
         titles[] = {};
     };
+    class hit_marker
+    {
+        name = "hit_marker";
+        sound[] = {"\sounds\hit.ogg", 1.0, 1};
+        titles[] = {};
+    };
+    class head_shot
+    {
+        name = "head_shot";
+        sound[] = {"\sounds\headshot.ogg", 1.0, 1};
+        titles[] = {};
+    };
 };
 
 // Other hpps

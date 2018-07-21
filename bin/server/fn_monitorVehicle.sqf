@@ -32,6 +32,6 @@ while {diag_tickTime - _start < 35 && !_exit && (alive _vehicle)} do {
 };
 
 // If the vehicle is alive, has no units in it (_exit == false)
-if (!_exit && (alive _vehicle) && !(count (getPos _vehicle nearEntities ["man", 10]) > 0)) then {
+if (!_exit && (alive _vehicle)) then {
 	deleteVehicle _vehicle;
 };

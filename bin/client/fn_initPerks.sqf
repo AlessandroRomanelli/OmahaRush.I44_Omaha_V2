@@ -13,7 +13,7 @@ if (isServer && !hasInterface) exitWith {};
 // cl_classPerk and cl_squadPerk return the used perks
 
 if (cl_squadPerk == "sprint") then {
-	player setAnimSpeedCoef 1.05;
+	player setAnimSpeedCoef 1.25;
 } else {
 	player setAnimSpeedCoef 1;
 };

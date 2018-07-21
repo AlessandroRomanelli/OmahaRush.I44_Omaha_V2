@@ -10,7 +10,7 @@ scriptName "fn_loadPersistentWeather";
 #define __filename "fn_loadPersistentWeather.sqf"
 
 // Time
-_time = [2035,ceil random 12, ceil random 30,floor random [0, 12, 24],floor random 60];
+_time = [1944,6,23,floor random [0, 12, 24],floor random 60];
 setDate _time;
 _fog = floor random 40/100;
 
@@ -24,7 +24,8 @@ setTimeMultiplier 10;
 
 // Set rain and fog
 0 setRain floor random 10/10;
-setWind [floor random 25/10, floor random 25/10, false];
+setWind [floor random 10/10, floor random 10/10, false];
+0 setWindDir random 359;
 0 setFog _fog;
 
 [_fog] spawn {

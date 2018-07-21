@@ -10,24 +10,8 @@ class Maps {
 
 		class PersistentVehicles {
 			class Attacker {
-				/*class attack_tank {
-					displayName = "M4A3 Sherman";
-					classname = "LIB_M4A3_75_Tubes";
-					respawnTime = 300;
-					positionATL[] = {3295.83,3108.93,0};
-					dir = 172;
-					script = "";
-				};*/
 			};
-			class Defender {/*
-				class defend_tank {
-					displayName = "PzKpfW V Ausf. A Panther";
-					classname = "LIB_PzKpfwV";
-					respawnTime = 150;
-					positionATL[] = {2442.69,1991.22,0};
-					dir = 59;
-					script = "_vehicle setAmmo [""missiles_DAR"", 0];_vehicle setAmmo [""M134_minigun"", 2000];";
-				};*/
+			class Defender {
 			};
 		};
 
@@ -36,6 +20,16 @@ class Maps {
 				class Spawns {
 					defenders[] = {3791.36,2659.82,0};
 					attackers[] = {3305.7,3098.55,0};
+				};
+				class Area {
+					class Attacker {
+						positionATL[] = {3643.392,2957.969,-0.826612};
+						area[] = {224.602, 402.396, 90, true, -1};
+					};
+					class Defender {
+						positionATL[] = {3794.49,2794.18,-21.1509};
+						area[] = {238.024, 237.028, 0, true, -1};
+					};
 				};
 				class Objective {
 					positionATL[] = {3876.55,2839.54,0.493347};
@@ -52,14 +46,6 @@ class Maps {
 							dir = 171;
 							script = "";
 						};
-						/*class a_htank_1_2 {
-							displayName = "M4A3 Sherman";
-							classname = "LIB_M4A3_76";
-							respawnTime = 300;
-							positionATL[] = {3289.8,3105.82,0.549654};
-							dir = 171;
-							script = "";
-						};*/
 						class a_ltank_1_1 {
 							displayName = "M3 Stuart";
 							classname = "LIB_M3A3_Stuart";
@@ -68,14 +54,6 @@ class Maps {
 							dir = 171;
 							script = "";
 						};
-						/*class a_ltank_1_2 {
-							displayName = "M3 Stuart";
-							classname = "LIB_M3A3_Stuart";
-							respawnTime = 150;
-							positionATL[] = {3276.56,3104.39,0.605019};
-							dir = 171;
-							script = "";
-						};*/
 						class a_car_1_1 {
 							displayName = "M3 Scout Car";
 							classname = "LIB_US_Scout_M3_FFV";
@@ -134,14 +112,6 @@ class Maps {
 							dir = 0;
 							script = "_this select 0 setObjectTextureGlobal [0, 'WW2\Assets_t\Vehicles\Tanks_t\IF_PzKpfwVI_E\Body_Tarn52c_co.paa']; _this select 0 setObjectTextureGlobal [2, 'WW2\Assets_t\Vehicles\Tanks_t\IF_PzKpfwVI_E\Turret_Tarn52c_co.paa']";
 						};
-						/*class d_htank_1_2 {
-							displayName = "PzKpfW VI 'Tiger I'";
-							classname = "LIB_PzKpfwVI_E_2";
-							respawnTime = 300;
-							positionATL[] = {3784.43,2636.88,0};
-							dir = 0;
-							script = "_this select 0 setObjectTextureGlobal [0, 'WW2\Assets_t\Vehicles\Tanks_t\IF_PzKpfwVI_E\Body_Tarn52c_co.paa']; _this select 0 setObjectTextureGlobal [2, 'WW2\Assets_t\Vehicles\Tanks_t\IF_PzKpfwVI_E\Turret_Tarn52c_co.paa']";
-						};*/
 						class d_truck_1_1 {
 							displayName = "SdKfz 251 MG42";
 							classname = "LIB_SdKfz251_FFV";
@@ -194,6 +164,16 @@ class Maps {
 				};
 			};
 			class Stage2 {
+				class Area {
+					class Attacker {
+						positionATL[] = {3651.9,2589.97,-1.60787};
+						area[] = {266.491, 343.957, 180, true, -1};
+					};
+					class Defender {
+						positionATL[] = {3411.07,2331.43,-1.20778};
+						area[] = {189.664, 219.483, 75, true, -1};
+					};
+				};
 				class Spawns {
 					defenders[] = {3261,2148.77,0};
 					attackers[] = {3809.26,2861.61,0};
@@ -213,14 +193,6 @@ class Maps {
 							dir = 182;
 							script = "";
 						};
-						/*class a_htank_2_2 {
-							displayName = "M4A3 Sherman";
-							classname = "LIB_M4A3_76";
-							respawnTime = 300;
-							positionATL[] = {3800.4,2846.55,0};
-							dir = 182;
-							script = "";
-						};*/
 						class a_ltank_2_1 {
 							displayName = "M3 Stuart";
 							classname = "LIB_M3A3_Stuart";
@@ -229,14 +201,6 @@ class Maps {
 							dir = 182;
 							script = "";
 						};
-						/*class a_ltank_2_2 {
-							displayName = "M3 Stuart";
-							classname = "LIB_M3A3_Stuart";
-							respawnTime = 150;
-							positionATL[] = {3787.04,2847.52,3.8147e-006};
-							dir = 182;
-							script = "";
-						};*/
 						class a_car_2_1 {
 							displayName = "M3 Scout Car";
 							classname = "LIB_US_Scout_M3_FFV";
@@ -295,14 +259,6 @@ class Maps {
 							dir = 255;
 							script = "_this select 0 setObjectTextureGlobal [0, 'WW2\Assets_t\Vehicles\Tanks_t\IF_PzKpfwVI_E\Body_Tarn52c_co.paa']; _this select 0 setObjectTextureGlobal [2, 'WW2\Assets_t\Vehicles\Tanks_t\IF_PzKpfwVI_E\Turret_Tarn52c_co.paa']";
 						};
-						/*class d_htank_2_2 {
-							displayName = "PzKpfW VI 'Tiger I'";
-							classname = "LIB_PzKpfwVI_E_2";
-							respawnTime = 300;
-							positionATL[] = {3235.69,2137.67,0};
-							dir = 255;
-							script = "_this select 0 setObjectTextureGlobal [0, 'WW2\Assets_t\Vehicles\Tanks_t\IF_PzKpfwVI_E\Body_Tarn52c_co.paa']; _this select 0 setObjectTextureGlobal [2, 'WW2\Assets_t\Vehicles\Tanks_t\IF_PzKpfwVI_E\Turret_Tarn52c_co.paa']";
-						};*/
 						class d_truck_2_1 {
 							displayName = "SdKfz 251 MG42";
 							classname = "LIB_SdKfz251_FFV";
@@ -355,6 +311,16 @@ class Maps {
 				};
 			};
 			class Stage3 {
+				class Area {
+					class Attacker {
+						positionATL[] = {3322.27,2183.54,0.0183372};
+						area[] = {188.661, 228.128, 270, true, -1};
+					};
+					class Defender {
+						positionATL[] = {2981.66,2138.46,0.241001};
+						area[] = {217.547, 150.45399, 270, true, -1};
+					};
+				};
 				class Spawns {
 					defenders[] = {2823.85,2052.54,0};
 					attackers[] = {3384.33,2346.33,0};
@@ -374,14 +340,6 @@ class Maps {
 							dir = 100;
 							script = "";
 						};
-						/*class a_htank_3_2 {
-							displayName = "M4A3 Sherman";
-							classname = "LIB_M4A3_76";
-							respawnTime = 300;
-							positionATL[] = {3389.06,2333.7,0};
-							dir = 100;
-							script = "";
-						};*/
 						class a_ltank_3_1 {
 							displayName = "M3 Stuart";
 							classname = "LIB_M3A3_Stuart";
@@ -390,14 +348,6 @@ class Maps {
 							dir = 100;
 							script = "";
 						};
-						/*class a_ltank_3_2 {
-							displayName = "M3 Stuart";
-							classname = "LIB_M3A3_Stuart";
-							respawnTime = 150;
-							positionATL[] = {3387.26,2320.37,0.0155563};
-							dir = 100;
-							script = "";
-						};*/
 						class a_car_3_1 {
 							displayName = "M3 Scout Car";
 							classname = "LIB_US_Scout_M3_FFV";
@@ -516,6 +466,16 @@ class Maps {
 				};
 			};
 			class Stage4 {
+				class Area {
+					class Attacker {
+						positionATL[] = {2899.94,2124.63,1.35673};
+						area[] = {165.686, 252.032, 270, true, -1};
+					};
+					class Defender {
+						positionATL[] = {2650.23,2097.36,1.56832};
+						area[] = {177.752, 249.534, 270, true, -1};
+					};
+				};
 				class Spawns {
 					defenders[] = {2622.98,2002.16,0};
 					attackers[] = {3111.25,2168.77,0};
@@ -535,14 +495,6 @@ class Maps {
 							dir = 358;
 							script = "";
 						};
-						/*class a_htank_4_2 {
-							displayName = "M4A3 Sherman";
-							classname = "LIB_M4A3_76";
-							respawnTime = 300;
-							positionATL[] = {3080.13,2141.23,0};
-							dir = 358;
-							script = "";
-						};*/
 						class a_ltank_4_1 {
 							displayName = "M3 Stuart";
 							classname = "LIB_M3A3_Stuart";
@@ -551,14 +503,6 @@ class Maps {
 							dir = 358;
 							script = "";
 						};
-						/*class a_ltank_4_2 {
-							displayName = "M3 Stuart";
-							classname = "LIB_M3A3_Stuart";
-							respawnTime = 150;
-							positionATL[] = {3067.04,2140.1,0};
-							dir = 358;
-							script = "";
-						};*/
 						class a_car_4_1 {
 							displayName = "M3 Scout Car";
 							classname = "LIB_US_Scout_M3_FFV";
@@ -617,14 +561,6 @@ class Maps {
 							dir = 326;
 							script = "_this select 0 setObjectTextureGlobal [0, 'WW2\Assets_t\Vehicles\Tanks_t\IF_PzKpfwVI_E\Body_Tarn52c_co.paa']; _this select 0 setObjectTextureGlobal [2, 'WW2\Assets_t\Vehicles\Tanks_t\IF_PzKpfwVI_E\Turret_Tarn52c_co.paa']";
 						};
-						/*class d_htank_4_2 {
-							displayName = "PzKpfW VI 'Tiger I'";
-							classname = "LIB_PzKpfwVI_E_2";
-							respawnTime = 300;
-							positionATL[] = {2462.15,1989.18,0};
-							dir = 326;
-							script = "_this select 0 setObjectTextureGlobal [0, 'WW2\Assets_t\Vehicles\Tanks_t\IF_PzKpfwVI_E\Body_Tarn52c_co.paa']; _this select 0 setObjectTextureGlobal [2, 'WW2\Assets_t\Vehicles\Tanks_t\IF_PzKpfwVI_E\Turret_Tarn52c_co.paa']";
-						};*/
 						class d_truck_4_1 {
 							displayName = "SdKfz 251 MG42";
 							classname = "LIB_SdKfz251_FFV";

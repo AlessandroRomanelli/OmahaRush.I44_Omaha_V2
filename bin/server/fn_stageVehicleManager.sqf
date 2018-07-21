@@ -80,11 +80,13 @@ sv_stage_spawnVehicle = {
 	// Create vehicle
 	_posATL = getArray(_config >> "positionATL");
 	_dir = getNumber(_config >> "dir");
-	_vehicle = createVehicle [getText(_config >> "classname"), _posATL, [], _dir, "CAN_COLLIDE"];
+	_vehicle = getText(_config >> "classname") createVehicle _posATL;
+	_vehicle enableSimulation false;
 	_vehicle setPosATL _posATL;
 	_vehicle setDir _dir;
 	_vehicle setVariable ["id", configName (_config), true];
 	_vehicle setVariable ["config", _config];
+	_vehicle enableSimulation true;
 
 	// Clear vehicle
 	clearWeaponCargoGlobal _vehicle;

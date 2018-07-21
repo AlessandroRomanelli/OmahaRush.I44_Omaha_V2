@@ -5,6 +5,11 @@ class CfgPerks {
 			picture = "";
 			description = "Increases your reload and sprint speed by 5%";
 		};
+		class swim {
+			displayName = "Fast Swim";
+			picture = "";
+			description = "Dramatically increases your swim speed";
+		};
 		class extended_ammo {
 			displayName = "Extended Ammunition";
 			picture = "";

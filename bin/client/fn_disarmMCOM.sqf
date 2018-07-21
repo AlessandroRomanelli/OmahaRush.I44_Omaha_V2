@@ -15,6 +15,7 @@ if (!alive player) exitWith {};
 
 // Set armed
 sv_cur_obj setVariable ["defused",true,true];
+sv_cur_obj setVariable ["arming",false,true];
 sv_cur_obj setVariable ["armed",false,true];
 
 // Send message to everyone
@@ -24,7 +25,5 @@ sv_cur_obj setVariable ["armed",false,true];
 ["<t size='1.3' color='#FFFFFF'>EXPLOSIVES DISARMED</t><br/><t size='1.0' color='#FFFFFF'>Objective Defender</t>", 425] spawn client_fnc_pointfeed_add;
 [425] spawn client_fnc_addPoints;
 
-// Animate
-[sv_cur_obj,0] call BIS_fnc_dataTerminalAnimate;
 
 //Todo Add MLG version

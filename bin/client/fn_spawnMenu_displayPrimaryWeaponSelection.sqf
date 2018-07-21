@@ -61,7 +61,8 @@ diag_log str cl_equipConfigurations;
 	if (_x select 0 != "") then {
 
 		// Add weapon to list of weapons
-		if ((getText(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> (_x select 0) >> "type")) == "primary") then {
+		_allowedClasses = getArray(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> (_x select 0) >> "roles");
+		if ((cl_class in _allowedClasses) && ((getText(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> (_x select 0) >> "type")) == "primary")) then {
 
 			diag_log "2";
 			(_d displayCtrl 3) lbAdd (([(_x select 0)] call client_fnc_weaponDetails) select 1);
@@ -81,7 +82,6 @@ diag_log str cl_equipConfigurations;
 	disableSerialization;
 	_d = findDisplay 5000;
 	cl_equipClassnames set [0, (_d displayCtrl 3) lbData (lbCurSel (_d displayCtrl 3))];
-
 	// Populate the structured texts
 	[] spawn client_fnc_populateSpawnMenu;
 }];

@@ -32,17 +32,14 @@ if (hasInterface) then {
 
 
 
-// Player name
-player setVariable ["name", name player, true];
+/* // Player name
+player setVariable ["name", name player, true]; */
 
 // Time played to make sure the auto team balancer knows our jointime
 player setVariable ["joinServerTime", serverTime, true];
 
 // Wait for the client to be ready for deployment
 waitUntil {(!isNull (findDisplay 46)) AND (isNull (findDisplay 101)) AND (!isNull player) AND (alive player) AND !dialog};
-
-14 cutRsc ["rr_bottomTS3", "PLAIN"];
-((uiNamespace getVariable ["rr_bottomTS3", displayNull]) displayCtrl 0) ctrlSetStructuredText parseText "<t size='1.2' color='#FFFFFF' shadow='2' align='left'><t color='#990000'>TS3</t>: 85.236.101.154:11727</t>";
 
 // Disable saving
 enableSaving [false, false];
@@ -81,6 +78,7 @@ cl_revived = false;
 // Get initial view and object view distance
 cl_objViewDistance = getObjectViewDistance;
 cl_viewDistance = viewDistance;
+
 
 // Do all the cool stuff!
 [] spawn client_fnc_resetVariables;
@@ -141,32 +139,23 @@ _marker3 setMarkerTextLocal " Objective";
 _marker3 setMarkerColorLocal "ColorBlack";
 
 // Trigger restricted area
-_marker4 = createMarkerLocal ["warnLineDef", [0,0]];
+_marker4 = createMarkerLocal ["playArea", [0,0]];
 _marker4 setMarkerTypeLocal "Empty";
 _marker4 setMarkerTextLocal "";
 _marker4 setMarkerShapeLocal "RECTANGLE";
-_marker4 setMarkerBrushLocal "Solid";
-_marker4 setMarkerColorLocal "ColorRed";
-_marker4 setMarkerSizeLocal [250, 2.5];
+_marker4 setMarkerBrushLocal "SolidBorder";
+_marker4 setMarkerColorLocal "ColorWEST";
+_marker4 setMarkerAlphaLocal 0.35;
+_marker4 setMarkerSizeLocal [0, 0];
 _marker4 setMarkerDirLocal 0;
 
-// Trigger restricted area
-_marker5 = createMarkerLocal ["warnLineAtk", [0,0]];
-_marker5 setMarkerTypeLocal "Empty";
-_marker5 setMarkerTextLocal "";
-_marker5 setMarkerShapeLocal "RECTANGLE";
-_marker5 setMarkerBrushLocal "Solid";
-_marker5 setMarkerColorLocal "ColorRed";
-_marker5 setMarkerSizeLocal [250, 2.5];
-_marker5 setMarkerDirLocal 0;
+area_atk setTriggerArea [1, 1, 0, true, -1];
+area_atk setTriggerActivation ["ANYPLAYER", "PRESENT", true];
+area_atk setTriggerStatements ['(player getVariable ["gameSide", "defenders"] == "attackers") && this', "", ""];
 
-warnAreaAtk setTriggerArea [750, 150, 0, true, -1];
-warnAreaAtk setTriggerActivation ["ANYPLAYER", "PRESENT", true];
-warnAreaAtk setTriggerStatements ['(player getVariable ["gameSide", "defenders"] == "attackers") && this', "", ""];
-
-warnAreaDef setTriggerArea [750, 150, 0, true, -1];
-warnAreaDef setTriggerActivation ["ANYPLAYER", "PRESENT", true];
-warnAreaDef setTriggerStatements ['(player getVariable ["gameSide", "attackers"] == "defenders") && this', "", ""];
+area_def setTriggerArea [1, 1, 0, true, -1];
+area_def setTriggerActivation ["ANYPLAYER", "PRESENT", true];
+area_def setTriggerStatements ['(player getVariable ["gameSide", "attackers"] == "defenders") && this', "", ""];
 
 
 // Safepos markers (make sure units will not plop up on the battlefield)
@@ -179,7 +168,7 @@ if (sv_gameStatus in [1,2]) then {
 	[player] remoteExec ["server_fnc_getMatchTime", 2];
 };
 
-CHBN_adjustBrightness = 1;
+CHBN_adjustBrightness = 0.5;
 
 // Keyhandler
 [] spawn client_fnc_initKeyHandler;

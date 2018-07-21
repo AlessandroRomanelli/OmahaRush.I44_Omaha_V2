@@ -15,6 +15,7 @@ _reason = param[0,"",[""]];
 
 // Kill me
 player setDamage 1;
+player setVariable ["isAlive", false];
 
 // Display the reason
 [_reason] spawn client_fnc_displayError;

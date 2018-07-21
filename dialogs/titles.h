@@ -347,11 +347,23 @@ class rr_restrictedArea
 		class text: RscStructuredText
 		{
 			idc = 0;
+			text = "<t size='3.5' color='#FFFFFF' shadow='2' align='center' t font='PuristaBold'>TURN BACK</t><br/><t size='2' color='#FFFFFF' shadow='2' align='center'>YOU ARE LEAVING THE BATTLEFIELD</t>"; //--- ToDo: Localize;
 			x = 0.309219 * safezoneW + safezoneX;
-			y = 0.357 * safezoneH + safezoneY;
+			y = 0.401 * safezoneH + safezoneY;
 			w = 0.381563 * safezoneW;
-			h = 0.286 * safezoneH;
-			text = "<br/><br/><br/><t size='2.5' color='#FFFFFF' shadow='2' align='center' t font='PuristaBold'>RESTRICTED AREA</t><br/><t size='2' color='#FFFFFF' shadow='2' align='center'>RETURN NOW OR YOU WILL BE KILLED</t>";
+			h = 0.132 * safezoneH;
+			colorBackground[] = {-1,-1,-1,0};
+			colorActive[] = {-1,-1,-1,0};
+		};
+		class timer: RscStructuredText
+		{
+			idc = 1101;
+			x = 0.309219 * safezoneW + safezoneX;
+			y = 0.5 * safezoneH + safezoneY;
+			w = 0.381563 * safezoneW;
+			h = 0.176 * safezoneH;
+			colorBackground[] = {-1,-1,-1,0};
+			colorActive[] = {-1,-1,-1,0};
 		};
 	};
 };
@@ -502,8 +514,8 @@ class rr_bottomTS3
 	idd = -1;
 	movingEnable = 1;
 	enableSimulation = 1;
-	fadeout=0;
-	fadein=0;
+	fadeout=0.5;
+	fadein=1;
 	duration = 999999999999;
 	onLoad = "uiNamespace setVariable ['rr_bottomTS3',_this select 0];";
 
@@ -511,14 +523,23 @@ class rr_bottomTS3
 
 	class controls
 	{
-		class RscStructuredText_1100: RscStructuredText
+		class bottom_line: RscStructuredText
 		{
 			idc = 0;
-			x = 0.4303905 * safezoneW + safezoneX;
-
-			y = 0.94 * safezoneH + safezoneY;
-			w = 0.139219 * safezoneW;
+			text = ""; //--- ToDo: Localize;
+			x = 0.29375 * safezoneW + safezoneX;
+			y = 0.951 * safezoneH + safezoneY;
+			w = 0.4125 * safezoneW;
 			h = 0.044 * safezoneH;
+		};
+		class top_line: RscStructuredText
+		{
+			idc = 1;
+			text = ""; //--- ToDo: Localize;
+			x = 0.29375 * safezoneW + safezoneX;
+			y = 0.929 * safezoneH + safezoneY;
+			w = 0.4125 * safezoneW;
+			h = 0.033 * safezoneH;
 		};
 	};
 };
@@ -697,7 +718,7 @@ class rr_hint
 		class RscStructuredText_1100: RscStructuredText
 		{
 			idc = 2;
-			text = "Attack and capture the radio stations before your team runs out of tickets. Each death costs your team a ticket. Reviving restores a ticket."; //--- ToDo: Localize;
+			text = "Attack and capture the objectives before your team runs out of tickets. Each death costs your team a ticket. Reviving restores a ticket."; //--- ToDo: Localize;
 			x = 0.809375 * safezoneW + safezoneX;
 			y = 0.368 * safezoneH + safezoneY;
 			w = 0.180469 * safezoneW;
@@ -963,7 +984,7 @@ class rr_reloadingFlares {
 				sizeEx = /*safezoNeW/*/(1.9*0.04);
 				shadow = 2;
 			};
-			class grenades: RscText
+			class zeroing: RscText
 			{
 				idc = 105;
 				text = "Gx01"; //--- ToDo: Localize;
@@ -972,6 +993,27 @@ class rr_reloadingFlares {
 				w = 0.0615625 * safezoneW;
 				h = 0.0352 * safezoneH;
 				//sizeEx = 1.9 * GUI_GRID_H;
+				sizeEx = /*safezoNeW/*/(1.9*0.04);
+				shadow = 2;
+			};
+			class typeGranade: RscPicture
+			{
+				text = "";
+				idc = 108;
+				x = 0.83 * safezoneW + safezoneX;
+				y = 0.94 * safezoneH + safezoneY;
+				w = 0.0360937 * safezoneW;
+				h = 0.066 * safezoneH;
+			};
+			class granades: RscText
+			{
+				idc = 107;
+				text = "0"; //--- ToDo: Localize;
+				x = 0.823282 * safezoneW + safezoneX;
+				y = 0.946593 * safezoneH + safezoneY;
+				w = 0.0154688 * safezoneW;
+				h = 0.055 * safezoneH;
+				/* sizeEx = 2 * GUI_GRID_H; */
 				sizeEx = /*safezoNeW/*/(1.9*0.04);
 				shadow = 2;
 			};

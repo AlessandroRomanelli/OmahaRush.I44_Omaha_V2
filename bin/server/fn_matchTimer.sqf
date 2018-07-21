@@ -25,13 +25,16 @@ while {sv_matchTime > 0 && sv_gameStatus == 2} do {
 	sleep 1;
 
 	// Wait until the current mcom is NOT armed
-	waitUntil {!(sv_cur_obj getVariable ["armed",false])}; // This loop will either exit when the current mcom is not armed or wait until the current mcom object changes
+	_delay = diag_tickTime;
+	waitUntil {!(sv_cur_obj getVariable ["armed",false]) && !(sv_cur_obj getVariable ["arming", false])}; // This loop will either exit when the current mcom is not armed or wait until the current mcom object changes
+	_delay = diag_tickTime - _delay;
 
 	// Calculate time left
+	sv_intendedTime = sv_intendedTime + _delay;
 	_timeLeft = sv_intendedTime - diag_tickTime;
 
 	// Only decrease the time if the current mcom is NOT done
-	if !(sv_cur_obj getVariable ["done",false]) then {
+	if (!(sv_cur_obj getVariable ["done",false])) then {
 		sv_matchTime = _timeLeft;
 	};
 };

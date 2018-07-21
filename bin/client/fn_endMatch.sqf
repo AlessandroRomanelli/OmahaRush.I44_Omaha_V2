@@ -30,11 +30,30 @@ if (_winners == "attackers") then {
 	playSound "endingDef";
 };
 
+// Get mcoms
+_mcoms = [sv_stage1_obj getVariable ["armed", false], sv_stage2_obj getVariable ["armed", false], sv_stage3_obj getVariable ["armed", false], sv_stage4_obj getVariable ["armed", false]];
+
+[{_x} count _mcoms] call {
+	_mcomsDestroyed = _this select 0;
+	if (player getVariable ["gameSide", "defenders"] == "defenders" && _mcomsDestroyed < 4) then {
+		_mcomDefended = 4 - _mcomsDestroyed;
+		[format ["<t size='1.3' color='#FFFFFF'>%1 OBJECTIVE(S) DEFENDED</t>", _mcomDefended], 150*_mcomDefended] spawn client_fnc_pointfeed_add;
+		[150*_mcomDefended] spawn client_fnc_addPoints;
+	};
+	if (player getVariable ["gameSide", "attackers"] == "attackers" && _mcomsDestroyed > 0) then {
+		[format ["<t size='1.3' color='#FFFFFF'>%1 OBJECTIVE(S) DESTROYED</t>", _mcomsDestroyed], 150*_mcomsDestroyed] spawn client_fnc_pointfeed_add;
+		[150*_mcomsDestroyed] spawn client_fnc_addPoints;
+	};
+	["<t size='1.3' color='#FFFFFF'>ROUND COMPLETED BONUS</t>", 200] spawn client_fnc_pointfeed_add;
+	[200] spawn client_fnc_addPoints;
+};
+
 // Save stats
 [] spawn client_fnc_saveStatistics;
 
 // No damage
 player allowDamage false;
+player setVariable ["isAlive", false];
 
 // black out
 60000 cutRsc ["rr_black", "PLAIN"];
@@ -264,7 +283,7 @@ if (true) then {
 	// All units of the squad
 	_unitsText = "";
 	{
-		_unitsText = _unitsText + (_x getVariable ["name", ""]) + "<br/>";
+		_unitsText = _unitsText + name _x + "<br/>";
 	} forEach (units _bestSquad);
 
 	// Set Text

@@ -95,12 +95,8 @@ while {true} do {
 	[format["Cycle %1 has been finished", sv_gameCycle]] spawn server_fnc_log;
 
 	_missions = 	 [
-										"WW2Rush_1.I44_Omaha_V2",
-										"WW2Rush_2.I44_Omaha_V2",
-										"WW2Rush_1.Panovo",
-										"WW2Rush_1.I44_Merderet_Winter",
-										"WW2Rush_1.Baranow",
-										"WW2Rush_1.SWU_Ardennes_1940"
+										"WW2Rush_1.I44_Merderet_V3",
+										"WW2Rush_1.I44_Omaha_V2"
 								 ];
 	_currentMission = [format["%1.%2", missionName, worldName]];
 

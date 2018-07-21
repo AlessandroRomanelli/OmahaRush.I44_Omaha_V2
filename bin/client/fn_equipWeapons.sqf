@@ -90,40 +90,21 @@ if (true) then {
 
 _primary = _equipInfo select 0;
 _primaryAttachements = _primary select 1;
-if ("LIB_ACC_GL_M7" in _primaryAttachements) then {
-	player addItem "LIB_1Rnd_G_Mk2";
-};
 
 if (cl_classPerk == "grenadier") then {
-	_primary = _equipInfo select 0;
-	_primaryAttachements = _primary select 1;
-	if ("LIB_ACC_GL_M7" in _primaryAttachements) then {
-		if (cl_squadperk == "extended_ammo") then {
-			for "_i" from 1 to 3 do {player addItem "LIB_1Rnd_G_Mk2";};
-		}	else {
-			for "_i" from 1 to 2 do {player addItem "LIB_1Rnd_G_Mk2";};
-		};
+	if ("LIB_M1_Garand" isEqualTo (_primary select 0)) then {
+		player addPrimaryWeaponItem "LIB_ACC_GL_M7";
+		player addItem "LIB_1Rnd_G_Mk2";
+	};
+	if ("LIB_K98_Late" isEqualTo (_primary select 0)) then {
+		player addPrimaryWeaponItem "LIB_ACC_GW_SB_Empty";
+		player addItem "LIB_1Rnd_G_SPRGR_30";
 	};
 
-	switch (player getVariable "gameSide") do {
-		case "defenders": {
-			if (cl_squadPerk == "extended_ammo") then {
-				for "_i" from 1 to 2 do {player addItem "LIB_shg24";};
-				for "_i" from 1 to 2 do {player addItem "LIB_pwm";};
-			} else {
-				player addItem "LIB_pwm";
-				player addItem "LIB_shg24";
-			};
-		};
-		case "attackers": {
-			if (cl_squadPerk == "extended_ammo") then {
-				for "_i" from 1 to 2 do {player addItem "LIB_US_Mk_2";};
-				for "_i" from 1 to 2 do {player addItem "LIB_rpg6";};
-			} else {
-				player addItem "LIB_US_Mk_2";
-				player addItem "LIB_rpg6";
-			};
-		};
+	if (player getVariable "gameSide" == "defenders") then {
+		for "_i" from 1 to 2 do {player addItem "LIB_shg24"};
+	} else {
+		for "_i" from 1 to 2 do {player addItem "LIB_US_Mk_2"};
 	};
 };
 
@@ -131,20 +112,12 @@ if (cl_classPerk == "demolition") then {
 	removeBackpackGlobal player;
 	if (player getVariable "gameSide" == "defenders") then {
 		removeBackpackGlobal player;
-		player addBackpack "B_LIB_GER_Backpack";
-		if (cl_squadPerk == "extended_ammo") then {
-			for "_i" from 1 to 2 do {player addItemToBackpack "LIB_TM44_MINE_mag";};
-		} else {
-			player addItemToBackpack "LIB_TM44_MINE_mag";
-		};
+		player addBackpack "B_LIB_GER_SapperBackpack_empty";
+		for "_i" from 1 to 3 do {player addItemToBackpack "LIB_Ladung_Small_MINE_mag";};
 	} else {
 		removeBackpackGlobal player;
 		player addBackpack "B_LIB_US_Backpack";
-		if (cl_squadPerk == "extended_ammo") then {
-			for "_i" from 1 to 2 do {player addItemToBackpack "LIB_TM44_MINE_mag";};
-		} else {
-			player addItemToBackpack "LIB_TM44_MINE_mag";
-		};
+		for "_i" from 1 to 3 do {player addItemToBackpack "LIB_Ladung_Small_MINE_mag";};
 	};
 };
 
@@ -153,28 +126,17 @@ if (cl_class == "engineer" && cl_classPerk == "perkAT") then {
 		case "attackers": {
 			removeBackpackGlobal player;
 			player addBackpack "B_LIB_US_RocketBag_Empty";
-			// Extended ammo perk
-			if (cl_squadPerk == "extended_ammo") then {
-				player addMagazine "LIB_1Rnd_60mm_M6";
-				player addWeapon "LIB_M1A1_Bazooka";
-				player addMagazine "LIB_1Rnd_60mm_M6";
-			} else {
-				player addMagazine "LIB_1Rnd_60mm_M6";
-				player addWeapon "LIB_M1A1_Bazooka";
-			};
+			player addMagazine "LIB_1Rnd_60mm_M6";
+			player addWeapon "LIB_M1A1_Bazooka";
+			player addMagazine "LIB_1Rnd_60mm_M6";
 		};
 		case "defenders": {
 			removeBackpackGlobal player;
 			player addBackpack "B_LIB_GER_Panzer_Empty";
-			// Extended ammo perk
-			if (cl_squadPerk == "extended_ammo") then {
-				player addMagazine "LIB_1Rnd_RPzB";
-				player addWeapon "LIB_RPzB";
-				player addMagazines ["LIB_1Rnd_RPzB", 2];
-			} else {
-				player addItemToBackpack "LIB_1Rnd_RPzB";
-				player addWeapon "LIB_RPzB";
-			};
+			{player removeItemFromBackpack _x} forEach backpackItems player;
+			player addItemToBackpack "LIB_1Rnd_RPzB";
+			player addWeapon "LIB_RPzB";
+			player addItemToBackpack "LIB_1Rnd_RPzB";
 		};
 	};
 };

@@ -62,7 +62,7 @@ if (count cl_equipConfigurations == 0) then {
 			];
 
 			// If no default equipped classname has been set yet
-			if (getText((_configs select _i) >> "type") == "primary" && (cl_equipClassnames select 0) == "") then {
+			if (getText((_configs select _i) >> "type") == "primary" && (cl_equipClassnames select 0) == "" && cl_class in getArray((_configs select _i) >> "roles")) then {
 				cl_equipClassnames set[0, configName (_configs select _i)];
 			};
 			if (getText((_configs select _i) >> "type") == "secondary" && (cl_equipClassnames select 1) == "") then {

@@ -51,6 +51,10 @@ _objs = nearestObjects [player, ["Man","GroundWeaponHolder", "WeaponHolder"], 5]
 300 cutRsc ["default","PLAIN"];
 cl_gui_thread = [] spawn client_fnc_startIngameGUI;
 
+player setVariable ["unitDmg", 0];
+player setVariable ["isAlive", true];
+player setVariable ["wasHS", false];
+
 sleep 1;
 setPlayerRespawnTime 15;
 cl_revived = false;

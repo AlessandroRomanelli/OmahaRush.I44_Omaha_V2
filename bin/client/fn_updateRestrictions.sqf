@@ -8,40 +8,53 @@ scriptName "fn_updateRestrictions";
 #define __filename "fn_updateRestrictions.sqf"
 if (isServer && !hasInterface) exitWith {};
 
-if ((str sv_cur_obj) == (str sv_stage1_obj)) then {
-	warnAreaAtk setPos [3730.27,2384.22,2.92921];
-	warnAreaAtk setTriggerArea [750, 350, 358.5, true, -1];
-	warnAreaDef setPos [3597.66,2973.67,0];
-	warnAreaDef setTriggerArea [750, 150, 124, true, -1];
+switch (str sv_cur_obj) do {
+  case (str sv_stage1_obj): {
+		_atkArea = (getArray(missionConfigFile >> "Maps" >> sv_map >> "Stages" >> "Stage1" >> "Area" >> "Attacker" >> "area"));
+		_atkArea set [3, true];
+		_defArea = (getArray(missionConfigFile >> "Maps" >> sv_map >> "Stages" >> "Stage1" >> "Area" >> "Defender" >> "area"));
+		_defArea set [3, true];
+		area_atk setPos (getArray(missionConfigFile >> "Maps" >> sv_map >> "Stages" >> "Stage1" >> "Area" >> "Attacker" >> "positionATL"));
+		area_atk setTriggerArea _atkArea;
+		area_def setPos (getArray(missionConfigFile >> "Maps" >> sv_map >> "Stages" >> "Stage1" >> "Area" >> "Defender" >> "positionATL"));
+		area_def setTriggerArea _defArea;
+  };
+	case (str sv_stage2_obj): {
+		_atkArea = (getArray(missionConfigFile >> "Maps" >> sv_map >> "Stages" >> "Stage2" >> "Area" >> "Attacker" >> "area"));
+	 	_atkArea set [3, true];
+	 	_defArea = (getArray(missionConfigFile >> "Maps" >> sv_map >> "Stages" >> "Stage2" >> "Area" >> "Defender" >> "area"));
+	 	_defArea set [3, true];
+	 	area_atk setPos (getArray(missionConfigFile >> "Maps" >> sv_map >> "Stages" >> "Stage2" >> "Area" >> "Attacker" >> "positionATL"));
+	 	area_atk setTriggerArea _atkArea;
+	 	area_def setPos (getArray(missionConfigFile >> "Maps" >> sv_map >> "Stages" >> "Stage2" >> "Area" >> "Defender" >> "positionATL"));
+	 	area_def setTriggerArea _defArea;
+	};
+	case (str sv_stage3_obj): {
+		_atkArea = (getArray(missionConfigFile >> "Maps" >> sv_map >> "Stages" >> "Stage3" >> "Area" >> "Attacker" >> "area"));
+		_atkArea set [3, true];
+		_defArea = (getArray(missionConfigFile >> "Maps" >> sv_map >> "Stages" >> "Stage3" >> "Area" >> "Defender" >> "area"));
+		_defArea set [3, true];
+		area_atk setPos (getArray(missionConfigFile >> "Maps" >> sv_map >> "Stages" >> "Stage3" >> "Area" >> "Attacker" >> "positionATL"));
+		area_atk setTriggerArea _atkArea;
+		area_def setPos (getArray(missionConfigFile >> "Maps" >> sv_map >> "Stages" >> "Stage3" >> "Area" >> "Defender" >> "positionATL"));
+		area_def setTriggerArea _defArea;
+	};
+	case (str sv_stage4_obj): {
+		_atkArea = (getArray(missionConfigFile >> "Maps" >> sv_map >> "Stages" >> "Stage4" >> "Area" >> "Attacker" >> "area"));
+		_atkArea set [3, true];
+		_defArea = (getArray(missionConfigFile >> "Maps" >> sv_map >> "Stages" >> "Stage4" >> "Area" >> "Defender" >> "area"));
+		_defArea set [3, true];
+		area_atk setPos (getArray(missionConfigFile >> "Maps" >> sv_map >> "Stages" >> "Stage4" >> "Area" >> "Attacker" >> "positionATL"));
+		area_atk setTriggerArea _atkArea;
+		area_def setPos (getArray(missionConfigFile >> "Maps" >> sv_map >> "Stages" >> "Stage4" >> "Area" >> "Defender" >> "positionATL"));
+		area_def setTriggerArea _defArea;
+	};
 };
 
-if ((str sv_cur_obj) == (str sv_stage2_obj)) then {
-	warnAreaAtk setPos [3121.8,2085.41,2.92918];
-	warnAreaAtk setTriggerArea [750, 350, 69, true, -1];
-	warnAreaDef setPos [3884.89,2627.72,0];
-	warnAreaDef setTriggerArea [750, 350, 235, true, -1];
-};
-
-if ((str sv_cur_obj) == (str sv_stage3_obj)) then {
-	warnAreaAtk setPos [2741,2116.05,2.92918];
-	warnAreaAtk setTriggerArea [750, 350, 90, true, -1];
-	warnAreaDef setPos [3596.49,2243.36,0.286148];
-	warnAreaDef setTriggerArea [750, 350, 265, true, -1];
-};
-
-if ((str sv_cur_obj) == (str sv_stage4_obj)) then {
-	warnAreaAtk setPos [2375.56,1936.5,2.92947];
-	warnAreaAtk setTriggerArea [750, 350, 51, true, -1];
-	warnAreaDef setPos [3169.92,2119.37,1.33087];
-	warnAreaDef setTriggerArea [750, 350, 270, true, -1];
-};
-
-if (player getVariable "gameSide" == "defenders") then {
-	[warnAreaDef, "warnLineDef"] spawn client_fnc_updateLine;
-	"warnLineAtk" setMarkerPosLocal [0,0];
+if (player getVariable ["gameSide", "defenders"] == "defenders") then {
+	[area_def, "playArea"] spawn client_fnc_updateLine;
 } else {
-	[warnAreaAtk, "warnLineAtk"] spawn client_fnc_updateLine;
-	"warnLineDef" setMarkerPosLocal [0,0];
+	[area_atk, "playArea"] spawn client_fnc_updateLine;
 };
 
 

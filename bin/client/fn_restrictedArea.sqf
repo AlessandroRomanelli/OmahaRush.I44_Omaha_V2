@@ -17,6 +17,7 @@ waitUntil {((diag_tickTime - _entryTime) > 15) || (player distance (getMarkerPos
 // Evaluate
 if (diag_tickTime - _entryTime > 15) then {
 	player setDamage 1;
+	player setVariable ["isAlive", false];
 	["You have been killed for remaining in a restricted area"] spawn client_fnc_displayError;
 };
 

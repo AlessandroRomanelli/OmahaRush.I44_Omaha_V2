@@ -9,10 +9,8 @@ scriptName "fn_kill";
 --------------------------------------------------------------------*/
 #define __filename "fn_kill.sqf"
 if (isServer && !hasInterface) exitWith {};
-_victim = param[0,objNull,[objNull]];
-_wasHS = param[1, false];
 
-if (playerSide == (_victim getVariable ["side",civilian])) exitWith {};
+params [["_victim", objNull], ["_wasHS", false]];
 
 // Increase kills
 cl_kills = cl_kills + 1;
@@ -74,6 +72,7 @@ if (_victim distance player > 50) then {
 		_points = _points + 50;
 	};
 
+	_distanceKill = _distanceKill + format ["<t size='0.85' color='#FFFFFF'> [%1m]</t>", floor (_victim distance player)];
 	// Additional points
 	_points = _points + 15;
 };
@@ -90,5 +89,6 @@ if ((player distance sv_cur_obj) < 20 || (_victim distance sv_cur_obj) < 20) the
 };
 
 // We've done good! Give me points
-["<t size='1.3'>[" + _reason + "] <t color='#FE251B'>" + (_victim getVariable ["name", ""]) + "</t></t>" + _HSkill + _distanceKill + _objectiveKill, _points] spawn client_fnc_pointfeed_add;
+/* ["<t size='1.3'>[" + _reason + "] <t color='#FE251B'>" + (_victim getVariable ["name", ""]) + "</t></t>" + _HSkill + _distanceKill + _objectiveKill, _points] spawn client_fnc_pointfeed_add; */
+["<t size='1.3'>[" + _reason + "] <t color='#FE251B'>" + name _victim + "</t></t>" + _HSkill + _distanceKill + _objectiveKill, _points] spawn client_fnc_pointfeed_add;
 [_points] spawn client_fnc_addPoints;

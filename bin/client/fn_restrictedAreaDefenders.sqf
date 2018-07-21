@@ -9,15 +9,18 @@ scriptName "fn_restrictedAreaDefenders";
 --------------------------------------------------------------------*/
 #define __filename "fn_restrictedAreaDefenders.sqf"
 
-_entryTime = diag_tickTime;
+player setVariable ["entryTime", diag_tickTime];
 
 // Wait until time is out or were out again
-waitUntil {((diag_tickTime - _entryTime) > 15) || (player getVariable ["gameSide", "defenders"] == "defenders") && !(vehicle player in (list warnAreaDef))};
+waitUntil {((diag_tickTime - (player getVariable "entryTime")) > 20) || (player getVariable ["gameSide", "defenders"] == "defenders") && (vehicle player in (list area_def))};
+
 // Evaluate
-if (diag_tickTime - _entryTime > 15) then {
+if ((diag_tickTime - (player getVariable "entryTime")) > 20) then {
 	player setDamage 1;
+	player setVariable ["isAlive", false];
 	["You have been killed for remaining in a restricted area"] spawn client_fnc_displayError;
 };
 
 // Delete myself ay!
 cl_restrictedAreaDefenders_thread = nil;
+player setVariable ["entryTime", nil];

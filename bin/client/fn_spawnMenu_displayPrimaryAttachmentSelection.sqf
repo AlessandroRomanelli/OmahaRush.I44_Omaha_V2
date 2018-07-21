@@ -26,8 +26,8 @@ if (cl_spawnmenu_currentWeaponSelectionState == 3) exitWith {
 };
 
 // Duhh
-cl_spawnmenu_currentWeaponSelectionState = 3;
-(_d displayCtrl 20) ctrlRemoveAllEventHandlers "LBSelChanged";
+/* cl_spawnmenu_currentWeaponSelectionState = 3; */
+/* (_d displayCtrl 20) ctrlRemoveAllEventHandlers "LBSelChanged";
 (_d displayCtrl 21) ctrlRemoveAllEventHandlers "LBSelChanged";
 (_d displayCtrl 22) ctrlRemoveAllEventHandlers "LBSelChanged";
 
@@ -230,4 +230,4 @@ if (!_sideSelected) then {
 
 	// Populate the structured texts
 	[] spawn client_fnc_populateSpawnMenu;
-}];
+}]; */

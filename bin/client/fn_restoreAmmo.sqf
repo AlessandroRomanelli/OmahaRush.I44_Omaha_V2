@@ -15,7 +15,7 @@ _unit = param[0,objNull,[objNull]];
 if (isNull _unit || _unit == player) then {
 	["AMMUNITION REPLENISHED"] spawn client_fnc_displayInfo;
 } else {
-	[format["%1 HAS REPLENISHED YOUR AMMUNITION", (_unit getVariable ["name", ""])]] spawn client_fnc_displayInfo;
+	[format["%1 HAS REPLENISHED YOUR AMMUNITION", name _unit]] spawn client_fnc_displayInfo;
 };
 
 // Lets give us ammunition again :)

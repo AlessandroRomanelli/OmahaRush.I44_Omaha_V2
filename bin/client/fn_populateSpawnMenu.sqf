@@ -21,15 +21,34 @@ _equip = [] call client_fnc_getLoadedEquipment;
 _primary = _equip select 0;
 _secondary = _equip select 1;
 
+if ((count _primary == 0) || ((cl_equipClassnames select 0) == "")) then {
+	(_d displayCtrl 5) ctrlSetStructuredText parseText "<t size='4' color='#990000' shadow='2' font='PuristaMedium' align='center'>N/A</t>";
+	(_d displayCtrl 1001) ctrlSetStructuredText parseText "<t size='1.25' color='#990000' shadow='2' font='PuristaMedium' align='center'>NO WEAPON SELECTED</t>";
+};
+
+if ((count _secondary == 0) || ((cl_equipClassnames select 1) == "")) then {
+	(_d displayCtrl 7) ctrlSetStructuredText parseText "<t size='4' color='#990000' shadow='2' font='PuristaMedium' align='center'>N/A</t>";
+	(_d displayCtrl 1004) ctrlSetStructuredText parseText "<t size='1.25' color='#990000' shadow='2' font='PuristaMedium' align='center'>NO WEAPON SELECTED</t>";
+};
+
 // Validate
 [] call client_fnc_validateEquipment;
 
 // Display primary and secondary
-(_d displayCtrl 5) ctrlSetStructuredText parseText ("<t align='center' shadow='2' size='5'><img image='" + (([_primary select 0] call client_fnc_weaponDetails) select 2) + "'/></t>");
-(_d displayCtrl 7) ctrlSetStructuredText parseText ("<t align='center' shadow='2' size='5'><img image='" + (([_secondary select 0] call client_fnc_weaponDetails) select 2) + "'/></t>");
+if ((_primary select 0) != "") then {
+	(_d displayCtrl 5) ctrlSetStructuredText parseText ("<t align='center' shadow='2' size='5'><img image='" + (([_primary select 0] call client_fnc_weaponDetails) select 2) + "'/></t>");
+	(_d displayCtrl 1001) ctrlSetStructuredText parseText format ["<t size='1.25' color='#FFFFFF' shadow='2' font='PuristaMedium' align='center'>%1</t>", (([_primary select 0] call client_fnc_weaponDetails) select 1)];
+	(_d displayCtrl 2001) ctrlSetStructuredText parseText "<t size='0.75' color='#FFFFFF' shadow='2' font='PuristaMedium' align='center'>[CLICK ABOVE TO SELECT]</t>";
+};
+
+if ((_secondary select 0) != "") then {
+	(_d displayCtrl 7) ctrlSetStructuredText parseText ("<t align='center' shadow='2' size='5'><img image='" + (([_secondary select 0] call client_fnc_weaponDetails) select 2) + "'/></t>");
+	(_d displayCtrl 1004) ctrlSetStructuredText parseText format ["<t size='1.25' color='#FFFFFF' shadow='2' font='PuristaMedium' align='center'>%1</t>", (([_secondary select 0] call client_fnc_weaponDetails) select 1)];
+	(_d displayCtrl 2002) ctrlSetStructuredText parseText "<t size='0.75' color='#FFFFFF' shadow='2' font='PuristaMedium' align='center'>[CLICK ABOVE TO SELECT]</t>";
+};
 
 // Build primary attachments text and display
-if (true) then {
+/* if (true) then {
 	_prefix = "<t align='center' shadow='2' size='2.5'>";
 	_suffix = "</t>";
 	_center = "";
@@ -37,14 +56,14 @@ if (true) then {
 	{
 		if (_x != "") then {
 			_center = _center + "<img image='" + (([_x] call client_fnc_weaponDetails) select 2) + "'/>";
-		};
+		}
 	} forEach (_primary select 1);
 
 	(_d displayCtrl 6) ctrlSetStructuredText parseText (_prefix + _center + _suffix);
-};
+}; */
 
 // Build primary attachments text and display
-if (true) then {
+/* if (true) then {
 	_prefix = "<t align='center' shadow='2' size='2.5'>";
 	_suffix = "</t>";
 	_center = "";
@@ -56,7 +75,7 @@ if (true) then {
 	} forEach (_secondary select 1);
 
 	(_d displayCtrl 8) ctrlSetStructuredText parseText (_prefix + _center + _suffix);
-};
+}; */
 
 // Get unlock progress
 _progress = [] call client_fnc_getNextUnlockableWeapon;

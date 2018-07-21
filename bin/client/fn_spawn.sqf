@@ -10,7 +10,6 @@ scriptName "fn_spawn";
 #define __filename "fn_spawn.sqf"
 if (isServer && !hasInterface) exitWith {};
 
-player setVariable ["isAlive", true];
 player setVariable ["wasHS", false];
 player setVariable ["unitDmg", 0];
 
@@ -55,9 +54,6 @@ if (player getVariable "gameSide" == "defenders") then {
 	_d = uiNamespace getVariable ["rr_objective_gui", displayNull];
 	(_d displayCtrl 0) ctrlSetText "pictures\objective_defender.paa";
 };
-
-14 cutRsc ["rr_bottomTS3", "PLAIN"];
-((uiNamespace getVariable ["rr_bottomTS3", displayNull]) displayCtrl 0) ctrlSetStructuredText parseText "<t size='1.2' color='#FFFFFF' shadow='2' align='left'><t color='#990000'>TS3</t>: 85.236.101.154:11727</t>";
 
 // If the server will restart after this round, display a visual warning at the top right
 if (getNumber(missionConfigFile >> "GeneralConfig" >> "PerformanceRestart") == 1 && sv_gameCycle >= ((getNumber(missionConfigFile >> "GeneralConfig" >> "MatchCount")) - 1)) then {
@@ -138,7 +134,13 @@ if (player getVariable "gameSide" == "defenders") then {
 player assignItem "ItemGPS";*/
 
 // Markers
-[] call client_fnc_updateRestrictions;
+[] spawn client_fnc_updateRestrictions;
+
+if (player getVariable ["gameSide", "defenders"] == "defenders") then {
+	[area_def, "playArea"] spawn client_fnc_updateLine;
+} else {
+	[area_atk, "playArea"] spawn client_fnc_updateLine;
+};
 
 // Wait until the objectives are available
 waitUntil {!isNil "sv_stage1_obj" && !isNil "sv_stage2_obj" && !isNil "sv_stage3_obj" && !isNil "sv_stage4_obj"};
@@ -159,7 +161,7 @@ _pos set[2, 400];
 
 // Display all buildings
 setObjectViewDistance 1000;
-setViewDistance 1000;
+setViewDistance 2000;
 
 // DUMMY WEAPON SO THE PLAYER DOESNT PLAY THE ANIMATION WHEN HE SPAWNS
 removeAllWeapons player;

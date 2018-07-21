@@ -23,7 +23,7 @@ disableSerialization;
 _d = findDisplay 5000;
 
 // Class and perks
-_class = param[0,"",[""]];
+_class = param[0,"medic",[""]];
 cl_class = _class;
 _perkData = [cl_class] call client_fnc_getUsedPerksForClass;
 cl_classPerk = _perkData select 0;
@@ -40,9 +40,13 @@ cl_spawn_succ = {
 	// Object action update
 	[] spawn client_fnc_objectiveActionUpdate;
 
+	if (isNil "cl_adsDisplay") then {
+		cl_adsDisplay = [] spawn client_fnc_displayAds;
+	};
+
 	// GPS
 	showGPS true;
-
+	player setVariable ["isAlive", true];
 	// Spawn protection
 	[] spawn {
 		sleep 1;

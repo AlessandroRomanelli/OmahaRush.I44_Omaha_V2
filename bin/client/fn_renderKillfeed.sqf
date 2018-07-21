@@ -35,8 +35,10 @@ _out = "";
 		"<t color='#FE251B' shadow='2' font='PuristaMedium'>" + name (_x select 2) + "<t/>"
 	};
 
+	_distance = format ["%1m", ceil ((_x select 0) distance (_x select 2))];
+
 	// Add to master string
-	_out = _out + _killer + " <t color='#ffffff' shadow='2'>[" + _weapon + "]<t/> " + _killed + "<br/>";
+	_out = _out + _killer + " <t color='#ffffff' shadow='2'>[" + _weapon + "]<t/> " + _killed + " <t color='#ffffff' shadow='2'>(" + _distance + ")<t/><br/>";
 } forEach cl_killfeed;
 
 (uiNamespace getVariable ["rr_objective_gui", displayNull] displayCtrl 10) ctrlSetStructuredText (parseText _out);

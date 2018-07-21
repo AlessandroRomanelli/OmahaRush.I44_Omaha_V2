@@ -34,7 +34,13 @@ rc_spawnBeacon = {
 
 				// Create beacon :>
 				_pos = player modelToWorld [0,0,0];
-				_beacon = createVehicle ["Vysilacka", position player, [], 0, "CAN_COLLIDE"];
+				_beacon = [] call {
+					if (player getVariable ["gameSide", "defenders"] == "defenders") then {
+						createVehicle ["LIB_GerRadio", position player, [], 0, "CAN_COLLIDE"];
+					} else {
+						createVehicle ["LIB_SovRadio", position player, [], 0, "CAN_COLLIDE"];
+					};
+				};
 				_beacon setPosATL _pos;
 				_beacon enableSimulation false;
 				_beacon setDir (direction player);
@@ -77,7 +83,7 @@ if (true) then {
 		if (_keyCode == 35 && (alive player)) then {
 			_myClass = player getVariable ["class",""];
 
-			if (cursorObject isKindOf "Vysilacka" && player distance cursorObject < 2) then {
+			if ((cursorObject isKindOf "LIB_SovRadio" || cursorObject isKindOf "LIB_GerRadio") && player distance cursorObject < 2) then {
 
 				// Our teams beacon
 				if ((([cursorObject] call client_fnc_getBeaconOwner) getVariable ["side", sideUnknown]) == playerSide || cursorObject == (player getVariable ["assault_beacon_obj", objNull])) then {

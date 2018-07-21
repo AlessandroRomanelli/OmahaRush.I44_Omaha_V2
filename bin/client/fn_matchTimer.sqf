@@ -17,8 +17,11 @@ cl_matchTimer_thread = [] spawn {
 		sleep 1;
 
 		// Wait until the current mcom is NOT armed
-		waitUntil {!(sv_cur_obj getVariable ["armed",false])}; // This loop will either exit when the current mcom is not armed or wait until the current mcom object changes
+		_delay = diag_tickTime;
+		waitUntil {!(sv_cur_obj getVariable ["armed",false]) && !(sv_cur_obj getVariable ["arming", false])}; // This loop will either exit when the current mcom is not armed or wait until the current mcom object changes
+		_delay = diag_tickTime - _delay;
 
+		cl_intendedTime = cl_intendedTime + _delay;
 		_timeLeft = cl_intendedTime - diag_tickTime;
 		if (_timeLeft > 0) then {
 			cl_matchTime = _timeLeft;

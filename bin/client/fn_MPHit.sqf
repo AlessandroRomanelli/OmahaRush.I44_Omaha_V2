@@ -18,10 +18,12 @@ if (_damage == -0.03184) exitWith {
 };
 
 // Anything else
-if (_damage < 1) then {
+if (_damage < 1) exitWith {
 	25 cutRsc ["hm_hit","PLAIN"];
+	playSound "hit_marker";
 };
 
 if (_damage == -0.03122) exitWith {
 	26 cutRsc ["hm_headshot","PLAIN"];
+	playSound "head_shot";
 };

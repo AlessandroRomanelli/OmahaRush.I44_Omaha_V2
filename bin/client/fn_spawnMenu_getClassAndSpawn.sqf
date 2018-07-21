@@ -13,27 +13,4 @@ if (isServer && !hasInterface) exitWith {};
 disableSerialization;
 _requestedClass = ((findDisplay 5000) displayCtrl 300) lbData (lbCurSel ((findDisplay 5000) displayCtrl 300));
 
-switch (_requestedClass) do
-{
-	case "medic":
-	{
-		["medic"] spawn client_fnc_spawnPlayer;
-	};
-	case "support":
-	{
-		["support"] spawn client_fnc_spawnPlayer;
-	};
-	case "assault":
-	{
-		["assault"] spawn client_fnc_spawnPlayer;
-	};
-	case "engineer":
-	{
-		["engineer"] spawn client_fnc_spawnPlayer;
-	};
-
-	default
-	{
-		["medic"] spawn client_fnc_spawnPlayer;
-	};
-};
+[_requestedClass] spawn client_fnc_spawnPlayer;

@@ -38,9 +38,9 @@ cl_soundLevel = 1;
 			if (true) then {
 				_h = true;
 					{if ((_x getVariable "gameSide") == "defenders") then {
-							_allInfoDefenders pushBack [_x getVariable ["points", 0], _x getVariable ["kills", 0], _x getVariable ["deaths", 0], (_x getVariable ["name", ""])];
+							_allInfoDefenders pushBack [_x getVariable ["points", 0], _x getVariable ["kills", 0], _x getVariable ["deaths", 0], name _x];
 						} else {
-							_allInfoAttackers pushBack [_x getVariable ["points", 0], _x getVariable ["kills", 0], _x getVariable ["deaths", 0], (_x getVariable ["name", ""])];
+							_allInfoAttackers pushBack [_x getVariable ["points", 0], _x getVariable ["kills", 0], _x getVariable ["deaths", 0], name _x];
 						};
 					} forEach AllPlayers;
 

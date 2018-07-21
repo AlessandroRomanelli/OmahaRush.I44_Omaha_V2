@@ -10,7 +10,7 @@ scriptName "fn_MCOMdestroyed";
 #define __filename "fn_MCOMdestroyed.sqf"
 
 // Warning
-["THE RADIO HAS BEEN DESTROYED"] spawn client_fnc_displayObjectiveMessage;
+["THE OBJECTIVE HAS BEEN DESTROYED"] spawn client_fnc_displayObjectiveMessage;
 
 // Update the last-mcom-destroyed time
 //cl_blockSpawnUntil = diag_tickTime + (getNumber(missionConfigFile >> "GeneralConfig" >> "FallBackSeconds"));
@@ -52,7 +52,7 @@ if (param[0,false,[false]]) then {
 	[(getNumber(missionConfigFile >> "Maps" >> sv_map >> "roundTime")) + _fbTime, _fbTime] call client_fnc_initMatchTimer;
 
 	// Update markers
-	[] call client_fnc_updateMarkers;
+	[] spawn client_fnc_updateMarkers;
 
 	// If we are attacker, block the next mcom for now
 	if (player getVariable "gameSide" == "attackers") then {
@@ -61,6 +61,11 @@ if (param[0,false,[false]]) then {
 
 	sleep 3;
 	[format["DEFENDERS HAVE %1 SECONDS TO FALL BACK", _fbTime]] spawn client_fnc_displayObjectiveMessage;
+	if (player getVariable ["gameSide", "defenders"] == "defenders") then {
+		[area_def, "playArea"] spawn client_fnc_updateLine;
+	} else {
+		[area_atk, "playArea"] spawn client_fnc_updateLine;
+	};
 	sleep (_fbTime-3);
 	if (player getVariable "gameSide" == "attackers") then {
 		playSound format["attackOrder_%1", floor random 4+1];
@@ -72,7 +77,7 @@ if (param[0,false,[false]]) then {
 	[] spawn _animate;
 
 	// Update markers
-	[] call client_fnc_updateRestrictions;
+	[] spawn client_fnc_updateRestrictions;
 };
 
 // Reload mcom interaction
