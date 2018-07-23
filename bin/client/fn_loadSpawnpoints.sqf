@@ -85,11 +85,11 @@ if (lbCurSel (_d displayCtrl 9) == -1) then {
 // Get configs of vehicles we can spawn at (PERSISTENT ONES)
 _configs = [];
 if (player getVariable "gameSide" == "defenders") then {
-	_configs append ("true" configClasses (missionConfigFile >> "Maps" >> sv_map >> "PersistentVehicles" >> "Defender"));
-	_configs append ("true" configClasses (missionConfigFile >> "Maps" >> sv_map >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Vehicles" >> "Defender"));
+	_configs append ("true" configClasses (missionConfigFile >> "MapSettings" >> "PersistentVehicles" >> "Defender"));
+	_configs append ("true" configClasses (missionConfigFile >> "MapSettings" >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Vehicles" >> "Defender"));
 } else {
-	_configs append ("true" configClasses (missionConfigFile >> "Maps" >> sv_map >> "PersistentVehicles" >> "Attacker"));
-	_configs append ("true" configClasses (missionConfigFile >> "Maps" >> sv_map >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Vehicles" >> "Attacker"));
+	_configs append ("true" configClasses (missionConfigFile >> "MapSettings" >> "PersistentVehicles" >> "Attacker"));
+	_configs append ("true" configClasses (missionConfigFile >> "MapSettings" >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Vehicles" >> "Attacker"));
 };
 
 {

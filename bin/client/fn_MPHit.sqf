@@ -15,10 +15,11 @@ _damage = _this;
 // Kill
 if (_damage == -0.03184) exitWith {
 	27 cutRsc ["hm_kill","PLAIN"];
+	playSound "hit_marker";
 };
 
 // Anything else
-if (_damage < 1) exitWith {
+if (_damage > 0 && _damage < 1) exitWith {
 	25 cutRsc ["hm_hit","PLAIN"];
 	playSound "hit_marker";
 };

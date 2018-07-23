@@ -10,6 +10,14 @@ scriptName "fn_equipWeapons";
 #define __filename "fn_equipWeapons.sqf"
 if (isServer && !hasInterface) exitWith {};
 
+_swapItems = {
+	params["_current_loadout", "_classNames", "_index", "_subindex"];
+	_temp = _currentLoadout select _index;
+	_temp set [_subindex, selectRandom _classNames];
+	_currentLoadout set [_index, _temp];
+	_currentLoadout;
+};
+
 // Get equip
 _equipInfo = [] call client_fnc_getLoadedEquipment;
 
@@ -48,7 +56,7 @@ if (true) then {
 	};*/
 };
 
-if (true) then {
+if (count (_equipInfo select 1) != 0) then {
 	// Secondary
 	_secondary = _equipInfo select 1;
 	_secondaryClassname = _secondary select 0;
@@ -91,6 +99,26 @@ if (true) then {
 _primary = _equipInfo select 0;
 _primaryAttachements = _primary select 1;
 
+_side = player getVariable "gameSide";
+_possibleLoadouts = (missionconfigfile >> "Soldiers" >> _side) call Bis_fnc_getCfgSubClasses;
+_loadoutIdx = _side call BIS_fnc_getParamValue;
+_sideLoadout = _possibleLoadouts select _loadoutIdx;
+
+if (cl_class == "medic") then {
+	_medic_uniforms = (getArray(missionConfigFile >> "Soldiers" >> format["%1", _side] >> _sideLoadout >> "medics" >> "uniforms"));
+	_medic_vests = (getArray(missionConfigFile >> "Soldiers" >> format["%1", _side] >> _sideLoadout >> "medics" >> "vests"));
+	_medic_headgears = (getArray(missionConfigFile >> "Soldiers" >> format["%1", _side] >> _sideLoadout >> "medics" >> "headgears"));
+	_medic_backpacks = (getArray(missionConfigFile >> "Soldiers" >> format["%1", _side] >> _sideLoadout >> "medics" >> "backpacks"));
+
+	_currentLoadout = getUnitLoadout player;
+	_newLoadout = _currentLoadout;
+	if (count _medic_uniforms > 0) then {_newLoadout = [_currentLoadout, _medic_uniforms, 3, 0] call _swapItems;};
+	if (count _medic_vests > 0) then {_newLoadout = [_currentLoadout, _medic_vests, 4, 0] call _swapItems};
+	if (count _medic_backpacks > 0) then {_newLoadout = [_currentLoadout, _medic_backpacks, 5, 0] call _swapItems};
+	if (count _medic_headgears > 0) then {_newLoadout set [6, selectRandom _medic_headgears]};
+	player setUnitLoadout _newLoadout;
+};
+
 if (cl_classPerk == "grenadier") then {
 	if ("LIB_M1_Garand" isEqualTo (_primary select 0)) then {
 		player addPrimaryWeaponItem "LIB_ACC_GL_M7";
@@ -101,7 +129,7 @@ if (cl_classPerk == "grenadier") then {
 		player addItem "LIB_1Rnd_G_SPRGR_30";
 	};
 
-	if (player getVariable "gameSide" == "defenders") then {
+	if (_side == "defenders") then {
 		for "_i" from 1 to 2 do {player addItem "LIB_shg24"};
 	} else {
 		for "_i" from 1 to 2 do {player addItem "LIB_US_Mk_2"};
@@ -110,7 +138,7 @@ if (cl_classPerk == "grenadier") then {
 
 if (cl_classPerk == "demolition") then {
 	removeBackpackGlobal player;
-	if (player getVariable "gameSide" == "defenders") then {
+	if (_side == "defenders") then {
 		removeBackpackGlobal player;
 		player addBackpack "B_LIB_GER_SapperBackpack_empty";
 		for "_i" from 1 to 3 do {player addItemToBackpack "LIB_Ladung_Small_MINE_mag";};
@@ -122,21 +150,18 @@ if (cl_classPerk == "demolition") then {
 };
 
 if (cl_class == "engineer" && cl_classPerk == "perkAT") then {
-	switch (player getVariable "gameSide") do {
-		case "attackers": {
-			removeBackpackGlobal player;
-			player addBackpack "B_LIB_US_RocketBag_Empty";
-			player addMagazine "LIB_1Rnd_60mm_M6";
-			player addWeapon "LIB_M1A1_Bazooka";
-			player addMagazine "LIB_1Rnd_60mm_M6";
-		};
-		case "defenders": {
-			removeBackpackGlobal player;
-			player addBackpack "B_LIB_GER_Panzer_Empty";
-			{player removeItemFromBackpack _x} forEach backpackItems player;
-			player addItemToBackpack "LIB_1Rnd_RPzB";
-			player addWeapon "LIB_RPzB";
-			player addItemToBackpack "LIB_1Rnd_RPzB";
-		};
+	if (_side == "attackers") then {
+		removeBackpackGlobal player;
+		player addBackpack "B_LIB_US_RocketBag_Empty";
+		player addMagazine "LIB_1Rnd_60mm_M6";
+		player addWeapon "LIB_M1A1_Bazooka";
+		player addMagazine "LIB_1Rnd_60mm_M6";
+	} else {
+		removeBackpackGlobal player;
+		player addBackpack "B_LIB_GER_Panzer_Empty";
+		{player removeItemFromBackpack _x} forEach backpackItems player;
+		player addItemToBackpack "LIB_1Rnd_RPzB";
+		player addWeapon "LIB_RPzB";
+		player addItemToBackpack "LIB_1Rnd_RPzB";
 	};
 };

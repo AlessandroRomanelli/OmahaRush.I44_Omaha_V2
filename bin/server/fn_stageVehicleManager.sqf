@@ -43,7 +43,7 @@ sv_stage_tryRespawn = {
 	};
 	_scriptHandler = [_v] spawn {
 		sleep 30;
-		if ({alive _x} count (crew (_this select 0)) == 0 && {alive _x} count (getPos (_this select 0) nearEntities ["man", 10]) == 0) then {
+		if ({alive _x} count (crew (_this select 0)) == 0 && {{alive _x} count (getPos (_this select 0) nearEntities ["man", 10]) == 0}) then {
 			deleteVehicle (_this select 0);
 		};
 	};
@@ -140,8 +140,8 @@ sv_stage_getCurrentStageVehicleDataIncOld = {
 	private["_config","_configs","_included"];
 	// Get data of current stage
 	_stage = [] call client_fnc_getCurrentStageString;
-	_configs = "true" configClasses (missionConfigFile >> "Maps" >> sv_map >> "Stages" >> _stage >> "Vehicles" >> "Attacker");
-	_configs = _configs + ("true" configClasses (missionConfigFile >> "Maps" >> sv_map >> "Stages" >> _stage >> "Vehicles" >> "Defender"));
+	_configs = "true" configClasses (missionConfigFile >> "MapSettings" >> "Stages" >> _stage >> "Vehicles" >> "Attacker");
+	_configs = _configs + ("true" configClasses (missionConfigFile >> "MapSettings" >> "Stages" >> _stage >> "Vehicles" >> "Defender"));
 
 	// Cycle through definitely up to date configs and add them if these vehicles are currently not being monitored
 	{
@@ -166,8 +166,8 @@ sv_stage_getOnlyCurrentStageVehicleData = {
 
 	// Get data of current stage
 	_stage = [] call client_fnc_getCurrentStageString;
-	_configs = "true" configClasses (missionConfigFile >> "Maps" >> sv_map >> "Stages" >> _stage >> "Vehicles" >> "Attacker");
-	_configs = _configs + ("true" configClasses (missionConfigFile >> "Maps" >> sv_map >> "Stages" >> _stage >> "Vehicles" >> "Defender"));
+	_configs = "true" configClasses (missionConfigFile >> "MapSettings" >> "Stages" >> _stage >> "Vehicles" >> "Attacker");
+	_configs = _configs + ("true" configClasses (missionConfigFile >> "MapSettings" >> "Stages" >> _stage >> "Vehicles" >> "Defender"));
 
 	// Return list of configs
 	_configs

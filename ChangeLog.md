@@ -1,3 +1,13 @@
+#Changelog V0.65.0
++ [CODE] Rewired mission config files to be editable through the mission parameters at mission start up.
++ [CODE] Persistent items throughout the map not limited anymore to static vehicle but any item with variable "isPersistent".
++ [ADDED] Randomized consistent gear across factions.
++ [ADDED] Specific medic gear to spot them from normal infantry.
++ [ADDED] Different factions for each side: Wehrmacht, DAK, NAC, Airborne, Winter variants, ...
++ [FIXED] Having to select the weapon each time you die even though you didn't change class is no longer an issue.
++ [FIXED] Vehicle destruction and disabling should now be accounted for.
++ [REVAMPED] Weapon damage handling has been revamped, STG44 and MGs have been nerfed, slight buff to slower weapons.
+
 #Changelog V0.64.0
 + [ADDED] Bolt-Action rifles;
 + [ADDED] Statics support;

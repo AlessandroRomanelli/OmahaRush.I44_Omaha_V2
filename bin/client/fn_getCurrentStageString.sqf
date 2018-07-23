@@ -9,20 +9,7 @@ scriptName "fn_getCurrentStageString";
 --------------------------------------------------------------------*/
 #define __filename "fn_getCurrentStageString.sqf"
 
-_ret = "null";
-
-// Get current objective
-if ((str sv_cur_obj) == (str sv_stage1_obj)) then {
-	_ret = "Stage1";
-};
-if ((str sv_cur_obj) == (str sv_stage2_obj)) then {
-	_ret = "Stage2";
-};
-if ((str sv_cur_obj) == (str sv_stage3_obj)) then {
-	_ret = "Stage3";
-};
-if ((str sv_cur_obj) == (str sv_stage4_obj)) then {
-	_ret = "Stage4";
-};
-
-_ret
+if (str sv_cur_obj == str sv_stage1_obj) exitWith {"Stage1"};
+if (str sv_cur_obj == str sv_stage2_obj) exitWith {"Stage2"};
+if (str sv_cur_obj == str sv_stage3_obj) exitWith {"Stage3"};
+if (str sv_cur_obj == str sv_stage4_obj) exitWith {"Stage4"};

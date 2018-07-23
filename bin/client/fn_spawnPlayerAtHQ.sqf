@@ -16,9 +16,9 @@ closeDialog 0;
 // Get spawn position
 _HQPos = [0,0,0];
 if (player getVariable "gameSide" == "defenders") then {
-	_HQPos = getArray(missionConfigFile >> "Maps" >> sv_map >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Spawns" >> "defenders");
+	_HQPos = getArray(missionConfigFile >> "MapSettings" >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Spawns" >> "defenders");
 } else {
-	_HQPos = getArray(missionConfigFile >> "Maps" >> sv_map >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Spawns" >> "attackers");
+	_HQPos = getArray(missionConfigFile >> "MapSettings" >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Spawns" >> "attackers");
 };
 
 _spawnPos = _HQPos findEmptyPosition [0,100];

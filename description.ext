@@ -29,17 +29,11 @@ class CfgRemoteExec {
 
 // Configs
 #include "config\master.h"
-#include "config\unlocks_van.h"
+#include "config\factions.h"
 #include "config\perks.h"
-#include "config\maps.h"
+#include "config\map_settings.h"
 
 onPauseScript[] = {client_fnc_saveStatistics};
-
-// Revive?
-//respawnTemplates[] = {"Revive"};
-//reviveDelay = 5;
-//reviveForceRespawnDelay = 5;
-//reviveBleedOutDelay = 10;
 
 // Disable debriefing
 debriefing = 0;
@@ -65,7 +59,7 @@ wreckRemovalMaxTime = 5;
 class Header
 {
 	gameType = DM; // Game type, see 'class' columns in the table below
-	minPlayers = 2; //min # of players the mission supports
+	minPlayers = 8; //min # of players the mission supports
 	maxPlayers = 60; //max # of players the mission supports
 };
 
@@ -215,7 +209,7 @@ class CfgSounds {
 
 // Additional RscTitles
 class RscTitles {
-    #include "dialogs\titles.h"
+  #include "dialogs\titles.h"
 };
 
 // Skip the role selection screen
@@ -252,7 +246,7 @@ class CfgDebriefing
     {
         title = "AUTO TEAM BALANCE";
         subtitle = "YOU HAVE BEEN AUTO TEAM BALANCED";
-        description = "Please return to the lobby and join the WEST (Defender/Blue) team! (Your progress has been saved)";
+        description = "Please return to the lobby and join the Blue team! (Your progress has been saved)";
         pictureBackground = "";
         picture = "";
         pictureColor[] = {0.96,0.65,0.12,0.8};
@@ -262,7 +256,7 @@ class CfgDebriefing
     {
         title = "AUTO TEAM BALANCE";
         subtitle = "YOU HAVE BEEN AUTO TEAM BALANCED";
-        description = "Please return to the lobby and join the independent (Attacker/Green) team! (Your progress has been saved)";
+        description = "Please return to the lobby and join the Green team! (Your progress has been saved)";
         pictureBackground = "";
         picture = "";
         pictureColor[] = {0.96,0.65,0.12,0.8};
@@ -272,7 +266,7 @@ class CfgDebriefing
     {
         title = "AUTO TEAM BALANCE";
         subtitle = "THIS TEAM HAS TOO MANY PLAYERS";
-        description = "Please return to the lobby and join independent (Attackers/Green) team.";
+        description = "Please return to the lobby and join the Green team.";
         pictureBackground = "";
         picture = "";
         pictureColor[] = {0.96,0.65,0.12,0.8};
@@ -282,9 +276,74 @@ class CfgDebriefing
     {
         title = "AUTO TEAM BALANCE";
         subtitle = "THIS TEAM HAS TOO MANY PLAYERS";
-        description = "Please return to the lobby and join WEST (Defender/Blue) team.";
+        description = "Please return to the lobby and join Blue team.";
         pictureBackground = "";
         picture = "";
         pictureColor[] = {0.96,0.65,0.12,0.8};
     };
+};
+
+class Params {
+  class MaxTickets {
+    title = "Maximum tickets per objective:";
+    values[] = {100, 200, 300, 400, 500};
+    default = 300;
+  };
+  class MinTickets {
+    title = "Minimum tickets per objective:";
+    values[] = {25, 50, 75, 100};
+    default = 25;
+  };
+  class TicketsRate {
+    title = "Tickets per attacker:";
+    values[] = {5, 7.5, 10, 12.5, 15};
+    default = 7.5;
+  };
+  class attackers {
+    title = "Attackers Uniforms:";
+    #include "config\factions\US\params.h"
+  };
+  class defenders {
+    title = "Defenders Uniforms:";
+    #include "config\factions\GER\params.h"
+  };
+  class FallBackSeconds {
+    title = "Time for the defenders to fall back:";
+    values[] = {30, 60, 90, 120};
+    default = 60;
+  };
+  class LobbyTime {
+    title = "Interval between rounds:";
+    values[] = {10, 20, 30, 60, 120};
+    default = 30;
+  };
+  class MaxMatchDuration {
+    title = "Maximum match duration:";
+    values[] = {3600, 7200, 10800, 14400, 18000};
+    texts[] = {"1 Hour", "2 Hours", "3 Hours", "4 Hours", "5 Hours"};
+    default = 10800;
+  };
+  class RotationsPerMatch {
+    title = "How many rounds should be played before changing map:";
+    values[] = {1,2,3,4,5,6};
+    texts[] = {"1", "2", "3", "4", "5", "Never change map"};
+    default = 2;
+  };
+  class MapWeather {
+    title = "Load weather of the specific map or random:";
+    values[] = {0, 1};
+    texts[] = {"RANDOM", "MAP"};
+    default = 0;
+  };
+  class AutoTeamBalancer {
+    title = "Automatic Team-Balancer:";
+    values[] = {0, 1};
+    texts[] = {"OFF", "ON"};
+    default = 1;
+  };
+  class AutoTeamBalanceAtDifference {
+    title = "Difference between teams for auto team-balancer:";
+    values[] = {1, 2, 3, 4, 5};
+    default = 3;
+  };
 };

@@ -12,8 +12,8 @@ if (isServer && !hasInterface) exitWith {};
 
 _updateRestrictedZonesNow = param[0,false,[false]];
 
-_HQPos1 = getArray(missionConfigFile >> "Maps" >> sv_map >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Spawns" >> "defenders");
-_HQPos2 = getArray(missionConfigFile >> "Maps" >> sv_map >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Spawns" >> "attackers");
+_HQPos1 = getArray(missionConfigFile >> "MapSettings" >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Spawns" >> "defenders");
+_HQPos2 = getArray(missionConfigFile >> "MapSettings" >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Spawns" >> "attackers");
 "mobile_respawn_defenders" setMarkerPosLocal _HQPos1;
 "mobile_respawn_attackers" setMarkerPosLocal _HQPos2;
 

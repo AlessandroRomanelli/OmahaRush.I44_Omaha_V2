@@ -33,7 +33,7 @@ sleep 31;
 [] remoteExec ["client_fnc_resetPlayer", 0];
 
 // Tell upper script we're done after all players waited
-_time = getNumber(missionConfigFile >> "GeneralConfig" >> "lobbyTime");
+_time = "LobbyTime" call bis_fnc_getParamValue;
 sleep (_time - 3);
 
 sv_gameStatus = 4;

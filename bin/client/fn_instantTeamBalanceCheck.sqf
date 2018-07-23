@@ -10,7 +10,8 @@ scriptName "fn_instantTeamBalanceCheck";
 #define __filename "fn_instantTeamBalanceCheck.sqf"
 
 // Is this even enabled
-if (getNumber(missionConfigFile >> "GeneralConfig" >> "AutoTeamBalancer") != 1) exitWith {};
+_enableATB = "AutoTeamBalancer" call bis_fnc_getParamValue;
+if (_enableATB != 1) exitWith {};
 
 // Check if server has been online for 300 seconds already
 if (serverTime < 300) exitWith {};
@@ -22,7 +23,7 @@ _unitsDefender = {side _x == WEST} count AllPlayers;
 _diff = if (_unitsAttacker <= _unitsDefender) then {_unitsDefender - _unitsAttacker} else {_unitsAttacker - _unitsDefender};
 _sideWithMoreUnits = if (_unitsAttacker <= _unitsDefender) then {WEST} else {independent};
 
-_maxDiff = getNumber(missionConfigFile >> "GeneralConfig" >> "AutoTeamBalanceAtDifference");
+_maxDiff = "AutoTeamBalanceAtDifference" call bis_fnc_getParamValue;
 
 if (playerSide == _sideWithMoreUnits AND _diff > 2) then {
 	if (player getVariable "gameSide" == "defenders") then {

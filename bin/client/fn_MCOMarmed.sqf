@@ -82,12 +82,13 @@ if (isServer) then {
 				};
 			};
 			// Reset the time
-			//sv_matchTime = getNumber(missionConfigFile >> "Maps" >> sv_map >> "roundTime");
+			//sv_matchTime = getNumber(missionConfigFile >> "MapSettings" >> "roundTime");
 			if (!isNil "sv_matchTimer_thread") then {
 				terminate sv_matchTimer_thread;
 			};
 			// Start the timer again with additional time counting in the fallback phase
-			[false, (getNumber(missionConfigFile >> "GeneralConfig" >> "FallBackSeconds"))] spawn server_fnc_matchTimer;
+			_fallBackTime = "FallBackSeconds" call bis_fnc_getParamValue;
+			[false, _fallBackTime] spawn server_fnc_matchTimer;
 
 			// refresh tickets
 			[] call server_fnc_refreshTickets;

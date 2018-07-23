@@ -111,9 +111,6 @@ if (getNumber(missionConfigFile >> "GeneralConfig" >> "debug") == 1) then {
 	//cl_exp = 10000000000;
 };
 
-// Create markers
-_objRange = getNumber (missionConfigFile >> "GeneralConfig" >> "objectiveRadius");
-
 if (player getVariable "gameSide" == "defenders") then {
 	_marker1 = createMarkerLocal ["mobile_respawn_defenders",[0,0]];
 	_marker1 setMarkerTypeLocal "b_unknown";

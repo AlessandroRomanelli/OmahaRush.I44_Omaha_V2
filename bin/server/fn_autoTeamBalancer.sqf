@@ -37,7 +37,7 @@ while {sv_gameStatus == 2} do {
 	_diff = if (_unitsAttacker <= _unitsDefender) then {_unitsDefender - _unitsAttacker} else {_unitsAttacker - _unitsDefender};
 	_sideWithMoreUnits = if (_unitsAttacker <= _unitsDefender) then {WEST} else {independent};
 
-	if (_diff >= (getNumber(missionConfigFile >> "GeneralConfig" >> "AutoTeamBalanceAtDifference"))) then {
+	if (_diff >= ("AutoTeamBalanceAtDifference" call bis_fnc_getParamValue)) then {
 		if (!sv_autoTeamBalancerWarning) then {
 			sv_autoTeamBalancerWarning = true;
 			["Auto team balance will commence in 60 seconds if teams stay unbalanced"] remoteExec ["client_fnc_displayError"];

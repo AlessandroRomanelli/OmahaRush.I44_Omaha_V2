@@ -10,8 +10,8 @@ scriptName "fn_getAllAmmoVehicles";
 #define __filename "fn_getAllAmmoVehicles.sqf"
 if (isServer && !hasInterface) exitWith {};
 
-_configs = "true" configClasses (missionConfigFile >> "Maps" >> sv_map >> "PersistentVehicles" >> "Attacker");
-_configs = _configs + ("true" configClasses (missionConfigFile >> "Maps" >> sv_map >> "PersistentVehicles" >> "Defender"));
+_configs = "true" configClasses (missionConfigFile >> "MapSettings" >> "PersistentVehicles" >> "Attacker");
+_configs = _configs + ("true" configClasses (missionConfigFile >> "MapSettings" >> "PersistentVehicles" >> "Defender"));
 
 _ret = [];
 

@@ -109,7 +109,7 @@ if ((player getVariable "gameSide") == "defenders") then {
 	_completion = {if (cursorObject distance player < 4) then {[] spawn client_fnc_disarmMCOM;};};
 } else {
 	_text = "Plant Explosives";
-	_cond = "(cursorObject distance _this) < 4 && !(cursorObject getVariable ['armed',false]) && (cursorObject == sv_cur_obj)";
+	_cond = "(cursorObject distance _this) < 4 && !(cursorObject getVariable ['armed',false]) && !(cursorObject getVariable ['arming', false]) && (cursorObject == sv_cur_obj)";
 	_completion = {if (cursorObject distance player < 4) then {[] spawn client_fnc_armMCOM;};};
 };
 

@@ -11,7 +11,7 @@ scriptName "fn_matchTimer";
 
 _additionalTime = param[1,0,[0]];
 
-_stageTime = getNumber(missionConfigFile >> "Maps" >> sv_map >> "roundTime");
+_stageTime = getNumber(missionConfigFile >> "MapSettings" >> "roundTime");
 _matchStart = param[0,false,[false]];
 
 sv_intendedTime = diag_tickTime + _stageTime + _additionalTime;

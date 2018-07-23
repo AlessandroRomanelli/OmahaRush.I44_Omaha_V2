@@ -16,8 +16,8 @@ sv_persistentVehiclesAwaitingRespawn = [];
 sv_persistentVehicleRespawnThreads = [];
 
 // Get vehicle configs from both attacker and defender
-_configs = "true" configClasses (missionConfigFile >> "Maps" >> sv_map >> "PersistentVehicles" >> "Attacker");
-_configs = _configs + ("true" configClasses (missionConfigFile >> "Maps" >> sv_map >> "PersistentVehicles" >> "Defender"));
+_configs = "true" configClasses (missionConfigFile >> "MapSettings" >> "PersistentVehicles" >> "Attacker");
+_configs = _configs + ("true" configClasses (missionConfigFile >> "MapSettings" >> "PersistentVehicles" >> "Defender"));
 
 // Pushback into main array
 {
@@ -53,7 +53,7 @@ sv_tryRespawn = {
 	};
 	_scriptHandler = [_v] spawn {
 		sleep 30;
-		if ({alive _x} count (crew (_this select 0)) == 0 && {alive _x} count (getPos (_this select 0) nearEntities ["man", 10]) == 0) then {
+		if ({alive _x} count (crew (_this select 0)) == 0 && {{alive _x} count (getPos (_this select 0) nearEntities ["man", 10]) == 0}) then {
 			deleteVehicle (_this select 0);
 		};
 	};

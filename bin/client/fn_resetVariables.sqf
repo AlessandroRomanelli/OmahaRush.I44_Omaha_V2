@@ -42,8 +42,6 @@ cl_onEachFrame_squad_beacons = [];
 cl_onEachFrame_team_members = [];
 cl_onEachFrame_team_reviveable = [];
 
-objRadius = getNumber(missionConfigFile >> "GeneralConfig" >> "objectiveRadius");
-
 // Any beacons left?
 _beacon = player getVariable ["assault_beacon_obj", objNull];
 if (!isNull _beacon) then {
@@ -230,7 +228,7 @@ if (isNil "rr_iconrenderer_executed") then {
 			if (_mode == "FullAuto" OR _mode == "manual") then {_fireMode = "AUTO"};
 		} else {_fireMode = "---"};
 
-		if (vehicle player == player || ((driver vehicle player != player) && (gunner vehicle player != player) && (commander vehicle player != player))) then {
+		if (vehicle player == player || {(driver vehicle player != player) && {gunner vehicle player != player} && {commander vehicle player != player}}) then {
 			{
 				if ((_x select 0) == (currentMagazine player) AND (_x select 2)) then
 				{
@@ -275,7 +273,7 @@ if (isNil "rr_iconrenderer_executed") then {
 		_HUD_grenades			ctrlSetText format ["%1", _grenades];
 
 		// warning if we are too close to the enemy spawn
-		if (alive player && !(vehicle player isKindOf "Air") && player getVariable ["isAlive", false]) then {
+		if (alive player && {!(vehicle player isKindOf "Air")} && {player getVariable ["isAlive", false]}) then {
 			if (player distance (getMarkerPos cl_enemySpawnMarker) < 100) then {
 				30 cutRsc ["rr_restrictedAreaSpawn", "PLAIN"];
 				if (isNil "cl_restrictedArea_thread") then {
@@ -284,9 +282,9 @@ if (isNil "rr_iconrenderer_executed") then {
 			};
 		};
 
-		if (alive player && !(vehicle player isKindOf "Air")) then {
+		if (alive player && {!(vehicle player isKindOf "Air")}) then {
 			if (player getVariable ["gameSide", "attackers"] == "attackers") then {
-				if ((not (vehicle player in (list area_atk))) && player getVariable ["isAlive", false]) then {
+				if ((!(vehicle player in (list area_atk))) && {player getVariable ["isAlive", false]}) then {
 					sleep 0.25;
 					30 cutRsc ["rr_restrictedArea", "PLAIN"];
 					_display = uiNamespace getVariable ["rr_restrictedArea", displayNull];
@@ -300,7 +298,7 @@ if (isNil "rr_iconrenderer_executed") then {
 			};
 		};
 
-		if (alive player && !(vehicle player isKindOf "Air")) then {
+		if (alive player && {!(vehicle player isKindOf "Air")}) then {
 			if (player getVariable ["gameSide", "defenders"] == "defenders") then {
 				if ((not (vehicle player in (list area_def))) && player getVariable ["isAlive", false]) then {
 					30 cutRsc ["rr_restrictedArea", "PLAIN"];
@@ -314,7 +312,7 @@ if (isNil "rr_iconrenderer_executed") then {
 				};
 			};
 
-			if ((cl_squadPerk == "swim") && (alive player) && ((vehicle player) isEqualto player) && !(isTouchingGround player) && (surfaceIsWater (getPosWorld player))) then {
+			if ((cl_squadPerk == "swim") && {alive player} && {((vehicle player) isEqualto player)} && {!(isTouchingGround player)} && {(surfaceIsWater (getPosWorld player))}) then {
 				player setAnimSpeedCoef 3;
 			} else {
 				player setAnimSpeedCoef 1;

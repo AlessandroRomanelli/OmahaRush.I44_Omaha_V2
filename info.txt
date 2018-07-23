@@ -1,6 +1,0 @@
-TODO
-DONE Tickets changing depending on players connected
-+ Fix the bolt-action rifles
-DONE Deny the player spawning without having a selected weapon
-+ Restrict defenders from getting more than 400m away from the objective
-+ Frag Grenade for everybody

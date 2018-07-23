@@ -20,6 +20,10 @@ _l = _d displayCtrl 300;
 _l ctrlAddEventHandler ["LBSelChanged", {
 	_class = (_this select 0) lbData (_this select 1);
 
+	if (!(_class in (getArray(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> cl_equipClassNames select 0 >> "roles")))) then {
+		cl_equipClassnames set [0, ""];
+	};
+
 	// Customizeable button
 	switch (_class) do
 	{
@@ -54,7 +58,6 @@ _l ctrlAddEventHandler ["LBSelChanged", {
 	// Save class so any other scripts can instantly get our currently selected class // Please note that broadcasting this will be done only when actually spawning
 	cl_class = _class;
 
-	cl_equipClassnames set [0, ""];
 	cl_spawnmenu_currentWeaponSelectionState = 0; // Nothing open
 	[] spawn client_fnc_spawnMenu_displayPrimaryWeaponSelection;
 	[] spawn client_fnc_populateSpawnMenu;
@@ -86,6 +89,5 @@ _l lbSetCurSel _i;
 // Allow our sweet sour dank memes so I learned how to bunny hop button to be able to open the menu depending on our selected class
 ((findDisplay 5000) displayCtrl 301) ctrlAddEventHandler ["ButtonDown", {
 	_class = ((findDisplay 5000) displayCtrl 300) lbData (lbCurSel ((findDisplay 5000) displayCtrl 300));
-
 	[_class] spawn client_fnc_spawnMenu_displayClassCustomization;
 }];

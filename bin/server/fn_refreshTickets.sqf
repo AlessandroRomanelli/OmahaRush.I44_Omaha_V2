@@ -9,7 +9,18 @@ scriptName "fn_refreshTickets";
 --------------------------------------------------------------------*/
 #define __filename "fn_refreshTickets.sqf"
 
-_tickets = getNumber(missionConfigFile >> "Maps" >> sv_map >> "tickets");
+_tickets = getNumber(missionConfigFile >> "MapSettings" >> "tickets");
+
+_attackers = {_x getVariable ["gameSide", "defender"] == "attacker"} count allPlayers;
+
+_projection = ceil (_attackers * 7.5);
+
+if (_projection < _tickets) then {
+  _tickets = _projection;
+  if (_projection < 25) then {
+    _tickets = 25;
+  };
+};
 
 // Set tickets
 sv_tickets = _tickets;

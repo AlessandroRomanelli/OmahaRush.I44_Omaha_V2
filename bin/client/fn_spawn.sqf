@@ -56,7 +56,7 @@ if (player getVariable "gameSide" == "defenders") then {
 };
 
 // If the server will restart after this round, display a visual warning at the top right
-if (getNumber(missionConfigFile >> "GeneralConfig" >> "PerformanceRestart") == 1 && sv_gameCycle >= ((getNumber(missionConfigFile >> "GeneralConfig" >> "MatchCount")) - 1)) then {
+if (sv_gameCycle >= (("RotationsPerMatch" call bis_fnc_getParamValue) - 1)) then {
 	15 cutRsc ["rr_topRightWarning", "PLAIN"];
 	((uiNamespace getVariable ["rr_topRightWarning", displayNull]) displayCtrl 0) ctrlSetStructuredText parseText "<t size='1.2' color='#FE4629' shadow='2' align='right'>LAST ROUND BEFORE MAP CHANGE</t>"
 };
@@ -114,20 +114,22 @@ cl_inSpawnMenu = true;
 // Disable voice channels
 [] spawn client_fnc_disableChannels;
 
-// Give player clothes
-if (player getVariable "gameSide" == "defenders") then {
-	player forceAddUniform (getText(missionConfigFile >> "Soldiers" >> "Defenders" >> "uniform"));
-	player addGoggles (getText(missionConfigFile >> "Soldiers" >> "Defenders" >> "goggles"));
-	player addHeadgear (getText(missionConfigFile >> "Soldiers" >> "Defenders" >> "headgear"));
-	player addVest (getText(missionConfigFile >> "Soldiers" >> "Defenders" >> "vest"));
-	player addBackpack (getText(missionConfigFile >> "Soldiers" >> "Defenders" >> "backpack"));
-} else {
-	player forceAddUniform (getText(missionConfigFile >> "Soldiers" >> "Attackers" >> "uniform"));
-	player addGoggles (getText(missionConfigFile >> "Soldiers" >> "Attackers" >> "goggles"));
-	player addHeadgear (getText(missionConfigFile >> "Soldiers" >> "Attackers" >> "headgear"));
-	player addVest (getText(missionConfigFile >> "Soldiers" >> "Attackers" >> "vest"));
-	player addBackpack (getText(missionConfigFile >> "Soldiers" >> "Attackers" >> "backpack"));
-};
+_side = player getVariable "gameSide";
+_possibleLoadouts = (missionconfigfile >> "Soldiers" >> _side) call Bis_fnc_getCfgSubClasses;
+_loadoutIdx = _side call BIS_fnc_getParamValue;
+_sideLoadout = _possibleLoadouts select _loadoutIdx;
+
+_uniforms = (getArray(missionConfigFile >> "Soldiers" >> _side >> _sideLoadout >> "uniforms"));
+_goggles = (getText(missionConfigFile >> "Soldiers" >> _side >> _sideLoadout >> "goggles"));
+_vests		 = (getArray(missionConfigFile >> "Soldiers" >> _side >> _sideLoadout >> "vests"));
+_headgears = (getArray(missionConfigFile >> "Soldiers" >> _side >> _sideLoadout >> "headgears"));
+_backpacks = (getArray(missionConfigFile >> "Soldiers" >> _side >> _sideLoadout >> "backpacks"));
+
+if (count _uniforms > 0) then {player forceAddUniform (selectRandom _uniforms);};
+if (_goggles != "") then {player addGoggles _goggles;};
+if (count _headgears > 0) then {player addHeadgear (selectRandom _headgears);};
+if (count _vests > 0) then {player addVest (selectRandom _vests);};
+if (count _backpacks > 0) then {player addBackpack (selectRandom _backpacks);};
 
 // Shared items
 /*player addItem "ItemGPS";
@@ -151,7 +153,7 @@ while {_stage == "null"} do {
 	_stage = [] call client_fnc_getCurrentStageString;
 };
 _side = player getVariable "gameSide";
-_pos = getArray(missionConfigFile >> "Maps" >> sv_map >> "Stages" >> _stage >> "Spawns" >> _side);
+_pos = getArray(missionConfigFile >> "MapSettings" >> "Stages" >> _stage >> "Spawns" >> _side);
 
 // Determine point between current pos and target pos
 _targetPos = [_pos,getPos sv_cur_obj] call client_fnc_getSectionCenter;
@@ -270,7 +272,7 @@ disableSerialization;
 if (isNil "TEMPWARNING") then {
 	// TEMPRARY WARNING TODO
 	createDialog "rr_info_box";
-	((findDisplay 10000) displayCtrl 0) ctrlSetStructuredText parseText "<t size='1' color='#FFFFFF' shadow='2' align='left'><t font='PuristaBold'>No.4 WW2 Rush Version</t><br/>0.64.0<br/><br/><t font='PuristaBold'>Changelog</t><br/><a href='https://github.com/AlessandroRomanelli/OmahaRush.I44_Omaha_V2/blob/master/ChangeLog.md'>Learn more</a><br/><br/><t font='PuristaBold'>Official Website</t><br/><a href='https://alessandroromanelli.github.io/No4-Bootstrap-example/'>Open</a></t>";
+	((findDisplay 10000) displayCtrl 0) ctrlSetStructuredText parseText "<t size='1' color='#FFFFFF' shadow='2' align='left'><t font='PuristaBold'>No.4 WW2 Rush Version</t><br/>0.64.0<br/><br/><t font='PuristaBold'>Changelog</t><br/><a href='https://github.com/AlessandroRomanelli/OmahaRush.I44_Omaha_V2/blob/master/ChangeLog.md'>Learn more</a><br/><br/><t font='PuristaBold'>Official Website</t><br/><a href='http://www.no4commando.com'>Open</a></t>";
 	TEMPWARNING = true;
 };
 

@@ -15,11 +15,11 @@ class CfgPerks {
 			picture = "";
 			description = "Deploys you with more ammunition";
 		};
-		/*class extended_vest {
+		/* class extended_vest {
 			displayName = "Bullet resistance";
 			picture = "";
 			description = "Allows you to sustain more damage before being taken out";
-		};*/
+		}; */
 		class smoke_grenades {
 			displayName = "Smoke Grenades";
 			picture = "";
@@ -59,12 +59,6 @@ class CfgPerks {
 				description = "Allows you to create spawn points for your squad to deploy at more efficient locations";
 				instructions[] = {"RALLYPOINT", "Press H to deploy your spawn beacon. Only one spawnbeacon is allowed per squad. Squad members will then be able to spawn on it."};
 			};
-			/*class assault_scope {
-				displayName = "Marksman Scope";
-				picture = "";
-				description = "Replaces your currently attached scope with a Khali long range sniper scope (if compatible with your weapon)";
-				instructions[] = {"", ""};
-			};*/
 		};
 		class Engineer {
 			class repair {
@@ -85,13 +79,6 @@ class CfgPerks {
 				description = "Allows you to plant explosives and set up deadly ambushes for the enemy team.";
 				instructions[]= {"EXPLOSIVES EXPERT", "Use the explosives to set up ambushes for the enemy team."};
 			};
-
-			/*class perkAA {
-				displayName = "Anti-Air Launcher";
-				picture = "";
-				description = "Deploys you with an Anti-Air heat-guided launcher to destroy enemy air vehicles";
-				instructions[] = {"ANTI AIR LAUNCHER", "Use your Titan Anti-Air launcher to destroy enemy air vehicles."};
-			};*/
 		};
 	};
 };

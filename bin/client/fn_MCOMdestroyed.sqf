@@ -17,7 +17,7 @@ scriptName "fn_MCOMdestroyed";
 //cl_blockSpawnForSide = "attackers";
 //[] spawn client_fnc_displaySpawnRestriction;
 
-_fbTime = getNumber(missionConfigFile >> "GeneralConfig" >> "FallBackSeconds");
+_fallBackTime = "FallBackSeconds" call bis_fnc_getParamValue;
 
 // Clean our spawnbeacons
 _beacon = player getVariable ["assault_beacon_obj", objNull];
@@ -49,7 +49,7 @@ _animate = {
 // Param is TRUE if the just destroyed mcom was NOT the last one
 if (param[0,false,[false]]) then {
 	// If this objective was NOT the last one, reset the time!
-	[(getNumber(missionConfigFile >> "Maps" >> sv_map >> "roundTime")) + _fbTime, _fbTime] call client_fnc_initMatchTimer;
+	[(getNumber(missionConfigFile >> "MapSettings" >> "roundTime")) + _fallBackTime, _fallBackTime] call client_fnc_initMatchTimer;
 
 	// Update markers
 	[] spawn client_fnc_updateMarkers;
@@ -60,13 +60,13 @@ if (param[0,false,[false]]) then {
 	};
 
 	sleep 3;
-	[format["DEFENDERS HAVE %1 SECONDS TO FALL BACK", _fbTime]] spawn client_fnc_displayObjectiveMessage;
+	[format["DEFENDERS HAVE %1 SECONDS TO FALL BACK", _fallBackTime]] spawn client_fnc_displayObjectiveMessage;
 	if (player getVariable ["gameSide", "defenders"] == "defenders") then {
 		[area_def, "playArea"] spawn client_fnc_updateLine;
 	} else {
 		[area_atk, "playArea"] spawn client_fnc_updateLine;
 	};
-	sleep (_fbTime-3);
+	sleep (_fallBackTime-3);
 	if (player getVariable "gameSide" == "attackers") then {
 		playSound format["attackOrder_%1", floor random 4+1];
 		["NEW OBJECTIVE HAS BEEN ASSIGNED, PUSH!"] spawn client_fnc_displayObjectiveMessage;
