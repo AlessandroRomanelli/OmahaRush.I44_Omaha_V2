@@ -1,11 +1,11 @@
-OnLoadName="No.4 CDO WW2 Rush";
+OnLoadName="[IFA3] WW2 Rush";
 onLoadMission = "Battlefield brought to ArmA3";
 author = "A. Roman";
 onLoadMissionTime = 0;
 
 
 // Debug
-enableDebugConsole = 1;
+enableDebugConsole[] = {"76561198039414328"};
 
 // Functions
 class CfgFunctions {
@@ -64,7 +64,7 @@ class Header
 };
 
 // Channels
-disableChannels[]={{6, false, false}};
+disableChannels[]={2,6};
 
 // Sounds
 class CfgSounds {
@@ -172,7 +172,7 @@ class CfgSounds {
     class beep
     {
         name = "beep";
-        sound[] = {"\sounds\beep.ogg", 4.0, 1, 500};
+        sound[] = {"\sounds\beep.ogg", 4.0, 1, 2000};
         titles[] = {};
     };
     class tug_beep
@@ -299,6 +299,11 @@ class Params {
     values[] = {5, 7.5, 10, 12.5, 15};
     default = 7.5;
   };
+  class RoundTime {
+    title = "How many minutes per objective:";
+    values[] = {5,7.5,10,12.5,15,17.5,20};
+    default = 15;
+  };
   class attackers {
     title = "Attackers Uniforms:";
     #include "config\factions\US\params.h"
@@ -306,6 +311,16 @@ class Params {
   class defenders {
     title = "Defenders Uniforms:";
     #include "config\factions\GER\params.h"
+  };
+  class SpawnSafeTime {
+    title = "How many seconds should the spawn protection last:";
+    values[] = {0, 3, 5, 10, 15};
+    default = 10;
+  };
+  class OutOfBoundsTime {
+    title = "Time a player is allowed to trespass bounds:";
+    values[] = {5, 10, 15, 20, 25, 30};
+    default = 20;
   };
   class FallBackSeconds {
     title = "Time for the defenders to fall back:";

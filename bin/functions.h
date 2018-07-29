@@ -88,8 +88,6 @@ class Maverick_Functions_Client {
 		class vehicleDisabled {};
 		class displayKeyBindingHint {};
 		class restrictedArea {};
-		class restrictedAreaDefenders {};
-		class restrictedAreaAttackers {};
 		class initMatchTimer {};
 		class displayCountermeasureKeys {};
 		class validatePointsEarned {};
@@ -101,6 +99,7 @@ class Maverick_Functions_Client {
 		class damageHandler {};
 		class teleport {};
 		class displayAds {};
+		class drawMapUnits {};
 		class brightNight {postInit = 1;};
 
 		// Pointfeed

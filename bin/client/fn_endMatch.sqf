@@ -31,7 +31,12 @@ if (_winners == "attackers") then {
 };
 
 // Get mcoms
-_mcoms = [sv_stage1_obj getVariable ["armed", false], sv_stage2_obj getVariable ["armed", false], sv_stage3_obj getVariable ["armed", false], sv_stage4_obj getVariable ["armed", false]];
+_mcoms = [];
+for "_i" from 1 to 4 do {
+	_mcom = missionNamespace getVariable [format["sv_stage%1_obj", _i], objNull];
+	_hasBeenDone = _mcom getVariable ["status", -1] == 3;
+	_mcoms pushback _hasBeenDone;
+};
 
 [{_x} count _mcoms] call {
 	_mcomsDestroyed = _this select 0;

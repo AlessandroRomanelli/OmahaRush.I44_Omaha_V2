@@ -26,7 +26,7 @@ for "_i" from 0 to 3 do {
 
 	missionNamespace setVariable [format["sv_stage%1_obj", (_i+1)], _obj];
 	_objective = missionNamespace getVariable (format["sv_stage%1_obj", (_i+1)]);
-	_objective setVariable ['armed', false, true];
+	_objective setVariable ['status', -1, true];
 	_objects append (nearestTerrainObjects [_objective, [], 75, false]);
 };
 

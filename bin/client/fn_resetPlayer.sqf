@@ -100,7 +100,8 @@ cl_blockSpawnForSide = "attackers";
 [] spawn client_fnc_spawn;
 
 // Restart match timer
-[(getNumber(missionConfigFile >> "MapSettings" >> "roundTime")) + _fallBackTime] call client_fnc_initMatchTimer;
+_roundTime = ceil (("RoundTime" call bis_fnc_getParamValue) * 60);
+[_roundTime + _fallBackTime, _fallBackTime] call client_fnc_initMatchTimer;
 
 // Give us points for playing :)
 [] spawn {

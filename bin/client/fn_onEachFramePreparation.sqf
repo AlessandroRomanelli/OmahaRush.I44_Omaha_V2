@@ -80,7 +80,7 @@ while {true} do {
 	};
 
 	// Medics
-	if (cl_class == "medic" && cl_classPerk == "defibrillator") then {
+	if (cl_class == "medic") then {
 		{
 			if (alive player && _x distance player < 25) then {
 				if (_x getVariable ["side", sideUnknown] == playerSide) then {

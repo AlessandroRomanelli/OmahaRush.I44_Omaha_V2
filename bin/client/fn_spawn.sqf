@@ -10,6 +10,9 @@ scriptName "fn_spawn";
 #define __filename "fn_spawn.sqf"
 if (isServer && !hasInterface) exitWith {};
 
+// yo
+cl_inSpawnMenu = true;
+
 player setVariable ["wasHS", false];
 player setVariable ["unitDmg", 0];
 
@@ -103,9 +106,6 @@ if (player getVariable "gameSide" == "defenders") then {
 // Hide hud
 showHUD [true,false,false,false,false,true,false,true,false];
 
-// yo
-cl_inSpawnMenu = true;
-
 // Run equipment checks
 [] call client_fnc_getLoadedEquipment;
 [] call client_fnc_validateEquipment;
@@ -137,12 +137,6 @@ player assignItem "ItemGPS";*/
 
 // Markers
 [] spawn client_fnc_updateRestrictions;
-
-if (player getVariable ["gameSide", "defenders"] == "defenders") then {
-	[area_def, "playArea"] spawn client_fnc_updateLine;
-} else {
-	[area_atk, "playArea"] spawn client_fnc_updateLine;
-};
 
 // Wait until the objectives are available
 waitUntil {!isNil "sv_stage1_obj" && !isNil "sv_stage2_obj" && !isNil "sv_stage3_obj" && !isNil "sv_stage4_obj"};
@@ -278,3 +272,5 @@ if (isNil "TEMPWARNING") then {
 
 player enableStamina false;
 player forceWalk false;
+
+[true] spawn client_fnc_drawMapUnits;

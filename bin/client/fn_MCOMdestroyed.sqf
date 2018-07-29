@@ -49,35 +49,43 @@ _animate = {
 // Param is TRUE if the just destroyed mcom was NOT the last one
 if (param[0,false,[false]]) then {
 	// If this objective was NOT the last one, reset the time!
-	[(getNumber(missionConfigFile >> "MapSettings" >> "roundTime")) + _fallBackTime, _fallBackTime] call client_fnc_initMatchTimer;
+	_roundTime = ceil (("RoundTime" call bis_fnc_getParamValue) * 60);
+
+	[_roundTime + _fallBackTime, _fallBackTime] call client_fnc_initMatchTimer;
 
 	// Update markers
 	[] spawn client_fnc_updateMarkers;
 
+	_isPlayerAttacking = ((player getVariable "gameSide") == "attackers");
+
 	// If we are attacker, block the next mcom for now
-	if (player getVariable "gameSide" == "attackers") then {
+	if (_isPlayerAttacking) then {
 		cl_enemySpawnMarker = "objective";
+	} else {
+		// FallingBack flag in order to handle out of bounds kill time
+		player setVariable ["isFallingBack", true];
 	};
 
 	sleep 3;
 	[format["DEFENDERS HAVE %1 SECONDS TO FALL BACK", _fallBackTime]] spawn client_fnc_displayObjectiveMessage;
-	if (player getVariable ["gameSide", "defenders"] == "defenders") then {
-		[area_def, "playArea"] spawn client_fnc_updateLine;
-	} else {
-		[area_atk, "playArea"] spawn client_fnc_updateLine;
+	if (!_isPlayerAttacking) then {
+		[] spawn client_fnc_updateRestrictions;
 	};
 	sleep (_fallBackTime-3);
-	if (player getVariable "gameSide" == "attackers") then {
+	if (_isPlayerAttacking) then {
 		playSound format["attackOrder_%1", floor random 4+1];
 		["NEW OBJECTIVE HAS BEEN ASSIGNED, PUSH!"] spawn client_fnc_displayObjectiveMessage;
 	} else {
 		playSound format["defendOrder_%1", floor random 4+1];
 		["NEW OBJECTIVE HAS BEEN ASSIGNED, DEFEND!"] spawn client_fnc_displayObjectiveMessage;
+		player setVariable ["isFallingBack", false];
 	};
 	[] spawn _animate;
 
 	// Update markers
-	[] spawn client_fnc_updateRestrictions;
+	if (_isPlayerAttacking) then {
+		[] spawn client_fnc_updateRestrictions;
+	};
 };
 
 // Reload mcom interaction

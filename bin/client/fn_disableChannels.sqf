@@ -10,9 +10,9 @@ scriptName "fn_disableChannels";
 #define __filename "fn_disableChannels.sqf"
 if (isServer && !hasInterface) exitWith {};
 
-0 enableChannel [false, false];
-1 enableChannel [false, false];
-2 enableChannel [true, true];
+0 enableChannel false;
+1 enableChannel [true, false];
+2 enableChannel false;
 3 enableChannel [true, true];
 4 enableChannel [true, true];
 5 enableChannel [true, true];

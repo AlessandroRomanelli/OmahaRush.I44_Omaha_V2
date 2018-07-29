@@ -9,16 +9,20 @@ scriptName "fn_refreshTickets";
 --------------------------------------------------------------------*/
 #define __filename "fn_refreshTickets.sqf"
 
-_tickets = getNumber(missionConfigFile >> "MapSettings" >> "tickets");
+_maxTickets = "MaxTickets" call bis_fnc_getParamValue;
+_minTickets = "MinTickets" call bis_fnc_getParamValue;
 
-_attackers = {_x getVariable ["gameSide", "defender"] == "attacker"} count allPlayers;
+_attackers = (count allPlayers)/2;
 
-_projection = ceil (_attackers * 7.5);
+_ticketRate = "TicketsRate" call bis_fnc_getParamValue;
 
-if (_projection < _tickets) then {
-  _tickets = _projection;
-  if (_projection < 25) then {
-    _tickets = 25;
+_tickets = ceil (_attackers * _ticketRate);
+
+if (_tickets > _maxTickets) then {
+  _tickets = _maxTickets;
+} else {
+  if (_tickets < _minTickets) then {
+    _tickets = _minTickets;
   };
 };
 

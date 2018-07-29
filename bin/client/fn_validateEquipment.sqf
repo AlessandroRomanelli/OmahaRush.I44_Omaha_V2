@@ -55,7 +55,7 @@ if (sv_usingDatabase) then {
 		// Check if unlocked
 		_isConfig = isClass(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> _classname);
 		_isUnlocked = (getNumber(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> _classname >> "exp")) <= cl_exp;
-		_isRightClass = cl_class in (getArray(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> _classname >> "roles");
+		_isRightClass = cl_class in (getArray(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> _classname >> "roles"));
 
 		if (_isConfig && _isUnlocked && _isRightClass) then {
 			_validatedArray pushBack _x;

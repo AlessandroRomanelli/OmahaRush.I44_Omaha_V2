@@ -83,7 +83,7 @@ _id = [
 /* 1 action title */					"Replenish Ammunition",
 /* 2 idle icon */						"pictures\support.paa",
 /* 3 progress icon */					"pictures\support.paa",
-/* 4 condition to show */				"cl_classPerk == 'ammo' && (cursorObject distance _this) < 3 && alive cursorObject && !(cursorObject getVariable ['ammo_restored',false]) && (side cursorObject) == playerSide && (cursorObject isKindOf 'Man')",
+/* 4 condition to show */				"cl_classPerk == 'ammo' && {cursorObject distance _this < 3} && {alive cursorObject} && {!(cursorObject getVariable ['ammo_restored',false])} && {(side cursorObject) == playerSide} && {cursorObject isKindOf 'Man'}",
 /* 5 condition for action */			"!(cursorObject getVariable ['ammo_restored',false])",
 /* 6 code executed on start */			{cl_lastActionTarget = cursorObject;},
 /* 7 code executed per tick */			{},
@@ -103,15 +103,20 @@ diag_log "Setting up handlers... 3";
 _cond = "";
 _text = "";
 _completion = {};
+_interruption = {};
+_duration = 4;
 if ((player getVariable "gameSide") == "defenders") then {
 	_text = "Disarm Explosives";
-	_cond = "(cursorObject distance _this) < 4 && (cursorObject getVariable ['armed',false]) && (cursorObject == sv_cur_obj)";
+	_cond = "(cursorObject distance _this) < 4 && ((cursorObject getVariable ['status',-1] == 1) || (cursorObject getVariable ['status', -1] == 0 && _this isEqualTo player)) && (cursorObject == sv_cur_obj)";
 	_completion = {if (cursorObject distance player < 4) then {[] spawn client_fnc_disarmMCOM;};};
+	_interruption = {sv_cur_obj setVariable ["status", 1, true]};
 } else {
 	_text = "Plant Explosives";
-	_cond = "(cursorObject distance _this) < 4 && !(cursorObject getVariable ['armed',false]) && !(cursorObject getVariable ['arming', false]) && (cursorObject == sv_cur_obj)";
+	_cond = "(cursorObject distance _this) < 4 && {(cursorObject getVariable ['status',-1] == -1) || (cursorObject getVariable ['status', -1] == 2) || ((cursorObject getVariable ['status', -1] == 0) && (_this isEqualTo player))} && (cursorObject == sv_cur_obj)";
 	_completion = {if (cursorObject distance player < 4) then {[] spawn client_fnc_armMCOM;};};
+	_interruption = {sv_cur_obj setVariable ["status", -1, true]};
 };
+if (cl_classPerk == "saboteur") then {_duration = 0.75};
 
 diag_log "Setting up handlers... 4";
 
@@ -123,12 +128,12 @@ _id = [
 /* 3 progress icon */					"\a3\ui_f\data\IGUI\Cfg\simpleTasks\types\upload_ca.paa",
 /* 4 condition to show */				_cond,
 /* 5 condition for action */			"true",
-/* 6 code executed on start */			{[sv_cur_obj, "arm"] remoteExec ["client_fnc_say3D",0]; sv_cur_obj setVariable ["arming", true, true];},
+/* 6 code executed on start */			{[sv_cur_obj, "arm"] remoteExec ["client_fnc_say3D",0]; sv_cur_obj setVariable ["status", 0, true];},
 /* 7 code executed per tick */			{},
 /* 8 code executed on completion */		_completion,
-/* 9 code executed on interruption */	{sv_cur_obj setVariable ["arming", false, true];},
+/* 9 code executed on interruption */	_interruption,
 /* 10 arguments */						[],
-/* 11 action duration */				4,
+/* 11 action duration */				_duration,
 /* 12 priority */						10000,
 /* 13 remove on completion */			false,
 /* 14 show unconscious */				false

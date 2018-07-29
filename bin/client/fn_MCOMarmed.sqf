@@ -33,8 +33,12 @@ if (isServer) then {
 	sv_mcom_thread = [] spawn {
 		// Countdown
 		_time = 71; // Original time 71 = 60 seconds (95 = 80 seconds)
-		while {sv_cur_obj getVariable ["armed",false] && _time >= 0} do {
-			if (sv_cur_obj getVariable ["arming", false]) then {
+		_status = sv_cur_obj getVariable ["status", -1];
+		// If the objective is armed and there's still time on the clock
+		while {((_status == 1) || (_status == 0)) && _time >= 0} do {
+			_status = sv_cur_obj getVariable ["status", -1];
+			// Freeze time if the objective is being armed
+			if (_status == 0) then {
 				_time = _time;
 			} else {
 				_time = _time - 1;
@@ -49,14 +53,15 @@ if (isServer) then {
 			};
 		};
 
+		_status = sv_cur_obj getVariable ["status", -1];
 		// was the mcom disarmed? If yes, just exit here, players will get a text displayed by the player who disarmed
-		if (sv_cur_obj getVariable ["defused",false]) exitWith {
+		if (_status == 2) exitWith {
 			sleep 1;
-			sv_cur_obj setVariable ["defused",nil,true];
+			sv_cur_obj setVariable ["status",-1,true];
 		};
 
 		// Mark this mcom as done // e.g. used in matchTimer
-		sv_cur_obj setVariable ["done", true, true];
+		sv_cur_obj setVariable ["status", 3, true];
 
 		// Display message
 		if (sv_cur_obj != sv_stage4_obj) then {
@@ -66,6 +71,11 @@ if (isServer) then {
 
 		// Explosion
 		"HelicopterExploBig" createVehicle getPos sv_cur_obj;
+		if (player distance sv_cur_obj < 10 || {player distance sv_cur_boj < 25 && [sv_cur_obj, "VIEW"] checkVisibility [eyePos sv_cur_obj, eyePos player]}) then {
+			player setDamage 1;
+			["You were killed by the blast of the charge"] spawn client_fnc_displayError;
+		};
+		sv_cur_obj setVariable ["positionAGL", []];
 
 		if (sv_cur_obj == sv_stage4_obj) then {
 			// Trigger win
@@ -105,8 +115,15 @@ if (isServer) then {
 if (!_wasServer) then {
 	[] spawn {
 		_time = 71;
-		while {sv_cur_obj getVariable ["armed",false] && _time >= 0} do {
-			_time = _time - 1;
+		_status = sv_cur_obj getVariable ["status", -1];
+		while {(_status == 0 || _status == 1) && _time >= 0} do {
+			_status = sv_cur_obj getVariable ["status", -1];
+			// Freeze time if the objective is being armed
+			if (_status == 0) then {
+				_time = _time;
+			} else {
+				_time = _time - 1;
+			};
 			sv_cur_obj say3D "beep";
 			if (_time < 20) then {
 				sleep 0.425;
@@ -124,8 +141,8 @@ if (!_wasServer) then {
 if (_planter == player) then {
 	// Wait until estimated explosion time
 	_objective = sv_cur_obj;
-
-	waitUntil {!(_objective getVariable ["armed",false]) || _objective != sv_cur_obj};
+	_status = _objective getVariable ["status", -1];
+	waitUntil {_status != 1 || _objective != sv_cur_obj};
 
 	// Still the same objective? Looks like we werent successful...
 	if (_objective == sv_cur_obj) exitWith {};

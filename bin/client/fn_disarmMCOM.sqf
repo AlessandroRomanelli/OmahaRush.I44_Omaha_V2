@@ -10,13 +10,12 @@ scriptName "fn_disarmMCOM";
 #define __filename "fn_disarmMCOM.sqf"
 if (isServer && !hasInterface) exitWith {};
 
-if !(sv_cur_obj getVariable ["armed",false]) exitWith {};
+// If it wasn't armed, there's nothing to disarm!
+if !((sv_cur_obj getVariable "status") == 1) exitWith {};
 if (!alive player) exitWith {};
 
-// Set armed
-sv_cur_obj setVariable ["defused",true,true];
-sv_cur_obj setVariable ["arming",false,true];
-sv_cur_obj setVariable ["armed",false,true];
+// Set disarmed
+sv_cur_obj setVariable ["status", 2, true];
 
 // Send message to everyone
 ["THE EXPLOSIVES HAVE BEEN DEFUSED"] remoteExec ["client_fnc_displayObjectiveMessage"];

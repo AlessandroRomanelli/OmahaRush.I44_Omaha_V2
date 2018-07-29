@@ -15,11 +15,6 @@ class CfgPerks {
 			picture = "";
 			description = "Deploys you with more ammunition";
 		};
-		/* class extended_vest {
-			displayName = "Bullet resistance";
-			picture = "";
-			description = "Allows you to sustain more damage before being taken out";
-		}; */
 		class smoke_grenades {
 			displayName = "Smoke Grenades";
 			picture = "";
@@ -34,6 +29,12 @@ class CfgPerks {
 				picture = "";
 				description = "Bring back fallen teammates to life again with your combat ready epinephrine injector";
 				instructions[] = {"EPINEPHRINE", "Downed friendly units will be marked on your screen. Get to their body and use your ACTION key (Space) to revive them."};
+			};
+			class spawnbeacon {
+				displayName = "Rally points";
+				picture = "";
+				description = "Allows you to create spawn points for your squad to deploy at more efficient locations";
+				instructions[] = {"RALLYPOINT", "Press H to deploy your spawn beacon. Only one spawnbeacon is allowed per squad. Squad members will then be able to spawn on it."};
 			};
 		};
 		class Support {
@@ -52,12 +53,11 @@ class CfgPerks {
 				description = "Allows you to carry a fragmentation grenade, lethal for anybody who finds himself within a couple of meters from the blast.";
 				instructions[] = {"GRENADIER", "Press G to throw your frag grenade. Beware of your surroundings when doing so, make sure not to endanger your team mates when throwing it."};
 			};
-
-			class spawnbeacon {
-				displayName = "Rally points";
+			class saboteur {
+				displayName = "Quick Hands";
 				picture = "";
-				description = "Allows you to create spawn points for your squad to deploy at more efficient locations";
-				instructions[] = {"RALLYPOINT", "Press H to deploy your spawn beacon. Only one spawnbeacon is allowed per squad. Squad members will then be able to spawn on it."};
+				description = "Allows you to plant or defuse explosives at a greatly faster speed than normal";
+				instructions[] = {"QUICK HANDS", "The time taken to plant or defuse explosives is going to be less than a second: a perfect chance to clutch the situation."};
 			};
 		};
 		class Engineer {

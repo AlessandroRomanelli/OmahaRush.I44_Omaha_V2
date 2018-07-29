@@ -28,7 +28,10 @@ if ((_unit getVariable ["side",civilian]) != playerSide) exitWith {};
 
 // Are we a medic and do we have the defi perk?
 if (cl_equipClassnames select 2 != "medic") exitWith {};
-if (cl_classPerk != "defibrillator") exitWith {};
+_time = 3;
+if (cl_classPerk == "defibrillator") then {
+	_time = 0.5;
+};
 
 // Revive icon! Yay!
 _actionID = [
@@ -43,7 +46,7 @@ _actionID = [
 	{[_target] spawn client_fnc_medic_reviveUnit},
 	{},
 	[],
-	0.5,
+	_time,
 	50,
 	true,
 	false

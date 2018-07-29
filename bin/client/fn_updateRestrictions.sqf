@@ -10,21 +10,21 @@ if (isServer && !hasInterface) exitWith {};
 
 _currentStage = [] call client_fnc_getCurrentStageString;
 
-_atkArea = (getArray(missionConfigFile >> "MapSettings" >> "Stages" >> _currentStage >> "Area" >> "Attacker" >> "area"));
-_atkArea set [3, true];
-_defArea = (getArray(missionConfigFile >> "MapSettings" >> "Stages" >> _currentStage >> "Area" >> "Defender" >> "area"));
-_defArea set [3, true];
-area_atk setPos (getArray(missionConfigFile >> "MapSettings" >> "Stages" >> _currentStage >> "Area" >> "Attacker" >> "positionATL"));
-area_atk setTriggerArea _atkArea;
-area_def setPos (getArray(missionConfigFile >> "MapSettings" >> "Stages" >> _currentStage >> "Area" >> "Defender" >> "positionATL"));
-area_def setTriggerArea _defArea;
+_isPlayerAttacking = (player getVariable "gameSide" == "attackers");
+_side = [["Defender", area_def, "mobile_respawn_attackers"], ["Attacker", area_atk, "mobile_respawn_defenders"]] select (_isPlayerAttacking);
 
-if (player getVariable ["gameSide", "defenders"] == "defenders") then {
-	[area_def, "playArea"] spawn client_fnc_updateLine;
-} else {
-	[area_atk, "playArea"] spawn client_fnc_updateLine;
-};
+_area = (getArray(missionConfigFile >> "MapSettings" >> "Stages" >> _currentStage >> "Area" >> (_side select 0) >> "area"));
+_area set [3, true];
+_pos = (getArray(missionConfigFile >> "MapSettings" >> "Stages" >> _currentStage >> "Area" >> (_side select 0) >> "positionATL"));
 
+_trigger = _side select 1;
+_trigger setPos _pos;
+_trigger setTriggerArea _area;
+
+[_trigger, "playArea"] spawn client_fnc_updateLine;
 
 // Update enemy base marker name
-cl_enemySpawnMarker = if (player getVariable "gameSide" == "defenders") then {"mobile_respawn_attackers"} else {"mobile_respawn_defenders"};
+_enemyMarkerName = _side select 2;
+cl_enemySpawnMarker = _enemyMarkerName;
+
+[_trigger, "playArea"] spawn client_fnc_updateLine;

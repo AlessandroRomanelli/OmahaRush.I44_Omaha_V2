@@ -136,8 +136,12 @@ player addEventHandler ["Killed",{
 
 		_victim setVariable ["isAlive", false];
 
-		if (_killer getVariable ["gameSide", "attackers"] != (_victim getVariable ["gameSide", "defenders"]) && (diag_tickTime - cl_spawn_tick) < 15) exitWith {
-
+		_spawnSafeDistance = (getNumber (missionConfigFile >> "MapSettings" >> "safeSpawnDistance"));
+		_spawnSafeTime = "SpawnSafeTime" call bis_fnc_getParamValue;
+		_spawnMarker = format ["mobile_respawn_%1", _victim getVariable "gameSide"];
+		if (_killer getVariable ["gameSide", "attackers"] != (_victim getVariable ["gameSide", "defenders"]) &&
+				{(diag_tickTime - cl_spawn_tick) < _spawnSafeTime} &&
+				{(_victim distance (getMarkerPos _spawnMarker)) < _spawnSafeDistance}) exitWith {
 			// Info
 			["Your killer has been punished for spawn camping, your death will not be counted"] spawn client_fnc_displayError;
 			cl_deaths = cl_deaths - 1;

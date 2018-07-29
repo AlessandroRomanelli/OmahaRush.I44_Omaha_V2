@@ -154,8 +154,14 @@ if (isNil "rr_iconrenderer_executed") then {
 
 
 		// Objectives
-		_pos = getPosATLVisual sv_cur_obj;
-		_pos set [2, (_pos select 2) + 0.5];
+		_stage = [] call client_fnc_getCurrentStageString;
+		if (count (sv_cur_obj getVariable ["positionAGL", []]) == 0) then {
+			_pos = ASLToAGL (getPosASL sv_cur_obj);
+			_pos set [2, (_pos select 2) + 0.5];
+			sv_cur_obj setVariable ["positionAGL", _pos];
+		};
+
+		_pos = sv_cur_obj getVariable "positionAGL";
 
 		_alpha = 1 - ((((player getRelDir _pos) - 180)/180)^30);
 
@@ -190,7 +196,7 @@ if (isNil "rr_iconrenderer_executed") then {
 		} forEach cl_onEachFrame_team_members;
 
 		// Revive icons
-		if (cl_class == "medic" && cl_classPerk == "defibrillator") then {
+		if (cl_class == "medic") then {
 			{
 				_pos = getPosATLVisual (_x select 0);
 				_pos set [2, (_pos select 2) + 0.1];
@@ -274,7 +280,8 @@ if (isNil "rr_iconrenderer_executed") then {
 
 		// warning if we are too close to the enemy spawn
 		if (alive player && {!(vehicle player isKindOf "Air")} && {player getVariable ["isAlive", false]}) then {
-			if (player distance (getMarkerPos cl_enemySpawnMarker) < 100) then {
+			_safeSpawnDistance = getNumber(missionConfigFile >> "MapSettings" >> "safeSpawnDistance");
+			if (player distance (getMarkerPos cl_enemySpawnMarker) < _safeSpawnDistance) then {
 				30 cutRsc ["rr_restrictedAreaSpawn", "PLAIN"];
 				if (isNil "cl_restrictedArea_thread") then {
 					cl_restrictedArea_thread = [] spawn client_fnc_restrictedArea;
@@ -283,36 +290,24 @@ if (isNil "rr_iconrenderer_executed") then {
 		};
 
 		if (alive player && {!(vehicle player isKindOf "Air")}) then {
-			if (player getVariable ["gameSide", "attackers"] == "attackers") then {
-				if ((!(vehicle player in (list area_atk))) && {player getVariable ["isAlive", false]}) then {
-					sleep 0.25;
-					30 cutRsc ["rr_restrictedArea", "PLAIN"];
-					_display = uiNamespace getVariable ["rr_restrictedArea", displayNull];
-					if (diag_tickTime - (player getVariable "entryTime") < 20) then {
-						(_display displayCtrl 1101) ctrlSetStructuredText parseText format ["<t size='5' color='#FFFFFF' shadow='2' align='center' t font='PuristaBold'>%1s</t>", ([21 - diag_tickTime + (player getVariable "entryTime"), "MM:SS", true] call bis_fnc_secondsToString) select 1];
+			_isPlayerAttacking = player getVariable ["gameSide", "attackers"] == "attackers";
+			_playArea = [area_def, area_atk] select (_isPlayerAttacking);
+			if (player getVariable ["isAlive", false] && {!((vehicle player) inArea _playArea)}) then {
+				30 cutRsc ["rr_restrictedArea", "PLAIN"];
+				_display = uiNamespace getVariable ["rr_restrictedArea", displayNull];
+				_outOfBoundsTimeout = if (player getVariable ["isFallingBack", false]) then [{"FallBackSeconds" call bis_fnc_getParamValue}, {"OutOfBoundsTime" call bis_fnc_getParamValue}];
+				if (diag_tickTime - (player getVariable "entryTime") < _outOfBoundsTimeout) then {
+					if (!_isPlayerAttacking && player getVariable "isFallingBack") then {
+						(_display displayCtrl 0) ctrlSetStructuredText parseText "<t size='3.5' color='#FFFFFF' shadow='2' align='center' t font='PuristaBold'>FALL BACK</t><br/><t size='2' color='#FFFFFF' shadow='2' align='center'>YOU ARE BEYOND OUR LAST DEFENCE</t>";
 					};
-					if (isNil "cl_restrictedAreaAttackers_thread") then {
-						cl_restrictedAreaAttackers_thread = [] spawn client_fnc_restrictedAreaAttackers;
-					};
+					(_display displayCtrl 1101) ctrlSetStructuredText parseText format ["<t size='5' color='#FFFFFF' shadow='2' align='center' t font='PuristaBold'>%1s</t>", ([(_outOfBoundsTimeout + (player getVariable "entryTime")) - diag_tickTime, "MM:SS", true] call bis_fnc_secondsToString) select 1];
 				};
-			};
-		};
-
-		if (alive player && {!(vehicle player isKindOf "Air")}) then {
-			if (player getVariable ["gameSide", "defenders"] == "defenders") then {
-				if ((not (vehicle player in (list area_def))) && player getVariable ["isAlive", false]) then {
-					30 cutRsc ["rr_restrictedArea", "PLAIN"];
-					_display = uiNamespace getVariable ["rr_restrictedArea", displayNull];
-					if (diag_tickTime - (player getVariable "entryTime") < 20) then {
-						(_display displayCtrl 1101) ctrlSetStructuredText parseText format ["<t size='5' color='#FFFFFF' shadow='2' align='center' t font='PuristaBold'>%1s</t>", ([21 - diag_tickTime + (player getVariable "entryTime"), "MM:SS", true] call bis_fnc_secondsToString) select 1];
-					};
-					if (isNil "cl_restrictedAreaDefenders_thread") then {
-						cl_restrictedAreaDefenders_thread = [] spawn client_fnc_restrictedAreaDefenders;
-					};
+				if (isNil "cl_restrictedArea_thread") then {
+					cl_restrictedArea_thread = [] spawn client_fnc_restrictedArea;
 				};
 			};
 
-			if ((cl_squadPerk == "swim") && {alive player} && {((vehicle player) isEqualto player)} && {!(isTouchingGround player)} && {(surfaceIsWater (getPosWorld player))}) then {
+			if ((cl_squadPerk == "swim") && {alive player} && {((vehicle player) isEqualTo player)} && {!(isTouchingGround player)} && {(surfaceIsWater (getPosWorld player))}) then {
 				player setAnimSpeedCoef 3;
 			} else {
 				player setAnimSpeedCoef 1;

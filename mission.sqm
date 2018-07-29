@@ -2,13 +2,13 @@ version=53;
 class EditorData
 {
 	moveGridStep=0.25;
-	angleGridStep=0.017453292;
+	angleGridStep=0.2617994;
 	scaleGridStep=1;
 	autoGroupingDist=10;
-	toggles=554;
+	toggles=1578;
 	class ItemIDProvider
 	{
-		nextID=4186;
+		nextID=4192;
 	};
 	class MarkerIDProvider
 	{
@@ -16,10 +16,10 @@ class EditorData
 	};
 	class Camera
 	{
-		pos[]={3115.363,230.10345,531.40704};
-		dir[]={-0.57083464,-0.60616761,0.55389518};
-		up[]={-0.43504977,0.7953127,0.42213947};
-		aside[]={0.69640625,-1.6507693e-007,0.71770471};
+		pos[]={3110.6919,72.105133,2118.324};
+		dir[]={0.017553031,-0.62039483,0.78412634};
+		up[]={0.013885628,0.78427106,0.62026054};
+		aside[]={0.99977583,2.8587374e-007,-0.022381069};
 	};
 };
 binarizationWanted=0;
@@ -97,7 +97,8 @@ addons[]=
 	"WW2_Assets_s_Megagoth1702_Sounds_Config_CfgWeapons",
 	"A3_Weapons_F",
 	"WW2_Assets_c_Characters_Americans_c_US_Airborne_Gear",
-	"A3_Weapons_F_Items"
+	"A3_Weapons_F_Items",
+	"A3_Modules_F_Curator_Misc"
 };
 class AddonsMetaData
 {
@@ -491,7 +492,7 @@ class Mission
 	};
 	class Entities
 	{
-		items=1085;
+		items=1090;
 		class Item0
 		{
 			dataType="Object";
@@ -27781,6 +27782,93 @@ class Mission
 			id=4185;
 			type="LIB_T_Alnus2s";
 			atlOffset=-0.05072403;
+		};
+		class Item1085
+		{
+			dataType="Object";
+			class PositionInfo
+			{
+				position[]={2802.7126,58.010025,2144.502};
+				angles[]={0,3.2794025,0};
+			};
+			side="Empty";
+			flags=5;
+			class Attributes
+			{
+				aiRadarUsage=-534555008;
+			};
+			id=4187;
+			type="Land_Lamp_Small_EP1";
+			atlOffset=1.1444092e-005;
+		};
+		class Item1086
+		{
+			dataType="Object";
+			class PositionInfo
+			{
+				position[]={3012.5159,58.361279,2130.4026};
+				angles[]={0,0.66140866,0};
+			};
+			side="Empty";
+			flags=5;
+			class Attributes
+			{
+				aiRadarUsage=-534555008;
+			};
+			id=4188;
+			type="Land_Lamp_Small_EP1";
+			atlOffset=-3.8146973e-006;
+		};
+		class Item1087
+		{
+			dataType="Object";
+			class PositionInfo
+			{
+				position[]={3134.9595,60.250008,2182.5723};
+				angles[]={0,2.4940042,0};
+			};
+			side="Empty";
+			flags=5;
+			class Attributes
+			{
+				aiRadarUsage=-534555008;
+			};
+			id=4189;
+			type="Land_Lamp_Small_EP1";
+			atlOffset=-0.0076942444;
+		};
+		class Item1088
+		{
+			dataType="Object";
+			class PositionInfo
+			{
+				position[]={3134.8875,60.482281,2174.3093};
+				angles[]={0,0.92320788,0};
+			};
+			side="Empty";
+			flags=5;
+			class Attributes
+			{
+				aiRadarUsage=-534555008;
+			};
+			id=4190;
+			type="Land_Lamp_Small_EP1";
+			atlOffset=0.017730713;
+		};
+		class Item1089
+		{
+			dataType="Logic";
+			class PositionInfo
+			{
+				position[]={3290.606,56.214741,2720.541};
+				angles[]={0,1.5707964,0};
+			};
+			areaSize[]={804.44299,0,919.45502};
+			areaIsRectangle=1;
+			flags=1;
+			id=4191;
+			type="ModuleCoverMap_F";
+			atlOffset=-0.13100052;
 		};
 	};
 };

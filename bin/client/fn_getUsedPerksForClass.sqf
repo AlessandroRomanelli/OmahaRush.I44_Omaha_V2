@@ -27,7 +27,7 @@ switch (_class) do
 	};
 	case "assault":
 	{
-		_perkData = profileNamespace getVariable ["rr_perks_assault", ["spawnbeacon",""]];
+		_perkData = profileNamespace getVariable ["rr_perks_assault", ["grenadier",""]];
 	};
 	case "engineer":
 	{

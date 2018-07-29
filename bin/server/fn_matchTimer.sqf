@@ -11,7 +11,8 @@ scriptName "fn_matchTimer";
 
 _additionalTime = param[1,0,[0]];
 
-_stageTime = getNumber(missionConfigFile >> "MapSettings" >> "roundTime");
+/* _stageTime = getNumber(missionConfigFile >> "MapSettings" >> "roundTime"); */
+_stageTime = ceil (("roundTime" call bis_fnc_getParamValue) * 60);
 _matchStart = param[0,false,[false]];
 
 sv_intendedTime = diag_tickTime + _stageTime + _additionalTime;
@@ -26,7 +27,9 @@ while {sv_matchTime > 0 && sv_gameStatus == 2} do {
 
 	// Wait until the current mcom is NOT armed
 	_delay = diag_tickTime;
-	waitUntil {!(sv_cur_obj getVariable ["armed",false]) && !(sv_cur_obj getVariable ["arming", false])}; // This loop will either exit when the current mcom is not armed or wait until the current mcom object changes
+	_status = sv_cur_obj getVariable ["status", -1];
+	// This delay will either exit when the current mcom is not armed (nor being armed) or wait until the current mcom object changes
+	waitUntil {_status == -1 || _status == 2};
 	_delay = diag_tickTime - _delay;
 
 	// Calculate time left
@@ -34,7 +37,7 @@ while {sv_matchTime > 0 && sv_gameStatus == 2} do {
 	_timeLeft = sv_intendedTime - diag_tickTime;
 
 	// Only decrease the time if the current mcom is NOT done
-	if (!(sv_cur_obj getVariable ["done",false])) then {
+	if (sv_cur_obj getVariable ["status", -1] != 3) then {
 		sv_matchTime = _timeLeft;
 	};
 };

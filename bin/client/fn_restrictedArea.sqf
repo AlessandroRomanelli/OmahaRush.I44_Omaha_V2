@@ -9,13 +9,19 @@ scriptName "fn_restrictedArea";
 --------------------------------------------------------------------*/
 #define __filename "fn_restrictedArea.sqf"
 
-_entryTime = diag_tickTime;
+player setVariable ["entryTime", diag_tickTime];
+
+_isPlayerAttacking = player getVariable "gameSide" == "attackers";
+_trigger = [area_def, area_atk] select _isPlayerAttacking;
+_fallBackTime = "FallBackSeconds" call bis_fnc_getParamValue;
+_OOBTime = "OutOfBoundsTime" call bis_fnc_getParamValue;
+_outOfBoundsTimeout = if (player getVariable ["isFallingBack", false]) then [{_fallBackTime}, {_OOBTime;}];
 
 // Wait until time is out or were out again
-waitUntil {((diag_tickTime - _entryTime) > 15) || (player distance (getMarkerPos cl_enemySpawnMarker)) > 100};
+waitUntil {((diag_tickTime - (player getVariable "entryTime")) > _outOfBoundsTimeout) || ((vehicle player) inArea _trigger)};
 
 // Evaluate
-if (diag_tickTime - _entryTime > 15) then {
+if ((diag_tickTime - (player getVariable "entryTime")) > _outOfBoundsTimeout) then {
 	player setDamage 1;
 	player setVariable ["isAlive", false];
 	["You have been killed for remaining in a restricted area"] spawn client_fnc_displayError;
@@ -23,3 +29,4 @@ if (diag_tickTime - _entryTime > 15) then {
 
 // Delete myself ay!
 cl_restrictedArea_thread = nil;
+player setVariable ["entryTime", nil];

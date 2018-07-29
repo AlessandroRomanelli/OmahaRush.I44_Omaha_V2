@@ -1,7 +1,5 @@
 class MapSettings {
-  tickets = 200;
-  roundTime = 900;
-
+  safeSpawnDistance = 75;
 	date[] = {1944,6,6,12,30};
 	fog = 0;
 	rain = 1;
@@ -316,8 +314,8 @@ class MapSettings {
 					area[] = {188.661, 228.128, 270, true, -1};
 				};
 				class Defender {
-					positionATL[] = {2981.66,2138.46,0.241001};
-					area[] = {217.547, 150.45399, 270, true, -1};
+					positionATL[] = {2950.64,2134.2,2.95556};
+					area[] = {140.332, 246.630, 90, true, -1};
 				};
 			};
 			class Spawns {

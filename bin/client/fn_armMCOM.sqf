@@ -9,13 +9,12 @@ scriptName "fn_armMCOM";
 --------------------------------------------------------------------*/
 #define __filename "fn_armMCOM.sqf"
 if (isServer && !hasInterface) exitWith {};
-
-if (sv_cur_obj getVariable ["armed",false]) exitWith {};
+// If the objective is already armed, do nothing!
+if (sv_cur_obj getVariable ["status", -1] == 1) exitWith {};
 if (!alive player) exitWith {};
 
 // Set armed
-sv_cur_obj setVariable ["arming",false,true];
-sv_cur_obj setVariable ["armed",true,true];
+sv_cur_obj setVariable ["status", 1, true];
 
 // Give points
 ["<t size='1.3' color='#FFFFFF'>EXPLOSIVES ARMED</t><br/><t size='1.0' color='#FFFFFF'>Objective Attacker</t>", 225] spawn client_fnc_pointfeed_add;

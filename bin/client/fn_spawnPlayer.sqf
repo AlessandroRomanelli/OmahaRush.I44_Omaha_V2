@@ -59,6 +59,9 @@ cl_spawn_succ = {
 	// Start ingame perk functionality
 	[] call client_fnc_initPerks;
 
+	// Init hold actions
+	[] spawn client_fnc_initHoldActions;
+
 	// Out of spawn menu
 	cl_inSpawnMenu = false;
 

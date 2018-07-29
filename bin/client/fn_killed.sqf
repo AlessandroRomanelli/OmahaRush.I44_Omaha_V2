@@ -62,7 +62,8 @@ _objs = nearestObjects [_pos, ["Man","GroundWeaponHolder", "WeaponHolder"], 5];
 
 // Reduce ticket count if we are an attacker
 if (player getVariable "gameSide" == "attackers") then {
-	if (sv_tickets > 0 && !(sv_cur_obj getVariable ["armed",false])) then {
+	_isObjArmed = sv_cur_obj getVariable ["status", -1] == 1;
+	if (sv_tickets > 0 && !(_isObjArmed)) then {
 		sv_tickets = sv_tickets - 1;
 		publicVariable "sv_tickets";
 

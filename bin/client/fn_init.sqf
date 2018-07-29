@@ -13,6 +13,7 @@ if (isServer && !hasInterface) exitWith {};
 // Did the init run already?
 if (!isNil "cl_init_ran") exitWith {};
 cl_init_ran = true;
+cl_inSpawnMenu = false;
 
 // Skip the briefing screen whenever possible
 if (hasInterface) then {
@@ -142,7 +143,7 @@ _marker4 setMarkerTextLocal "";
 _marker4 setMarkerShapeLocal "RECTANGLE";
 _marker4 setMarkerBrushLocal "SolidBorder";
 _marker4 setMarkerColorLocal "ColorWEST";
-_marker4 setMarkerAlphaLocal 0.35;
+_marker4 setMarkerAlphaLocal 0.4;
 _marker4 setMarkerSizeLocal [0, 0];
 _marker4 setMarkerDirLocal 0;
 
