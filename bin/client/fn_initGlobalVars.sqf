@@ -34,4 +34,4 @@ cl_onEachFrame_squad_beacons = [];
 cl_onEachFrame_team_members = [];
 cl_onEachFrame_team_reviveable = [];
 
-nil;
+true
