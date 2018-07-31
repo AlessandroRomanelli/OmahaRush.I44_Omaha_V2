@@ -66,7 +66,7 @@ if (isServer) then {
 		// Display message
 		if (sv_cur_obj != sv_stage4_obj) then {
 			// Mcom has been destroyed
-			[true] remoteExec ["client_fnc_MCOMdestroyed"];
+			[true] remoteExec ["client_fnc_MCOMdestroyed", -2];
 		};
 
 		// Explosion

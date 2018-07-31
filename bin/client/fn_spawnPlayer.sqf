@@ -65,8 +65,6 @@ cl_spawn_succ = {
 	// Init hold actions
 	[] spawn client_fnc_initHoldActions;
 
-	[] spawn client_fnc_monitorSquad;
-
 	// Out of spawn menu
 	cl_inSpawnMenu = false;
 
