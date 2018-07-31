@@ -19,6 +19,8 @@ player removeAllEventHandlers "HitPart";
 player removeAllEventHandlers "Killed";
 player removeAllEventHandlers "Respawn";
 player removeAllEventHandlers "HandleDamage";
+[missionNamespace, "groupPlayerChanged"] call BIS_fnc_removeAllScriptedEventHandlers;
+[missionNamespace, "switchedToExtCamera"] call BIS_fnc_removeAllScriptedEventHandlers;
 
 // Custom Event Handler for Group Change
 cl_groupSize = -1;
@@ -28,11 +30,31 @@ addMissionEventHandler["EachFrame", {
 			[missionNamespace, "groupPlayerChanged"] call BIS_fnc_callScriptedEventHandler;
 			cl_groupSize = _data;
 		};
+
+		_data = cameraView;
+		if (_data isEqualTo "EXTERNAL") then {
+			[missionNamespace, "switchedToExtCamera"] call BIS_fnc_callScriptedEventHandler;
+		};
 }];
 
 // If the group size changes (either we left or some other people joined) update the perks
 [missionNamespace, "groupPlayerChanged", {
 		[] call client_fnc_getSquadPerks;
+}] call bis_fnc_addScriptedEventHandler;
+
+[missionNamespace, "switchedToExtCamera", {
+	_infFP = [false, true] select ("InfantryFPOnly" call bis_fnc_getParamValue);
+	_vehFP = [false, true] select ("VehicleFPOnly" call bis_fnc_getParamValue);
+	if (isNull objectParent player) then {
+		if (_infFP) then {
+			player switchCamera "INTERNAL";
+		};
+	} else {
+		if (_vehFP) then {
+			player switchCamera "INTERNAL";
+			["Third person view for vehicles is disabled"] spawn client_fnc_displayError;
+		};
+	};
 }] call bis_fnc_addScriptedEventHandler;
 
 // Automatic magazine recombination
