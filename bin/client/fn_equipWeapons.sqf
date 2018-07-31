@@ -35,7 +35,7 @@ if (count _primary != 0) then {
 	// Give ammo
 	if (!_noMags) then {
 		// Extended ammo perk
-		if (cl_squadPerk == "extended_ammo") then {
+		if ("extended_ammo" in cl_squadPerks) then {
 			player addMagazines [_primaryAmmo, 6];
 		} else {
 			player addMagazines [_primaryAmmo, 4];
@@ -62,7 +62,7 @@ if (count _secondary != 0) then {
 	// Give ammo
 	if (!_noMags) then {
 		// Extended ammo perk
-		if (cl_squadPerk == "extended_ammo") then {
+		if ("extended_ammo" in cl_squadPerks) then {
 			player addMagazines [_secondaryAmmo, 6];
 		} else {
 			player addMagazines [_secondaryAmmo, 4];
@@ -99,7 +99,7 @@ if (cl_classPerk == "grenadier") then {
 	_currentWeapon = _primary select 0;
 	_cfgRifleGrenade = (missionConfigFile >> "Soldiers" >> _side >> "Grenade" >> "RifleGrenade");
 	_rifles = getArray(_cfgRifleGrenade >> "rifles");
-	_count = if (cl_squadPerk == "extended_ammo") then {2} else {4};
+	_count = if ("extended_ammo" in cl_squadPerks) then {2} else {4};
 	if (_currentWeapon in _rifles) then {
 		player addPrimaryWeaponItem (getText(_cfgRifleGrenade >> "attachment"));
 		for "_i" from 1 to _count do {player addItem (getText(_cfgRifleGrenade >> "rifleGrenade"))};
@@ -114,7 +114,7 @@ if (cl_classPerk == "demolition") then {
 	_backpack = getText(missionConfigFile >> "Soldiers" >> _side >> "ExplosiveCharge" >> "backpack");
 	_explCharge = getText(missionConfigFile >> "Soldiers" >> _side >> "ExplosiveCharge" >> "weapon");
 	player addBackpack _backpack;
-	_count = if (cl_squadPerk == "extended_ammo") then {1} else {3};
+	_count = if ("extended_ammo" in cl_squadPerks) then {1} else {3};
 	for "_i" from 1 to _count do {player addItemToBackpack _explCharge};
 };
 

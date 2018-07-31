@@ -212,7 +212,7 @@ if (isNil "rr_iconrenderer_executed") then {
 			if (_mode == "FullAuto" OR _mode == "manual") then {_fireMode = "AUTO"};
 		} else {_fireMode = "---"};
 
-		if (vehicle player == player || {(driver vehicle player != player) && {gunner vehicle player != player} && {commander vehicle player != player}}) then {
+		if ((isNull objectParent player) || {(driver vehicle player != player) && {gunner vehicle player != player} && {commander vehicle player != player}}) then {
 			{
 				if ((_x select 0) == (currentMagazine player) AND (_x select 2)) then
 				{
@@ -267,10 +267,10 @@ if (isNil "rr_iconrenderer_executed") then {
 			};
 		};
 
-		if (alive player && {!(vehicle player isKindOf "Air")}) then {
+		if (player getVariable ["isAlive", false]) then {
 			_isPlayerAttacking = player getVariable ["gameSide", "attackers"] == "attackers";
 			_playArea = [area_def, area_atk] select (_isPlayerAttacking);
-			if (player getVariable ["isAlive", false] && {!((vehicle player) inArea _playArea)}) then {
+			if !((vehicle player) inArea _playArea) then {
 				30 cutRsc ["rr_restrictedArea", "PLAIN"];
 				_display = uiNamespace getVariable ["rr_restrictedArea", displayNull];
 				_outOfBoundsTimeout = if (player getVariable ["isFallingBack", false]) then [{"FallBackSeconds" call bis_fnc_getParamValue}, {"OutOfBoundsTime" call bis_fnc_getParamValue}];
@@ -285,7 +285,7 @@ if (isNil "rr_iconrenderer_executed") then {
 				};
 			};
 
-			if ((cl_squadPerk == "swim") && {alive player} && {((vehicle player) isEqualTo player)} && {!(isTouchingGround player)} && {(surfaceIsWater (getPosWorld player))}) then {
+			if (("swim" in cl_squadPerks) && {player getVariable ["isAlive", false]} && {isNull (objectParent player)} && {!(isTouchingGround player)} && {(surfaceIsWater (getPosWorld player))}) then {
 				player setAnimSpeedCoef 3;
 			} else {
 				player setAnimSpeedCoef 1;

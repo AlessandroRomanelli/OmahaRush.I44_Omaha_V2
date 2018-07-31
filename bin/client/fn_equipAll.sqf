@@ -33,7 +33,7 @@ if (count _backpacks > 0) then {removeBackpackGlobal player; player addBackpack 
 }; */
 
 // Smoke grenade?
-if (cl_squadPerk == "smoke_grenades") then {
+if ("smoke_grenades" in cl_squadPerks) then {
 	for "_i" from 1 to 2 do {player addItem "SmokeShell";};
 };
 

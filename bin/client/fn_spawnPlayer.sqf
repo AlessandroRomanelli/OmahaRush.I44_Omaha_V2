@@ -29,6 +29,9 @@ _perkData = [cl_class] call client_fnc_getUsedPerksForClass;
 cl_classPerk = _perkData select 0;
 cl_squadPerk = _perkData select 1;
 
+[] call client_fnc_setSquadPerks;
+cl_squadPerks = [] call client_fnc_getSquadPerks;
+
 // Set class
 cl_equipClassnames set [2, _class];
 
@@ -49,7 +52,7 @@ cl_spawn_succ = {
 	player setVariable ["isAlive", true];
 	// Spawn protection
 	[] spawn {
-		sleep 1;
+		sleep 3;
 		player allowDamage true;
 	};
 
@@ -61,6 +64,8 @@ cl_spawn_succ = {
 
 	// Init hold actions
 	[] spawn client_fnc_initHoldActions;
+
+	[] spawn client_fnc_monitorSquad;
 
 	// Out of spawn menu
 	cl_inSpawnMenu = false;

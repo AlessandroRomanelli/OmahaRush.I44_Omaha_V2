@@ -47,3 +47,11 @@ if (("extDB3" callExtension "9:VERSION") != "") then {
 
 // Start Main Loop
 sv_engine_thread = [] spawn server_fnc_engine;
+
+addMissionEventHandler ["HandleDisconnect", {
+	params ["_unit", "_id", "_uid", "_name"];
+  _group = group _unit;
+	diag_log (str _name + "has left the server, his group " + str (group _unit) + " will be updated");
+	[] remoteExec ["client_fnc_getSquadPerks", _group];
+	false;
+}];
