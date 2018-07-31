@@ -63,7 +63,7 @@ if (cl_classPerk == "demolition") then {
 	player addItemToBackpack _explCharge;
 };
 
-if (cl_squadPerk == "smoke_grenades") then {
+if ("smoke_grenades" in cl_squadPerks) then {
 	player addItem "SmokeShell";
 };
 

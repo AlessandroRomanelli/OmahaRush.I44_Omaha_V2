@@ -22,6 +22,7 @@ cl_class = "";
 cl_assistsInfo = [];
 cl_classPerk = "";
 cl_squadPerk = "";
+cl_squadPerks = [];
 cl_actionIDs = [];
 cl_mcomDefAtt = 0;
 cl_pointsBelowMinimumPlayers = 0;
