@@ -11,11 +11,12 @@ scriptName "fn_revive";
 if (isServer && !hasInterface) exitWith {};
 
 _savior = param [0, objNull, [objNull]];
+_adminRevive = param [1, false, [false]];
 
 // Pos
 _pos = getPosATL player;
 
-if (_pos distance (getPosWorld _savior) > 10) then {
+if (!(_adminRevive) && {_pos distance (getPosWorld _savior) > 10}) then {
 	_pos = getPosATL _savior;
 	_dir = getDir _savior;
 	_rdist = random 2;
@@ -32,9 +33,14 @@ sleep 0.2;
 
 // Set pos
 player setPosATL _pos;
+player playActionNow "PlayerProne";
 
 // Message
-[format ["You have been revived by %1", name _savior]] spawn client_fnc_displayInfo;
+if (!isNull _savior) then {
+	[format ["You have been revived by %1", name _savior]] spawn client_fnc_displayInfo;
+} else {
+	["You have been revived"] spawn client_fnc_displayInfo;
+};
 
 // Lets get back our weapons + one mag which was in the old weapon
 [true] spawn client_fnc_equipWeapons;

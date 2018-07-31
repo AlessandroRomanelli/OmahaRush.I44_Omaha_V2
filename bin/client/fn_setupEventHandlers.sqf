@@ -165,7 +165,7 @@ player addEventHandler ["Killed", {
 			// Revive us
 			[] spawn {
 				sleep 0.5;
-				[] spawn client_fnc_revive;
+				[objNull, true] spawn client_fnc_revive;
 			};
 
 			// Kill the killer
