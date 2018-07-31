@@ -11,7 +11,7 @@ if (isServer && !hasInterface) exitWith {};
 
 while {player getVariable ["isAlive", false]} do {
   _squadSize = count (units group player);
-  waitUntil{_squadSize != count (units group player)};
+  waitUntil{sleep 5; _squadSize != count (units group player)};
   hint "Group changed";
   cl_squadPekrs = [] call client_fnc_getSquadPerks;
 };
