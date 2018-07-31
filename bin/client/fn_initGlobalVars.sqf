@@ -18,6 +18,7 @@ cl_timelineevents = [];
 cl_revived = false;
 cl_inSpawnMenu = false;
 cl_beacon_used = 0;
+cl_groupSize = -1;
 cl_class = "";
 cl_assistsInfo = [];
 cl_classPerk = "";

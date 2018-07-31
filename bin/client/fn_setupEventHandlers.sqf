@@ -20,6 +20,21 @@ player removeAllEventHandlers "Killed";
 player removeAllEventHandlers "Respawn";
 player removeAllEventHandlers "HandleDamage";
 
+// Custom Event Handler for Group Change
+cl_groupSize = -1;
+addMissionEventHandler["EachFrame", {
+		_data = count (units group player);
+		if !(_data isEqualTo cl_groupSize) then {
+			[missionNamespace, "groupPlayerChanged"] call BIS_fnc_callScriptedEventHandler;
+			cl_groupSize = _data;
+		};
+}];
+
+// If the group size changes (either we left or some other people joined) update the perks
+[missionNamespace, "groupPlayerChanged", {
+		[] call client_fnc_getSquadPerks;
+}] call bis_fnc_addScriptedEventHandler;
+
 // Automatic magazine recombination
 player addEventHandler ["Take",
 {
@@ -91,7 +106,7 @@ player addEventHandler ["Hit",
 }];
 
 // Killed
-player addEventHandler ["Killed",{
+player addEventHandler ["Killed", {
 	_victim = _this select 0;
 	_lastDeath = _victim getVariable ["lastDeath", 0];
 	//Avoiding more than one time each 1/10 of a second
