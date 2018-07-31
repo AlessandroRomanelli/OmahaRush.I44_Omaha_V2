@@ -67,7 +67,7 @@ if (count _before != count _after) then {
 _unlockedAttachments = [];
 
 // Check if we passed the 5000 points mark to unlock an attachment
-for "_i" from _exp to (_exp + _toAdd) step 1 do
+/* for "_i" from _exp to (_exp + _toAdd) step 1 do
 {
 	if ((_i mod 2300) == 0 && _i != 0) then {
 		_unlockedInfo = [] call client_fnc_unlockAttachment;
@@ -75,7 +75,7 @@ for "_i" from _exp to (_exp + _toAdd) step 1 do
 			_unlockedAttachments pushBack _unlockedInfo;
 		};
 	};
-};
+}; */
 
 {
 	diag_log str _x;
