@@ -10,9 +10,6 @@ scriptName "fn_spawn";
 #define __filename "fn_spawn.sqf"
 if (isServer && !hasInterface) exitWith {};
 
-// yo
-[] call client_fnc_initGlobalVars;
-
 player setVariable ["wasHS", false];
 player setVariable ["unitDmg", 0];
 
