@@ -19,3 +19,5 @@ _pos = getPos _trigger;
 _marker setMarkerPosLocal _pos;
 _marker setMarkerSizeLocal _size;
 _marker setMarkerDirLocal _angle;
+
+nil

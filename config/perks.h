@@ -8,7 +8,7 @@ class CfgPerks {
 		class swim {
 			displayName = "Fast Swim";
 			picture = "";
-			description = "Dramatically increases your swim speed";
+			description = "Dramatically increases your swimming speed";
 		};
 		class extended_ammo {
 			displayName = "Extended Ammunition";

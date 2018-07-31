@@ -29,7 +29,7 @@ while {sv_matchTime > 0 && sv_gameStatus == 2} do {
 	_delay = diag_tickTime;
 	_status = sv_cur_obj getVariable ["status", -1];
 	// This delay will either exit when the current mcom is not armed (nor being armed) or wait until the current mcom object changes
-	waitUntil {_status == -1 || _status == 2};
+	waitUntil {_status != 0 && _status != 1};
 	_delay = diag_tickTime - _delay;
 
 	// Calculate time left

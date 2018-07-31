@@ -28,6 +28,8 @@ for "_i" from 0 to 3 do {
 	_objective = missionNamespace getVariable (format["sv_stage%1_obj", (_i+1)]);
 	_objective setVariable ['status', -1, true];
 	_objects append (nearestTerrainObjects [_objective, [], 75, false]);
+	_fences = nearestTerrainObjects [_objective, ["FENCE", "WALL"], 75, false];
+	_objects = _objects - _fences;
 };
 
 // Set active objective

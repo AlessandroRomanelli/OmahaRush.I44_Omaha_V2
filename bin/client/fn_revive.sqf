@@ -10,8 +10,18 @@ scriptName "fn_revive";
 #define __filename "fn_revive.sqf"
 if (isServer && !hasInterface) exitWith {};
 
+_savior = param [0, objNull, [objNull]];
+
 // Pos
 _pos = getPosATL player;
+
+if (_pos distance (getPosWorld _savior) > 10) then {
+	_pos = getPosATL _savior;
+	_dir = getDir _savior;
+	_rdist = random 2;
+	_pos set [0, (_pos select 0)+sin(_dir)*_rdist];
+	_pos set [1, (_pos select 1)+cos(_dir)*_rdist];
+};
 
 // Make sure the spawn menu script gets cancelled
 cl_revived = true;
@@ -24,7 +34,7 @@ sleep 0.2;
 player setPosATL _pos;
 
 // Message
-["You have been revived"] spawn client_fnc_displayInfo;
+[format ["You have been revived by %1", name _savior]] spawn client_fnc_displayInfo;
 
 // Lets get back our weapons + one mag which was in the old weapon
 [true] spawn client_fnc_equipWeapons;

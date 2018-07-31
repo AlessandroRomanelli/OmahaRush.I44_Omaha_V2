@@ -70,8 +70,7 @@ while {true} do {
 
 	// Map has been selected, broadcast
 	sv_gameStatus = 2; // Game may start now
-	sv_random_chance = floor random 10 > 4;
-	[["sv_gameStatus","sv_random_chance"]] spawn server_fnc_updateVars;
+	[["sv_gameStatus"]] spawn server_fnc_updateVars;
 
 	// Start persistent vehicle manager
 	if (isClass(missionConfigFile >> "MapSettings" >> "PersistentVehicles")) then {

@@ -1,16 +1,17 @@
 scriptName "fn_initHoldActions";
 /*--------------------------------------------------------------------
-	Author: Maverick (ofpectag: MAV)
+	Authors: Maverick (ofpectag: MAV) & A. Roman (ofpectag: RMN)
     File: fn_initHoldActions.sqf
 
 	<Maverick Applications>
-    Written by Maverick Applications (www.maverick-apps.de)
+    Written by Maverick Applications (www.maverick-apps.de) & A. Roman
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_initHoldActions.sqf"
 if (isServer && !hasInterface) exitWith {};
 
-removeAllActions player;
+{player removeAction _x; [player, _x] call BIS_fnc_holdActionRemove} forEach cl_actionIDs;
+
 
 mg_conditionShowOnMyself = {
 	_currentAmmo = 0;
@@ -107,7 +108,7 @@ _interruption = {};
 _duration = 4;
 if ((player getVariable "gameSide") == "defenders") then {
 	_text = "Disarm Explosives";
-	_cond = "(cursorObject distance _this) < 4 && ((cursorObject getVariable ['status',-1] == 1) || (cursorObject getVariable ['status', -1] == 0 && _this isEqualTo player)) && (cursorObject == sv_cur_obj)";
+	_cond = "(cursorObject distance _this) < 4 && ((cursorObject getVariable ['status',-1] == 1) || (cursorObject getVariable ['status', -1] == 0 && (_this isEqualTo player))) && (cursorObject == sv_cur_obj)";
 	_completion = {if (cursorObject distance player < 4) then {[] spawn client_fnc_disarmMCOM;};};
 	_interruption = {sv_cur_obj setVariable ["status", 1, true]};
 } else {

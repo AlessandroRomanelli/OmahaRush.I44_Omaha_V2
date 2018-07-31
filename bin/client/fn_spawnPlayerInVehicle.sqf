@@ -111,11 +111,6 @@ player switchCamera "INTERNAL";
 // Launch GUI
 cl_gui_thread = [] spawn client_fnc_startIngameGUI;
 
-// Display flares help if we are in a air vehicle
-if (_vehicle isKindOf "Air") then {
-	[] spawn client_fnc_displayCountermeasureKeys;
-};
-
 // Display help hint
 if (player getVariable "gameSide" == "defenders") then {
 	["DEFENDER", "Defend the objectives and kill all attackers trying to destroy them. Each killed attacker reduces their tickets. If it reaches zero, they have lost."] spawn client_fnc_hint;

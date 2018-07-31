@@ -333,7 +333,7 @@ class rr_restrictedArea
 			y = 0.335 * safezoneH + safezoneY;
 			w = 0.402187 * safezoneW;
 			h = 0.33 * safezoneH;
-			colorBackground[] = {1,0,0,0.3};
+			colorBackground[] = {1,0,0,0.1};
 		};
 		class RscText_1001: RscText
 		{
@@ -342,7 +342,7 @@ class rr_restrictedArea
 			y = 0.346 * safezoneH + safezoneY;
 			w = 0.391875 * safezoneW;
 			h = 0.308 * safezoneH;
-			colorBackground[] = {1,0,0,0.3};
+			colorBackground[] = {1,0,0,0.15};
 		};
 		class text: RscStructuredText
 		{

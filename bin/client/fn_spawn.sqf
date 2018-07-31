@@ -11,7 +11,7 @@ scriptName "fn_spawn";
 if (isServer && !hasInterface) exitWith {};
 
 // yo
-cl_inSpawnMenu = true;
+[] call client_fnc_initGlobalVars;
 
 player setVariable ["wasHS", false];
 player setVariable ["unitDmg", 0];
@@ -115,15 +115,13 @@ showHUD [true,false,false,false,false,true,false,true,false];
 [] spawn client_fnc_disableChannels;
 
 _side = player getVariable "gameSide";
-_possibleLoadouts = (missionconfigfile >> "Soldiers" >> _side) call Bis_fnc_getCfgSubClasses;
-_loadoutIdx = _side call BIS_fnc_getParamValue;
-_sideLoadout = _possibleLoadouts select _loadoutIdx;
+_sideLoadout = [] call client_fnc_getCurrentSideLoadout;
 
-_uniforms = (getArray(missionConfigFile >> "Soldiers" >> _side >> _sideLoadout >> "uniforms"));
-_goggles = (getText(missionConfigFile >> "Soldiers" >> _side >> _sideLoadout >> "goggles"));
-_vests		 = (getArray(missionConfigFile >> "Soldiers" >> _side >> _sideLoadout >> "vests"));
-_headgears = (getArray(missionConfigFile >> "Soldiers" >> _side >> _sideLoadout >> "headgears"));
-_backpacks = (getArray(missionConfigFile >> "Soldiers" >> _side >> _sideLoadout >> "backpacks"));
+_uniforms = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "uniforms"));
+_goggles = (getText(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "goggles"));
+_vests		 = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "vests"));
+_headgears = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "headgears"));
+_backpacks = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "backpacks"));
 
 if (count _uniforms > 0) then {player forceAddUniform (selectRandom _uniforms);};
 if (_goggles != "") then {player addGoggles _goggles;};
@@ -238,9 +236,12 @@ if (getNumber(missionConfigFile >> "GeneralConfig" >> "PostProcessing") == 1) th
 cl_spawnmenu_currentWeaponSelectionState = 0; // Nothing open
 disableSerialization;
 ((findDisplay 5000) displayCtrl 15) ctrlAddEventHandler ["ButtonDown",{[] spawn client_fnc_spawnMenu_displayPrimaryWeaponSelection;}];
-((findDisplay 5000) displayCtrl 16) ctrlAddEventHandler ["ButtonDown",{[] spawn client_fnc_spawnMenu_displaySecondaryWeaponSelection;}];
-((findDisplay 5000) displayCtrl 12) ctrlAddEventHandler ["ButtonDown",{[] spawn client_fnc_spawnMenu_displayPrimaryAttachmentSelection;}];
-((findDisplay 5000) displayCtrl 13) ctrlAddEventHandler ["ButtonDown",{[] spawn client_fnc_spawnMenu_displaySecondaryAttachmentSelection;}];
+_secondaryWeapons = cl_equipConfigurations select {(getText(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> (_x select 0) >> "type")) == "secondary"};
+if (count _secondaryWeapons != 0) then {
+	((findDisplay 5000) displayCtrl 16) ctrlAddEventHandler ["ButtonDown",{[] spawn client_fnc_spawnMenu_displaySecondaryWeaponSelection;}];
+};
+/* ((findDisplay 5000) displayCtrl 12) ctrlAddEventHandler ["ButtonDown",{[] spawn client_fnc_spawnMenu_displayPrimaryAttachmentSelection;}];
+((findDisplay 5000) displayCtrl 13) ctrlAddEventHandler ["ButtonDown",{[] spawn client_fnc_spawnMenu_displaySecondaryAttachmentSelection;}]; */
 ((findDisplay 5000) displayCtrl 100) ctrlAddEventHandler ["ButtonDown",{[] spawn client_fnc_spawnMenu_displayGroupManagement;}];
 
 // Load available classes and select our preferred one

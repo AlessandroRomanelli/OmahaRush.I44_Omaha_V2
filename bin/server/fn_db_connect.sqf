@@ -25,8 +25,10 @@ if("extDB3" callExtension "9:LOCK_STATUS" == "[0]") then {
         ["The extDB version is outdated"] spawn server_fnc_log;
     };*/
 
+    _dbName = getText(missionConfigFile >> "GeneralConfig" >> "databaseName");
+
     //Initialize connection to Database
-    _result = "extDB3" callExtension format["9:ADD_DATABASE:%1","RushRedux"];
+    _result = "extDB3" callExtension format["9:ADD_DATABASE:%1", _dbName];
 
     if(_result != "[1]") then {
         ["Config already loaded"] spawn server_fnc_log;
@@ -34,7 +36,7 @@ if("extDB3" callExtension "9:LOCK_STATUS" == "[0]") then {
         sv_db_id = uiNamespace getVariable "sv_db_id";
         _result = "extDB3" callExtension format
             ["9:ADD_DATABASE_PROTOCOL:%1:SQL:%2:ADD_QUOTES",
-                "RushRedux",
+                _dbName,
                 (sv_db_id)
             ];
 
@@ -42,7 +44,7 @@ if("extDB3" callExtension "9:LOCK_STATUS" == "[0]") then {
     } else {
         _result = "extDB3" callExtension format
             ["9:ADD_DATABASE_PROTOCOL:%1:SQL:%2:ADD_QUOTES",
-                "RushRedux",
+                _dbName,
                 (sv_db_id)
             ];
 

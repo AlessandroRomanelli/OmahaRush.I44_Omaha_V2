@@ -16,6 +16,7 @@ _d = findDisplay 5000;
 // Exit if this menu is already open
 if (cl_spawnmenu_currentWeaponSelectionState == 2) exitWith {
 	cl_spawnmenu_currentWeaponSelectionState = 0;
+	(_d displayCtrl 2001) ctrlSetStructuredText parseText "<t size='0.75' color='#ffffff'' shadow='2' font='PuristaMedium' align='center'>[CLICK ABOVE TO SELECT]</t>";
 	{
 		((findDisplay 5000) displayCtrl _x) ctrlShow false;
 	} forEach [
@@ -34,6 +35,9 @@ if (cl_spawnmenu_currentWeaponSelectionState == 2) exitWith {
 
 // Duhh
 cl_spawnmenu_currentWeaponSelectionState = 2;
+
+(_d displayCtrl 2001) ctrlSetStructuredText parseText "<t size='0.75' color='#25ffffff'' shadow='2' font='PuristaMedium' align='center'>[CLICK ABOVE TO SELECT]</t>";
+
 (_d displayCtrl 3) ctrlRemoveAllEventHandlers "LBSelChanged";
 
 // Show selection
@@ -44,17 +48,18 @@ cl_spawnmenu_currentWeaponSelectionState = 2;
 lbClear (_d displayCtrl 3);
 
 // Load all weapons into the listbox
+_secondaryWeapons = cl_equipConfigurations select {(getText(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> (_x select 0) >> "type")) == "secondary"};
 {
-	if ((getText(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> (_x select 0) >> "type")) == "secondary") then {
-		(_d displayCtrl 3) lbAdd (([(_x select 0)] call client_fnc_weaponDetails) select 1);
-		(_d displayCtrl 3) lbSetPicture [(lbSize (_d displayCtrl 3)) - 1, (([(_x select 0)] call client_fnc_weaponDetails) select 2)];
-		(_d displayCtrl 3) lbSetData [(lbSize (_d displayCtrl 3)) - 1, _x select 0];
+	(_d displayCtrl 3) lbAdd (([(_x select 0)] call client_fnc_weaponDetails) select 1);
+	(_d displayCtrl 3) lbSetPicture [(lbSize (_d displayCtrl 3)) - 1, (([(_x select 0)] call client_fnc_weaponDetails) select 2)];
+	(_d displayCtrl 3) lbSetData [(lbSize (_d displayCtrl 3)) - 1, _x select 0];
 
-		if ((_x select 0) == (cl_equipClassnames select 1)) then {
-			(_d displayCtrl 3) lbSetCurSel ((lbSize (_d displayCtrl 3)) - 1);
-		};
+	if ((_x select 0) == (cl_equipClassnames select 1)) then {
+		(_d displayCtrl 3) lbSetCurSel ((lbSize (_d displayCtrl 3)) - 1);
 	};
-} forEach cl_equipConfigurations;
+} forEach _secondaryWeapons;
+
+
 
 // Give control
 (_d displayCtrl 3) ctrlAddEventHandler ["LBSelChanged", {

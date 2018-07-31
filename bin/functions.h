@@ -68,7 +68,6 @@ class Maverick_Functions_Client {
 		class getAllAmmoVehicles {};
 		class spawnPlayerInVehicle {};
 		class getBeaconOwner {};
-		class reloadFlares {};
 		class beaconEventHandler {};
 		class countAssist {};
 		class evaluateAssistInfo {};
@@ -83,13 +82,10 @@ class Maverick_Functions_Client {
 		class dumpObjects {};
 		class instantTeamBalanceCheck {};
 		class initKeyHandler {};
-		class incomingMissile {};
-		class addAirVehicleHandlers {};
 		class vehicleDisabled {};
 		class displayKeyBindingHint {};
 		class restrictedArea {};
 		class initMatchTimer {};
-		class displayCountermeasureKeys {};
 		class validatePointsEarned {};
 		class updateSpawnMenuCam {};
 		class revealFriendlyUnits {};
@@ -100,6 +96,8 @@ class Maverick_Functions_Client {
 		class teleport {};
 		class displayAds {};
 		class drawMapUnits {};
+		class getCurrentSideLoadout {};
+		class initGlobalVars {};
 		class brightNight {postInit = 1;};
 
 		// Pointfeed

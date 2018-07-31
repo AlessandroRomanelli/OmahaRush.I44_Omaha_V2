@@ -21,10 +21,8 @@ _trigger = _side select 1;
 _trigger setPos _pos;
 _trigger setTriggerArea _area;
 
-[_trigger, "playArea"] spawn client_fnc_updateLine;
-
 // Update enemy base marker name
 _enemyMarkerName = _side select 2;
 cl_enemySpawnMarker = _enemyMarkerName;
 
-[_trigger, "playArea"] spawn client_fnc_updateLine;
+[_trigger, "playArea"] call client_fnc_updateLine;

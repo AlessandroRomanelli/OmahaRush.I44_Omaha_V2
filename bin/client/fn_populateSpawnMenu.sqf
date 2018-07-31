@@ -20,15 +20,22 @@ _d = findDisplay 5000;
 _equip = [] call client_fnc_getLoadedEquipment;
 _primary = _equip select 0;
 _secondary = _equip select 1;
-
 if ((count _primary == 0) || ((cl_equipClassnames select 0) == "")) then {
 	(_d displayCtrl 5) ctrlSetStructuredText parseText "<t size='4' color='#990000' shadow='2' font='PuristaMedium' align='center'>N/A</t>";
 	(_d displayCtrl 1001) ctrlSetStructuredText parseText "<t size='1.25' color='#990000' shadow='2' font='PuristaMedium' align='center'>NO WEAPON SELECTED</t>";
+	(_d displayCtrl 2002) ctrlSetStructuredText parseText "<t size='0.75' color='#FFFFFF' shadow='2' font='PuristaMedium' align='center'>[CLICK ABOVE TO SELECT]</t>";
 };
 
 if ((count _secondary == 0) || ((cl_equipClassnames select 1) == "")) then {
 	(_d displayCtrl 7) ctrlSetStructuredText parseText "<t size='4' color='#990000' shadow='2' font='PuristaMedium' align='center'>N/A</t>";
-	(_d displayCtrl 1004) ctrlSetStructuredText parseText "<t size='1.25' color='#990000' shadow='2' font='PuristaMedium' align='center'>NO WEAPON SELECTED</t>";
+	_secondaryWeapons = cl_equipConfigurations select {(getText(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> (_x select 0) >> "type")) == "secondary"};
+	if (count _secondaryWeapons != 0) then {
+		(_d displayCtrl 1004) ctrlSetStructuredText parseText "<t size='1.25' color='#990000' shadow='2' font='PuristaMedium' align='center'>NO WEAPON SELECTED</t>";
+		(_d displayCtrl 2001) ctrlSetStructuredText parseText "<t size='0.75' color='#FFFFFF' shadow='2' font='PuristaMedium' align='center'>[CLICK ABOVE TO SELECT]</t>";
+	} else {
+		(_d displayCtrl 1004) ctrlSetStructuredText parseText "<t size='1.25' color='#990000' shadow='2' font='PuristaMedium' align='center'>NO WEAPON AVAILABLE</t>";
+		(_d displayCtrl 2001) ctrlSetStructuredText parseText "<t size='0.75' color='#FFFFFF' shadow='2' font='PuristaMedium' align='center'>[PROGRESS TO UNLOCK MORE]</t>";
+	};
 };
 
 // Validate
@@ -38,13 +45,11 @@ if ((count _secondary == 0) || ((cl_equipClassnames select 1) == "")) then {
 if ((_primary select 0) != "") then {
 	(_d displayCtrl 5) ctrlSetStructuredText parseText ("<t align='center' shadow='2' size='5'><img image='" + (([_primary select 0] call client_fnc_weaponDetails) select 2) + "'/></t>");
 	(_d displayCtrl 1001) ctrlSetStructuredText parseText format ["<t size='1.25' color='#FFFFFF' shadow='2' font='PuristaMedium' align='center'>%1</t>", (([_primary select 0] call client_fnc_weaponDetails) select 1)];
-	(_d displayCtrl 2001) ctrlSetStructuredText parseText "<t size='0.75' color='#FFFFFF' shadow='2' font='PuristaMedium' align='center'>[CLICK ABOVE TO SELECT]</t>";
 };
 
 if ((_secondary select 0) != "") then {
 	(_d displayCtrl 7) ctrlSetStructuredText parseText ("<t align='center' shadow='2' size='5'><img image='" + (([_secondary select 0] call client_fnc_weaponDetails) select 2) + "'/></t>");
 	(_d displayCtrl 1004) ctrlSetStructuredText parseText format ["<t size='1.25' color='#FFFFFF' shadow='2' font='PuristaMedium' align='center'>%1</t>", (([_secondary select 0] call client_fnc_weaponDetails) select 1)];
-	(_d displayCtrl 2002) ctrlSetStructuredText parseText "<t size='0.75' color='#FFFFFF' shadow='2' font='PuristaMedium' align='center'>[CLICK ABOVE TO SELECT]</t>";
 };
 
 // Build primary attachments text and display

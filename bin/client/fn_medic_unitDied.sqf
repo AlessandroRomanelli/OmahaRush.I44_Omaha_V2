@@ -28,10 +28,8 @@ if ((_unit getVariable ["side",civilian]) != playerSide) exitWith {};
 
 // Are we a medic and do we have the defi perk?
 if (cl_equipClassnames select 2 != "medic") exitWith {};
-_time = 3;
-if (cl_classPerk == "defibrillator") then {
-	_time = 0.5;
-};
+
+_time = if (cl_classPerk == "defibrillator") then {0.5} else {1.5};
 
 // Revive icon! Yay!
 _actionID = [

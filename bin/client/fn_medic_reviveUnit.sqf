@@ -24,4 +24,4 @@ _unit setVariable ["unitDmg", 0];
 diag_log "test____3";
 
 // Revive unit
-[] remoteExec ["client_fnc_revive",_unit];
+[player] remoteExec ["client_fnc_revive",_unit];

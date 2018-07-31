@@ -38,7 +38,9 @@ while {true} do {
 	_units = allUnits select {
 		if (isPlayer _x || _showAI) then {
 			if ((side _x) isEqualTo (playerSide)) then {
-				true
+				if (_x getVariable ["isAlive", false]) then {
+					true
+				};
 			};
 		};
 	};

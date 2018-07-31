@@ -9,22 +9,22 @@ scriptName "fn_initKeyHandler";
 --------------------------------------------------------------------*/
 #define __filename "fn_initKeyHandler.sqf"
 _h = false;
-player setVariable ["scoreboardHidden", true];
+cl_scoreboardHidden = true;
 
 cl_soundLevel = 1;
 (findDisplay 46) displayAddEventHandler ["KeyUp", {
 	if ((_this select 1) == 15 && (sv_gameStatus in [1,2])) then {
-		player setVariable ["scoreboardHidden", true];
+		cl_scoreboardHidden = true;
 		60001 cutRsc ["default", "PLAIN"];
 	};
 }];
 
 (findDisplay 46) displayAddEventHandler ["KeyDown", {
-
 	if ((_this select 1) == 15 && (sv_gameStatus in [1,2])) then {
 		// Lets fill the scoreboard
-		if (player getVariable "scoreboardHidden") then {
-			player setVariable ["scoreboardHidden", false];
+		if !(cl_scoreboardHidden) exitWith {};
+		if (cl_scoreboardHidden) then {
+			cl_scoreboardHidden = false;
 			disableSerialization;
 			// Bring up ui for timer
 			60001 cutRsc ["rr_scoreboard", "PLAIN"];
@@ -35,34 +35,33 @@ cl_soundLevel = 1;
 			_nDefender = 0;
 
 			// Fill data from objects
-			if (true) then {
-				_h = true;
-					{if ((_x getVariable "gameSide") == "defenders") then {
-							_allInfoDefenders pushBack [_x getVariable ["points", 0], _x getVariable ["kills", 0], _x getVariable ["deaths", 0], name _x];
-						} else {
-							_allInfoAttackers pushBack [_x getVariable ["points", 0], _x getVariable ["kills", 0], _x getVariable ["deaths", 0], name _x];
-						};
-					} forEach AllPlayers;
+			_h = true;
+			{
+				if ((_x getVariable "gameSide") == "defenders") then {
+					_allInfoDefenders pushBack [_x getVariable ["points", 0], _x getVariable ["kills", 0], _x getVariable ["deaths", 0], name _x];
+				} else {
+					_allInfoAttackers pushBack [_x getVariable ["points", 0], _x getVariable ["kills", 0], _x getVariable ["deaths", 0], name _x];
+				};
+			} forEach AllPlayers;
 
-					// Sort data
-					_allInfoAttackers sort false;
-					_allInfoDefenders sort false;
-					// Get controls
-					_listAttackers = ((uiNamespace getVariable ["rr_scoreboard", displayNull]) displayCtrl 2);
-					_listDefenders = ((uiNamespace getVariable ["rr_scoreboard", displayNull]) displayCtrl 1);
-					_listAttackers lnbAddRow ["#","","K","D","SCORE",""];
-					_listDefenders lnbAddRow ["#","","K","D","SCORE",""];
+			// Sort data
+			_allInfoAttackers sort false;
+			_allInfoDefenders sort false;
+			// Get controls
+			_listAttackers = ((uiNamespace getVariable ["rr_scoreboard", displayNull]) displayCtrl 2);
+			_listDefenders = ((uiNamespace getVariable ["rr_scoreboard", displayNull]) displayCtrl 1);
+			_listAttackers lnbAddRow ["#","","K","D","SCORE",""];
+			_listDefenders lnbAddRow ["#","","K","D","SCORE",""];
 
-					// Fill scoreboards
-					{
-					_nDefender = _nDefender + 1;
-					_listDefenders lnbAddRow [str _nDefender, (_x select 3), str (_x select 1), str (_x select 2), str (_x select 0)];
-					} forEach _allInfoDefenders;
-					{
-						_nAttacker = _nAttacker + 1;
-						_listAttackers lnbAddRow [str _nAttacker, (_x select 3), str (_x select 1), str (_x select 2), str (_x select 0)];
-					} forEach _allInfoAttackers;
-			};
+			// Fill scoreboards
+			{
+			_nDefender = _nDefender + 1;
+			_listDefenders lnbAddRow [str _nDefender, (_x select 3), str (_x select 1), str (_x select 2), str (_x select 0)];
+			} forEach _allInfoDefenders;
+			{
+				_nAttacker = _nAttacker + 1;
+				_listAttackers lnbAddRow [str _nAttacker, (_x select 3), str (_x select 1), str (_x select 2), str (_x select 0)];
+			} forEach _allInfoAttackers;
 		};
 	};
 
@@ -96,14 +95,6 @@ cl_soundLevel = 1;
 	if ((_this select 1) == 59) then {
 		_h = true;
 		[] spawn client_fnc_dumpObjects;
-	};
-
-	// Flares
-	if ((_this select 1) in (actionKeys "LaunchCM")) then {
-		if ((vehicle player) isKindOf "Air" && ((driver vehicle player) == player)) then {
-			_h = true;
-			cl_reloadFlares_thread = [vehicle player] spawn client_fnc_reloadFlares; // Deploy and reload flares
-		};
 	};
 
 	_h

@@ -71,11 +71,11 @@ if (isServer) then {
 
 		// Explosion
 		"HelicopterExploBig" createVehicle getPos sv_cur_obj;
-		if (player distance sv_cur_obj < 10 || {player distance sv_cur_boj < 25 && [sv_cur_obj, "VIEW"] checkVisibility [eyePos sv_cur_obj, eyePos player]}) then {
+		if ((player distance sv_cur_obj < 10) || (player distance sv_cur_obj < 25 && (([sv_cur_obj, "VIEW"] checkVisibility [eyePos sv_cur_obj, eyePos player]) > 0.1))) then {
 			player setDamage 1;
 			["You were killed by the blast of the charge"] spawn client_fnc_displayError;
 		};
-		sv_cur_obj setVariable ["positionAGL", []];
+		sv_cur_obj setVariable ["positionAGL", nil];
 
 		if (sv_cur_obj == sv_stage4_obj) then {
 			// Trigger win

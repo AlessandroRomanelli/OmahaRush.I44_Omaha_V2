@@ -11,7 +11,7 @@ scriptName "fn_disarmMCOM";
 if (isServer && !hasInterface) exitWith {};
 
 // If it wasn't armed, there's nothing to disarm!
-if !((sv_cur_obj getVariable "status") == 1) exitWith {};
+if ((sv_cur_obj getVariable ["status", -1] != 1) && (sv_cur_obj getVariable ["status", -1] != 0)) exitWith {};
 if (!alive player) exitWith {};
 
 // Set disarmed

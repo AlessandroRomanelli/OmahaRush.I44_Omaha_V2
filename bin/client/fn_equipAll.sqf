@@ -12,15 +12,14 @@ if (isServer && !hasInterface) exitWith {};
 
 // Give player loadout
 _side = player getVariable "gameSide";
-_possibleLoadouts = (missionconfigfile >> "Soldiers" >> _side) call Bis_fnc_getCfgSubClasses;
-_loadoutIdx = _side call BIS_fnc_getParamValue;
-_sideLoadout = _possibleLoadouts select _loadoutIdx;
+_sideLoadout = [] call client_fnc_getCurrentSideLoadout;
 
-_uniforms = (getArray(missionConfigFile >> "Soldiers" >> format["%1", _side] >> _sideLoadout >> "uniforms"));
-_goggles = (getText(missionConfigFile >> "Soldiers" >> format["%1", _side] >> _sideLoadout >> "goggles"));
-_vests		 = (getArray(missionConfigFile >> "Soldiers" >> format["%1", _side] >> _sideLoadout >> "vests"));
-_headgears = (getArray(missionConfigFile >> "Soldiers" >> format["%1", _side] >> _sideLoadout >> "headgears"));
-_backpacks = (getArray(missionConfigFile >> "Soldiers" >> format["%1", _side] >> _sideLoadout >> "backpacks"));
+_uniforms = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "uniforms"));
+_goggles = (getText(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "goggles"));
+_vests		 = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "vests"));
+_headgears = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "headgears"));
+_backpacks = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "backpacks"));
+
 
 if (count _uniforms > 0) then {player forceAddUniform (selectRandom _uniforms)};
 if (_goggles != "") then {player addGoggles _goggles;};

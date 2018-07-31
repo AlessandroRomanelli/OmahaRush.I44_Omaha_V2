@@ -32,6 +32,7 @@ class CfgRemoteExec {
 #include "config\factions.h"
 #include "config\perks.h"
 #include "config\map_settings.h"
+#include "config\hints.h"
 
 onPauseScript[] = {client_fnc_saveStatistics};
 
