@@ -321,7 +321,7 @@ player addEventHandler ["GetOutMan", {
 	_pos = getPosATL player;
 	if ((_pos select 2) > 75) then {
 		waitUntil {((getPosATL player) select 2) < 75};
-		if (vehicle player == player) then
+		if (isNull objectParent player) then
 		{
 			_para = "Steerable_Parachute_F" createVehicle position player;
 			_velPlayer = (velocity player);

@@ -20,7 +20,7 @@ player setVariable ["kills",cl_kills,true];
 
 // Get seat in vehicle
 _seat = -2;
-if ((vehicle player) != player) then {
+if !(isNull objectParent player) then {
 	_v = vehicle player;
 
 	// Check if we are the driver

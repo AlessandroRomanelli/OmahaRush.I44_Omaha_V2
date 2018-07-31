@@ -39,22 +39,4 @@ if ((lbCurSel _lbSquad) != -1) then {
 //hint str _dataArray;
 
 // Get data from profilenamespace
-switch (_class) do
-{
-	case "medic":
-	{
-		profileNamespace setVariable ["rr_perks_medic", _dataArray];
-	};
-	case "support":
-	{
-		profileNamespace setVariable ["rr_perks_support", _dataArray];
-	};
-	case "assault":
-	{
-		profileNamespace setVariable ["rr_perks_assault", _dataArray];
-	};
-	case "engineer":
-	{
-		profileNamespace setVariable ["rr_perks_engineer", _dataArray];
-	};
-};
+profileNamespace setVariable [format ["rr_perks_%1", _class], _dataArray];

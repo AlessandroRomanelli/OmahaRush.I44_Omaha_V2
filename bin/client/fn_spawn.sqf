@@ -10,9 +10,6 @@ scriptName "fn_spawn";
 #define __filename "fn_spawn.sqf"
 if (isServer && !hasInterface) exitWith {};
 
-// yo
-[] call client_fnc_initGlobalVars;
-
 player setVariable ["wasHS", false];
 player setVariable ["unitDmg", 0];
 
@@ -148,7 +145,7 @@ _side = player getVariable "gameSide";
 _pos = getArray(missionConfigFile >> "MapSettings" >> "Stages" >> _stage >> "Spawns" >> _side);
 
 // Determine point between current pos and target pos
-_targetPos = [_pos,getPos sv_cur_obj] call client_fnc_getSectionCenter;
+_targetPos = [_pos, getPos sv_cur_obj] call client_fnc_getSectionCenter;
 
 // Set cam pos height
 _pos set[2, 400];
@@ -230,7 +227,10 @@ if (getNumber(missionConfigFile >> "GeneralConfig" >> "PostProcessing") == 1) th
 [] spawn client_fnc_populateSpawnMenu;
 
 // Enable spawn buttons // REDONE WITH LISTBOX UPDATE // SEE SPAWNMENU_LOADCLASSES
-((findDisplay 5000) displayCtrl 302) ctrlAddEventHandler ["ButtonDown",{[] spawn client_fnc_spawnMenu_getClassAndSpawn}];
+((findDisplay 5000) displayCtrl 302) ctrlAddEventHandler ["ButtonDown",{
+	profileNamespace setVariable ["rr_class_preferred", cl_class];
+	[] spawn client_fnc_spawnMenu_getClassAndSpawn
+}];
 
 // Add eventhandlers to the dialog and hide the weapon selection
 cl_spawnmenu_currentWeaponSelectionState = 0; // Nothing open

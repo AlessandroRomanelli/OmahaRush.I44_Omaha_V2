@@ -13,7 +13,11 @@ if (isServer && !hasInterface) exitWith {};
 _class = cl_equipClassnames select 2;
 
 // Just a missionnamespace var for faster access
-cl_class = _class;
+if (_class != "") then {
+	cl_class = _class;
+} else {
+	profileNamespace getVariable ["rr_class_preferred", "medic"];
+};
 
 // Broadcast class to all clients
 player setVariable ["class", cl_class, true];
@@ -108,7 +112,7 @@ if (true) then {
 				// check if were assault and we have the spawnbeacon perk, then place beacon
 				if (cl_class == "assault") then {
 					if (cl_classPerk == "spawnbeacon") then {
-						if (vehicle player == player) then {
+						if (isNull (objectParent player)) then {
 							[] spawn rc_spawnBeacon;
 						};
 					};

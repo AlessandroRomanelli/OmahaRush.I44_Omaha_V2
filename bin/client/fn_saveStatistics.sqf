@@ -10,6 +10,8 @@ scriptName "fn_saveStatistics";
 #define __filename "fn_saveStatistics.sqf"
 if (isServer && !hasInterface) exitWith {};
 
+saveProfileNamespace;
+
 // SAVE!!
 with missionNamespace do {
 	// No database no saving!

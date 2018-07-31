@@ -13,7 +13,7 @@ if (isServer && !hasInterface) exitWith {};
 // Did the init run already?
 if (!isNil "cl_init_ran") exitWith {};
 cl_init_ran = true;
-cl_inSpawnMenu = false;
+[] call client_fnc_initGlobalVars;
 
 // Skip the briefing screen whenever possible
 if (hasInterface) then {
