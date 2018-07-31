@@ -298,11 +298,12 @@ class Params {
   class TicketsRate {
     title = "Tickets per attacker:";
     values[] = {5, 7.5, 10, 12.5, 15};
-    default = 7.5;
+    default = 10;
   };
   class RoundTime {
     title = "How many minutes per objective:";
     values[] = {5,7.5,10,12.5,15,17.5,20};
+    texts[] = {"5m", "7m 30s", "10m", "12m 30s", "15m", "17m 30s", "20m"};
     default = 15;
   };
   class attackers {
@@ -316,6 +317,7 @@ class Params {
   class SpawnSafeTime {
     title = "How many seconds should the spawn protection last:";
     values[] = {0, 3, 5, 10, 15};
+    texts[] = {"0s", "3s", "5s", "10s", "15s"};
     default = 10;
   };
   class OutOfBoundsTime {
@@ -361,5 +363,17 @@ class Params {
     title = "Difference between teams for auto team-balancer:";
     values[] = {1, 2, 3, 4, 5};
     default = 3;
+  };
+  class InfantryFPOnly {
+    title = "Enforcement of 1st Person only for infantry:";
+    values[] = {0, 1};
+    texts[] = {"OFF", "ON"};
+    default = 1;
+  };
+  class VehicleFPOnly {
+    title = "Enforcement of 1st Person only for vehicles:";
+    values[] = {0, 1};
+    texts[] = {"OFF", "ON"};
+    default = 0;
   };
 };
