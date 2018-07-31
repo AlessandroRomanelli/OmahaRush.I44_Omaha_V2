@@ -72,19 +72,23 @@ _primaryWeapons = cl_equipConfigurations select {(getText(missionConfigFile >> "
 			(_d displayCtrl 3) lbSetPicture [(lbSize (_d displayCtrl 3)) - 1, (([(_x select 0)] call client_fnc_weaponDetails) select 2)];
 			(_d displayCtrl 3) lbSetData [(lbSize (_d displayCtrl 3)) - 1, _x select 0];
 
-			if ((_x select 0) == (cl_equipClassnames select 0)) then {
+			/* if ((_x select 0) == (cl_equipClassnames select 0)) then {
 				(_d displayCtrl 3) lbSetCurSel ((lbSize (_d displayCtrl 3)) - 1);
-			};
+			}; */
 		};
 	};
 } forEach _primaryWeapons;
 
+(_d displayCtrl 3) lbSetCurSel (profileNamespace getVariable [format["rr_preferredPrimaryWeaponIndex_%1", cl_class], 0]);
+
 // Give control
 (_d displayCtrl 3) ctrlAddEventHandler ["LBSelChanged", {
-
 	disableSerialization;
 	_d = findDisplay 5000;
-	cl_equipClassnames set [0, (_d displayCtrl 3) lbData (lbCurSel (_d displayCtrl 3))];
+	_idx = lbCurSel (_d displayCtrl 3);
+	cl_equipClassnames set [0, (_d displayCtrl 3) lbData _idx];
+	profileNamespace setVariable [format["rr_preferredPrimaryWeaponIndex_%1", cl_class], _idx];
+	profileNamespace setVariable [format["rr_preferredPrimaryWeapon_%1", cl_class], (cl_equipClassNames select 0)];
 	// Populate the structured texts
 	[] spawn client_fnc_populateSpawnMenu;
 }];

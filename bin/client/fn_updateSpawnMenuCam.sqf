@@ -22,7 +22,7 @@ _side = if (player getVariable "gameSide" == "defenders") then {"defenders"} els
 _pos = getArray(missionConfigFile >> "MapSettings" >> "Stages" >> _stage >> "Spawns" >> _side);
 
 // Determine point between current pos and target pos
-_targetPos = [_pos,getPos sv_cur_obj] call client_fnc_getSectionCenter;
+_targetPos = [_pos, getPos sv_cur_obj] call client_fnc_getSectionCenter;
 
 // Set cam pos height
 _pos set[2, 400];

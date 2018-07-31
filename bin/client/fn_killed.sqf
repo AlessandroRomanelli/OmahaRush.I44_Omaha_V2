@@ -51,7 +51,7 @@ if (_vehicle != player) then {
 sleep 15;
 
 // Move dead body out of vehicle
-if (vehicle player != player) then {moveOut player};
+if !(isNull objectParent player) then {moveOut player};
 sleep 0.1;
 
 // Destroy all objects that are left of us

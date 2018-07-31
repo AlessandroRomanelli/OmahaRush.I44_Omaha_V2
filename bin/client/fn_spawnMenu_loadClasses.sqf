@@ -21,11 +21,16 @@ _l ctrlAddEventHandler ["LBSelChanged", {
 	_class = (_this select 0) lbData (_this select 1);
 
 	if (!(_class in (getArray(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> cl_equipClassNames select 0 >> "roles")))) then {
-		cl_equipClassnames set [0, ""];
+		_weapon = profileNamespace getVariable [format["rr_preferredPrimaryWeapon_%1", _class], ""];
+		(_d displayCtrl 3) lbSetCurSel (profileNamespace getVariable [format["rr_preferredPrimaryWeaponIndex_%1", cl_class], 0]);
+		cl_equipClassnames set [0, _weapon];
 	};
 
+	((findDisplay 5000) displayCtrl 301) ctrlSetText "CHANGE CLASS/SQUAD PERKS";
+	((findDisplay 5000) displayCtrl 301) ctrlEnable true;
+
 	// Customizeable button
-	switch (_class) do
+	/* switch (_class) do
 	{
 		case "medic":
 		{
@@ -50,7 +55,7 @@ _l ctrlAddEventHandler ["LBSelChanged", {
 			((findDisplay 5000) displayCtrl 301) ctrlSetText "CHANGE CLASS/SQUAD PERKS";
 			((findDisplay 5000) displayCtrl 301) ctrlEnable true;
 		};
-	};
+	}; */
 
 	// Save preferred class index
 	profileNamespace setVariable ["rr_class_preferredIndex", (_this select 1)];
@@ -65,7 +70,7 @@ _l ctrlAddEventHandler ["LBSelChanged", {
 
 // Add default classes
 // Medic
-_l lbAdd "Field Medic";
+_l lbAdd "Medic";
 _l lbSetData [(lbSize _l) - 1, "medic"];
 
 // Support
