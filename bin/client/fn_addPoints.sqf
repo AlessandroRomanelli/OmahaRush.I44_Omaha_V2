@@ -64,7 +64,7 @@ if (count _before != count _after) then {
 	} forEach _unlockedClassnames;
 };
 
-_unlockedAttachments = [];
+/* _unlockedAttachments = [];
 
 // Check if we passed the 5000 points mark to unlock an attachment
 for "_i" from _exp to (_exp + _toAdd) step 1 do
@@ -81,7 +81,7 @@ for "_i" from _exp to (_exp + _toAdd) step 1 do
 	diag_log str _x;
 	[_x] spawn client_fnc_displayUnlockAttachment;
 	sleep 5.5;
-} forEach _unlockedAttachments;
+} forEach _unlockedAttachments; */
 
 // Generate timeline event
 cl_timelineevents

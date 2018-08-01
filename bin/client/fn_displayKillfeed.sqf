@@ -42,6 +42,10 @@ _reason = if (_possibleTurrentIndex in [-1, 0]) then {
 	currentWeapon _killer
 };
 
+if ((toLower _reason) in ["put", "throw"]) then {
+	_reason = primaryWeapon (vehicle _killer);
+};
+
 cl_killfeed pushBack [_killer, _reason, _unit];
 
 // Render the killfeed and remove it later on again :)

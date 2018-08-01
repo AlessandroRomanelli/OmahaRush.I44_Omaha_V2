@@ -12,6 +12,10 @@ if (isServer && !hasInterface) exitWith {};
 
 _ret = [];
 
+if (isNil "cl_equipConfigurations") then {
+	cl_equipConfigurations = [];
+};
+
 // Inline function to find equip by classname in configuration array
 _find = {
 	_class = param[0,"",[""]];
