@@ -34,6 +34,7 @@ if (isServer) then {
 		// Countdown
 		_time = 71; // Original time 71 = 60 seconds (95 = 80 seconds)
 		_status = sv_cur_obj getVariable ["status", -1];
+		_beep = MISSION_ROOT + "sounds\beep.ogg";
 		// If the objective is armed and there's still time on the clock
 		while {((_status == 1) || (_status == 0)) && _time >= 0} do {
 			_status = sv_cur_obj getVariable ["status", -1];
@@ -43,10 +44,10 @@ if (isServer) then {
 			} else {
 				_time = _time - 1;
 			};
-			sv_cur_obj say3D "beep";
+			playSound3D [_beep, sv_cur_obj, false, getPosATL sv_cur_obj, 1, 1, 0];
 			if (_time < 20) then {
 				sleep 0.425;
-				sv_cur_obj say3D "beep";
+				playSound3D [_beep, sv_cur_obj, false, getPosATL sv_cur_obj, 1, 1, 0];
 				sleep 0.425;
 			} else {
 				sleep 0.85;
@@ -70,7 +71,7 @@ if (isServer) then {
 		};
 
 		// Explosion
-		"HelicopterExploBig" createVehicle getPos sv_cur_obj;
+		"HelicopterExploBig" createVehicle getPosATL sv_cur_obj;
 
 		_killZone = sv_cur_obj nearEntities ["Man", 25];
 		{
@@ -113,7 +114,7 @@ if (isServer) then {
 };
 
 // Local sound loop
-if (!_wasServer) then {
+/* if (!_wasServer) then {
 	[] spawn {
 		_time = 71;
 		_status = sv_cur_obj getVariable ["status", -1];
@@ -135,7 +136,7 @@ if (!_wasServer) then {
 			};
 		};
 	};
-};
+}; */
 
 
 
