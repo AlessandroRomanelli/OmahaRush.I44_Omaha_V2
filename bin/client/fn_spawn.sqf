@@ -131,7 +131,10 @@ if (count _backpacks > 0) then {player addBackpack (selectRandom _backpacks);};
 player assignItem "ItemGPS";*/
 
 // Markers
-[] spawn client_fnc_updateRestrictions;
+[] call client_fnc_updateRestrictions;
+_trigger = [area_def, area_atk] select (_side == "attackers");
+[_trigger, "playArea"] call client_fnc_updateLine;
+
 
 // Wait until the objectives are available
 waitUntil {!isNil "sv_stage1_obj" && !isNil "sv_stage2_obj" && !isNil "sv_stage3_obj" && !isNil "sv_stage4_obj"};

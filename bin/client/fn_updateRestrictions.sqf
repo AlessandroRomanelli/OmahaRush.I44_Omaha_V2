@@ -25,4 +25,4 @@ _trigger setTriggerArea _area;
 _enemyMarkerName = _side select 2;
 cl_enemySpawnMarker = _enemyMarkerName;
 
-[_trigger, "playArea"] call client_fnc_updateLine;
+true
