@@ -13,6 +13,8 @@ if (isServer && !hasInterface) exitWith {};
 disableSerialization;
 _text = param[0,"",[""]];
 
+if (_text isEqualTo "") exitWith {};
+
 // Display error rsc
 35 cutRsc ["rr_errorText","PLAIN"];
 

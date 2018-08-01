@@ -71,11 +71,14 @@ if (isServer) then {
 
 		// Explosion
 		"HelicopterExploBig" createVehicle getPos sv_cur_obj;
-		if ((player distance sv_cur_obj < 10) || (player distance sv_cur_obj < 25 && (([sv_cur_obj, "VIEW"] checkVisibility [eyePos sv_cur_obj, eyePos player]) > 0.1))) then {
-			player setDamage 1;
-			["You were killed by the blast of the charge"] spawn client_fnc_displayError;
-		};
-		sv_cur_obj setVariable ["positionAGL", nil];
+
+		_killZone = sv_cur_obj nearEntities ["Man", 25];
+		{
+			if ((_x distance sv_cur_obj < 10) || {_x distance sv_cur_obj < 25 && {([sv_cur_obj, "VIEW"] checkVisibility [eyePos sv_cur_obj, eyePos _x]) > 0.1}}) then {
+				player setDamage 1;
+				["You were killed by the blast of the explosion"] remoteExec ["client_fnc_administrationKill", _x];
+			};
+		} forEach _killZone;
 
 		if (sv_cur_obj == sv_stage4_obj) then {
 			// Trigger win
@@ -102,8 +105,6 @@ if (isServer) then {
 
 			// refresh tickets
 			[] call server_fnc_refreshTickets;
-
-			[] remoteExec ["client_fnc_objectiveActionUpdate",0];
 
 			// Update everyones variable
 			[["sv_cur_obj"]] spawn server_fnc_updateVars;
@@ -135,6 +136,7 @@ if (!_wasServer) then {
 		};
 	};
 };
+
 
 
 // Did we plant? Should be give ourself points?
