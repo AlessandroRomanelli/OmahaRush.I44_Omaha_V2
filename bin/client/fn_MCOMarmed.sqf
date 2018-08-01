@@ -18,6 +18,10 @@ _planter = param[0,objNull,[objNull]];
 // Make the UI at the top blink
 [] spawn client_fnc_objectiveArmedGUIAnimation;
 
+"objective" setMarkerColorLocal "ColorRed";
+"objective" setMarkerTextLocal "Objective (ARMED)";
+
+
 // Info
 ["EXPLOSIVES ARMED","The objective has been armed. Attackers will not lose tickets while it is."] spawn client_fnc_hint;
 
@@ -113,39 +117,11 @@ if (isServer) then {
 	};
 };
 
-// Local sound loop
-/* if (!_wasServer) then {
-	[] spawn {
-		_time = 71;
-		_status = sv_cur_obj getVariable ["status", -1];
-		while {(_status == 0 || _status == 1) && _time >= 0} do {
-			_status = sv_cur_obj getVariable ["status", -1];
-			// Freeze time if the objective is being armed
-			if (_status == 0) then {
-				_time = _time;
-			} else {
-				_time = _time - 1;
-			};
-			sv_cur_obj say3D "beep";
-			if (_time < 20) then {
-				sleep 0.425;
-				sv_cur_obj say3D "beep";
-				sleep 0.425;
-			} else {
-				sleep 0.85;
-			};
-		};
-	};
-}; */
-
-
-
 // Did we plant? Should be give ourself points?
 if (_planter == player) then {
 	// Wait until estimated explosion time
 	_objective = sv_cur_obj;
-	_status = _objective getVariable ["status", -1];
-	waitUntil {_status != 1 || _objective != sv_cur_obj};
+	waitUntil {(_objective getVariable ["status", -1] == 3) || (_objective != sv_cur_obj)};
 
 	// Still the same objective? Looks like we werent successful...
 	if (_objective == sv_cur_obj) exitWith {};

@@ -12,6 +12,9 @@ scriptName "fn_MCOMdestroyed";
 // Warning
 ["THE OBJECTIVE HAS BEEN DESTROYED"] spawn client_fnc_displayObjectiveMessage;
 
+"objective" setMarkerTextLocal " Objective";
+"objective" setMarkerColorLocal "ColorBlack";
+
 // Update the last-mcom-destroyed time
 //cl_blockSpawnUntil = diag_tickTime + (getNumber(missionConfigFile >> "GeneralConfig" >> "FallBackSeconds"));
 //cl_blockSpawnForSide = "attackers";
@@ -68,8 +71,12 @@ if (param[0,false,[false]]) then {
 
 	sleep 3;
 	[format["DEFENDERS HAVE %1 SECONDS TO FALL BACK", _fallBackTime]] spawn client_fnc_displayObjectiveMessage;
+
+	_trigger = [area_def, area_atk] select (_isPlayerAttacking);
+
 	if (!_isPlayerAttacking) then {
-		[] spawn client_fnc_updateRestrictions;
+		[] call client_fnc_updateRestrictions;
+		[_trigger, "playArea"] call client_fnc_updateLine;
 	};
 	sleep (_fallBackTime-3);
 	if (_isPlayerAttacking) then {
@@ -80,11 +87,13 @@ if (param[0,false,[false]]) then {
 		["NEW OBJECTIVE HAS BEEN ASSIGNED, DEFEND!"] spawn client_fnc_displayObjectiveMessage;
 		player setVariable ["isFallingBack", false];
 	};
+
 	[] spawn _animate;
 
 	// Update markers
 	if (_isPlayerAttacking) then {
-		[] spawn client_fnc_updateRestrictions;
+		[] call client_fnc_updateRestrictions;
+		[_trigger, "playArea"] call client_fnc_updateLine;
 	};
 };
 
