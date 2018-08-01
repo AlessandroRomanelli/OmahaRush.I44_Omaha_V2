@@ -98,7 +98,7 @@ if (player getVariable "gameSide" == "defenders") then {
 };
 
 // Markers
-[true] spawn client_fnc_updateMarkers;
+[] spawn client_fnc_updateMarkers;
 
 // Hide hud
 showHUD [true,false,false,false,false,true,false,true,false];
@@ -131,9 +131,7 @@ if (count _backpacks > 0) then {player addBackpack (selectRandom _backpacks);};
 player assignItem "ItemGPS";*/
 
 // Markers
-[] call client_fnc_updateRestrictions;
-_trigger = [area_def, area_atk] select (_side == "attackers");
-[_trigger, "playArea"] call client_fnc_updateLine;
+[] spawn client_fnc_updateRestrictions;
 
 
 // Wait until the objectives are available

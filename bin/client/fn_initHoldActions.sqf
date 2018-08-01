@@ -129,7 +129,7 @@ _id = [
 /* 3 progress icon */					"\a3\ui_f\data\IGUI\Cfg\simpleTasks\types\upload_ca.paa",
 /* 4 condition to show */				_cond,
 /* 5 condition for action */			"true",
-/* 6 code executed on start */			{[sv_cur_obj, "arm"] remoteExec ["client_fnc_say3D",0]; sv_cur_obj setVariable ["status", 0, true];},
+/* 6 code executed on start */			{playSound3D[MISSION_ROOT + "sounds\arm.ogg", sv_cur_obj]; sv_cur_obj setVariable ["status", 0, true];},
 /* 7 code executed per tick */			{},
 /* 8 code executed on completion */		_completion,
 /* 9 code executed on interruption */	_interruption,

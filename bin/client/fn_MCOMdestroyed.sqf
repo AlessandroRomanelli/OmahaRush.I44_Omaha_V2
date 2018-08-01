@@ -9,11 +9,10 @@ scriptName "fn_MCOMdestroyed";
 --------------------------------------------------------------------*/
 #define __filename "fn_MCOMdestroyed.sqf"
 
+if (isServer && !hasInterface) exitWith {};
+
 // Warning
 ["THE OBJECTIVE HAS BEEN DESTROYED"] spawn client_fnc_displayObjectiveMessage;
-
-"objective" setMarkerTextLocal " Objective";
-"objective" setMarkerColorLocal "ColorBlack";
 
 // Update the last-mcom-destroyed time
 //cl_blockSpawnUntil = diag_tickTime + (getNumber(missionConfigFile >> "GeneralConfig" >> "FallBackSeconds"));
@@ -59,7 +58,7 @@ if (param[0,false,[false]]) then {
 	// Update markers
 	[] spawn client_fnc_updateMarkers;
 
-	_isPlayerAttacking = ((player getVariable "gameSide") == "attackers");
+	_isPlayerAttacking = ((player getVariable "gameSide") isEqualTo "attackers");
 
 	// If we are attacker, block the next mcom for now
 	if (_isPlayerAttacking) then {
@@ -72,12 +71,10 @@ if (param[0,false,[false]]) then {
 	sleep 3;
 	[format["DEFENDERS HAVE %1 SECONDS TO FALL BACK", _fallBackTime]] spawn client_fnc_displayObjectiveMessage;
 
-	_trigger = [area_def, area_atk] select (_isPlayerAttacking);
-
 	if (!_isPlayerAttacking) then {
-		[] call client_fnc_updateRestrictions;
-		[_trigger, "playArea"] call client_fnc_updateLine;
+		[] spawn client_fnc_updateRestrictions;
 	};
+
 	sleep (_fallBackTime-3);
 	if (_isPlayerAttacking) then {
 		playSound format["attackOrder_%1", floor random 4+1];
@@ -92,8 +89,7 @@ if (param[0,false,[false]]) then {
 
 	// Update markers
 	if (_isPlayerAttacking) then {
-		[] call client_fnc_updateRestrictions;
-		[_trigger, "playArea"] call client_fnc_updateLine;
+		[] spawn client_fnc_updateRestrictions;
 	};
 };
 

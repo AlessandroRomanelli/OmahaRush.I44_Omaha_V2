@@ -18,9 +18,6 @@ _planter = param[0,objNull,[objNull]];
 // Make the UI at the top blink
 [] spawn client_fnc_objectiveArmedGUIAnimation;
 
-"objective" setMarkerColorLocal "ColorRed";
-"objective" setMarkerTextLocal "Objective (ARMED)";
-
 
 // Info
 ["EXPLOSIVES ARMED","The objective has been armed. Attackers will not lose tickets while it is."] spawn client_fnc_hint;
@@ -71,7 +68,7 @@ if (isServer) then {
 		// Display message
 		if (sv_cur_obj != sv_stage4_obj) then {
 			// Mcom has been destroyed
-			[true] remoteExec ["client_fnc_MCOMdestroyed", -2];
+			[true] remoteExec ["client_fnc_MCOMdestroyed", 0];
 		};
 
 		// Explosion

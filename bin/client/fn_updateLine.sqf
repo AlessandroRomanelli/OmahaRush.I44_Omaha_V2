@@ -10,14 +10,12 @@ scriptName "fn_updateLine";
 #define __filename "fn_updateLine.sqf"
 if (isServer && !hasInterface) exitWith {};
 
-params [["_trigger", objNull], ["_marker", ""]];
+_size = [(triggerArea playArea) select 0, (triggerArea playArea) select 1];
+_angle = (triggerArea playArea) select 2;
+_pos = getPos playArea;
 
-_size = [(triggerArea _trigger) select 0, (triggerArea _trigger) select 1];
-_angle = (triggerArea _trigger) select 2;
-_pos = getPos _trigger;
+"playArea" setMarkerPosLocal _pos;
+"playArea" setMarkerSizeLocal _size;
+"playArea" setMarkerDirLocal _angle;
 
-_marker setMarkerPosLocal _pos;
-_marker setMarkerSizeLocal _size;
-_marker setMarkerDirLocal _angle;
-
-nil
+true

@@ -13,7 +13,7 @@ if (isServer && !hasInterface) exitWith {};
 // Did the init run already?
 if (!isNil "cl_init_ran") exitWith {};
 cl_init_ran = true;
-[] call client_fnc_initGlobalVars;
+cl_init_done = false;
 
 // Skip the briefing screen whenever possible
 if (hasInterface) then {
@@ -29,9 +29,6 @@ if (hasInterface) then {
         };
     };
 };
-
-
-
 
 /* // Player name
 player setVariable ["name", name player, true]; */
@@ -52,7 +49,10 @@ enableSaving [false, false];
 if (isNil "sv_serverReady") then {
 	sv_serverReady = false;
 };
+
 waitUntil {sv_serverReady && !isNil "sv_usingDatabase"};
+
+[] call client_fnc_initGlobalVars;
 
 // Get progress from server..
 if (sv_usingDatabase) then {
@@ -147,13 +147,12 @@ _marker4 setMarkerAlphaLocal 0.4;
 _marker4 setMarkerSizeLocal [0, 0];
 _marker4 setMarkerDirLocal 0;
 
-area_atk setTriggerArea [1, 1, 0, true, -1];
-area_atk setTriggerActivation ["ANYPLAYER", "PRESENT", true];
-area_atk setTriggerStatements ['(player getVariable ["gameSide", "defenders"] == "attackers") && this', "", ""];
+_trigger = createTrigger ["EmptyDetector", [0,0,0], false];
+_trigger setTriggerArea [1, 1, 0, true, -1];
+_trigger setTriggerActivation ["ANYPLAYER", "PRESENT", true];
+_trigger setTriggerStatements ['(player getVariable ["isAlive", false]) && this', "", ""];
 
-area_def setTriggerArea [1, 1, 0, true, -1];
-area_def setTriggerActivation ["ANYPLAYER", "PRESENT", true];
-area_def setTriggerStatements ['(player getVariable ["gameSide", "attackers"] == "defenders") && this', "", ""];
+missionNamespace setVariable ["playArea", _trigger];
 
 
 // Safepos markers (make sure units will not plop up on the battlefield)
@@ -174,6 +173,8 @@ CHBN_adjustBrightness = 0.5;
 // Fuck off?
 player enableStamina false;
 player forceWalk false;
+
+cl_init_done = true;
 
 // Jump to client cycle position via sv_gameStatus
 if (sv_gameStatus == 1) exitWith {

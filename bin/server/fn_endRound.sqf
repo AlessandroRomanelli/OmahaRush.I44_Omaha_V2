@@ -30,7 +30,7 @@ if (sv_tickets <= 0 || sv_matchTime <= 0) then {
 sleep 31;
 
 // Start countdown on users
-[] remoteExec ["client_fnc_resetPlayer", 0];
+[] remoteExec ["client_fnc_resetPlayer", -2];
 
 // Tell upper script we're done after all players waited
 _time = "LobbyTime" call bis_fnc_getParamValue;

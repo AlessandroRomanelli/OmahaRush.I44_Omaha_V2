@@ -10,6 +10,12 @@ scriptName "fn_resetVariables";
 #define __filename "fn_resetVariables.sqf"
 if (isServer && !hasInterface) exitWith {};
 
+// Vars
+[] call client_fnc_initGlobalVars;
+
+cl_enemySpawnMarker = if (player getVariable "gameSide" == "defenders") then {"mobile_respawn_attackers"} else {"mobile_respawn_defenders"};
+
+
 // Remove all actions
 if (!isNil "cl_actionIDs") then {
 	{
@@ -17,8 +23,6 @@ if (!isNil "cl_actionIDs") then {
 	} forEach cl_actionIDs;
 };
 
-// Vars
-[] call client_fnc_initGlobalVars;
 
 // Any beacons left?
 _beacon = player getVariable ["assault_beacon_obj", objNull];
@@ -133,6 +137,7 @@ if (isNil "rr_iconrenderer_executed") then {
 
 		// Objectives
 		_stage = [] call client_fnc_getCurrentStageString;
+
 		if (count (sv_cur_obj getVariable ["positionAGL", []]) == 0) then {
 			_pos = ASLToAGL (getPosASL sv_cur_obj);
 			_pos set [2, (_pos select 2) + 0.5];
@@ -269,16 +274,15 @@ if (isNil "rr_iconrenderer_executed") then {
 
 		if (player getVariable ["isAlive", false]) then {
 			_isPlayerAttacking = player getVariable ["gameSide", "attackers"] == "attackers";
-			_playArea = [area_def, area_atk] select (_isPlayerAttacking);
-			if !((vehicle player) inArea _playArea) then {
+			if !((vehicle player) inArea playArea) then {
 				30 cutRsc ["rr_restrictedArea", "PLAIN"];
 				_display = uiNamespace getVariable ["rr_restrictedArea", displayNull];
 				_outOfBoundsTimeout = if (player getVariable ["isFallingBack", false]) then [{"FallBackSeconds" call bis_fnc_getParamValue}, {"OutOfBoundsTime" call bis_fnc_getParamValue}];
 				if (diag_tickTime - (player getVariable "entryTime") < _outOfBoundsTimeout) then {
 					if (!_isPlayerAttacking && player getVariable "isFallingBack") then {
-						(_display displayCtrl 0) ctrlSetStructuredText parseText "<t size='3.5' color='#FFFFFF' shadow='2' align='center' t font='PuristaBold'>FALL BACK</t><br/><t size='2' color='#FFFFFF' shadow='2' align='center'>YOU ARE BEYOND OUR LAST DEFENCE</t>";
+						(_display displayCtrl 0) ctrlSetStructuredText parseText "<t size='3.5' color='#FFFFFF' shadow='2' align='center' font='PuristaBold'>FALL BACK</t><br/><t size='2' color='#FFFFFF' shadow='2' align='center'>YOU ARE BEYOND OUR LAST DEFENCE</t>";
 					};
-					(_display displayCtrl 1101) ctrlSetStructuredText parseText format ["<t size='5' color='#FFFFFF' shadow='2' align='center' t font='PuristaBold'>%1s</t>", ([(_outOfBoundsTimeout + (player getVariable "entryTime")) - diag_tickTime, "MM:SS", true] call bis_fnc_secondsToString) select 1];
+					(_display displayCtrl 1101) ctrlSetStructuredText parseText format ["<t size='5' color='#FFFFFF' shadow='2' align='center' font='PuristaBold'>%1s</t>", ([(_outOfBoundsTimeout + (player getVariable "entryTime")) - diag_tickTime, "MM:SS", true] call bis_fnc_secondsToString) select 1];
 				};
 				if (isNil "cl_restrictedArea_thread") then {
 					cl_restrictedArea_thread = [] spawn client_fnc_restrictedArea;

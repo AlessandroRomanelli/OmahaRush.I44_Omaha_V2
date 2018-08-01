@@ -27,7 +27,7 @@ cl_squadPerks = [];
 cl_actionIDs = [];
 cl_mcomDefAtt = 0;
 cl_pointsBelowMinimumPlayers = 0;
-cl_enemySpawnMarker = if (player getVariable "gameSide" == "defenders") then {"mobile_respawn_attackers"} else {"mobile_respawn_defenders"};
+cl_enemySpawnMarker = "";
 cl_blockTimer = false;
 TEMPWARNING = nil;
 cl_onEachFrame_squad_members = [];

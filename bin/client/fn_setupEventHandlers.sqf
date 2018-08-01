@@ -21,9 +21,13 @@ player removeAllEventHandlers "Respawn";
 player removeAllEventHandlers "HandleDamage";
 [missionNamespace, "groupPlayerChanged"] call BIS_fnc_removeAllScriptedEventHandlers;
 [missionNamespace, "switchedToExtCamera"] call BIS_fnc_removeAllScriptedEventHandlers;
+[missionNamespace, "playAreaChanged"] call BIS_fnc_removeAllScriptedEventHandlers;
+[missionNamespace, "objStatusChanged"] call BIS_fnc_removeAllScriptedEventHandlers;
 
 // Custom Event Handler for Group Change
 cl_groupSize = -1;
+cl_playAreaPos = [0,0,0];
+cl_obj_status = -1;
 addMissionEventHandler["EachFrame", {
 		_data = count (units group player);
 		if !(_data isEqualTo cl_groupSize) then {
@@ -35,11 +39,31 @@ addMissionEventHandler["EachFrame", {
 		if (_data isEqualTo "EXTERNAL") then {
 			[missionNamespace, "switchedToExtCamera"] call BIS_fnc_callScriptedEventHandler;
 		};
+
+		_data = getPosATL playArea;
+		if !(_data isEqualTo cl_playAreaPos) then {
+			[missionNamespace, "playAreaChanged"] call BIS_fnc_callScriptedEventHandler;
+			cl_playAreaPos = _data;
+		};
+
+		_data = sv_cur_obj getVariable ["status", -1];
+		if !(_data isEqualTo cl_obj_status) then {
+			[missionNamespace, "objStatusChanged"] call BIS_fnc_callScriptedEventHandler;
+			cl_obj_status = _data;
+		};
 }];
 
 // If the group size changes (either we left or some other people joined) update the perks
 [missionNamespace, "groupPlayerChanged", {
-		[] call client_fnc_getSquadPerks;
+		[] spawn client_fnc_getSquadPerks;
+}] call bis_fnc_addScriptedEventHandler;
+
+[missionNamespace, "playAreaChanged", {
+		[] spawn client_fnc_updateLine;
+}] call bis_fnc_addScriptedEventHandler;
+
+[missionNamespace, "objStatusChanged", {
+		[true] spawn client_fnc_updateMarkers;
 }] call bis_fnc_addScriptedEventHandler;
 
 [missionNamespace, "switchedToExtCamera", {
