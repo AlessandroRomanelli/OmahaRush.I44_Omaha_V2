@@ -63,7 +63,12 @@ addMissionEventHandler["EachFrame", {
 }] call bis_fnc_addScriptedEventHandler;
 
 [missionNamespace, "objStatusChanged", {
+	// Update objective marker to reflect status
 		[true] spawn client_fnc_updateMarkers;
+		if ((sv_cur_obj getVariable ["status", -1]) isEqualTo 1) then {
+			// Make the UI at the top blink
+			[] spawn client_fnc_objectiveArmedGUIAnimation;
+		};
 }] call bis_fnc_addScriptedEventHandler;
 
 [missionNamespace, "switchedToExtCamera", {

@@ -347,7 +347,7 @@ class rr_restrictedArea
 		class text: RscStructuredText
 		{
 			idc = 0;
-			text = "<t size='3.5' color='#FFFFFF' shadow='2' align='center' t font='PuristaBold'>TURN BACK</t><br/><t size='2' color='#FFFFFF' shadow='2' align='center'>YOU ARE LEAVING THE BATTLEFIELD</t>"; //--- ToDo: Localize;
+			text = "<t size='3.5' color='#FFFFFF' shadow='2' align='center' font='PuristaBold'>TURN BACK</t><br/><t size='2' color='#FFFFFF' shadow='2' align='center'>YOU ARE LEAVING THE BATTLEFIELD</t>"; //--- ToDo: Localize;
 			x = 0.309219 * safezoneW + safezoneX;
 			y = 0.401 * safezoneH + safezoneY;
 			w = 0.381563 * safezoneW;
@@ -407,7 +407,7 @@ class rr_restrictedAreaSpawn
 			y = 0.357 * safezoneH + safezoneY;
 			w = 0.381563 * safezoneW;
 			h = 0.286 * safezoneH;
-			text = "<br/><t size='2' color='#FFFFFF' shadow='2' align='center' t font='PuristaBold'>ENEMY HQ NEARBY</t><br/><t size='1.3' color='#FFFFFF' shadow='2' align='center'>LEAVE NOW OR YOU WILL BE KILLED</t>";
+			text = "<br/><t size='2' color='#FFFFFF' shadow='2' align='center' font='PuristaBold'>ENEMY HQ NEARBY</t><br/><t size='1.3' color='#FFFFFF' shadow='2' align='center'>LEAVE NOW OR YOU WILL BE KILLED</t>";
 		};
 	};
 };

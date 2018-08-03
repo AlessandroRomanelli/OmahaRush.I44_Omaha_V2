@@ -15,7 +15,7 @@ _c = (uiNamespace getVariable ["rr_objective_gui",displayNull]) displayCtrl 0;
 _obj = sv_cur_obj;
 
 _status = _obj getVariable ["status", -1];
-while {(_status == 0 || _status == 1) && sv_cur_obj == _obj} do {
+while {_status == 1 && {sv_cur_obj == _obj}} do {
 	_c ctrlSetFade 1;
 	_c ctrlCommit 0.5;
 	sleep 0.5;

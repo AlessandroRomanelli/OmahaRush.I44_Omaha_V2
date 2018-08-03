@@ -80,6 +80,7 @@ if (count _secondary != 0) then {
 
 _side = player getVariable "gameSide";
 _sideLoadout = [] call client_fnc_getCurrentSideLoadout;
+
 if (cl_class == "medic") then {
 	_medic_uniforms = (getArray(missionConfigFile >> "Soldiers" >> _side >> _sideLoadout >> "medics" >> "uniforms"));
 	_medic_vests = (getArray(missionConfigFile >> "Soldiers" >> _side >> _sideLoadout >> "medics" >> "vests"));
@@ -110,10 +111,12 @@ if (cl_classPerk == "grenadier") then {
 };
 
 if (cl_classPerk == "demolition") then {
-	removeBackpackGlobal player;
 	_backpack = getText(missionConfigFile >> "Soldiers" >> _side >> "ExplosiveCharge" >> "backpack");
 	_explCharge = getText(missionConfigFile >> "Soldiers" >> _side >> "ExplosiveCharge" >> "weapon");
-	player addBackpack _backpack;
+	if !(_backpack isEqualTo "") then {
+		removeBackpackGlobal player;
+		player addBackpack _backpack;
+	};
 	_count = if ("extended_ammo" in cl_squadPerks) then {1} else {3};
 	for "_i" from 1 to _count do {player addItemToBackpack _explCharge};
 };

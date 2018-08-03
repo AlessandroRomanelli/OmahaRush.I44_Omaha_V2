@@ -9,10 +9,10 @@ scriptName "onPlayerRespawn";
 --------------------------------------------------------------------*/
 #define __filename "onPlayerRespawn.sqf"
 
-if (!isNil "sv_gameStatus" && !isNil "cl_revived") then {
-	["Player respawned"] spawn server_fnc_log;
-	[format["sv_gameStatus %1 cl_revived %2", sv_gameStatus, cl_revived]] spawn server_fnc_log;
+if (!isNil "sv_gameStatus" && !isNil "cl_revived" && !isNil "cl_init_done" && {cl_init_done}) then {
 	if (sv_gameStatus == 2 && !cl_revived) then {
+		["Player respawned"] spawn server_fnc_log;
+		[format["sv_gameStatus %1 cl_revived %2", sv_gameStatus, cl_revived]] spawn server_fnc_log;
 		[] spawn client_fnc_spawn;
 
 		player enableStamina false;

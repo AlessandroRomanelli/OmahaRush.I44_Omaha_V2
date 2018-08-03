@@ -15,9 +15,6 @@ _planter = param[0,objNull,[objNull]];
 // Display warning
 ["EXPLOSIVES HAVE BEEN SET"] spawn client_fnc_displayObjectiveMessage;
 
-// Make the UI at the top blink
-[] spawn client_fnc_objectiveArmedGUIAnimation;
-
 
 // Info
 ["EXPLOSIVES ARMED","The objective has been armed. Attackers will not lose tickets while it is."] spawn client_fnc_hint;

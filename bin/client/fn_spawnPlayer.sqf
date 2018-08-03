@@ -48,7 +48,7 @@ cl_spawn_succ = {
 	};
 
 	// GPS
-	showGPS true;
+	showGPS false;
 	player setVariable ["isAlive", true];
 	// Spawn protection
 	[] spawn {

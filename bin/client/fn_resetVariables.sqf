@@ -136,7 +136,7 @@ if (isNil "rr_iconrenderer_executed") then {
 
 
 		// Objectives
-		_stage = [] call client_fnc_getCurrentStageString;
+		/* _stage = [] call client_fnc_getCurrentStageString; */
 
 		if (count (sv_cur_obj getVariable ["positionAGL", []]) == 0) then {
 			_pos = ASLToAGL (getPosASL sv_cur_obj);
@@ -148,10 +148,14 @@ if (isNil "rr_iconrenderer_executed") then {
 
 		_alpha = 1 - ((((player getRelDir _pos) - 180)/180)^30);
 
+		if ((sv_cur_obj getVariable ["status", -1]) isEqualTo 1) then {
+			_alpha = 2/3 + (1/3*cos(100*diag_tickTime*pi));
+		};
+
 		if (player getVariable ["gameSide", "defenders"] == "defenders") then {
-			drawIcon3D [format ["%1pictures\objective_defender.paa",MISSION_ROOT],[1,1,1,_alpha],_pos,1.5,1.5,0,format["Defend (%1m)", round(player distance sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
+			drawIcon3D [MISSION_ROOT+"pictures\objective_defender.paa",[1,1,1,_alpha],_pos,1.5,1.5,0,format["Defend (%1m)", round(player distance sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
 		} else {
-			drawIcon3D [format ["%1pictures\objective_attacker.paa",MISSION_ROOT],[1,1,1,_alpha],_pos,1.5,1.5,0,format["Attack (%1m)", round(player distance sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
+			drawIcon3D [MISSION_ROOT+"pictures\objective_attacker.paa",[1,1,1,_alpha],_pos,1.5,1.5,0,format["Attack (%1m)", round(player distance sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
 		};
 
 		// Squad icons
@@ -247,9 +251,7 @@ if (isNil "rr_iconrenderer_executed") then {
 		};
 
 		_grenadeIcon = if (((currentThrowable player) select 0) in ["LIB_US_Mk_2", "LIB_shg24"]) then {"pictures\frag.paa"} else {"pictures\smoke.paa"};
-		if ((currentThrowable player) isEqualto []) then {
-			_grenadeIcon = "";
-		};
+		if ((currentThrowable player) isEqualto []) then {_grenadeIcon = "";};
 
 		if (_grenades isEqualTo 0) then {_grenades = ""};
 
