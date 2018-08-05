@@ -87,8 +87,7 @@ addMissionEventHandler["EachFrame", {
 }] call bis_fnc_addScriptedEventHandler;
 
 // Automatic magazine recombination
-player addEventHandler ["Take",
-{
+player addEventHandler ["Take", {
 	_magInfo = magazinesAmmoFull player;
 	_curMag = currentMagazine player;
 	_bulletCount = 0;
@@ -118,6 +117,7 @@ player addEventHandler ["Take",
 
 // Direction indicators and inventory blocker
 player addEventHandler ["InventoryOpened", {closeDialog 0;true;}];
+
 player addEventHandler ["Hit",{
 	_d = [_this select 0, _this select 1] call BIS_fnc_relativeDirTo;
 	if (_d >= 315 || _d <= 45) then {351 cutRsc ["cu","PLAIN"];};
@@ -187,7 +187,7 @@ player addEventHandler ["Killed", {
 			};
 			_victim setVariable ["lastDeath", diag_tickTime];
 			// you have been killed by message
-			[format ["You have been killed by<br/>%1", name _killer]] spawn client_fnc_displayInfo;
+			[format ["You have been killed by<br/>%1", _killer getVariable ["name", "ERROR: No Name"]]] spawn client_fnc_displayInfo;
 
 			// Send message to all units that we are reviveable
 			// As this package gets send to all clients we might aswell use it to share our information regarding assists (damage that was inflicted on us)
@@ -253,11 +253,11 @@ player addEventHandler ["HandleDamage", {
 				_unit setVariable ["isAlive", false];
 			};
 		} else {
-			_mgs = 			  ["LIB_MG34", "LIB_MG42", "LIB_M1918A2_BAR", "LIB_M1919A6", "LIB_MP44"];
-			_bolts = 		  ["LIB_G3340", "LIB_K98_Late", "LIB_M1903A3_Springfield", "LIB_G43"];
-			_smgs = 			["LIB_M1A1_Thompson", "LIB_M1928A1_Thompson", "LIB_M1928_Thompson", "LIB_MP38", "LIB_MP40"];
-			_semiAutos =  ["LIB_G43", "LIB_M1_Carbine", "LIB_M1A1_Carbine", "LIB_M1_Garand"];
-			_pistols =	  ["fow_w_type14", "fow_w_m1911"];
+			_mgs = 			  ["LIB_MG34", "LIB_MG42", "LIB_FG42G", "LIB_DP28", "LIB_DT", "LIB_M1918A2_BAR", "LIB_M1919A4", "LIB_M1919A6", "LIB_MP44"];
+			_bolts = 		  ["LIB_G3340", "LIB_K98_Late", "LIB_M1903A3_Springfield", "LIB_DELISLE", "LIB_K98", "LIB_M9130", "LIB_M38", "LIB_M44"];
+			_smgs = 			["LIB_M1A1_Thompson", "LIB_M1928A1_Thompson", "LIB_M1928_Thompson", "LIB_MP38", "LIB_MP40", "LIB_M3_GreaseGun", "LIB_PPSh41_m"];
+			_semiAutos =  ["LIB_G43", "LIB_M1A1_Carbine", "LIB_M1_Carbine", "LIB_M1_Garand", "LIB_G41", "LIB_SVT_40"];
+			_pistols =	  ["LIB_P38", "LIB_M1895", "LIB_TT33", "LIB_M1896", "LIB_Colt_M1911"];
 	    if (_hitSelection isEqualTo "") then {
 				if (alive _unit && {_damage > 0.01} && {_damage < 1}) then {
 					_damage remoteExec ["client_fnc_MPHit", _shooter];

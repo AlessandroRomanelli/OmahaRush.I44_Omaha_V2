@@ -1,3 +1,5 @@
+faction = "GER";
+
 class Vehicle {
   displayName = "";
   className = "";
@@ -8,8 +10,8 @@ class Vehicle {
 };
 
 class H_Tank: Vehicle {
-  displayName = "PzKpfW VI 'Tiger'";
-  className = "LIB_PzKpfwVI_E";
+  displayName = "PzKpfW V Ausf. A 'Panther'";
+  className = "LIB_PzKpfwV";
   respawn = 300;
 };
 
@@ -26,8 +28,8 @@ class APC: Vehicle {
 };
 
 class Car_HMG: Vehicle {
-  displayName = "Kubelwagen (MG42)";
-  className = "LIB_Kfz1_MG42_camo";
+  displayName = "Sd.Kfz 251";
+  className = "LIB_SdKfz251_FFV";
   respawn = 60;
 };
 

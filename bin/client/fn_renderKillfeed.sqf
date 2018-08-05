@@ -14,25 +14,27 @@ if (isNil "cl_killfeed") exitWith {};
 
 _out = "";
 {
+	_killerName = (_x select 0) getVariable ["name", "ERROR: No Name"];
 	_weapon = if ((_x select 1) == "") then {"KILLED"} else {([_x select 1] call client_fnc_weaponDetails) select 1};
 	_killer = if (((driver vehicle (_x select 0)) getVariable ["side",civilian]) == playerSide) then {
 		if (group (_x select 0) == group player) then {
-			"<t color='#009D05' shadow='2' font='PuristaMedium'>" + name (_x select 0) + "<t/>"
+			"<t color='#009D05' shadow='2' font='PuristaMedium'>" + _killerName + "<t/>"
 		} else {
-			"<t color='#3083F4' shadow='2' font='PuristaMedium'>" + name (_x select 0) + "<t/>"
+			"<t color='#3083F4' shadow='2' font='PuristaMedium'>" + _killerName + "<t/>"
 		};
 	} else {
-		"<t color='#FE251B' shadow='2' font='PuristaMedium'>" + name (_x select 0) + "<t/>"
+		"<t color='#FE251B' shadow='2' font='PuristaMedium'>" + _killerName + "<t/>"
 	};
 
+	_killedName = (_x select 2) getVariable ["name", "ERROR: No Name"];
 	_killed = if (((driver vehicle (_x select 2)) getVariable ["side",civilian]) == playerSide) then {
 		if (group (_x select 2) == group player) then {
-			"<t color='#009D05' shadow='2' font='PuristaMedium'>" + name (_x select 2) + "<t/>"
+			"<t color='#009D05' shadow='2' font='PuristaMedium'>" + _killedName + "<t/>"
 		} else {
-			"<t color='#3083F4' shadow='2' font='PuristaMedium'>" + name (_x select 2) + "<t/>"
+			"<t color='#3083F4' shadow='2' font='PuristaMedium'>" + _killedName + "<t/>"
 		};
 	} else {
-		"<t color='#FE251B' shadow='2' font='PuristaMedium'>" + name (_x select 2) + "<t/>"
+		"<t color='#FE251B' shadow='2' font='PuristaMedium'>" + _killedName + "<t/>"
 	};
 
 	_distance = format ["%1m", ceil ((_x select 0) distance (_x select 2))];

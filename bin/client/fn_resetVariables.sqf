@@ -152,10 +152,19 @@ if (isNil "rr_iconrenderer_executed") then {
 			_alpha = 2/3 + (1/3*cos(100*diag_tickTime*pi));
 		};
 
+		_objIsArmed = sv_cur_obj getVariable ["status", -1] isEqualTo 1;
 		if (player getVariable ["gameSide", "defenders"] == "defenders") then {
-			drawIcon3D [MISSION_ROOT+"pictures\objective_defender.paa",[1,1,1,_alpha],_pos,1.5,1.5,0,format["Defend (%1m)", round(player distance sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
+			if (_objIsArmed) then {
+				drawIcon3D [MISSION_ROOT+"pictures\objective_attacker.paa",[1,1,1,_alpha],_pos,1.5,1.5,0,format["Defuse (%1m)", round(player distance sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
+			} else {
+				drawIcon3D [MISSION_ROOT+"pictures\objective_defender.paa",[1,1,1,_alpha],_pos,1.5,1.5,0,format["Defend (%1m)", round(player distance sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
+			};
 		} else {
-			drawIcon3D [MISSION_ROOT+"pictures\objective_attacker.paa",[1,1,1,_alpha],_pos,1.5,1.5,0,format["Attack (%1m)", round(player distance sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
+			if (_objIsArmed) then {
+				drawIcon3D [MISSION_ROOT+"pictures\objective_defender.paa",[1,1,1,_alpha],_pos,1.5,1.5,0,format["Protect (%1m)", round(player distance sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
+			} else {
+				drawIcon3D [MISSION_ROOT+"pictures\objective_attacker.paa",[1,1,1,_alpha],_pos,1.5,1.5,0,format["Attack (%1m)", round(player distance sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
+			};
 		};
 
 		// Squad icons
@@ -214,14 +223,14 @@ if (isNil "rr_iconrenderer_executed") then {
 		_grenades    = 0;
 		_fireMode = "";
 
-		_mode = currentWeaponMode gunner vehicle player;
-		if (typeName _mode == "STRING") then {
+		_mode = currentWeaponMode (gunner (vehicle player));
+		if (_mode isEqualType "STRING") then {
 			if (_mode == "Single") then {_fireMode = "SNGL"};
 			if (_mode in ["Burst","Burst2rnd"]) then {_fireMode = "BRST"};
 			if (_mode == "FullAuto" OR _mode == "manual") then {_fireMode = "AUTO"};
 		} else {_fireMode = "---"};
 
-		if ((isNull objectParent player) || {(driver vehicle player != player) && {gunner vehicle player != player} && {commander vehicle player != player}}) then {
+		if ((isNull objectParent player) || {(assignedVehicleRole player select 0) isEqualTo "cargo"}) then {
 			{
 				if ((_x select 0) == (currentMagazine player) AND (_x select 2)) then
 				{

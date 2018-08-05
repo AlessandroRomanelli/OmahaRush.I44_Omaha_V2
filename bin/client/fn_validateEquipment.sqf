@@ -15,7 +15,7 @@ _find = {
 	_class = param[0,"",[""]];
 	_ret = [];
 	{
-		if (_x select 0 == _class) then {
+		if (_x == _class) then {
 			_ret = _x;
 		};
 	} forEach cl_equipConfigurations;
@@ -33,11 +33,13 @@ if (count cl_equipConfigurations != 0) then {
 	{
 		if (getNumber((_configs select _i) >> "exp") <= cl_exp && count ([(configName (_configs select _i))] call _find) == 0) then {
 			// Weapon has been unlocked, display it
-			_item = [
+			/* _item = [
 				configName (_configs select _i), // Weapon classname
 				["","",""],	// No attachments equipped
 				[] // No attachments unlocked
-			];
+			]; */
+
+			_item = configName (_configs select _i);
 
 			// Pushback into configuration pool
 			cl_equipConfigurations pushBack _item;
@@ -50,7 +52,7 @@ if (sv_usingDatabase) then {
 	_validatedArray = [];
 
 	{
-		_classname = _x select 0;
+		_classname = _x;
 
 		// Check if unlocked
 		_isConfig = isClass(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> _classname);

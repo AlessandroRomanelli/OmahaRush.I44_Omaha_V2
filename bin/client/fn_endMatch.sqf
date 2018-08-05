@@ -205,7 +205,7 @@ if (true) then {
 
 	// Set Text
 	((uiNamespace getVariable ["rr_end_bestof", displayNull]) displayCtrl 0) ctrlSetStructuredText parseText format ["<t size='3' color='#FFFFFF' shadow='2' align='center'>%1</t>","MOST ELIMINATIONS"];
-	((uiNamespace getVariable ["rr_end_bestof", displayNull]) displayCtrl 1) ctrlSetStructuredText parseText format ["<t size='6' color='#FFFFFF' shadow='2' align='center'>%1</t>",name _mostKillsPlayer];
+	((uiNamespace getVariable ["rr_end_bestof", displayNull]) displayCtrl 1) ctrlSetStructuredText parseText format ["<t size='6' color='#FFFFFF' shadow='2' align='center'>%1</t>", (_mostKillsPlayer getVariable ["name", "ERROR: No Name"])];
 	((uiNamespace getVariable ["rr_end_bestof", displayNull]) displayCtrl 2) ctrlSetStructuredText parseText format ["<t size='2.5' color='#FFFFFF' shadow='2' align='center'>%1</t>",_mostKillsPlayer getVariable ["kills", -1]];
 
 	// Display
@@ -232,7 +232,7 @@ if (true) then {
 
 	// Set Text
 	((uiNamespace getVariable ["rr_end_bestof", displayNull]) displayCtrl 0) ctrlSetStructuredText parseText format ["<t size='3' color='#FFFFFF' shadow='2' align='center'>%1</t>","BEST KILL/DEATH RATIO"];
-	((uiNamespace getVariable ["rr_end_bestof", displayNull]) displayCtrl 1) ctrlSetStructuredText parseText format ["<t size='6' color='#FFFFFF' shadow='2' align='center'>%1</t>",name _bestKDPlayer];
+	((uiNamespace getVariable ["rr_end_bestof", displayNull]) displayCtrl 1) ctrlSetStructuredText parseText format ["<t size='6' color='#FFFFFF' shadow='2' align='center'>%1</t>", (_bestKDPlayer getVariable ["name", "ERROR: No Name"])];
 	((uiNamespace getVariable ["rr_end_bestof", displayNull]) displayCtrl 2) ctrlSetStructuredText parseText format ["<t size='2.5' color='#FFFFFF' shadow='2' align='center'>%1</t>",((_bestKDPlayer getVariable ["kills", -1]) / _deaths)];
 
 	// Display
@@ -254,7 +254,7 @@ if (true) then {
 
 	// Set Text
 	((uiNamespace getVariable ["rr_end_bestof", displayNull]) displayCtrl 0) ctrlSetStructuredText parseText format ["<t size='3' color='#FFFFFF' shadow='2' align='center'>%1</t>","MOST VALUABLE PLAYER"];
-	((uiNamespace getVariable ["rr_end_bestof", displayNull]) displayCtrl 1) ctrlSetStructuredText parseText format ["<t size='6' color='#FFFFFF' shadow='2' align='center'>%1</t>",name _mostPointsPlayer];
+	((uiNamespace getVariable ["rr_end_bestof", displayNull]) displayCtrl 1) ctrlSetStructuredText parseText format ["<t size='6' color='#FFFFFF' shadow='2' align='center'>%1</t>",( _mostPointsPlayer getVariable ["name", "ERROR: No Name"])];
 	((uiNamespace getVariable ["rr_end_bestof", displayNull]) displayCtrl 2) ctrlSetStructuredText parseText format ["<t size='2.5' color='#FFFFFF' shadow='2' align='center'>%1</t>",_mostPointsPlayer getVariable ["points", -1]];
 
 	// Display
@@ -288,7 +288,7 @@ if (true) then {
 	// All units of the squad
 	_unitsText = "";
 	{
-		_unitsText = _unitsText + name _x + "<br/>";
+		_unitsText = _unitsText + (_x getVariable ["name", "ERROR: No Name"]) + "<br/>";
 	} forEach (units _bestSquad);
 
 	// Set Text

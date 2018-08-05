@@ -36,6 +36,7 @@ while {true} do {
 
 	// Fill with data
 	{
+		_name = (_x getVariable ["name", "ERROR: No Name"]);
 		if (_x != player) then {
 			if (side (group _x) == side (group player)) then {
 				if ((group _x) == (group player)) then {
@@ -43,7 +44,7 @@ while {true} do {
 					if (cl_inSpawnMenu) then {
 						_beacon = _x getVariable ["assault_beacon_obj", objNull];
 						if (!isNull _beacon) then {
-							_squad_beacons pushBack [(getPosATLVisual _beacon), format["%1's Spawnbeacon", name _x]];
+							_squad_beacons pushBack [(getPosATLVisual _beacon), format["%1's Spawnbeacon", _name]];
 						};
 					};
 
@@ -52,17 +53,17 @@ while {true} do {
 						// The player should not be on the debug island
 						if (_x distance cl_safePos > 200) then {
 							_alpha = [0.75, 0.55] select (_x distance player > 50);
-							_squad_members pushBack [_x, name _x, format["%1%2",MISSION_ROOT, [_x] call _getIcon], _alpha];
+							_squad_members pushBack [_x, _name, format["%1%2",MISSION_ROOT, [_x] call _getIcon], _alpha];
 						};
 					};
 				} else {
 					if (_x distance cl_safePos > 200 && alive _x) then {
 						if (cl_inSpawnMenu || ((vehicle player) isKindOf "Air")) then {
-							_team_members pushBack [_x, name _x, format["%1pictures\teammate.paa",MISSION_ROOT]];
+							_team_members pushBack [_x, _name, format["%1pictures\teammate.paa",MISSION_ROOT]];
 						} else {
 							// Only teammates within 100 meters
 							if (_x distance player < 100 || _x == (driver vehicle cursorObject) || _x == (driver vehicle cursorTarget)) then {
-								_team_members pushBack [_x, name _x, format["%1pictures\teammate.paa",MISSION_ROOT]];
+								_team_members pushBack [_x, _name, format["%1pictures\teammate.paa",MISSION_ROOT]];
 							};
 						};
 					};
@@ -75,7 +76,7 @@ while {true} do {
 	if (cl_inSpawnMenu) then {
 		_myBeacon = player getVariable ["assault_beacon_obj", objNull];
 		if (!isNull _myBeacon) then {
-			_squad_beacons pushBack [(getPosATLVisual _myBeacon), format["%1's Spawnbeacon", name player]];
+			_squad_beacons pushBack [(getPosATLVisual _myBeacon), format["%1's Spawnbeacon", (player getVariable ["name", "ERROR: No Name"])]];
 		};
 	};
 

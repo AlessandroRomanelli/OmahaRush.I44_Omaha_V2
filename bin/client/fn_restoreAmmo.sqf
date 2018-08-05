@@ -16,14 +16,14 @@ _side = player getVariable "gameSide";
 if (isNull _unit || _unit == player) then {
 	["AMMUNITION REPLENISHED"] spawn client_fnc_displayInfo;
 } else {
-	[format["%1 HAS REPLENISHED YOUR AMMUNITION", name _unit]] spawn client_fnc_displayInfo;
+	[format["%1 HAS REPLENISHED YOUR AMMUNITION", _unit getVariable ["name", "ERROR: No Name"]]] spawn client_fnc_displayInfo;
 };
 
 // Lets give us ammunition again :)
 _equipInfo = [] call client_fnc_getLoadedEquipment;
 
 _primary = _equipInfo select 0;
-if (count _primary != 0) then {
+if (_primary != "") then {
 	// Primary
 	_primaryClassname = _primary select 0;
 	_primaryAttachements = _primary select 1;
@@ -35,7 +35,7 @@ if (count _primary != 0) then {
 };
 
 _secondary = _equipInfo select 1;
-if (count _secondary != 0) then {
+if (_secondary != "") then {
 	// Secondary
 	_secondaryClassname = _secondary select 0;
 	_secondaryAttachements = _secondary select 1;

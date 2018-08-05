@@ -48,7 +48,7 @@ if (count cl_equipConfigurations == 0) then {
 			// Weapon has been unlocked, display it
 
 			// Get all attachments (ONLY FOR DEBUG)
-			_attachments = [];
+			/* _attachments = [];
 			_attachmentConfigs = "true" configClasses (missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> (configName (_configs select _i)) >> "attachments");
 			for "_f" from 0 to (count _attachmentConfigs - 1) step 1 do
 			{
@@ -57,13 +57,15 @@ if (count cl_equipConfigurations == 0) then {
 
 			if (sv_usingDatabase) then {
 				_attachments = [];
-			};
+			}; */
 
-			_item = [
+			/* _item = [
 				configName (_configs select _i), // Weapon classname
 				["","",""],	// No attachments equipped
 				_attachments // All attachments unlocked
-			];
+			]; */
+
+			_item = configName (_configs select _i);
 
 			// If no default equipped classname has been set yet
 			if (getText((_configs select _i) >> "type") == "primary" && (cl_equipClassnames select 0) == "" && cl_class in getArray((_configs select _i) >> "roles")) then {
@@ -80,4 +82,4 @@ if (count cl_equipConfigurations == 0) then {
 };
 
 // Return
-[[cl_equipClassnames select 0] call _find,[cl_equipClassnames select 1] call _find];
+[cl_equipClassnames select 0, cl_equipClassnames select 1];

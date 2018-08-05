@@ -38,7 +38,7 @@ onPauseScript[] = {client_fnc_saveStatistics};
 // Disable debriefing
 debriefing = 0;
 
-showHUD[] = {
+/* showHUD[] = {
     1,   // Scripted HUD (same as showHUD command)
     0,  // Vehicle + soldier info
     0,  // Vehicle radar [HIDDEN]
@@ -47,7 +47,7 @@ showHUD[] = {
     1,   // Commanding menu
     0,  // Group Bar
     1    // HUD Weapon Cursors
-};
+}; */
 
 // Wreck remover
 wreckManagerMode = 1;
@@ -242,5 +242,11 @@ class Params {
     values[] = {0, 1};
     texts[] = {"OFF", "ON"};
     default = 0;
+  };
+  class Cursor3DEnable {
+    title = "Enables the 3D cursor:";
+    values[] = {0, 1};
+    texts[] = {"OFF", "ON"};
+    default = 1;
   };
 };

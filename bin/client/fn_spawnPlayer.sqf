@@ -52,7 +52,7 @@ cl_spawn_succ = {
 	player setVariable ["isAlive", true];
 	// Spawn protection
 	[] spawn {
-		sleep 3;
+		sleep 0.5;
 		player allowDamage true;
 	};
 
@@ -69,7 +69,8 @@ cl_spawn_succ = {
 	cl_inSpawnMenu = false;
 
 	// Hide hud
-	showHUD [true,false,false,false,false,true,false,true,false];
+	_3dcursor = [false, true] select ("Cursor3DEnable" call bis_fnc_getParamValue);
+	showHUD [true,false,false,false,false,true,false,_3dcursor,false];
 
 	// Run check if we have been moved to an OK position, if not, move us to our HQ, failed spawn as it seems...
 	if (player distance cl_safePos < 100) then {

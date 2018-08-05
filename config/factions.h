@@ -7,29 +7,29 @@ insert "factions\FACTION\unlocks.h" in the corresponding class.
 */
 class Unlocks {
 	class attackers {
-		#include "factions\GER\unlocks.h"
+		#include "factions\US\unlocks.h"
 	};
 	class defenders {
-		#include "factions\US\unlocks.h"
+		#include "factions\GER\unlocks.h"
 	};
 };
 
 /* #include "factions\FACTION\gear.h" */
 class Soldiers {
 	class attackers {
-		#include "factions\GER\gear.h"
+		#include "factions\US\gear.h"
 	};
 	class defenders {
-		#include "factions\US\gear.h"
+		#include "factions\GER\gear.h"
 	};
 };
 
 /* "factions\FACTION\vehicles.h" */
 class Vehicles {
 	class Attacker {
-		#include "factions\GER\vehicles.h"
+		#include "factions\US\vehicles.h"
 	};
 	class Defender {
-		#include "factions\US\vehicles.h"
+		#include "factions\GER\vehicles.h"
 	};
 };

@@ -16,7 +16,7 @@ _adminRevive = param [1, false, [false]];
 // Pos
 _pos = getPosATL player;
 
-if (!(_adminRevive) && {_pos distance (getPosWorld _savior) > 10}) then {
+if (!(_adminRevive) && {!isNull _savior && _pos distance (getPosWorld _savior) > 10}) then {
 	_pos = getPosATL _savior;
 	_dir = getDir _savior;
 	_rdist = random 2;
@@ -37,7 +37,7 @@ player playActionNow "PlayerProne";
 
 // Message
 if (!isNull _savior) then {
-	[format ["You have been revived by %1", name _savior]] spawn client_fnc_displayInfo;
+	[format ["You have been revived by %1", _savior getVariable ["name", "ERROR: No Name"]]] spawn client_fnc_displayInfo;
 } else {
 	["You have been revived"] spawn client_fnc_displayInfo;
 };

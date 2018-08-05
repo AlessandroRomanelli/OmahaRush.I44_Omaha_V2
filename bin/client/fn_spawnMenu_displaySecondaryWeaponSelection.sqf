@@ -48,13 +48,13 @@ cl_spawnmenu_currentWeaponSelectionState = 2;
 lbClear (_d displayCtrl 3);
 
 // Load all weapons into the listbox
-_secondaryWeapons = cl_equipConfigurations select {(getText(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> (_x select 0) >> "type")) == "secondary"};
+_secondaryWeapons = cl_equipConfigurations select {(getText(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> _x >> "type")) == "secondary"};
 {
-	(_d displayCtrl 3) lbAdd (([(_x select 0)] call client_fnc_weaponDetails) select 1);
-	(_d displayCtrl 3) lbSetPicture [(lbSize (_d displayCtrl 3)) - 1, (([(_x select 0)] call client_fnc_weaponDetails) select 2)];
-	(_d displayCtrl 3) lbSetData [(lbSize (_d displayCtrl 3)) - 1, _x select 0];
+	(_d displayCtrl 3) lbAdd (([_x] call client_fnc_weaponDetails) select 1);
+	(_d displayCtrl 3) lbSetPicture [(lbSize (_d displayCtrl 3)) - 1, (([_x] call client_fnc_weaponDetails) select 2)];
+	(_d displayCtrl 3) lbSetData [(lbSize (_d displayCtrl 3)) - 1, _x];
 
-	if ((_x select 0) == (cl_equipClassnames select 1)) then {
+	if (_x == (cl_equipClassnames select 1)) then {
 		(_d displayCtrl 3) lbSetCurSel ((lbSize (_d displayCtrl 3)) - 1);
 	};
 } forEach _secondaryWeapons;

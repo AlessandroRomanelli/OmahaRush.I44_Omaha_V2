@@ -1,3 +1,5 @@
+faction = "SOV";
+
 class Vehicle {
   displayName = "";
   className = "";

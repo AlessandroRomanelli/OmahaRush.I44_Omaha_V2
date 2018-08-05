@@ -1,3 +1,5 @@
+faction = "US";
+
 class Vehicle {
   displayName = "";
   className = "";
@@ -8,8 +10,8 @@ class Vehicle {
 };
 
 class H_Tank: Vehicle {
-  displayName = "M4A3E8(76) 'Easy Eight' Sherman";
-  className = "LIB_M4A3_76_HVSS";
+  displayName = "M4A3 Sherman Firefly";
+  className = "LIB_M4A4_FIREFLY";
   respawn = 300;
 };
 

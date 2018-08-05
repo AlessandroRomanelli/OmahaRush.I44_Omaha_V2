@@ -21,62 +21,11 @@ _swapItems = {
 // Get equip
 _equipInfo = [] call client_fnc_getLoadedEquipment;
 
+_primary = _equipInfo select 0;
+_secondary = _equipInfo select 1;
+
 // No mags? (Revive)
 _noMags = param[0,false,[false]];
-
-_primary = _equipInfo select 0;
-if (count _primary != 0) then {
-	// Primary
-	_primaryClassname = _primary select 0;
-	_primaryAttachements = _primary select 1;
-
-	_primaryAmmo = getText(missionConfigFile >> "Unlocks" >> format["%1", player getVariable "gameSide"] >> _primaryClassname >> "ammo");
-
-	// Give ammo
-	if (!_noMags) then {
-		// Extended ammo perk
-		if ("extended_ammo" in cl_squadPerks) then {
-			player addMagazines [_primaryAmmo, 6];
-		} else {
-			player addMagazines [_primaryAmmo, 4];
-		};
-	};
-
-	// Give weapon
-	player addWeaponGlobal _primaryClassname;
-
-	// Add attachments
-	{
-		player addPrimaryWeaponItem _x;
-	} forEach _primaryAttachements;
-};
-
-_secondary = _equipInfo select 1;
-if (count _secondary != 0) then {
-	// Secondary
-	_secondaryClassname = _secondary select 0;
-	_secondaryAttachements = _secondary select 1;
-
-	_secondaryAmmo = getText(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> _secondaryClassname >> "ammo");
-
-	// Give ammo
-	if (!_noMags) then {
-		// Extended ammo perk
-		if ("extended_ammo" in cl_squadPerks) then {
-			player addMagazines [_secondaryAmmo, 6];
-		} else {
-			player addMagazines [_secondaryAmmo, 4];
-		};
-	};
-
-	// Give weapon
-	player addWeaponGlobal _secondaryClassname;
-
-	// Add attachments
-	{
-		player addHandgunItem _x;
-	} forEach _secondaryAttachements;
-};
 
 _side = player getVariable "gameSide";
 _sideLoadout = [] call client_fnc_getCurrentSideLoadout;
@@ -97,7 +46,7 @@ if (cl_class == "medic") then {
 };
 
 if (cl_classPerk == "grenadier") then {
-	_currentWeapon = _primary select 0;
+	_currentWeapon = _primary;
 	_cfgRifleGrenade = (missionConfigFile >> "Soldiers" >> _side >> "Grenade" >> "RifleGrenade");
 	_rifles = getArray(_cfgRifleGrenade >> "rifles");
 	_count = if ("extended_ammo" in cl_squadPerks) then {2} else {4};
@@ -130,5 +79,59 @@ if (cl_class == "engineer" && cl_classPerk == "perkAT") then {
 	removeBackpackGlobal player;
 	player addBackpack _backpack;
 	{player removeItemFromBackpack _x} forEach backpackItems player;
-	[player, _launcher, _ammoCount, _ammoName] call BIS_fnc_addWeapon;
+	player addMagazine _ammoName;
+	player addWeaponGlobal _launcher;
+	for "_i" from 1 to _ammoCount do {player addMagazine _ammoName};
+};
+
+if (_primary != "") then {
+	// Primary
+	_primaryClassname = _primary;
+	/* _primaryAttachements = _primary select 1; */
+
+	_primaryAmmo = getText(missionConfigFile >> "Unlocks" >> format["%1", player getVariable "gameSide"] >> _primaryClassname >> "ammo");
+
+	// Give ammo
+	if (!_noMags) then {
+		// Extended ammo perk
+		if ("extended_ammo" in cl_squadPerks) then {
+			player addMagazines [_primaryAmmo, 6];
+		} else {
+			player addMagazines [_primaryAmmo, 3];
+		};
+	};
+
+	// Give weapon
+	player addWeaponGlobal _primaryClassname;
+
+	// Add attachments
+	/* {
+		player addPrimaryWeaponItem _x;
+	} forEach _primaryAttachements; */
+};
+
+if (_secondary != "") then {
+	// Secondary
+	_secondaryClassname = _secondary;
+	/* _secondaryAttachements = _secondary select 1; */
+
+	_secondaryAmmo = getText(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> _secondaryClassname >> "ammo");
+
+	// Give ammo
+	if (!_noMags) then {
+		// Extended ammo perk
+		if ("extended_ammo" in cl_squadPerks) then {
+			player addMagazines [_secondaryAmmo, 4];
+		} else {
+			player addMagazines [_secondaryAmmo, 2];
+		};
+	};
+
+	// Give weapon
+	player addWeaponGlobal _secondaryClassname;
+
+	// Add attachments
+	/* {
+		player addHandgunItem _x;
+	} forEach _secondaryAttachements; */
 };

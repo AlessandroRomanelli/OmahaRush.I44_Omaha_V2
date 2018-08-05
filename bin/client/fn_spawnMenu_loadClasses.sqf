@@ -18,11 +18,13 @@ _l = _d displayCtrl 300;
 
 // Allow listbox selection changes to update our "customize class" button (some classes are not customizeable atm so theres no reason for people to be able to click it)
 _l ctrlAddEventHandler ["LBSelChanged", {
-	_class = (_this select 0) lbData (_this select 1);
+	_classSelected = (_this select 0) lbData (_this select 1);
 
-	if (!(_class in (getArray(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> cl_equipClassNames select 0 >> "roles")))) then {
-		_weapon = profileNamespace getVariable [format["rr_preferredPrimaryWeapon_%1", _class], ""];
-		(_d displayCtrl 3) lbSetCurSel (profileNamespace getVariable [format["rr_preferredPrimaryWeaponIndex_%1", cl_class], 0]);
+	_weaponAllowedClasses = getArray(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> cl_equipClassNames select 0 >> "roles");
+	if !(_classSelected in _weaponAllowedClasses) then {
+		_faction = getText(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> "faction");
+		_weapon = profileNamespace getVariable [format["rr_prefPWeapon_%1_%2", _classSelected, _faction], ""];
+		(_d displayCtrl 3) lbSetCurSel (profileNamespace getVariable [format["rr_prefPWeaponIdx_%1_%2", cl_class, _faction], 0]);
 		cl_equipClassnames set [0, _weapon];
 	};
 
@@ -61,10 +63,12 @@ _l ctrlAddEventHandler ["LBSelChanged", {
 	profileNamespace setVariable ["rr_class_preferredIndex", (_this select 1)];
 
 	// Save class so any other scripts can instantly get our currently selected class // Please note that broadcasting this will be done only when actually spawning
-	cl_class = _class;
+	cl_class = _classSelected;
 
-	cl_spawnmenu_currentWeaponSelectionState = 0; // Nothing open
-	[] spawn client_fnc_spawnMenu_displayPrimaryWeaponSelection;
+	if (cl_spawnmenu_currentWeaponSelectionState != 0) then {
+		cl_spawnmenu_currentWeaponSelectionState = 0; // Nothing open
+		[] spawn client_fnc_spawnMenu_displayPrimaryWeaponSelection;
+	};
 	[] spawn client_fnc_populateSpawnMenu;
 }];
 

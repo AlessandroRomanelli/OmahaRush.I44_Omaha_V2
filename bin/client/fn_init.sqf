@@ -30,8 +30,8 @@ if (hasInterface) then {
     };
 };
 
-/* // Player name
-player setVariable ["name", name player, true]; */
+// Player name
+player setVariable ["name", name player, true];
 
 // Time played to make sure the auto team balancer knows our jointime
 player setVariable ["joinServerTime", serverTime, true];
@@ -64,7 +64,7 @@ if (sv_usingDatabase) then {
 	cl_total_deaths = 0;
 	cl_exp = 100000000;
 	cl_equipConfigurations = [];
-	cl_equipClassnames = ["",""];
+	cl_equipClassnames = ["","",""];
 };
 
 // Get initial spawn position to teleport the player to (e.g. in spawn menu)

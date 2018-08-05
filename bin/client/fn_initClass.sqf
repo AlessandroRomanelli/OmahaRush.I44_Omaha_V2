@@ -16,7 +16,7 @@ _class = cl_equipClassnames select 2;
 if (_class != "") then {
 	cl_class = _class;
 } else {
-	profileNamespace getVariable ["rr_class_preferred", "medic"];
+	cl_class = profileNamespace getVariable ["rr_class_preferred", "medic"];
 };
 
 // Broadcast class to all clients
@@ -110,11 +110,9 @@ if (true) then {
 				};
 			} else {
 				// check if were assault and we have the spawnbeacon perk, then place beacon
-				if (cl_class == "assault") then {
-					if (cl_classPerk == "spawnbeacon") then {
-						if (isNull (objectParent player)) then {
-							[] spawn rc_spawnBeacon;
-						};
+				if (cl_classPerk == "spawnbeacon") then {
+					if (isNull (objectParent player)) then {
+						[] spawn rc_spawnBeacon;
 					};
 				};
 			};

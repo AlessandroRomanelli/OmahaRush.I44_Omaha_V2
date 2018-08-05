@@ -31,9 +31,6 @@ removeHeadgear player;
 removeAllAssignedItems player;
 removeVest player;
 
-// Init hold actions
-[] spawn client_fnc_initHoldActions;
-
 // Mute sound
 //0 fadeSound 0;
 0 fadeRadio 0;
@@ -101,7 +98,8 @@ if (player getVariable "gameSide" == "defenders") then {
 [] spawn client_fnc_updateMarkers;
 
 // Hide hud
-showHUD [true,false,false,false,false,true,false,true,false];
+_3dcursor = [false, true] select ("Cursor3DEnable" call bis_fnc_getParamValue);
+showHUD [true,false,false,false,false,true,false,_3dcursor,false];
 
 // Run equipment checks
 [] call client_fnc_getLoadedEquipment;
@@ -236,14 +234,22 @@ if (getNumber(missionConfigFile >> "GeneralConfig" >> "PostProcessing") == 1) th
 // Add eventhandlers to the dialog and hide the weapon selection
 cl_spawnmenu_currentWeaponSelectionState = 0; // Nothing open
 disableSerialization;
-((findDisplay 5000) displayCtrl 15) ctrlAddEventHandler ["ButtonDown",{[] spawn client_fnc_spawnMenu_displayPrimaryWeaponSelection;}];
-_secondaryWeapons = cl_equipConfigurations select {(getText(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> (_x select 0) >> "type")) == "secondary"};
-if (count _secondaryWeapons != 0) then {
-	((findDisplay 5000) displayCtrl 16) ctrlAddEventHandler ["ButtonDown",{[] spawn client_fnc_spawnMenu_displaySecondaryWeaponSelection;}];
-};
+
+((findDisplay 5000) displayCtrl 15) ctrlAddEventHandler ["ButtonDown",{
+	[] spawn client_fnc_spawnMenu_displayPrimaryWeaponSelection;
+}];
+
+((findDisplay 5000) displayCtrl 16) ctrlAddEventHandler ["ButtonDown",{
+	_secondaryWeapons = cl_equipConfigurations select {(getText(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> _x >> "type")) == "secondary"};
+	if (count _secondaryWeapons != 0) then {
+		[] spawn client_fnc_spawnMenu_displaySecondaryWeaponSelection;
+	};
+}];
 /* ((findDisplay 5000) displayCtrl 12) ctrlAddEventHandler ["ButtonDown",{[] spawn client_fnc_spawnMenu_displayPrimaryAttachmentSelection;}];
 ((findDisplay 5000) displayCtrl 13) ctrlAddEventHandler ["ButtonDown",{[] spawn client_fnc_spawnMenu_displaySecondaryAttachmentSelection;}]; */
-((findDisplay 5000) displayCtrl 100) ctrlAddEventHandler ["ButtonDown",{[] spawn client_fnc_spawnMenu_displayGroupManagement;}];
+((findDisplay 5000) displayCtrl 100) ctrlAddEventHandler ["ButtonDown",{
+	[] spawn client_fnc_spawnMenu_displayGroupManagement;
+}];
 
 // Load available classes and select our preferred one
 [] spawn client_fnc_spawnMenu_loadClasses;
@@ -274,5 +280,6 @@ if (isNil "TEMPWARNING") then {
 
 player enableStamina false;
 player forceWalk false;
+player setSpeaker "NoVoice";
 
 [true] spawn client_fnc_drawMapUnits;

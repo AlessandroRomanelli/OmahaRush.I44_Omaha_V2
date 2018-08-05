@@ -56,17 +56,17 @@ _index = -1;
 		if (_add) then {
 			if (!isNull _beacon) then {
 				// Spawn beacon
-				(_d displayCtrl 9) lbAdd (name _x + "'s Beacon");
+				(_d displayCtrl 9) lbAdd ((_x getVariable ["name", "ERROR: No Name"]) + "'s Beacon");
 				(_d displayCtrl 9) lbSetData [(lbSize (_d displayCtrl 9)) - 1, "beacon"];
 				(_d displayCtrl 9) lbSetValue [(lbSize (_d displayCtrl 9)) - 1, _index];
 			} else {
 				// Player
 				if (_x getVariable ["inCombat", false]) then {
-					(_d displayCtrl 9) lbAdd (name _x + " (IN COMBAT)");
+					(_d displayCtrl 9) lbAdd ((_x getVariable ["name", "ERROR: No Name"]) + " (IN COMBAT)");
 					(_d displayCtrl 9) lbSetData [(lbSize (_d displayCtrl 9)) - 1, "inCombat"];
 					(_d displayCtrl 9) lbSetValue [(lbSize (_d displayCtrl 9)) - 1, _index];
 				} else {
-					(_d displayCtrl 9) lbAdd (name _x);
+					(_d displayCtrl 9) lbAdd (_x getVariable ["name", "ERROR: No Name"]);
 					(_d displayCtrl 9) lbSetValue [(lbSize (_d displayCtrl 9)) - 1, _index];
 					(_d displayCtrl 9) lbSetData [(lbSize (_d displayCtrl 9)) - 1, ""];
 				};
