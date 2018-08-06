@@ -1,5 +1,3 @@
-faction = "SOV";
-
 class LIB_M9130 {
   ammo = "LIB_5Rnd_762x54";
   exp = 0;
