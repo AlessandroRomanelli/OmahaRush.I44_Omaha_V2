@@ -46,11 +46,11 @@ if (isServer) then {
 			_soundTime = _soundTime - 5;
 			if (_time > 150) then {
 				if (_soundTime % 30 == 0) then {
-					playSound3D [_beep, sv_cur_obj, false, getPosATL sv_cur_obj, 1, 1, 0];
+					playSound3D [_beep, sv_cur_obj, false, getPosATL sv_cur_obj, 20, 1, 300];
 				};
 			} else {
-				if (_soundTime % 15 == 0) then {
-					playSound3D [_beep, sv_cur_obj, false, getPosATL sv_cur_obj, 1, 1, 0];
+				if (_soundTime % 10 == 0) then {
+					playSound3D [_beep, sv_cur_obj, false, getPosATL sv_cur_obj, 30, 1, 300];
 				};
 			};
 			uiSleep 0.5;
