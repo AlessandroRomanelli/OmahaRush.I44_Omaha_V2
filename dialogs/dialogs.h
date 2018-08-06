@@ -182,7 +182,7 @@ class rr_spawnmenu {
 		    colorText[] = {1,1,1,0};
 		    colorDisabled[] = {1,1,1,0};
 		};
-		class attachmentsSelectionBackground: RscText
+		/* class attachmentsSelectionBackground: RscText
 		{
 			idc = 25;
 			w = 0.458921 * safezoneW;
@@ -208,7 +208,7 @@ class rr_spawnmenu {
 		    colorSelect2[] = {1, 1, 1, 1};
 		    colorSelectBackground[] = {0.96,0.65,0.12,0.8};
 		    colorSelectBackground2[] = {0.96,0.65,0.12,0.8};
-		};
+		}; */
 		class a87954654: RscText
 		{
 			idc = 27;
@@ -236,7 +236,7 @@ class rr_spawnmenu {
 			h = 0.0329884 * safezoneH;
 			colorBackground[] = {1,1,1,1};
 		};
-		class secondAttachment: RscListbox
+		/* class secondAttachment: RscListbox
 		{
 			idc = 21;
 			x = 0.3154 * safezoneW + safezoneX;
@@ -305,7 +305,7 @@ class rr_spawnmenu {
 			colorText[] = {0,0,0,1};
 			shadow = 0;
 			font = "PuristaMedium";
-		};
+		}; */
 		/* class RscButtonMenu_2401: RscButtonMenu
 		{
 			idc = 13;

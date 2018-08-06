@@ -301,7 +301,7 @@ player addEventHandler ["GetInMan", {
 		_sendVehicleKill = {
 			params ["_vehicle", "_killer"];
 			{[_x, false] remoteExec ["client_fnc_kill", _killer];} forEach crew _vehicle;
-			_halfTrucks = ["LIB_US_M3_Halftrack", "LIB_SdKfz251", "LIB_SdKfz251_FFV"];
+			_halfTrucks = ["LIB_US_M3_Halftrack", "LIB_SdKfz251", "LIB_SdKfz251_FFV", "LIB_M8_Greyhound"];
 			if (_vehicle isKindOf "Tank" && !(typeOf _vehicle in _halfTrucks)) exitWith {
 				500 remoteExec ["client_fnc_vehicleDisabled", _killer];
 			};

@@ -43,7 +43,7 @@ sv_stage_tryRespawn = {
 	};
 	_scriptHandler = [_v] spawn {
 		sleep 30;
-		if ({alive _x} count (crew (_this select 0)) == 0 && {{alive _x} count (getPos (_this select 0) nearEntities ["man", 10]) == 0}) then {
+		if ({alive _x} count (crew (_this select 0)) == 0 && {{alive _x} count ((getPos _v) nearEntities ["man", 10]) == 0}) then {
 			deleteVehicle (_this select 0);
 		};
 	};
@@ -56,6 +56,11 @@ sv_stage_spawnVehicle = {
 	_initialSpawn = param[1,false,[false]];
 	_arrayToEdit = param[2,[],[[]]];
 	//diag_log "_0";
+
+	_currentPlayers = count allPlayers;
+	_popReq = getNumber(_config >> "populationReq");
+
+	if (_currentPlayers < _popReq) exitWith {};
 
 	// Vehicle is not being handled yet, handle it now
 	sv_stageVehiclesAwaitingRespawn pushBack (configName _config);

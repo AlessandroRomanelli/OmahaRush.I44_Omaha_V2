@@ -7,30 +7,35 @@ class Vehicle {
   positionATL[] = {};
   dir = 0;
   script = "";
+  populationReq = 0;
 };
 
 class H_Tank: Vehicle {
   displayName = "PzKpfW V Ausf. A 'Panther'";
   className = "LIB_PzKpfwV";
   respawn = 300;
+  populationReq = 40;
 };
 
 class L_Tank: Vehicle {
   displayName = "Sd.Kfz 234/2 Puma";
   className = "LIB_SdKfz234_2";
   respawn = 180;
+  populationReq = 30;
 };
 
 class APC: Vehicle {
   displayName = "Sd.Kfz 222";
   className = "LIB_SdKfz222_gelbbraun";
   respawn = 120;
+  populationReq = 20;
 };
 
 class Car_HMG: Vehicle {
   displayName = "Sd.Kfz 251";
   className = "LIB_SdKfz251_FFV";
   respawn = 60;
+  populationReq = 10;
 };
 
 class Truck: Vehicle {
