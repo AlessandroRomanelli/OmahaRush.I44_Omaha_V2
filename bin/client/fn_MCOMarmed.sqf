@@ -30,8 +30,8 @@ if (isServer) then {
 
 	sv_mcom_thread = [] spawn {
 		// Countdown of 60 seconds
-		_time = 60;
-		_soundTime = 60;
+		_time = 600;
+		_soundTime = 600;
 		_status = sv_cur_obj getVariable ["status", -1];
 		_beep = MISSION_ROOT + "sounds\beep.ogg";
 		// If the objective is armed and there's still time on the clock
@@ -41,13 +41,19 @@ if (isServer) then {
 			if (_status == 0) then {
 				_time = _time;
 			} else {
-				_time = _time - 1;
+				_time = _time - 5;
 			};
-			_soundTime = _soundTime - 1;
-			if (_soundTime % 3 == 0) then {
-				playSound3D [_beep, sv_cur_obj, false, getPosATL sv_cur_obj, 1, 1, 0];
+			_soundTime = _soundTime - 5;
+			if (_time > 150) then {
+				if (_soundTime % 30 == 0) then {
+					playSound3D [_beep, sv_cur_obj, false, getPosATL sv_cur_obj, 1, 1, 0];
+				};
+			} else {
+				if (_soundTime % 15 == 0) then {
+					playSound3D [_beep, sv_cur_obj, false, getPosATL sv_cur_obj, 1, 1, 0];
+				};
 			};
-			uiSleep 1;
+			uiSleep 0.5;
 		};
 
 		_status = sv_cur_obj getVariable ["status", -1];
