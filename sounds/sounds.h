@@ -103,7 +103,7 @@ class CfgSounds {
     class beep
     {
         name = "beep";
-        sound[] = {"\sounds\beep.ogg", 4.0, 1, 2000};
+        sound[] = {"\sounds\beep.ogg", 1, 1};
         titles[] = {};
     };
     class tug_beep

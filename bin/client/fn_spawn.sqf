@@ -13,11 +13,6 @@ if (isServer && !hasInterface) exitWith {};
 player setVariable ["wasHS", false];
 player setVariable ["unitDmg", 0];
 
-if (player getVariable ["firstSpawn", true]) then {
-	player setVariable ["firstSpawn", false];
-	playSound "introSong";
-};
-
 // Not too fast
 if (diag_tickTime - (missionNamespace getVariable ["cl_spawnmenu_lastStartTick", 0]) < 1) exitWith {};
 cl_spawnmenu_lastStartTick = diag_tickTime;
@@ -275,6 +270,7 @@ if (isNil "TEMPWARNING") then {
 	// TEMPRARY WARNING TODO
 	createDialog "rr_info_box";
 	((findDisplay 10000) displayCtrl 0) ctrlSetStructuredText parseText "<t size='1' color='#FFFFFF' shadow='2' align='left'><t font='PuristaBold'>No.4 WW2 Rush Version</t><br/>0.64.0<br/><br/><t font='PuristaBold'>Changelog</t><br/><a href='https://github.com/AlessandroRomanelli/OmahaRush.I44_Omaha_V2/blob/master/ChangeLog.md'>Learn more</a><br/><br/><t font='PuristaBold'>Official Website</t><br/><a href='http://www.no4commando.com'>Open</a></t>";
+	playSound "introSong";
 	TEMPWARNING = true;
 };
 
