@@ -155,13 +155,13 @@ if (isNil "rr_iconrenderer_executed") then {
 		_objIsArmed = sv_cur_obj getVariable ["status", -1] isEqualTo 1;
 		if (player getVariable ["gameSide", "defenders"] == "defenders") then {
 			if (_objIsArmed) then {
-				drawIcon3D [MISSION_ROOT+"pictures\objective_attacker.paa",[1,1,1,_alpha],_pos,1.5,1.5,0,format["Defuse (%1m)", round(player distance sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
+				drawIcon3D [MISSION_ROOT+"pictures\objective_defender_armed.paa",[1,1,1,_alpha],_pos,1.5,1.5,0,format["Defuse (%1m)", round(player distance sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
 			} else {
 				drawIcon3D [MISSION_ROOT+"pictures\objective_defender.paa",[1,1,1,_alpha],_pos,1.5,1.5,0,format["Defend (%1m)", round(player distance sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
 			};
 		} else {
 			if (_objIsArmed) then {
-				drawIcon3D [MISSION_ROOT+"pictures\objective_defender.paa",[1,1,1,_alpha],_pos,1.5,1.5,0,format["Protect (%1m)", round(player distance sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
+				drawIcon3D [MISSION_ROOT+"pictures\objective_attacker_armed.paa",[1,1,1,_alpha],_pos,1.5,1.5,0,format["Protect (%1m)", round(player distance sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
 			} else {
 				drawIcon3D [MISSION_ROOT+"pictures\objective_attacker.paa",[1,1,1,_alpha],_pos,1.5,1.5,0,format["Attack (%1m)", round(player distance sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
 			};
