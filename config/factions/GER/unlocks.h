@@ -1,3 +1,5 @@
+faction = "GER";
+
 class LIB_G3340 {
   ammo = "LIB_5Rnd_792x57";
   exp = 0;
@@ -99,5 +101,13 @@ class LIB_MP44 {
   exp = 12500;
   type = "primary";
   roles[] = {"engineer"};
+  class attachments {};
+};
+
+class LIB_K98ZF39 {
+  ammo = "LIB_5Rnd_792x57";
+  exp = 0;
+  type = "primary";
+  roles[] = {"recon"};
   class attachments {};
 };

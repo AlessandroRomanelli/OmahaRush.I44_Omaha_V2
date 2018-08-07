@@ -1,4 +1,7 @@
+faction = "US";
+
 class Vehicle {
+  populationReq = 0;
   displayName = "";
   className = "";
   respawnTime = 0;
@@ -11,24 +14,28 @@ class H_Tank: Vehicle {
   displayName = "M4A3 Sherman Firefly";
   className = "LIB_M4A4_FIREFLY";
   respawn = 300;
+  populationReq = 40;
 };
 
 class L_Tank: Vehicle {
   displayName = "M3A3 Stuart";
   className = "LIB_M3A3_Stuart";
   respawn = 180;
+  populationReq = 30;
 };
 
 class APC: Vehicle {
   displayName = "M8 Greyhound";
   className = "LIB_M8_Greyhound";
   respawn = 120;
+  populationReq = 20;
 };
 
 class Car_HMG: Vehicle {
   displayName = "M3 Scout Car";
   className = "LIB_US_Scout_M3_FFV";
   respawn = 60;
+  populationReq = 10;
 };
 
 class Truck: Vehicle {

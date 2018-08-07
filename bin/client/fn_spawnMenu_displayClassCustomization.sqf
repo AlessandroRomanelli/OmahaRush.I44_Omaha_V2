@@ -51,6 +51,10 @@ switch (_class) do
 	{
 		_classConfigs = "true" configClasses (missionConfigFile >> "CfgPerks" >> "ClassPerks" >> "Engineer");
 	};
+	case "recon":
+	{
+		_classConfigs = "true" configClasses (missionConfigFile >> "CfgPerks" >> "ClassPerks" >> "Recon");
+	};
 };
 
 // Get current selected perk for class

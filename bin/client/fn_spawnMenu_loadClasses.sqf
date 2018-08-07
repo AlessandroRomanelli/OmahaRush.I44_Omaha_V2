@@ -73,6 +73,10 @@ _l ctrlAddEventHandler ["LBSelChanged", {
 }];
 
 // Add default classes
+// Assault
+_l lbAdd "Assault";
+_l lbSetData [(lbSize _l) - 1, "assault"];
+
 // Medic
 _l lbAdd "Medic";
 _l lbSetData [(lbSize _l) - 1, "medic"];
@@ -81,13 +85,13 @@ _l lbSetData [(lbSize _l) - 1, "medic"];
 _l lbAdd "Support";
 _l lbSetData [(lbSize _l) - 1, "support"];
 
-// Assault
-_l lbAdd "Assault";
-_l lbSetData [(lbSize _l) - 1, "assault"];
-
 // Engineer
 _l lbAdd "Engineer";
 _l lbSetData [(lbSize _l) - 1, "engineer"];
+
+// Recon
+_l lbAdd "Recon";
+_l lbSetData [(lbSize _l) - 1, "recon"];
 
 // Get preferred class index from profileNamespace
 _i = profileNamespace getVariable ["rr_class_preferredIndex", 0];

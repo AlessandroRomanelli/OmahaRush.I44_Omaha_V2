@@ -1,3 +1,5 @@
+faction = "US";
+
 class LIB_M1903A3_Springfield {
   ammo = "LIB_5Rnd_762x63";
   exp = 0;
@@ -91,5 +93,13 @@ class LIB_M1928_Thompson {
   exp = 12500;
   type = "primary";
   roles[] = {"engineer"};
+  class attachments {};
+};
+
+class LIB_M1903A4_Springfield {
+  ammo = "LIB_5Rnd_762x63";
+  exp = 0;
+  type = "primary";
+  roles[] = {"recon"};
   class attachments {};
 };

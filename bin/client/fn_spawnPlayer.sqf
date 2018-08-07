@@ -24,6 +24,10 @@ _d = findDisplay 5000;
 
 // Class and perks
 _class = param[0,"medic",[""]];
+
+_isClassRestricted = [_class] call client_fnc_checkClassRestriction;
+if (_isClassRestricted) exitWith {};
+
 cl_class = _class;
 _perkData = [cl_class] call client_fnc_getUsedPerksForClass;
 cl_classPerk = _perkData select 0;

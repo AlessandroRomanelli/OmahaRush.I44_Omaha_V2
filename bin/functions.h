@@ -101,7 +101,7 @@ class Maverick_Functions_Client {
 		class brightNight {postInit = 1;};
 		class getSquadPerks {};
 		class setSquadPerks {};
-
+		class checkClassRestriction {};
 		// Pointfeed
 		class pointfeed_add {};
 
