@@ -44,7 +44,7 @@ if (_classRestrictionEnabled) then {
 	_engineerLimit = ("ClassLimits_Engineer" call bis_fnc_getParamValue)/10;
 	_reconPlayers = count (_sameSidePlayers select {if (_x getVariable ["class", "medic"] isEqualTo "recon") then {true}});
 	_reconLimit = ("ClassLimits_Recon" call bis_fnc_getParamValue)/10;
-	_newClassMember = if (cl_class != _class) then {1} else {0};
+	_newClassMember = if (player getVariable ["class", "medic"] != _class) then {1} else {0};
 	if (_class isEqualTo "support" && {((_supportPlayers + _newClassMember)/(count _sameSidePlayers)) > _supportLimit}) exitWith {
 		[_class, _supportPlayers] spawn _classLimitException;
 	};
