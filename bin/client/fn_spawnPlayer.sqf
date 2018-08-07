@@ -21,9 +21,9 @@ if (cl_equipClassnames select 0 == "") exitWith {
 
 _classLimitException = {
 	params [["_class", "support", ["support"]], ["_max", 0, [0]]];
-	_message = format["THERE ARE TOO MANY %1S AT THE MOMENT \nMAX %2 PLAYERS CURRENTLY ALLOWED, SELECT ANOTHER CLASS", toUpper _class, _max];
+	_message = format["THERE ARE TOO MANY %1S AT THE MOMENT <br />MAX %2 PLAYERS CURRENTLY ALLOWED, SELECT ANOTHER CLASS", toUpper _class, _max];
 	if (_max isEqualTo 0) then {
-		_message = format["%1S ARE CURRENTLY NOT ALLOWED \nPLEASE SELECT ANOTHER CLASS", toUpper _class];
+		_message = format["%1S ARE CURRENTLY NOT ALLOWED <br />PLEASE SELECT ANOTHER CLASS", toUpper _class];
 	};
 	[_message] spawn client_fnc_displayError;
 };
@@ -36,6 +36,7 @@ _class = param[0,"medic",[""]];
 
 _classRestrictionEnabled = [false, true] select ("ClassLimits" call bis_fnc_getParamValue);
 if (_classRestrictionEnabled) then {
+	cl_classRestriction = true;
 	_sameSidePlayers = allPlayers select {if ((_x getVariable ["gameSide", "attackers"]) isEqualTo (player getVariable ["gameSide", "attackers"])) then {true}};
 	_supportPlayers = count (_sameSidePlayers select {if (_x getVariable ["class", "medic"] isEqualTo "support") then {true}});
 	_supportLimit = ("ClassLimits_Support" call bis_fnc_getParamValue)/10;
@@ -43,16 +44,22 @@ if (_classRestrictionEnabled) then {
 	_engineerLimit = ("ClassLimits_Engineer" call bis_fnc_getParamValue)/10;
 	_reconPlayers = count (_sameSidePlayers select {if (_x getVariable ["class", "medic"] isEqualTo "recon") then {true}});
 	_reconLimit = ("ClassLimits_Recon" call bis_fnc_getParamValue)/10;
-	if (_class isEqualTo "support" && {((_supportPlayers + 1)/(count _sameSidePlayers)) > _supportLimit}) exitWith {
+	_newClassMember = if (cl_class != _class) then {1} else {0};
+	if (_class isEqualTo "support" && {((_supportPlayers + _newClassMember)/(count _sameSidePlayers)) > _supportLimit}) exitWith {
 		[_class, _supportPlayers] spawn _classLimitException;
 	};
-	if (_class isEqualTo "engineer" && {((_engineerPlayers + 1)/(count _sameSidePlayers)) > _engineerLimit}) exitWith {
+	if (_class isEqualTo "engineer" && {((_engineerPlayers + _newClassMember)/(count _sameSidePlayers)) > _engineerLimit}) exitWith {
 		[_class, _engineerPlayers] spawn _classLimitException;
 	};
-	if (_class isEqualTo "recon" && {((_reconPlayers + 1)/(count _sameSidePlayers)) > _reconLimit}) exitWith {
+	if (_class isEqualTo "recon" && {((_reconPlayers + _newClassMember)/(count _sameSidePlayers)) > _reconLimit}) exitWith {
 		[_class, _reconPlayers] spawn _classLimitException;
 	};
+	cl_classRestriction = false;
 };
+
+if !(isNil "cl_classRestriction" && {cl_classRestriction}) exitWith {};
+
+
 
 cl_class = _class;
 _perkData = [cl_class] call client_fnc_getUsedPerksForClass;
