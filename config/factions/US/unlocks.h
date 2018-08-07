@@ -93,3 +93,11 @@ class LIB_M1928_Thompson {
   roles[] = {"engineer"};
   class attachments {};
 };
+
+class LIB_M1903A4_Springfield {
+  ammo = "LIB_5Rnd_762x63";
+  exp = 0;
+  type = "primary";
+  roles[] = {"recon"};
+  class attachments {};
+};

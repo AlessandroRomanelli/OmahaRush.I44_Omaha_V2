@@ -16,6 +16,7 @@ _getIcon = {
 		if (_unit getVariable ["class",""] == "medic") exitWith {"pictures\medic.paa"};
 		if (_unit getVariable ["class",""] == "engineer") exitWith {"pictures\engineer.paa"};
 		if (_unit getVariable ["class",""] == "support") exitWith {"pictures\support.paa"};
+		if (_unit getVariable ["class",""] == "recon") exitWith {"pictures\recon.paa"};
 		"pictures\assault.paa";
 	};
 	_icon

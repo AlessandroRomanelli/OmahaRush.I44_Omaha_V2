@@ -33,6 +33,10 @@ switch (_class) do
 	{
 		_perkData = profileNamespace getVariable ["rr_perks_engineer", ["repair",""]];
 	};
+	case "recon":
+	{
+		_perkData = profileNamespace getVariable ["rr_perks_recon", ["spawnbeacon",""]];
+	};
 };
 
 // Fetch data from config
@@ -55,6 +59,10 @@ switch (_class) do
 	case "engineer":
 	{
 		_classConfigs = "true" configClasses (missionConfigFile >> "CfgPerks" >> "ClassPerks" >> "Engineer");
+	};
+	case "recon":
+	{
+		_classConfigs = "true" configClasses (missionConfigFile >> "CfgPerks" >> "ClassPerks" >> "Recon");
 	};
 };
 

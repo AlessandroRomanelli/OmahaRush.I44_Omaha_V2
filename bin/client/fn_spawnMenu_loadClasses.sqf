@@ -89,6 +89,10 @@ _l lbSetData [(lbSize _l) - 1, "assault"];
 _l lbAdd "Engineer";
 _l lbSetData [(lbSize _l) - 1, "engineer"];
 
+// Recon
+_l lbAdd "Recon";
+_l lbSetData [(lbSize _l) - 1, "recon"];
+
 // Get preferred class index from profileNamespace
 _i = profileNamespace getVariable ["rr_class_preferredIndex", 0];
 
