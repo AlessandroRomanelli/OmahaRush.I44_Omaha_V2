@@ -54,7 +54,7 @@ if (_classRestrictionEnabled) then {
 	if (_class isEqualTo "recon" && {((_reconPlayers + _newClassMember)/(count _sameSidePlayers)) > _reconLimit}) exitWith {
 		[_class, _reconPlayers] spawn _classLimitException;
 	};
-	hint str [cl_classRestriction, _reconLimit, _reconPlayers/_sameSidePlayers, _reconPlayers, _sameSidePlayers, _newClassMember];
+	hint str [cl_classRestriction, _reconLimit, (_reconPlayers/_sameSidePlayers), _reconPlayers, _sameSidePlayers, _newClassMember];
 	cl_classRestriction = false;
 };
 
