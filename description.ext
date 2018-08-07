@@ -267,8 +267,8 @@ class Params {
     texts[] = {"0%", "10%", "20%", "30%", "40%", "50%", "60%", "70%", "80%", "90%", "100%"};
     default = 2;
   };
-  class ClassLimits_Sniper {
-    title = "Max players on a side with SNIPER class: ";
+  class ClassLimits_Recon {
+    title = "Max players on a side with RECON class: ";
     values[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     texts[] = {"0%", "10%", "20%", "30%", "40%", "50%", "60%", "70%", "80%", "90%", "100%"};
     default = 1;
