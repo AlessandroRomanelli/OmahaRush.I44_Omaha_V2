@@ -1,3 +1,5 @@
+faction = "GER";
+
 class LIB_G3340 {
   ammo = "LIB_5Rnd_792x57";
   exp = 0;

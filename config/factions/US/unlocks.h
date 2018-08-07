@@ -1,3 +1,5 @@
+faction = "US";
+
 class LIB_M1903A3_Springfield {
   ammo = "LIB_5Rnd_762x63";
   exp = 0;

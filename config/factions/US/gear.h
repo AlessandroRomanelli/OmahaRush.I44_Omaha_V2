@@ -1,3 +1,5 @@
+faction = "US";
+
 class ExplosiveCharge {
   weapon = "LIB_Ladung_Small_MINE_mag";
   backpack = "B_LIB_US_Backpack";
