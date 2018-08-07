@@ -57,7 +57,7 @@ if (_classRestrictionEnabled) then {
 	cl_classRestriction = false;
 };
 
-if !(isNil "cl_classRestriction" && {cl_classRestriction}) exitWith {};
+if (!(isNil "cl_classRestriction") && {cl_classRestriction}) exitWith {};
 
 
 
