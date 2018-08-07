@@ -21,7 +21,7 @@ if (cl_equipClassnames select 0 == "") exitWith {
 
 _classLimitException = {
 	params [["_class", "support", ["support"]], ["_max", 0, [0]]];
-	_message = format["THERE ARE TOO MANY %1S AT THE MOMENT <br />MAX %2 PLAYERS CURRENTLY ALLOWED, SELECT ANOTHER CLASS", toUpper _class, _max];
+	_message = format["THERE ARE TOO MANY %1S AT THE MOMENT <br />THERE ARE ALREADY %2 PLAYERS, SELECT ANOTHER CLASS", toUpper _class, _max];
 	if (_max isEqualTo 0) then {
 		_message = format["%1S ARE CURRENTLY NOT ALLOWED <br />PLEASE SELECT ANOTHER CLASS", toUpper _class];
 	};
@@ -54,8 +54,10 @@ if (_classRestrictionEnabled) then {
 	if (_class isEqualTo "recon" && {((_reconPlayers + _newClassMember)/(count _sameSidePlayers)) > _reconLimit}) exitWith {
 		[_class, _reconPlayers] spawn _classLimitException;
 	};
+	hint str [cl_classRestriction, _reconLimit, _reconPlayers/_sameSidePlayers, _reconPlayers, _sameSidePlayers, _newClassMember];
 	cl_classRestriction = false;
 };
+
 
 if (!(isNil "cl_classRestriction") && {cl_classRestriction}) exitWith {};
 
