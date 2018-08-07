@@ -13,7 +13,7 @@ _class = param[0,"medic",[""]];
 _isRestricted = false;
 
 _classRestrictionEnabled = [false, true] select ("ClassLimits" call bis_fnc_getParamValue);
-if !(_classRestrictionEnabled) exitWith {false};
+if (!_classRestrictionEnabled || !(_class in ["support", "engineer", "recon"])) exitWith {false};
 
 _classLimitException = {
 	params [["_class", "support", ["support"]], ["_currentClassPlayers", 0, [0]]];
