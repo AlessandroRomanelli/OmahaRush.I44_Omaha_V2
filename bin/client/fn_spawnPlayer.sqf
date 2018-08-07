@@ -21,9 +21,9 @@ if (cl_equipClassnames select 0 == "") exitWith {
 
 _classLimitException = {
 	params [["_class", "support", ["support"]], ["_max", 0, [0]]];
-	_message = format["THERE ARE ALREADY %2 %1S AT THE MOMENT <br />SELECT ANOTHER CLASS", toUpper _class, _max];
+	_message = format["THERE ARE TOO MANY %1S AT THE MOMENT <br />THERE ARE ALREADY %2 PLAYERS, SELECT ANOTHER CLASS", toUpper _class, _max];
 	if (_max isEqualTo 0) then {
-		_message = format["%1 CLASS IS NOT AVAILABLE <br />PLEASE SELECT ANOTHER CLASS AND TRY AGAIN LATER", toUpper _class];
+		_message = format["%1S ARE CURRENTLY NOT ALLOWED <br />PLEASE SELECT ANOTHER CLASS", toUpper _class];
 	};
 	[_message] spawn client_fnc_displayError;
 };
@@ -45,15 +45,16 @@ if (_classRestrictionEnabled) then {
 	_reconPlayers = count (_sameSidePlayers select {if (_x getVariable ["class", "medic"] isEqualTo "recon") then {true}});
 	_reconLimit = ("ClassLimits_Recon" call bis_fnc_getParamValue)/10;
 	_newClassMember = if (player getVariable ["class", "medic"] != _class) then {1} else {0};
-	if (_supportLimit != 10 && _class isEqualTo "support" && {((_supportPlayers + _newClassMember)/(count _sameSidePlayers)) >= _supportLimit}) exitWith {
+	if (_class isEqualTo "support" && {((_supportPlayers + _newClassMember)/(count _sameSidePlayers)) > _supportLimit}) exitWith {
 		[_class, _supportPlayers] spawn _classLimitException;
 	};
-	if (_engineerLimit != 10 && _class isEqualTo "engineer" && {((_engineerPlayers + _newClassMember)/(count _sameSidePlayers)) >= _engineerLimit}) exitWith {
+	if (_class isEqualTo "engineer" && {((_engineerPlayers + _newClassMember)/(count _sameSidePlayers)) > _engineerLimit}) exitWith {
 		[_class, _engineerPlayers] spawn _classLimitException;
 	};
-	if (_reconLimit && != 10 && _class isEqualTo "recon" && {((_reconPlayers + _newClassMember)/(count _sameSidePlayers)) >= _reconLimit}) exitWith {
+	if (_class isEqualTo "recon" && {((_reconPlayers + _newClassMember)/(count _sameSidePlayers)) > _reconLimit}) exitWith {
 		[_class, _reconPlayers] spawn _classLimitException;
 	};
+	hint str [cl_classRestriction, _reconLimit, _reconPlayers, _sameSidePlayers, _newClassMember];
 	cl_classRestriction = false;
 };
 
