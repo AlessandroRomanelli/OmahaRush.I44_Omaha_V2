@@ -218,7 +218,7 @@ _id = [
 	"Repair Vehicle",
 	"pictures\engineer.paa",
 	"pictures\engineer.paa",
-	"cl_classPerk == 'repair' && (cursorTarget distance player) < 5 && alive cursorTarget && !(cursorTarget getVariable ['repaired',false]) && (cursorTarget isKindOf 'Air' || cursorTarget isKindOf 'LandVehicle' || cursorTarget isKindOf 'Ship')",
+	"cl_class == 'engineer' && (cursorTarget distance player) < 5 && alive cursorTarget && !(cursorTarget getVariable ['repaired',false]) && (cursorTarget isKindOf 'Air' || cursorTarget isKindOf 'LandVehicle' || cursorTarget isKindOf 'Ship')",
 	"!(cursorTarget getVariable ['repaired',false])",
 	{cl_lastActionTarget = cursorTarget;},
 	{},

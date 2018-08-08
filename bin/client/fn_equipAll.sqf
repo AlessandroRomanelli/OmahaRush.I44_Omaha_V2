@@ -32,11 +32,6 @@ if (count _backpacks > 0) then {removeBackpackGlobal player; player addBackpack 
 	player addVest "V_Press_F";
 }; */
 
-// Smoke grenade?
-if ("smoke_grenades" in cl_squadPerks) then {
-	for "_i" from 1 to 2 do {player addItem "SmokeShell";};
-};
-
 // Give weapons
 [] spawn client_fnc_equipWeapons;
 

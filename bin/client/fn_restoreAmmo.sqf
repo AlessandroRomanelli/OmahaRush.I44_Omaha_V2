@@ -53,7 +53,6 @@ if (cl_classPerk == "grenadier") then {
 	if (_currentWeapon in _rifles) then {
 		player addItem (getText(_cfgRifleGrenade >> "rifleGrenade"));
 	};
-
 	_grenade = getText(missionConfigFile >> "Soldiers" >> _side >> "Grenade" >> "weapon");
 	player addItem _grenade;
 };
@@ -63,7 +62,7 @@ if (cl_classPerk == "demolition") then {
 	player addItemToBackpack _explCharge;
 };
 
-if ("smoke_grenades" in cl_squadPerks) then {
+if (cl_class == "medic" && cl_classPerk == "smoke_grenades") then {
 	player addItem "SmokeShell";
 };
 

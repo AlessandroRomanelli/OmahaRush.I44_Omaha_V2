@@ -43,20 +43,23 @@ if (cl_class == "medic") then {
 	if (count _medic_backpacks > 0) then {_newLoadout = [_currentLoadout, _medic_backpacks, 5, 0] call _swapItems};
 	if (count _medic_headgears > 0) then {_newLoadout set [6, selectRandom _medic_headgears]};
 	player setUnitLoadout _newLoadout;
+
+	if (cl_classPerk == "smoke_grenades") then {
+		for "_i" from 0 to 2 do {player addItem "SmokeShell"};
+	};
 };
 
 if (cl_classPerk == "grenadier") then {
 	_currentWeapon = _primary;
 	_cfgRifleGrenade = (missionConfigFile >> "Soldiers" >> _side >> "Grenade" >> "RifleGrenade");
 	_rifles = getArray(_cfgRifleGrenade >> "rifles");
-	_count = if ("extended_ammo" in cl_squadPerks) then {2} else {4};
+	_count = if ("expl" in cl_squadPerks) then {1} else {2};
 	if (_currentWeapon in _rifles) then {
 		player addPrimaryWeaponItem (getText(_cfgRifleGrenade >> "attachment"));
-		for "_i" from 1 to _count do {player addItem (getText(_cfgRifleGrenade >> "rifleGrenade"))};
+		for "_i" from 0 to _count do {player addItem (getText(_cfgRifleGrenade >> "rifleGrenade"))};
 	};
-
 	_grenade = getText(missionConfigFile >> "Soldiers" >> _side >> "Grenade" >> "weapon");
-	for "_i" from 1 to _count do {player addItem _grenade};
+	for "_i" from 0 to _count do {player addItem _grenade};
 };
 
 if (cl_classPerk == "demolition") then {
@@ -66,8 +69,8 @@ if (cl_classPerk == "demolition") then {
 		removeBackpackGlobal player;
 		player addBackpack _backpack;
 	};
-	_count = if ("extended_ammo" in cl_squadPerks) then {1} else {3};
-	for "_i" from 1 to _count do {player addItemToBackpack _explCharge};
+	_count = if ("expl" in cl_squadPerks) then {1} else {3};
+	for "_i" from 0 to _count do {player addItemToBackpack _explCharge};
 };
 
 if (cl_class == "engineer" && cl_classPerk == "perkAT") then {
@@ -81,7 +84,9 @@ if (cl_class == "engineer" && cl_classPerk == "perkAT") then {
 	{player removeItemFromBackpack _x} forEach backpackItems player;
 	player addMagazine _ammoName;
 	player addWeaponGlobal _launcher;
-	for "_i" from 1 to _ammoCount do {player addMagazine _ammoName};
+	if ("expl" in cl_squadPerks) then {
+		for "_i" from 1 to _ammoCount do {player addMagazine _ammoName};
+	};
 };
 
 if (_primary != "") then {
@@ -94,7 +99,7 @@ if (_primary != "") then {
 	// Give ammo
 	if (!_noMags) then {
 		// Extended ammo perk
-		if ("extended_ammo" in cl_squadPerks) then {
+		if ("ammo" in cl_squadPerks) then {
 			player addMagazines [_primaryAmmo, 6];
 		} else {
 			player addMagazines [_primaryAmmo, 3];
@@ -120,7 +125,7 @@ if (_secondary != "") then {
 	// Give ammo
 	if (!_noMags) then {
 		// Extended ammo perk
-		if ("extended_ammo" in cl_squadPerks) then {
+		if ("ammo" in cl_squadPerks) then {
 			player addMagazines [_secondaryAmmo, 4];
 		} else {
 			player addMagazines [_secondaryAmmo, 2];
@@ -135,3 +140,8 @@ if (_secondary != "") then {
 		player addHandgunItem _x;
 	} forEach _secondaryAttachements; */
 };
+
+if ("frag" in cl_squadPerks) then {
+	_grenade = getText(missionConfigFile >> "Soldiers" >> _side >> "Grenade" >> "weapon");
+	player addMagazine _grenade;
+}:
