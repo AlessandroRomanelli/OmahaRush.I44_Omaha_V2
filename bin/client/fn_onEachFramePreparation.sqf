@@ -12,14 +12,11 @@ scriptName "fn_onEachFramePreparation";
 // Inline function to determine icon
 _getIcon = {
 	_unit = param[0,objNull,[objNull]];
-	_icon = call {
-		if (_unit getVariable ["class",""] == "medic") exitWith {"pictures\medic.paa"};
-		if (_unit getVariable ["class",""] == "engineer") exitWith {"pictures\engineer.paa"};
-		if (_unit getVariable ["class",""] == "support") exitWith {"pictures\support.paa"};
-		if (_unit getVariable ["class",""] == "recon") exitWith {"pictures\recon.paa"};
-		"pictures\assault.paa";
-	};
-	_icon
+	if (_unit getVariable ["class",""] == "medic") exitWith {"pictures\medic.paa"};
+	if (_unit getVariable ["class",""] == "engineer") exitWith {"pictures\engineer.paa"};
+	if (_unit getVariable ["class",""] == "support") exitWith {"pictures\support.paa"};
+	if (_unit getVariable ["class",""] == "recon") exitWith {"pictures\recon.paa"};
+	"pictures\assault.paa";
 };
 
 // Variables
@@ -54,17 +51,18 @@ while {true} do {
 						// The player should not be on the debug island
 						if (_x distance cl_safePos > 200) then {
 							_alpha = [0.75, 0.55] select (_x distance player > 50);
-							_squad_members pushBack [_x, _name, format["%1%2",MISSION_ROOT, [_x] call _getIcon], _alpha];
+							_icon = [_x] call _getIcon;
+							_squad_members pushBack [_x, _name, (MISSOIN_ROOT+_icon), _alpha];
 						};
 					};
 				} else {
 					if (_x distance cl_safePos > 200 && alive _x) then {
 						if (cl_inSpawnMenu || ((vehicle player) isKindOf "Air")) then {
-							_team_members pushBack [_x, _name, format["%1pictures\teammate.paa",MISSION_ROOT]];
+							_team_members pushBack [_x, _name, (MISSON_ROOT+"pictures\teammate.paa")]];
 						} else {
 							// Only teammates within 100 meters
-							if (_x distance player < 100 || _x == (driver vehicle cursorObject) || _x == (driver vehicle cursorTarget)) then {
-								_team_members pushBack [_x, _name, format["%1pictures\teammate.paa",MISSION_ROOT]];
+							if (_x distance player < 100 || _x == (driver vehicle cursorTarget) || _x == (driver vehicle cursorTarget)) then {
+								_team_members pushBack [_x, _name, (MISSON_ROOT+"pictures\teammate.paa")];
 							};
 						};
 					};

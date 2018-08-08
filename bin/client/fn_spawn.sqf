@@ -56,6 +56,8 @@ if (sv_gameCycle >= (("RotationsPerMatch" call bis_fnc_getParamValue) - 1)) then
 // Set player to safe location
 player setPos cl_safePos;
 
+cl_inSpawnMenu = true;
+
 //Keeping the role updated
 if (sv_gameCycle % 2 == 0) then {
 	if (playerSide == WEST) then {
@@ -279,3 +281,17 @@ player forceWalk false;
 player setSpeaker "NoVoice";
 
 [true] spawn client_fnc_drawMapUnits;
+
+_registeredGroups = ["GetAllGroupsOfSide"] call BIS_fnc_dynamicGroups;
+if !((group player) in _registeredGroups) then {
+	if !(count _registeredGroups isEqualTo 0) then {
+	  {
+	    _privateGroup = _x getVariable ["bis_dg_pri", false];
+	    if ((count units _x > 0) && (count units _x < 5) && !_privateGroup) exitWith {
+	      ["AddGroupMember", [_x, player]] call BIS_fnc_dynamicGroups;
+	    };
+	  } forEach _registeredGroups;
+	} else {
+	  ["RegisterGroup", [group player, player]] call BIS_fnc_dynamicGroups;
+	};
+};
