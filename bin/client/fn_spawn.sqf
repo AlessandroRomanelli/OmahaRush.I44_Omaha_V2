@@ -238,9 +238,9 @@ disableSerialization;
 	}];
 	((findDisplay 5000) displayCtrl _x) ctrlAddEventHandler ["MouseExit", {
 		if (cl_spawnmenu_currentWeaponSelectionState isEqualTo 0) then {
-			_this ctrlSetBackgroundColor [0.12,0.14,0.16,0.8];
+			(_this select 0) ctrlSetBackgroundColor [0.12,0.14,0.16,0.8];
 		} else {
-			_this ctrlSetBackgroundColor [0.96,0.65,0.12,0.8];
+			(_this select 0) ctrlSetBackgroundColor [0.96,0.65,0.12,0.8];
 		};
 	}];
 } forEach [1001, 1004, 207, 209];
