@@ -111,13 +111,14 @@ _registeredGroups = ["GetAllGroupsOfSide"] call BIS_fnc_dynamicGroups;
 if !(count _registeredGroups isEqualTo 0) then {
   {
     _privateGroup = _x getVariable ["bis_dg_pri", false];
-    if (count units _x > 0 && !_privateGroup) then {
+    if ((count units _x > 0) && (count units _x < 5) && !_privateGroup) then {
       ["AddGroupMember", [_x, player]] call BIS_fnc_dynamicGroups;
     };
   } forEach _registeredGroups;
 } else {
   ["RegisterGroup", [group player, player]] call BIS_fnc_dynamicGroups;
-  ["YOU ARE THE LEADER OF A NEW GROUP <br /><t size='0.8'>[PRESS U TO OPEN THE GROUP MANAGEMENT INTERFACE]</t>"]
+  sleep 3;
+  ["YOU ARE THE LEADER OF A NEW GROUP, BE RESPONSIBLE!<br /><t size='0.8'>[PRESS U TO OPEN THE GROUP MANAGEMENT INTERFACE]</t>"] spawn client_fnc_displayInfo;
 };
 
 
