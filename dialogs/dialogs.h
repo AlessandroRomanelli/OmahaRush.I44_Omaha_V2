@@ -5,7 +5,7 @@ class rr_spawnmenu {
     fadein=2;
     duration = 999999;
     class controls {
-    	class emtpyButton: RscButtonMenu
+  	/* class emptyButton: RscButtonMenu
 		{
 			idc = 10000;
 			text = ""; //--- ToDo: Localize;
@@ -13,10 +13,10 @@ class rr_spawnmenu {
 			y = 1.1 * safezoneH + safezoneY;
 			w = 1.1 * safezoneW;
 			h = 1.1 * safezoneH;
-		};
+		}; */
 		class RscText_1000: RscText
 		{
-			idc = -1;
+			idc = 207;
 			x = 0.00499997 * safezoneW + safezoneX;
 			y = 0.291 * safezoneH + safezoneY;
 			w = 0.154687 * safezoneW;
@@ -34,7 +34,7 @@ class rr_spawnmenu {
 		};
 		class RscText_1002: RscText
 		{
-			idc = -1;
+			idc = 208;
 			x = 0.00499997 * safezoneW + safezoneX;
 			y = 0.4945 * safezoneH + safezoneY;
 			w = 0.154687 * safezoneW;
@@ -43,7 +43,7 @@ class rr_spawnmenu {
 		};
 		class RscText_1003: RscText
 		{
-			idc = -1;
+			idc = 209;
 			x = 0.00499997 * safezoneW + safezoneX;
 			y = 0.5022 * safezoneH + safezoneY;
 			w = 0.154687 * safezoneW;
@@ -79,10 +79,10 @@ class rr_spawnmenu {
 			rowHeight = 0.1;
 			colorBackground[] = {0,0,0,0};
 			colorSelect[] = {1, 1, 1, 1};
-		    colorText[] = {1, 1, 1, 0.5};
-		    colorSelect2[] = {1, 1, 1, 1};
-		    colorSelectBackground[] = {0.96,0.65,0.12,0.8};
-		    colorSelectBackground2[] = {0.96,0.65,0.12,0.8};
+	    colorText[] = {1, 1, 1, 0.5};
+	    colorSelect2[] = {1, 1, 1, 1};
+	    colorSelectBackground[] = {0.96,0.65,0.12,0.8};
+	    colorSelectBackground2[] = {0.96,0.65,0.12,0.8};
 		};
 		/*class btnDeploy: RscButtonMenu
 		{
@@ -145,19 +145,19 @@ class rr_spawnmenu {
 			w = 0.149531 * safezoneW;
 			h = 0.101 * safezoneH;
 			animTextureNormal = "#(argb,8,8,3)color(1,1,1,0)";
-		    animTextureDisabled = "#(argb,8,8,3)color(1,1,1,0)";
-		    animTextureOver = "#(argb,8,8,3)color(1,1,1,0)";
-		    animTextureFocused = "#(argb,8,8,3)color(1,1,1,0)";
-		    animTexturePressed = "#(argb,8,8,3)color(1,1,1,0)";
-		    animTextureDefault = "#(argb,8,8,3)color(1,1,1,0)";
-		    colorBackground[] = {0,0,0,0};
-		    colorBackgroundFocused[] = {1,1,1,0};
-		    colorBackground2[] = {0.75,0.75,0.75,0};
-		    color[] = {1,1,1,0};
-		    colorFocused[] = {0,0,0,0};
-		    color2[] = {0,0,0,0};
-		    colorText[] = {1,1,1,0};
-		    colorDisabled[] = {1,1,1,0};
+	    animTextureDisabled = "#(argb,8,8,3)color(1,1,1,0)";
+	    animTextureOver = "#(argb,8,8,3)color(1,1,1,0)";
+	    animTextureFocused = "#(argb,8,8,3)color(1,1,1,0)";
+	    animTexturePressed = "#(argb,8,8,3)color(1,1,1,0)";
+	    animTextureDefault = "#(argb,8,8,3)color(1,1,1,0)";
+	    colorBackground[] = {0,0,0,0};
+	    colorBackgroundFocused[] = {1,1,1,0};
+	    colorBackground2[] = {0.75,0.75,0.75,0};
+	    color[] = {1,1,1,0};
+	    colorFocused[] = {0,0,0,0};
+	    color2[] = {0,0,0,0};
+	    colorText[] = {1,1,1,0};
+	    colorDisabled[] = {1,1,1,0};
 		};
 		class secondaryWeaponSelectionActivator: RscButtonMenu
 		{
@@ -168,19 +168,19 @@ class rr_spawnmenu {
 			w = 0.149531 * safezoneW;
 			h = 0.101 * safezoneH;
 			animTextureNormal = "#(argb,8,8,3)color(1,1,1,0)";
-		    animTextureDisabled = "#(argb,8,8,3)color(1,1,1,0)";
-		    animTextureOver = "#(argb,8,8,3)color(1,1,1,0)";
-		    animTextureFocused = "#(argb,8,8,3)color(1,1,1,0)";
-		    animTexturePressed = "#(argb,8,8,3)color(1,1,1,0)";
-		    animTextureDefault = "#(argb,8,8,3)color(1,1,1,0)";
-		    colorBackground[] = {0,0,0,0};
-		    colorBackgroundFocused[] = {1,1,1,0};
-		    colorBackground2[] = {0.75,0.75,0.75,0};
-		    color[] = {1,1,1,0};
-		    colorFocused[] = {0,0,0,0};
-		    color2[] = {0,0,0,0};
-		    colorText[] = {1,1,1,0};
-		    colorDisabled[] = {1,1,1,0};
+	    animTextureDisabled = "#(argb,8,8,3)color(1,1,1,0)";
+	    animTextureOver = "#(argb,8,8,3)color(1,1,1,0)";
+	    animTextureFocused = "#(argb,8,8,3)color(1,1,1,0)";
+	    animTexturePressed = "#(argb,8,8,3)color(1,1,1,0)";
+	    animTextureDefault = "#(argb,8,8,3)color(1,1,1,0)";
+	    colorBackground[] = {0,0,0,0};
+	    colorBackgroundFocused[] = {1,1,1,0};
+	    colorBackground2[] = {0.75,0.75,0.75,0};
+	    color[] = {1,1,1,0};
+	    colorFocused[] = {0,0,0,0};
+	    color2[] = {0,0,0,0};
+	    colorText[] = {1,1,1,0};
+	    colorDisabled[] = {1,1,1,0};
 		};
 		/* class attachmentsSelectionBackground: RscText
 		{
@@ -209,7 +209,7 @@ class rr_spawnmenu {
 		    colorSelectBackground[] = {0.96,0.65,0.12,0.8};
 		    colorSelectBackground2[] = {0.96,0.65,0.12,0.8};
 		}; */
-		class a87954654: RscText
+		/* class a87954654: RscText
 		{
 			idc = 27;
 			x = 0.160708 * safezoneW + safezoneX;
@@ -235,7 +235,7 @@ class rr_spawnmenu {
 			w = 0.151598 * safezoneW;
 			h = 0.0329884 * safezoneH;
 			colorBackground[] = {1,1,1,1};
-		};
+		}; */
 		/* class secondAttachment: RscListbox
 		{
 			idc = 21;
@@ -330,7 +330,7 @@ class rr_spawnmenu {
 		/* new ui */
 		class RscText_1000513: RscText
 		{
-			idc = -1;
+			idc = 201;
 			x = 0.314375 * safezoneW + safezoneX;
 			y = 0.951 * safezoneH + safezoneY;
 			w = 0.237187 * safezoneW;
@@ -339,7 +339,7 @@ class rr_spawnmenu {
 		};
 		class RscText_1001573: RscText
 		{
-			idc = -1;
+			idc = 202;
 			x = 0.314375 * safezoneW + safezoneX;
 			y = 0.929 * safezoneH + safezoneY;
 			w = 0.237187 * safezoneW;
@@ -360,7 +360,7 @@ class rr_spawnmenu {
 		};
 		class RscText_10032353462: RscText
 		{
-			idc = -1;
+			idc = 203;
 			x = 0.551562 * safezoneW + safezoneX;
 			y = 0.8564 * safezoneH + safezoneY;
 			w = 0.004125 * safezoneW;
@@ -369,7 +369,7 @@ class rr_spawnmenu {
 		};
 		class RscText_100412213: RscText
 		{
-			idc = -1;
+			idc = 204;
 			x = 0.555688 * safezoneW + safezoneX;
 			y = 0.8564 * safezoneH + safezoneY;
 			w = 0.134062 * safezoneW;
@@ -399,7 +399,7 @@ class rr_spawnmenu {
 		/* new right side of the gui */
 		class RscText_10064324: RscText
 		{
-			idc = -1;
+			idc = 205;
 
 			x = 0.835156 * safezoneW + safezoneX;
 			y = 0.291 * safezoneH + safezoneY;
@@ -421,7 +421,7 @@ class rr_spawnmenu {
 		};
 		class RscText_10057667: RscText
 		{
-			idc = -1;
+			idc = 206;
 
 			x = 0.835156 * safezoneW + safezoneX;
 			y = 0.577 * safezoneH + safezoneY;

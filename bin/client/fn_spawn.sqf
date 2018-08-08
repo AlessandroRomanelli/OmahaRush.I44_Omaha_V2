@@ -232,6 +232,10 @@ if (getNumber(missionConfigFile >> "GeneralConfig" >> "PostProcessing") == 1) th
 cl_spawnmenu_currentWeaponSelectionState = 0; // Nothing open
 disableSerialization;
 
+{((findDisplay 5000) displayCtrl _x) ctrlAddEventHandler ["MouseEnter", {
+
+}]} forEach [1001, 1004];
+
 ((findDisplay 5000) displayCtrl 15) ctrlAddEventHandler ["ButtonDown",{
 	[] spawn client_fnc_spawnMenu_displayPrimaryWeaponSelection;
 }];
