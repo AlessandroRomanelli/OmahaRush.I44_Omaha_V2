@@ -107,6 +107,20 @@ if (sv_gameCycle % 2 == 0) then {
 // Init group client
 ["InitializePlayer", [player]] call BIS_fnc_dynamicGroups;
 
+_registeredGroups = ["GetAllGroupsOfSide"] call BIS_fnc_dynamicGroups;
+if !(count _registeredGroups isEqualTo 0) then {
+  {
+    _privateGroup = _x getVariable ["bis_dg_pri", false];
+    if (count units _x > 0 && !_privateGroup) then {
+      ["AddGroupMember", [_x, player]] call BIS_fnc_dynamicGroups;
+    };
+  } forEach _registeredGroups;
+} else {
+  ["RegisterGroup", [group player, player]] call BIS_fnc_dynamicGroups;
+  ["YOU ARE THE LEADER OF A NEW GROUP <br /><t size='0.8'>[PRESS U TO OPEN THE GROUP MANAGEMENT INTERFACE]</t>"]
+};
+
+
 // If this is the debug mode, just unlock everything
 if (getNumber(missionConfigFile >> "GeneralConfig" >> "debug") == 1) then {
 	//cl_exp = 10000000000;

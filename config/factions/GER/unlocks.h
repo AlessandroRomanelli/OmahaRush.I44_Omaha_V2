@@ -41,7 +41,7 @@ class LIB_M1896 {
 };
 
 class LIB_G41 {
-  ammo = "LIB_10Rnd_792x57";
+  ammo = "LIB_10Rnd_792x57_clip";
   exp = 12500;
   type = "primary";
   roles[] = {"medic"};
