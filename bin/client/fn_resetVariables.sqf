@@ -259,7 +259,7 @@ if (isNil "rr_iconrenderer_executed") then {
 			};
 		};
 
-		_grenadeIcon = if (((currentThrowable player) select 0) in ["LIB_US_Mk_2", "LIB_shg24"]) then {"pictures\frag.paa"} else {"pictures\smoke.paa"};
+		_grenadeIcon = if (toLower ((currentThrowable player) select 0) in ["lib_us_mk_2", "lib_shg24", "lib_rg42"]) then {"pictures\frag.paa"} else {"pictures\smoke.paa"};
 		if ((currentThrowable player) isEqualto []) then {_grenadeIcon = "";};
 
 		if (_grenades isEqualTo 0) then {_grenades = ""};

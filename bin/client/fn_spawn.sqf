@@ -222,8 +222,11 @@ if (getNumber(missionConfigFile >> "GeneralConfig" >> "PostProcessing") == 1) th
 // Populate the structured texts
 [] spawn client_fnc_populateSpawnMenu;
 
+_menuDisplay = (findDisplay 5000);
+
+
 // Enable spawn buttons // REDONE WITH LISTBOX UPDATE // SEE SPAWNMENU_LOADCLASSES
-((findDisplay 5000) displayCtrl 302) ctrlAddEventHandler ["ButtonDown",{
+(_menuDisplay displayCtrl 302) ctrlAddEventHandler ["ButtonDown",{
 	profileNamespace setVariable ["rr_class_preferred", cl_class];
 	[] spawn client_fnc_spawnMenu_getClassAndSpawn
 }];
@@ -232,32 +235,59 @@ if (getNumber(missionConfigFile >> "GeneralConfig" >> "PostProcessing") == 1) th
 cl_spawnmenu_currentWeaponSelectionState = 0; // Nothing open
 disableSerialization;
 
+{(_menuDisplay displayCtrl _x) ctrlSetStructuredText parseText "<t size='0.75' color='#ffffff'' shadow='2' font='PuristaMedium' align='center'>[CLICK ABOVE TO OPEN]</t>"} forEach [2001,2002];
+
+// Event handlers for hover actions 
 {
-	((findDisplay 5000) displayCtrl _x) ctrlAddEventHandler ["MouseEnter", {
-		_this ctrlSetBackgroundColor [0.96,0.65,0.12,0.4];
-	}];
-	((findDisplay 5000) displayCtrl _x) ctrlAddEventHandler ["MouseExit", {
-		if (cl_spawnmenu_currentWeaponSelectionState isEqualTo 0) then {
-			(_this select 0) ctrlSetBackgroundColor [0.12,0.14,0.16,0.8];
+	(_menuDisplay displayCtrl _x) ctrlAddEventHandler ["MouseEnter", {
+		if ((_this select 0) isEqualTo ((findDisplay 5000) displayCtrl 15)) then {
+			if (cl_spawnmenu_currentWeaponSelectionState != 1) then {
+				((findDisplay 5000) displayCtrl 207) ctrlSetBackgroundColor [0.725,0.588,0.356,0.8];
+			};
 		} else {
-			(_this select 0) ctrlSetBackgroundColor [0.96,0.65,0.12,0.8];
+			if (cl_spawnmenu_currentWeaponSelectionState != 2) then {
+				((findDisplay 5000) displayCtrl 209) ctrlSetBackgroundColor [0.725,0.588,0.356,0.8];
+			};
 		};
 	}];
-} forEach [1001, 1004, 207, 209];
+	(_menuDisplay displayCtrl _x) ctrlAddEventHandler ["MouseExit", {
+		if (cl_spawnmenu_currentWeaponSelectionState != 1) then {
+			((findDisplay 5000) displayCtrl 207) ctrlSetBackgroundColor [0.12,0.14,0.16,0.8];
+		};
+		if (cl_spawnmenu_currentWeaponSelectionState != 2) then {
+			((findDisplay 5000) displayCtrl 209) ctrlSetBackgroundColor [0.12,0.14,0.16,0.8];
+		};
+	}];
+} forEach [15,16];
 
-((findDisplay 5000) displayCtrl 15) ctrlAddEventHandler ["ButtonDown",{
+(_menuDisplay displayCtrl 15) ctrlAddEventHandler ["ButtonDown",{
 	[] spawn client_fnc_spawnMenu_displayPrimaryWeaponSelection;
 }];
 
-((findDisplay 5000) displayCtrl 16) ctrlAddEventHandler ["ButtonDown",{
+(_menuDisplay displayCtrl 16) ctrlAddEventHandler ["ButtonDown",{
 	_secondaryWeapons = cl_equipConfigurations select {(getText(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> _x >> "type")) == "secondary"};
 	if (count _secondaryWeapons != 0) then {
 		[] spawn client_fnc_spawnMenu_displaySecondaryWeaponSelection;
 	};
 }];
-/* ((findDisplay 5000) displayCtrl 12) ctrlAddEventHandler ["ButtonDown",{[] spawn client_fnc_spawnMenu_displayPrimaryAttachmentSelection;}];
-((findDisplay 5000) displayCtrl 13) ctrlAddEventHandler ["ButtonDown",{[] spawn client_fnc_spawnMenu_displaySecondaryAttachmentSelection;}]; */
-((findDisplay 5000) displayCtrl 100) ctrlAddEventHandler ["ButtonDown",{
+
+// Activate weapons' background event handler
+(_menuDisplay displayCtrl 2) ctrlEnable true;
+
+// Close menu upon mouse exit
+(_menuDisplay displayCtrl 2) ctrlAddEventHandler ["MouseExit", {
+	if (cl_spawnmenu_currentWeaponSelectionState != 0) then {
+		if (cl_spawnmenu_currentWeaponSelectionState == 1) then {
+			[] spawn client_fnc_spawnMenu_displayPrimaryWeaponSelection;
+		} else {
+			[] spawn client_fnc_spawnMenu_displaySecondaryWeaponSelection;
+		};
+	};
+}];
+
+/* (_menuDisplay displayCtrl 12) ctrlAddEventHandler ["ButtonDown",{[] spawn client_fnc_spawnMenu_displayPrimaryAttachmentSelection;}];
+(_menuDisplay displayCtrl 13) ctrlAddEventHandler ["ButtonDown",{[] spawn client_fnc_spawnMenu_displaySecondaryAttachmentSelection;}]; */
+(_menuDisplay displayCtrl 100) ctrlAddEventHandler ["ButtonDown",{
 	[] spawn client_fnc_spawnMenu_displayGroupManagement;
 }];
 
@@ -266,7 +296,7 @@ disableSerialization;
 
 // Hide the weapon selection listbox and its background + the attachment listboxes and their backgrounds
 {
-	((findDisplay 5000) displayCtrl _x) ctrlShow false;
+	(_menuDisplay displayCtrl _x) ctrlShow false;
 } forEach [
 	2,3,
 	20,21,22,25,23,24,26,27,28,29
