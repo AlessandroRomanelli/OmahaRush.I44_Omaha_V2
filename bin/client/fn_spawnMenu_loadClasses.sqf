@@ -103,10 +103,11 @@ if !(_classRestrictionEnabled) then {
 	_countClassPlayers = {
 		_class = param[0, "", [""]];
 		_sameSidePlayers = allPlayers select {if (playerSide isEqualTo (side _x)) then {true}};
-		_sameClassPlayers = count (_sameSidePlayers select {if (_x getVariable ["class", "medic"] isEqualTo _class) then {true}});
+		_sameClassPlayers = _sameSidePlayers select {if (_x getVariable ["class", "medic"] isEqualTo _class) then {true}};
 		_classLimit = ((format ["ClassLimits_%1", _class]) call bis_fnc_getParamValue)/10;
-		_maxClassPlayers = floor ((count _sameSidePlayers) * _classLimit);
-		[_sameClassPlayers, _maxClassPlayers];
+		_maxClassPlayers = if(_classLimit != 1) then {floor ((count _sameSidePlayers) * _classLimit)} else {-1};
+		_playerOfClass = player in _sameClassPlayers;
+		[count _sameClassPlayers, _maxClassPlayers, _playerOfClass];
 	};
 
 	// Add default classes
@@ -120,33 +121,46 @@ if !(_classRestrictionEnabled) then {
 
 	// Support
 	_supportData = ["support"] call _countClassPlayers;
-	_l lbAdd (format ["Support (%1/%2)", _supportData select 0, _supportData select 1]);
-	_l lbSetData [(lbSize _l) - 1, "support"];
-	if ((_supportData select 0) >= (_supportData select 1)) then {
-		_l lbSetColor [(lbSize _l) - 1, [1,0,0,1]];
+	if (_supportData select 1 isEqualTo -1) then {
+		_l lbAdd "Support";
 	} else {
-		_l lbSetColor [(lbSize _l) - 1, [1, 1, 1, 0.5]];
+		_l lbAdd (format ["Support (%1/%2)", _supportData select 0, _supportData select 1]);
+		if ((_supportData select 0) >= (_supportData select 1) && !(_supportData select 2)) then {
+			_l lbSetColor [(lbSize _l) - 1, [1,0,0,1]];
+		} else {
+			_l lbSetColor [(lbSize _l) - 1, [1, 1, 1, 0.5]];
+		};
 	};
+	_l lbSetData [(lbSize _l) - 1, "support"];
+
 
 	// Engineer
 	_engineerData = ["engineer"] call _countClassPlayers;
-	_l lbAdd (format ["Engineer (%1/%2)", _engineerData select 0, _engineerData select 1]);
-	_l lbSetData [(lbSize _l) - 1, "engineer"];
-	if ((_engineerData select 0) >= (_engineerData select 1)) then {
-		_l lbSetColor [(lbSize _l) - 1, [1,0,0,1]];
+	if (_engineerData select 1 isEqualTo -1) then {
+		_l lbAdd "Engineer";
 	} else {
-		_l lbSetColor [(lbSize _l) - 1, [1, 1, 1, 0.5]];
+		_l lbAdd (format ["Engineer (%1/%2)", _engineerData select 0, _engineerData select 1]);
+		if ((_engineerData select 0) >= (_engineerData select 1) && !(_engineerData select 2)) then {
+			_l lbSetColor [(lbSize _l) - 1, [1,0,0,1]];
+		} else {
+			_l lbSetColor [(lbSize _l) - 1, [1, 1, 1, 0.5]];
+		};
 	};
+	_l lbSetData [(lbSize _l) - 1, "engineer"];
 
 	// Recon
 	_reconData = ["recon"] call _countClassPlayers;
-	_l lbAdd (format ["Recon (%1/%2)", _reconData select 0, _reconData select 1]);
-	_l lbSetData [(lbSize _l) - 1, "recon"];
-	if ((_reconData select 0) >= (_reconData select 1)) then {
-		_l lbSetColor [(lbSize _l) - 1, [1,0,0,1]];
+	if (_reconData select 1 isEqualTo -1) then {
+		_l lbAdd "Recon";
 	} else {
-		_l lbSetColor [(lbSize _l) - 1, [1, 1, 1, 0.5]];
+		_l lbAdd (format ["Recon (%1/%2)", _reconData select 0, _reconData select 1]);
+		if ((_reconData select 0) >= (_reconData select 1) && !(_reconData select 2)) then {
+			_l lbSetColor [(lbSize _l) - 1, [1,0,0,1]];
+		} else {
+			_l lbSetColor [(lbSize _l) - 1, [1, 1, 1, 0.5]];
+		};
 	};
+	_l lbSetData [(lbSize _l) - 1, "recon"];
 };
 
 // Get preferred class index from profileNamespace

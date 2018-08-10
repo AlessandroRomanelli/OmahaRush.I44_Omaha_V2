@@ -419,7 +419,21 @@ class rr_spawnmenu {
 			colorText[] = {1,1,1,1};
 			colorBackground[] = {0.96,0.65,0.12,0.8};
 		};
-		class RscText_10057667: RscText
+		class RscText_24056776: RscText
+		{
+			idc = 104;
+			text = "WEAPONS SELECTION";
+      x = 0.00499997 * safezoneW + safezoneX;
+      y = 0.247 * safezoneH + safezoneY;
+      w = 0.154687 * safezoneW;
+			h = 0.044 * safezoneH;
+      color[] = {1,1,1,1};
+			colorText[] = {1,1,1,1};
+			colorBackground[] = {0.84,0.57,0.1,0.8};
+      size = 0.04;
+      sizeEx = 0.04;
+		};
+		/* class RscText_10057667: RscText
 		{
 			idc = 206;
 
@@ -428,7 +442,7 @@ class rr_spawnmenu {
 			w = 0.0309375 * safezoneW;
 			h = 0.055 * safezoneH;
 			colorBackground[] = {0.12,0.14,0.16,0.8};
-		};
+		}; */
 		/*class RscPicture_12006776: RscPicture
 		{
 			idc = -1;
