@@ -16,14 +16,18 @@ _d = findDisplay 5000;
 // Exit if this menu is already open
 if (cl_spawnmenu_currentWeaponSelectionState == 2) exitWith {
 	cl_spawnmenu_currentWeaponSelectionState = 0;
-	(_d displayCtrl 2001) ctrlSetStructuredText parseText "<t size='0.75' color='#ffffff'' shadow='2' font='PuristaMedium' align='center'>[CLICK ABOVE TO SELECT]</t>";
+	{(_d displayCtrl _x) ctrlSetStructuredText parseText "<t size='0.75' color='#ffffff'' shadow='2' font='PuristaMedium' align='center'>[CLICK ABOVE TO OPEN]</t>"} forEach [2001,2002];
 	{
 		((findDisplay 5000) displayCtrl _x) ctrlShow false;
 	} forEach [
 		2,3,
 		20,21,22,25,23,24,26,27,28,29
 	];
+	(_d displayCtrl 209) ctrlSetBackgroundColor [0.12,0.14,0.16,0.8];
 };
+
+(_d displayCtrl 207) ctrlSetBackgroundColor [0.12,0.14,0.16,0.8];
+(_d displayCtrl 209) ctrlSetBackgroundColor [0.96,0.65,0.12,0.8];
 
 // Hide everything for now
 {
@@ -36,7 +40,8 @@ if (cl_spawnmenu_currentWeaponSelectionState == 2) exitWith {
 // Duhh
 cl_spawnmenu_currentWeaponSelectionState = 2;
 
-(_d displayCtrl 2001) ctrlSetStructuredText parseText "<t size='0.75' color='#25ffffff'' shadow='2' font='PuristaMedium' align='center'>[CLICK ABOVE TO SELECT]</t>";
+(_d displayCtrl 2002) ctrlSetStructuredText parseText "<t size='0.75' color='#ffffff'' shadow='2' font='PuristaMedium' align='center'>[CLICK ABOVE TO OPEN]</t>";
+(_d displayCtrl 2001) ctrlSetStructuredText parseText "<t size='0.75' color='#75ffffff'' shadow='2' font='PuristaMedium' align='center'>[CLICK ABOVE TO CLOSE]</t>";
 
 (_d displayCtrl 3) ctrlRemoveAllEventHandlers "LBSelChanged";
 

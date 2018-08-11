@@ -222,8 +222,81 @@ if (getNumber(missionConfigFile >> "GeneralConfig" >> "PostProcessing") == 1) th
 // Populate the structured texts
 [] spawn client_fnc_populateSpawnMenu;
 
+_menuDisplay = (findDisplay 5000);
+
+scaleCtrl = {
+	params [["_ctrl", controlNull, [controlNull]],["_factor", 0, [0]], ["_time", 0, [0]]];
+	_ctrlPos = ctrlPosition _ctrl;
+	_delta = ((_ctrlPos select 2)*(_factor - 1))/2;
+	_newPos = [(_ctrlPos select 0) - _delta, (_ctrlPos select 1) - _delta, (_ctrlPos select 2)*_factor, (_ctrlPos select 3)*_factor];
+	_ctrl ctrlSetPosition _newPos;
+	_ctrl ctrlCommit _time;
+	true
+};
+
+animateCtrl = {
+	params [["_objective", objNUll, [objNull]],["_ctrl", controlNull, [controlNull]],["_factor", 0, [0]], ["_time", 0, [0]]];
+	_ctrlPos = ctrlPosition _ctrl;
+	if (!isNil "cl_objectiveSpawnAnimation") exitWith {};
+		cl_objectiveSpawnAnimation = true;
+	while {_objective isEqualTo sv_cur_obj} do {
+		[_ctrl, _factor, _time] call scaleCtrl;
+		sleep _time + 0.1;
+		_ctrl ctrlSetPosition _ctrlPos;
+		_ctrl ctrlCommit _time;
+		sleep _time + 0.1;
+	};
+	_ctrl ctrlSetPosition _ctrlPos;
+	_ctrl ctrlCommit 0;
+	cl_objectiveSpawnAnimation = nil;
+	[findDisplay 5000] spawn updateObjectiveProgress;
+};
+
+updateObjectiveProgress = {
+	params[["_display", displayNull, [displayNull]]];
+	for "_i" from 1 to 4 do {
+		_idc = 1200 + _i;
+		_ctrlObj = _display displayCtrl _idc;
+		_IntToAlpha = ["", "A", "B", "C", "D"];
+		_playerSide = player getVariable ["gameSide", "defenders"];
+		_picturePath = "pictures\"+(format["obj_%1_%2", _IntToAlpha select _i, _playerSide])+".paa";
+		_ctrlObj ctrlSetText _picturePath;
+		_objective = missionNamespace getVariable [format["sv_stage%1_obj", _i], objNull];
+		_ctrlPos = ctrlPosition _ctrlObj;
+		if !(_objective isEqualTo sv_cur_obj) then {
+			_ctrlObj ctrlSetTextColor [1,1,1,0.25];
+		} else {
+			_ctrlObj ctrlSetTextColor [1,1,1,1];
+			[_objective, _ctrlObj, 1.1, 0.5] spawn animateCtrl;
+		};
+		if ((_objective getVariable ["status", -1]) isEqualTo 3) then {
+			_ctrlObj ctrlSetTextColor [-1, -1, -1, 0.25];
+		};
+	};
+};
+
+[_menuDisplay] spawn updateObjectiveProgress;
+
+(_menuDisplay displayCtrl 1200) ctrlSetFade 1;
+(_menuDisplay displayCtrl 1200) ctrlCommit 0;
+
+{
+	(_menuDisplay displayCtrl _x) ctrlEnable true;
+	(_menuDisplay displayCtrl _x) ctrlAddEventHandler["MouseEnter", {
+		((findDisplay 5000) displayCtrl 1200) ctrlSetFade 0;
+		((findDisplay 5000) displayCtrl 1200) ctrlCommit 0.25;
+	}];
+	(_menuDisplay displayCtrl _x) ctrlAddEventHandler["MouseExit", {
+		((findDisplay 5000) displayCtrl 1200) ctrlSetFade 1;
+		((findDisplay 5000) displayCtrl 1200) ctrlCommit 0.5;
+	}];
+} forEach [1201,1202,1203,1204];
+
+
+
+
 // Enable spawn buttons // REDONE WITH LISTBOX UPDATE // SEE SPAWNMENU_LOADCLASSES
-((findDisplay 5000) displayCtrl 302) ctrlAddEventHandler ["ButtonDown",{
+(_menuDisplay displayCtrl 302) ctrlAddEventHandler ["ButtonDown",{
 	profileNamespace setVariable ["rr_class_preferred", cl_class];
 	[] spawn client_fnc_spawnMenu_getClassAndSpawn
 }];
@@ -232,19 +305,59 @@ if (getNumber(missionConfigFile >> "GeneralConfig" >> "PostProcessing") == 1) th
 cl_spawnmenu_currentWeaponSelectionState = 0; // Nothing open
 disableSerialization;
 
-((findDisplay 5000) displayCtrl 15) ctrlAddEventHandler ["ButtonDown",{
+{(_menuDisplay displayCtrl _x) ctrlSetStructuredText parseText "<t size='0.75' color='#ffffff'' shadow='2' font='PuristaMedium' align='center'>[CLICK ABOVE TO OPEN]</t>"} forEach [2001,2002];
+
+// Event handlers for hover actions
+{
+	(_menuDisplay displayCtrl _x) ctrlAddEventHandler ["MouseEnter", {
+		if ((_this select 0) isEqualTo ((findDisplay 5000) displayCtrl 15)) then {
+			if (cl_spawnmenu_currentWeaponSelectionState != 1) then {
+				((findDisplay 5000) displayCtrl 207) ctrlSetBackgroundColor [0.725,0.588,0.356,0.8];
+			};
+		} else {
+			if (cl_spawnmenu_currentWeaponSelectionState != 2) then {
+				((findDisplay 5000) displayCtrl 209) ctrlSetBackgroundColor [0.725,0.588,0.356,0.8];
+			};
+		};
+	}];
+	(_menuDisplay displayCtrl _x) ctrlAddEventHandler ["MouseExit", {
+		if (cl_spawnmenu_currentWeaponSelectionState != 1) then {
+			((findDisplay 5000) displayCtrl 207) ctrlSetBackgroundColor [0.12,0.14,0.16,0.8];
+		};
+		if (cl_spawnmenu_currentWeaponSelectionState != 2) then {
+			((findDisplay 5000) displayCtrl 209) ctrlSetBackgroundColor [0.12,0.14,0.16,0.8];
+		};
+	}];
+} forEach [15,16];
+
+(_menuDisplay displayCtrl 15) ctrlAddEventHandler ["ButtonDown",{
 	[] spawn client_fnc_spawnMenu_displayPrimaryWeaponSelection;
 }];
 
-((findDisplay 5000) displayCtrl 16) ctrlAddEventHandler ["ButtonDown",{
+(_menuDisplay displayCtrl 16) ctrlAddEventHandler ["ButtonDown",{
 	_secondaryWeapons = cl_equipConfigurations select {(getText(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> _x >> "type")) == "secondary"};
 	if (count _secondaryWeapons != 0) then {
 		[] spawn client_fnc_spawnMenu_displaySecondaryWeaponSelection;
 	};
 }];
-/* ((findDisplay 5000) displayCtrl 12) ctrlAddEventHandler ["ButtonDown",{[] spawn client_fnc_spawnMenu_displayPrimaryAttachmentSelection;}];
-((findDisplay 5000) displayCtrl 13) ctrlAddEventHandler ["ButtonDown",{[] spawn client_fnc_spawnMenu_displaySecondaryAttachmentSelection;}]; */
-((findDisplay 5000) displayCtrl 100) ctrlAddEventHandler ["ButtonDown",{
+
+// Activate weapons' background event handler
+(_menuDisplay displayCtrl 2) ctrlEnable true;
+
+// Close menu upon mouse exit
+(_menuDisplay displayCtrl 2) ctrlAddEventHandler ["MouseExit", {
+	if (cl_spawnmenu_currentWeaponSelectionState != 0) then {
+		if (cl_spawnmenu_currentWeaponSelectionState == 1) then {
+			[] spawn client_fnc_spawnMenu_displayPrimaryWeaponSelection;
+		} else {
+			[] spawn client_fnc_spawnMenu_displaySecondaryWeaponSelection;
+		};
+	};
+}];
+
+/* (_menuDisplay displayCtrl 12) ctrlAddEventHandler ["ButtonDown",{[] spawn client_fnc_spawnMenu_displayPrimaryAttachmentSelection;}];
+(_menuDisplay displayCtrl 13) ctrlAddEventHandler ["ButtonDown",{[] spawn client_fnc_spawnMenu_displaySecondaryAttachmentSelection;}]; */
+(_menuDisplay displayCtrl 100) ctrlAddEventHandler ["ButtonDown",{
 	[] spawn client_fnc_spawnMenu_displayGroupManagement;
 }];
 
@@ -253,7 +366,7 @@ disableSerialization;
 
 // Hide the weapon selection listbox and its background + the attachment listboxes and their backgrounds
 {
-	((findDisplay 5000) displayCtrl _x) ctrlShow false;
+	(_menuDisplay displayCtrl _x) ctrlShow false;
 } forEach [
 	2,3,
 	20,21,22,25,23,24,26,27,28,29

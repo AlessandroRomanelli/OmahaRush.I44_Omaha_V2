@@ -26,7 +26,9 @@ _d = findDisplay 5000;
 _class = param[0,"medic",[""]];
 
 _isClassRestricted = [_class] call client_fnc_checkClassRestriction;
-if (_isClassRestricted) exitWith {};
+if (_isClassRestricted) exitWith {
+	[] spawn client_fnc_spawnMenu_loadClasses;
+};
 
 cl_class = _class;
 _perkData = [cl_class] call client_fnc_getUsedPerksForClass;

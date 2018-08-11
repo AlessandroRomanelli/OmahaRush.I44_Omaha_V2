@@ -144,4 +144,4 @@ if (_secondary != "") then {
 if ("frag" in cl_squadPerks) then {
 	_grenade = getText(missionConfigFile >> "Soldiers" >> _side >> "Grenade" >> "weapon");
 	player addMagazine _grenade;
-}:
+};

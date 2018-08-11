@@ -25,9 +25,13 @@ diag_log "0";
 
 // Exit if this menu is already open
 if (cl_spawnmenu_currentWeaponSelectionState == 1) exitWith {
-	(_d displayCtrl 2002) ctrlSetStructuredText parseText "<t size='0.75' color='#ffffff'' shadow='2' font='PuristaMedium' align='center'>[CLICK ABOVE TO OPEN]</t>";
+	{(_d displayCtrl _x) ctrlSetStructuredText parseText "<t size='0.75' color='#ffffff'' shadow='2' font='PuristaMedium' align='center'>[CLICK ABOVE TO OPEN]</t>"} forEach [2001,2002];
 	cl_spawnmenu_currentWeaponSelectionState = 0;
+	(_d displayCtrl 207) ctrlSetBackgroundColor [0.12,0.14,0.16,0.8];
 };
+
+(_d displayCtrl 209) ctrlSetBackgroundColor [0.12,0.14,0.16,0.8];
+(_d displayCtrl 207) ctrlSetBackgroundColor [0.96,0.65,0.12,0.8];
 
 diag_log "2";
 
@@ -35,11 +39,12 @@ diag_log "2";
 cl_spawnmenu_currentWeaponSelectionState = 1;
 (_d displayCtrl 3) ctrlRemoveAllEventHandlers "LBSelChanged";
 
-(_d displayCtrl 2002) ctrlSetStructuredText parseText "<t size='0.75' color='#25ffffff'' shadow='2' font='PuristaMedium' align='center'>[CLICK ABOVE TO CLOSE]</t>";
+(_d displayCtrl 2001) ctrlSetStructuredText parseText "<t size='0.75' color='#ffffff'' shadow='2' font='PuristaMedium' align='center'>[CLICK ABOVE TO OPEN]</t>";
+(_d displayCtrl 2002) ctrlSetStructuredText parseText "<t size='0.75' color='#75ffffff'' shadow='2' font='PuristaMedium' align='center'>[CLICK ABOVE TO CLOSE]</t>";
 
 // Show selection
-(_d displayCtrl 2) ctrlShow true;
-(_d displayCtrl 3) ctrlShow true;
+(_d displayCtrl 2) ctrlShow true; // Background
+(_d displayCtrl 3) ctrlShow true; // List of options
 
 // Clear listbox
 lbClear (_d displayCtrl 3);
@@ -63,7 +68,6 @@ _primaryWeapons = cl_equipConfigurations select {(getText(missionConfigFile >> "
 			(_d displayCtrl 3) lbAdd (([_x] call client_fnc_weaponDetails) select 1);
 			(_d displayCtrl 3) lbSetPicture [(lbSize (_d displayCtrl 3)) - 1, (([_x] call client_fnc_weaponDetails) select 2)];
 			(_d displayCtrl 3) lbSetData [(lbSize (_d displayCtrl 3)) - 1, _x];
-
 			/* if ((_x select 0) == (cl_equipClassnames select 0)) then {
 				(_d displayCtrl 3) lbSetCurSel ((lbSize (_d displayCtrl 3)) - 1);
 			}; */

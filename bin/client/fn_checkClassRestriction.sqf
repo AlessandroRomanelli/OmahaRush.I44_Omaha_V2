@@ -33,7 +33,7 @@ _sameClassPlayers = count (_sameSidePlayers select {if (_x getVariable ["class",
 _classLimit = ((format ["ClassLimits_%1", _class]) call bis_fnc_getParamValue)/10;
 _newClassMember = if !(player getVariable ["class", "medic"] isEqualTo _class) then {1} else {0};
 
-if (_classLimit != 1 && {((_sameClassPlayers + _newClassMember)/(count _sameSidePlayers)) >= _classLimit}) then {
+if (_classLimit != 1 && {((_sameClassPlayers + _newClassMember)/(count _sameSidePlayers)) > _classLimit}) then {
   [_class, _sameClassPlayers] spawn _classLimitException;
   _isRestricted = true;
 };

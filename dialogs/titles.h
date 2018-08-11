@@ -204,11 +204,22 @@ class rr_scoreboard
 	{
 		class RscStructuredText_1100: RscStructuredText
 		{
+			text = "";
+			size = 0.1;
+			sizeEx = 0.1;
 			idc = 0;
 			x = 0.29375 * safezoneW + safezoneX;
 			y = 0.245 * safezoneH + safezoneY;
 			w = 0.4125 * safezoneW;
 			h = 0.088 * safezoneH;
+			colorBackground[] = {0,0,0,0};
+			class Attributes {
+				font = "PuristaMedium";
+				color = "#FFFFFF";
+				size = "1.8";
+				align = "center";
+				valign = "middle";
+			};
 		};
 
 		/* SCOREBOARD */

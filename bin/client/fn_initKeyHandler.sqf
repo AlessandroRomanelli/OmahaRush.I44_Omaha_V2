@@ -38,10 +38,19 @@ cl_soundLevel = 1;
 			_h = true;
 			{
 				_name = (_x getVariable ["name", "ERROR: No Name"]);
+				_classInitial = [_x getVariable ["class", "medic"]] call {
+					_class = param [0, "", [""]];
+					if (_class isEqualTo "medic") exitWith {"M"};
+					if (_class isEqualTo "assault") exitWith {"A"};
+					if (_class isEqualTo "engineer") exitWith {"E"};
+					if (_class isEqualTo "support") exitWith {"S"};
+					if (_class isEqualTo "recon") exitWith {"R"};
+					"?";
+				};
 				if ((_x getVariable "gameSide") == "defenders") then {
-					_allInfoDefenders pushBack [_x getVariable ["points", 0], _x getVariable ["kills", 0], _x getVariable ["deaths", 0], _name];
+					_allInfoDefenders pushBack [_x getVariable ["points", 0], _x getVariable ["kills", 0], _x getVariable ["deaths", 0], _name, _classInitial];
 				} else {
-					_allInfoAttackers pushBack [_x getVariable ["points", 0], _x getVariable ["kills", 0], _x getVariable ["deaths", 0], _name];
+					_allInfoAttackers pushBack [_x getVariable ["points", 0], _x getVariable ["kills", 0], _x getVariable ["deaths", 0], _name, _classInitial];
 				};
 			} forEach AllPlayers;
 
@@ -49,19 +58,22 @@ cl_soundLevel = 1;
 			_allInfoAttackers sort false;
 			_allInfoDefenders sort false;
 			// Get controls
+			_title = ((uiNamespace getVariable ["rr_scoreboard", displayNull]) displayCtrl 0);
+			_title ctrlSetStructuredText (parseText "<t shadow='2'>SCOREBOARD</t>");
 			_listAttackers = ((uiNamespace getVariable ["rr_scoreboard", displayNull]) displayCtrl 2);
 			_listDefenders = ((uiNamespace getVariable ["rr_scoreboard", displayNull]) displayCtrl 1);
-			_listAttackers lnbAddRow ["#","","K","D","SCORE",""];
-			_listDefenders lnbAddRow ["#","","K","D","SCORE",""];
+			_listDefenders lnbAddRow ["","NAME","K","D","SCORE",""];
+			_listAttackers lnbAddRow ["","NAME","K","D","SCORE",""];
 
 			// Fill scoreboards
 			{
 			_nDefender = _nDefender + 1;
-			_listDefenders lnbAddRow [str _nDefender, (_x select 3), str (_x select 1), str (_x select 2), str (_x select 0)];
+			/* _listDefenders lnbAddRow [str _nDefender, (_x select 3), str (_x select 1), str (_x select 2), str (_x select 0)]; */
+			_listDefenders lnbAddRow [(_x select 4), (_x select 3), str (_x select 1), str (_x select 2), str (_x select 0)];
 			} forEach _allInfoDefenders;
 			{
 				_nAttacker = _nAttacker + 1;
-				_listAttackers lnbAddRow [str _nAttacker, (_x select 3), str (_x select 1), str (_x select 2), str (_x select 0)];
+				_listAttackers lnbAddRow [(_x select 4), (_x select 3), str (_x select 1), str (_x select 2), str (_x select 0)];
 			} forEach _allInfoAttackers;
 		};
 	};

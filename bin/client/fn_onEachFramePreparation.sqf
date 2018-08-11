@@ -58,11 +58,11 @@ while {true} do {
 				} else {
 					if (_x distance cl_safePos > 200 && alive _x) then {
 						if (cl_inSpawnMenu || ((vehicle player) isKindOf "Air")) then {
-							_team_members pushBack [_x, _name, (MISSON_ROOT+"pictures\teammate.paa")]];
+							_team_members pushBack [_x, _name, (MISSION_ROOT+"pictures\teammate.paa")];
 						} else {
 							// Only teammates within 100 meters
 							if (_x distance player < 100 || _x == (driver vehicle cursorTarget) || _x == (driver vehicle cursorTarget)) then {
-								_team_members pushBack [_x, _name, (MISSON_ROOT+"pictures\teammate.paa")];
+								_team_members pushBack [_x, _name, (MISSION_ROOT+"pictures\teammate.paa")];
 							};
 						};
 					};
