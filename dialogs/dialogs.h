@@ -641,6 +641,51 @@ class rr_spawnmenu {
     	h = 0.022926 * safezoneH;
     	colorBackground[] = {-1,-1,-1,0};
     };
+    class RscText_1200: RscText
+    {
+      idc = 1200;
+      x = 0.402031 * safezoneW + safezoneX;
+      y = 0.082 * safezoneH + safezoneY;
+      w = 0.190781 * safezoneW;
+      h = 0.066 * safezoneH;
+      colorBackground[] = {0.12,0.14,0.16,0.8};
+    };
+    class RscPicture_1201: RscPicture
+    {
+      idc = 1201;
+      text = "";
+      x = 0.407187 * safezoneW + safezoneX;
+      y = 0.093 * safezoneH + safezoneY;
+      w = 0.0257812 * safezoneW;
+      h = 0.044 * safezoneH;
+    };
+    class RscPicture_1202: RscPicture
+    {
+      idc = 1202;
+      text = "";
+      x = 0.45875 * safezoneW + safezoneX;
+      y = 0.093 * safezoneH + safezoneY;
+      w = 0.0257812 * safezoneW;
+      h = 0.044 * safezoneH;
+    };
+    class RscPicture_1203: RscPicture
+    {
+      idc = 1203;
+      text = "";
+      x = 0.510312 * safezoneW + safezoneX;
+      y = 0.093 * safezoneH + safezoneY;
+      w = 0.0257812 * safezoneW;
+      h = 0.044 * safezoneH;
+    };
+    class RscPicture_1204: RscPicture
+    {
+      idc = 1204;
+      text = "";
+      x = 0.561875 * safezoneW + safezoneX;
+      y = 0.093 * safezoneH + safezoneY;
+      w = 0.0257812 * safezoneW;
+      h = 0.044 * safezoneH;
+    };
   };
 };
 

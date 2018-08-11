@@ -52,7 +52,7 @@ while {true} do {
 						if (_x distance cl_safePos > 200) then {
 							_alpha = [0.75, 0.55] select (_x distance player > 50);
 							_icon = [_x] call _getIcon;
-							_squad_members pushBack [_x, _name, (MISSOIN_ROOT+_icon), _alpha];
+							_squad_members pushBack [_x, _name, (MISSION_ROOT+_icon), _alpha];
 						};
 					};
 				} else {
