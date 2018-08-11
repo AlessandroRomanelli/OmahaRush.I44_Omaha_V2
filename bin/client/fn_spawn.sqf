@@ -224,6 +224,76 @@ if (getNumber(missionConfigFile >> "GeneralConfig" >> "PostProcessing") == 1) th
 
 _menuDisplay = (findDisplay 5000);
 
+scaleCtrl = {
+	params [["_ctrl", controlNull, [controlNull]],["_factor", 0, [0]], ["_time", 0, [0]]];
+	_ctrlPos = ctrlPosition _ctrl;
+	_delta = ((_ctrlPos select 2)*(_factor - 1))/2;
+	_newPos = [(_ctrlPos select 0) - _delta, (_ctrlPos select 1) - _delta, (_ctrlPos select 2)*_factor, (_ctrlPos select 3)*_factor];
+	_ctrl ctrlSetPosition _newPos;
+	_ctrl ctrlCommit _time;
+	true
+};
+
+animateCtrl = {
+	params [["_objective", objNUll, [objNull]],["_ctrl", controlNull, [controlNull]],["_factor", 0, [0]], ["_time", 0, [0]]];
+	_ctrlPos = ctrlPosition _ctrl;
+	if (!isNil "cl_objectiveSpawnAnimation") exitWith {};
+		cl_objectiveSpawnAnimation = true;
+	while {_objective isEqualTo sv_cur_obj} do {
+		[_ctrl, _factor, _time] call scaleCtrl;
+		sleep _time + 0.1;
+		_ctrl ctrlSetPosition _ctrlPos;
+		_ctrl ctrlCommit _time;
+		sleep _time + 0.1;
+	};
+	_ctrl ctrlSetPosition _ctrlPos;
+	_ctrl ctrlCommit 0;
+	cl_objectiveSpawnAnimation = nil;
+	[findDisplay 5000] spawn updateObjectiveProgress;
+};
+
+updateObjectiveProgress = {
+	params[["_display", displayNull, [displayNull]]];
+	for "_i" from 1 to 4 do {
+		_idc = 1200 + _i;
+		_ctrlObj = _display displayCtrl _idc;
+		_IntToAlpha = ["", "A", "B", "C", "D"];
+		_playerSide = player getVariable ["gameSide", "defenders"];
+		_picturePath = "pictures\"+(format["obj_%1_%2", _IntToAlpha select _i, _playerSide])+".paa";
+		_ctrlObj ctrlSetText _picturePath;
+		_objective = missionNamespace getVariable [format["sv_stage%1_obj", _i], objNull];
+		_ctrlPos = ctrlPosition _ctrlObj;
+		if !(_objective isEqualTo sv_cur_obj) then {
+			_ctrlObj ctrlSetTextColor [1,1,1,0.25];
+		} else {
+			_ctrlObj ctrlSetTextColor [1,1,1,1];
+			[_objective, _ctrlObj, 1.1, 0.5] spawn animateCtrl;
+		};
+		if ((_objective getVariable ["status", -1]) isEqualTo 3) then {
+			_ctrlObj ctrlSetTextColor [-1, -1, -1, 0.25];
+		};
+	};
+};
+
+[_menuDisplay] spawn updateObjectiveProgress;
+
+(_menuDisplay displayCtrl 1200) ctrlSetFade 1;
+(_menuDisplay displayCtrl 1200) ctrlCommit 0;
+
+{
+	(_menuDisplay displayCtrl _x) ctrlEnable true;
+	(_menuDisplay displayCtrl _x) ctrlAddEventHandler["MouseEnter", {
+		((findDisplay 5000) displayCtrl 1200) ctrlSetFade 0;
+		((findDisplay 5000) displayCtrl 1200) ctrlCommit 0.25;
+	}];
+	(_menuDisplay displayCtrl _x) ctrlAddEventHandler["MouseExit", {
+		((findDisplay 5000) displayCtrl 1200) ctrlSetFade 1;
+		((findDisplay 5000) displayCtrl 1200) ctrlCommit 0.5;
+	}];
+} forEach [1201,1202,1203,1204];
+
+
+
 
 // Enable spawn buttons // REDONE WITH LISTBOX UPDATE // SEE SPAWNMENU_LOADCLASSES
 (_menuDisplay displayCtrl 302) ctrlAddEventHandler ["ButtonDown",{
@@ -237,7 +307,7 @@ disableSerialization;
 
 {(_menuDisplay displayCtrl _x) ctrlSetStructuredText parseText "<t size='0.75' color='#ffffff'' shadow='2' font='PuristaMedium' align='center'>[CLICK ABOVE TO OPEN]</t>"} forEach [2001,2002];
 
-// Event handlers for hover actions 
+// Event handlers for hover actions
 {
 	(_menuDisplay displayCtrl _x) ctrlAddEventHandler ["MouseEnter", {
 		if ((_this select 0) isEqualTo ((findDisplay 5000) displayCtrl 15)) then {
