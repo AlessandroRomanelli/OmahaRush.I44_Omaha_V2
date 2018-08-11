@@ -45,7 +45,7 @@ if (cl_class == "medic") then {
 	player setUnitLoadout _newLoadout;
 
 	if (cl_classPerk == "smoke_grenades") then {
-		for "_i" from 0 to 2 do {player addItem "SmokeShell"};
+		for "_i" from 1 to 2 do {player addItem "SmokeShell"};
 	};
 };
 
@@ -56,10 +56,10 @@ if (cl_classPerk == "grenadier") then {
 	_count = if ("expl" in cl_squadPerks) then {1} else {2};
 	if (_currentWeapon in _rifles) then {
 		player addPrimaryWeaponItem (getText(_cfgRifleGrenade >> "attachment"));
-		for "_i" from 0 to _count do {player addItem (getText(_cfgRifleGrenade >> "rifleGrenade"))};
+		for "_i" from 1 to _count do {player addItem (getText(_cfgRifleGrenade >> "rifleGrenade"))};
 	};
 	_grenade = getText(missionConfigFile >> "Soldiers" >> _side >> "Grenade" >> "weapon");
-	for "_i" from 0 to _count do {player addItem _grenade};
+	for "_i" from 1 to _count do {player addItem _grenade};
 };
 
 if (cl_classPerk == "demolition") then {
@@ -70,7 +70,7 @@ if (cl_classPerk == "demolition") then {
 		player addBackpack _backpack;
 	};
 	_count = if ("expl" in cl_squadPerks) then {1} else {3};
-	for "_i" from 0 to _count do {player addItemToBackpack _explCharge};
+	for "_i" from 1 to _count do {player addItemToBackpack _explCharge};
 };
 
 if (cl_class == "engineer" && cl_classPerk == "perkAT") then {
@@ -85,7 +85,7 @@ if (cl_class == "engineer" && cl_classPerk == "perkAT") then {
 	player addMagazine _ammoName;
 	player addWeaponGlobal _launcher;
 	if ("expl" in cl_squadPerks) then {
-		for "_i" from 1 to _ammoCount do {player addMagazine _ammoName};
+		for "_i" from 2 to _ammoCount do {player addMagazine _ammoName};
 	};
 };
 

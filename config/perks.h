@@ -21,7 +21,7 @@ class CfgPerks {
 			description = "Deploys you with a frag grenade";
 		};
 		class expl {
-			displayName = "Addition Explosives";
+			displayName = "Additional Explosives";
 			picture = "";
 			description = "Deploys you with extra rockets/explosives/grenades";
 		};
