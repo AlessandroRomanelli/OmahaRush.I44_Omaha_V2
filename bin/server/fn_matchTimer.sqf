@@ -9,11 +9,11 @@ scriptName "fn_matchTimer";
 --------------------------------------------------------------------*/
 #define __filename "fn_matchTimer.sqf"
 
+_matchStart = param[0,false,[false]];
 _additionalTime = param[1,0,[0]];
 
 /* _stageTime = getNumber(missionConfigFile >> "MapSettings" >> "roundTime"); */
-_stageTime = ceil (("roundTime" call bis_fnc_getParamValue) * 60);
-_matchStart = param[0,false,[false]];
+_stageTime = ceil (paramsArray#3 * 60);
 
 sv_matchTime =  _stageTime + _additionalTime;
 sv_fallBack_timeLeft = _additionalTime;

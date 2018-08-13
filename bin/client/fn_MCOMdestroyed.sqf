@@ -19,7 +19,7 @@ if (isServer && !hasInterface) exitWith {};
 //cl_blockSpawnForSide = "attackers";
 //[] spawn client_fnc_displaySpawnRestriction;
 
-_fallBackTime = "FallBackSeconds" call bis_fnc_getParamValue;
+_fallBackTime = paramsArray#8;
 
 // Clean our spawnbeacons
 _beacon = player getVariable ["assault_beacon_obj", objNull];
@@ -51,7 +51,7 @@ _animate = {
 // Param is TRUE if the just destroyed mcom was NOT the last one
 if (param[0,false,[false]]) then {
 	// If this objective was NOT the last one, reset the time!
-	_roundTime = ceil (("RoundTime" call bis_fnc_getParamValue) * 60);
+	_roundTime = ceil (paramsArray#3 * 60);
 
 	[_roundTime + _fallBackTime, _fallBackTime] call client_fnc_initMatchTimer;
 

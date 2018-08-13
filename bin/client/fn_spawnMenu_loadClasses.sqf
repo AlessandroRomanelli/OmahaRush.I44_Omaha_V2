@@ -75,7 +75,7 @@ _l ctrlAddEventHandler ["LBSelChanged", {
 
 lbClear _l;
 
-_classRestrictionEnabled = [false, true] select ("ClassLimits" call bis_fnc_getParamValue);
+_classRestrictionEnabled = [false, true] select (paramsArray#18);
 
 if !(_classRestrictionEnabled) then {
 

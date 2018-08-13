@@ -12,7 +12,7 @@ if (isServer && !hasInterface) exitWith {};
 _class = param[0,"medic",[""]];
 _isRestricted = false;
 
-_classRestrictionEnabled = [false, true] select ("ClassLimits" call bis_fnc_getParamValue);
+_classRestrictionEnabled = [false, true] select (paramsArray#18);
 if (!_classRestrictionEnabled || !(_class in ["support", "engineer", "recon"])) exitWith {false};
 
 _classLimitException = {

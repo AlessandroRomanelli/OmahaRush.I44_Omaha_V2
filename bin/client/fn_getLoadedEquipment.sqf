@@ -40,9 +40,9 @@ if (count cl_equipConfigurations == 0) then {
 	{
 		// All weapons cheat
 		_allWeapons = false;
-		if (!sv_usingDatabase) then {
+		/* if (!sv_usingDatabase) then {
 			_allWeapons = true;
-		};
+		}; */
 
 		if (getNumber((_configs select _i) >> "exp") <= cl_exp || _allWeapons) then {
 			// Weapon has been unlocked, display it

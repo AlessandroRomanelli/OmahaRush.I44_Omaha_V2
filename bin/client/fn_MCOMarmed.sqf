@@ -47,17 +47,17 @@ if (isServer) then {
 			_soundTime = _soundTime - 1;
 			if (_time > 20) then {
 				if (_soundTime % 3 == 0) then {
-					playSound3D [_beep, sv_cur_obj, false, getPosATL sv_cur_obj, 15, 1, 300];
+					playSound3D [_beep, sv_cur_obj, false, getPosATL sv_cur_obj, 0, 1, 300];
 				};
 			};
 			if (_time >= 10 && _time <= 20) then {
 				if (_soundTime % 2 == 0) then {
-					playSound3D [_beep, sv_cur_obj, false, getPosATL sv_cur_obj, 20, 1, 300];
+					playSound3D [_beep, sv_cur_obj, false, getPosATL sv_cur_obj, 5, 1, 300];
 				};
 			};
 			if (_time < 10) then {
 				if (_soundTime % 1 == 0) then {
-					playSound3D [_beep, sv_cur_obj, false, getPosATL sv_cur_obj, 25, 1, 300];
+					playSound3D [_beep, sv_cur_obj, false, getPosATL sv_cur_obj, 10, 1, 300];
 				};
 			};
 			uiSleep 1;
@@ -105,12 +105,11 @@ if (isServer) then {
 				};
 			};
 			// Reset the time
-			//sv_matchTime = getNumber(missionConfigFile >> "MapSettings" >> "roundTime");
 			if (!isNil "sv_matchTimer_thread") then {
 				terminate sv_matchTimer_thread;
 			};
 			// Start the timer again with additional time counting in the fallback phase
-			_fallBackTime = "FallBackSeconds" call bis_fnc_getParamValue;
+			_fallBackTime = paramsArray#8;
 			[false, _fallBackTime] spawn server_fnc_matchTimer;
 
 			// refresh tickets

@@ -2,6 +2,8 @@ class GeneralConfig {
 	// Debugging
 	debug = 1;
 
+	serverKey = "changeme";
+
 	// ServerCommandPassword
 	commandPassword = "viper12";
 

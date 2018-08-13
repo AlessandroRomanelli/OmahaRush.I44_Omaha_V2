@@ -54,18 +54,9 @@ waitUntil {sv_serverReady && !isNil "sv_usingDatabase"};
 
 [] call client_fnc_initGlobalVars;
 
-// Get progress from server..
-if (sv_usingDatabase) then {
-	cl_statisticsLoaded = false;
-	[] call client_fnc_loadStatistics;
-	waitUntil {cl_statisticsLoaded};
-} else {
-	cl_total_kills = 0;
-	cl_total_deaths = 0;
-	cl_exp = 100000000;
-	cl_equipConfigurations = [];
-	cl_equipClassnames = ["","",""];
-};
+cl_statisticsLoaded = false;
+[] call client_fnc_loadStatistics;
+waitUntil {cl_statisticsLoaded};
 
 // Get initial spawn position to teleport the player to (e.g. in spawn menu)
 cl_safePos = getPos player;
@@ -108,9 +99,9 @@ if (sv_gameCycle % 2 == 0) then {
 ["InitializePlayer", [player]] call BIS_fnc_dynamicGroups;
 
 // If this is the debug mode, just unlock everything
-if (getNumber(missionConfigFile >> "GeneralConfig" >> "debug") == 1) then {
-	//cl_exp = 10000000000;
-};
+/* if (getNumber(missionConfigFile >> "GeneralConfig" >> "debug") == 1) then {
+	cl_exp = 10000000000;
+}; */
 
 if (player getVariable "gameSide" == "defenders") then {
 	_marker1 = createMarkerLocal ["mobile_respawn_defenders",[0,0]];

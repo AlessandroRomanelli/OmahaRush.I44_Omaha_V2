@@ -12,8 +12,8 @@ scriptName "fn_restrictedArea";
 player setVariable ["entryTime", diag_tickTime];
 
 _isPlayerAttacking = player getVariable "gameSide" == "attackers";
-_fallBackTime = "FallBackSeconds" call bis_fnc_getParamValue;
-_OOBTime = "OutOfBoundsTime" call bis_fnc_getParamValue;
+_fallBackTime = paramsArray#8;
+_OOBTime = paramsArray#7;
 _outOfBoundsTimeout = if (player getVariable ["isFallingBack", false]) then [{_fallBackTime}, {_OOBTime;}];
 
 // Wait until time is out or were out again

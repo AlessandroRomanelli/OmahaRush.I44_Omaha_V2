@@ -17,7 +17,7 @@ if (missionNamespace getVariable ["cl_resetPlayerRunning", false]) exitWith {};
 cl_resetPlayerRunning = true;
 
 // Start a countdown until the next match starts
-_time = "LobbyTime" call bis_fnc_getParamValue;
+_time = paramsArray#9;
 
 // Enable global voice
 0 enableChannel [true, true];
@@ -65,7 +65,7 @@ if (true) then {
 
 
 // If we have OnTenRestart enabled, WARN THE PLAYER
-if ((sv_gameCycle >= (("RotationsPerMatch" call bis_fnc_getParamValue) - 1)) && sv_dedicatedEnvironment) then {
+if ((sv_gameCycle >= ((paramsArray#11) - 1)) && sv_dedicatedEnvironment) then {
 	((uiNamespace getVariable ["rr_timer", displayNull]) displayCtrl 0) ctrlSetStructuredText parseText "<t size='2' color='#FE4629' shadow='2' align='center'>THE SERVER IS CHANGING MAP</t>";
 	sleep 30;
 } else {
@@ -91,7 +91,7 @@ player switchCamera "INTERNAL";
 [] spawn client_fnc_resetVariables;
 
 // Do not allow spawning within the first 30 seconds
-_fallBackTime = "FallBackSeconds" call bis_fnc_getParamValue;
+_fallBackTime = paramsArray#8;
 cl_blockSpawnUntil = diag_tickTime + _fallBackTime;
 cl_blockSpawnForSide = "attackers";
 [] spawn client_fnc_displaySpawnRestriction;
@@ -101,12 +101,12 @@ cl_blockSpawnForSide = "attackers";
 [] spawn client_fnc_spawn;
 
 // Restart match timer
-_roundTime = ceil (("RoundTime" call bis_fnc_getParamValue) * 60);
+_roundTime = ceil (paramsArray#3 * 60);
 [_roundTime + _fallBackTime, _fallBackTime] call client_fnc_initMatchTimer;
 
 // Give us points for playing :)
 [] spawn {
-	_fallBackTime = "FallBackSeconds" call bis_fnc_getParamValue;
+	_fallBackTime = paramsArray#8;
 	sleep 3;
 	// Message about preparation phase
 	[format ["DEFENDERS HAVE %1 SECONDS TO PREPARE", _fallBackTime]] spawn client_fnc_displayObjectiveMessage;

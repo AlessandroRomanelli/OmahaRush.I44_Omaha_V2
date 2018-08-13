@@ -72,8 +72,8 @@ addMissionEventHandler["EachFrame", {
 }] call bis_fnc_addScriptedEventHandler;
 
 [missionNamespace, "switchedToExtCamera", {
-	_infFP = [false, true] select ("InfantryFPOnly" call bis_fnc_getParamValue);
-	_vehFP = [false, true] select ("VehicleFPOnly" call bis_fnc_getParamValue);
+	_infFP = [false, true] select (paramsArray#15);
+	_vehFP = [false, true] select (paramsArray#16);
 	if (isNull objectParent player) then {
 		if (_infFP) then {
 			player switchCamera "INTERNAL";
@@ -203,7 +203,7 @@ player addEventHandler ["Killed", {
 		_victim setVariable ["isAlive", false];
 
 		_spawnSafeDistance = (getNumber (missionConfigFile >> "MapSettings" >> "safeSpawnDistance"));
-		_spawnSafeTime = "SpawnSafeTime" call bis_fnc_getParamValue;
+		_spawnSafeTime = paramsArray#6;
 		_spawnMarker = format ["mobile_respawn_%1", _victim getVariable "gameSide"];
 		if (_killer getVariable ["gameSide", "attackers"] != (_victim getVariable ["gameSide", "defenders"]) &&
 				{(diag_tickTime - cl_spawn_tick) < _spawnSafeTime} &&
