@@ -384,7 +384,7 @@ disableSerialization;
 if (isNil "TEMPWARNING") then {
 	// TEMPRARY WARNING TODO
 	createDialog "rr_info_box";
-	((findDisplay 10000) displayCtrl 0) ctrlSetStructuredText parseText "<t size='1' color='#FFFFFF' shadow='2' align='left'><t font='PuristaBold'>No.4 WW2 Rush Version</t><br/>0.64.0<br/><br/><t font='PuristaBold'>Changelog</t><br/><a href='https://github.com/AlessandroRomanelli/OmahaRush.I44_Omaha_V2/blob/master/ChangeLog.md'>Learn more</a><br/><br/><t font='PuristaBold'>Official Website</t><br/><a href='http://www.no4commando.com'>Open</a></t>";
+	((findDisplay 10000) displayCtrl 0) ctrlSetStructuredText parseText "<t size='1' color='#FFFFFF' shadow='2' align='left'><t font='PuristaBold'>No.4 WW2 Rush Version</t><br/>0.70.0<br/><br/><t font='PuristaBold'>Changelog</t><br/><a href='https://github.com/AlessandroRomanelli/OmahaRush.I44_Omaha_V2/blob/master/ChangeLog.md'>Learn more</a><br/><br/><t font='PuristaBold'>Official Website</t><br/><a href='http://www.no4commando.com'>Open</a></t>";
 	playSound "introSong";
 	TEMPWARNING = true;
 };
@@ -401,10 +401,10 @@ if !((group player) in _registeredGroups) then {
 	  {
 	    _privateGroup = _x getVariable ["bis_dg_pri", false];
 	    if ((count units _x > 0) && (count units _x < 5) && !_privateGroup) exitWith {
-	      ["AddGroupMember", [_x, player]] call BIS_fnc_dynamicGroups;
+	      ["AddGroupMember", [_x, player]] remoteExec ["BIS_fnc_dynamicGroups", 2];
 	    };
 	  } forEach _registeredGroups;
 	} else {
-	  ["RegisterGroup", [group player, player]] call BIS_fnc_dynamicGroups;
+	  ["RegisterGroup", [group player, player]] remoteExec ["BIS_fnc_dynamicGroups", 2];
 	};
 };

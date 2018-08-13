@@ -175,11 +175,11 @@ class Params {
   };
   class attackers {
     title = "Attackers Uniforms:";
-    #include "config\factions\GER\params.h"
+    #include "config\factions\US\params.h"
   };
   class defenders {
     title = "Defenders Uniforms:";
-    #include "config\factions\US\params.h"
+    #include "config\factions\GER\params.h"
   };
   class SpawnSafeTime {
     title = "How many seconds should the spawn protection last:";
