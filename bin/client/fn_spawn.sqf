@@ -147,8 +147,8 @@ _targetPos = [_pos, getPos sv_cur_obj] call client_fnc_getSectionCenter;
 _pos set[2, 400];
 
 // Display all buildings
-setObjectViewDistance 1000;
-setViewDistance 2000;
+setObjectViewDistance 500;
+setViewDistance 1000;
 
 // DUMMY WEAPON SO THE PLAYER DOESNT PLAY THE ANIMATION WHEN HE SPAWNS
 removeAllWeapons player;
