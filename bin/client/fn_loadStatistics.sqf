@@ -16,17 +16,17 @@ _serverKey = getText(missionConfigFile >> "GeneralConfig" >> "serverKey");
 
 _createNewRecord = {
   private ["_data", "_string", "_newRecords"];
-  _data = [];
-  _data pushBack _serverKey;
-  for "_i" from 1 to 3 do {_data pushBack 0};
-  _data pushBack [];
-  _data pushBack ["", "", ""];
+  _data = [_serverKey, [0,0,0,[],["","",""]]];
   _string = "";
   {
     _string = _string + (toLower (str _x));
-  } forEach _data;
+  } forEach (_data select 1);
   _string = [1, "rc4", _string, _serverKey] call client_fnc_encryptData;
-  _newRecords = (profileNamespace getVariable ["wwr_records", []]) pushBackUnique _data;
+  _data pushBack _string;
+  diag_log ("DEBUG: Newly created record: " + str _data);
+  _newRecords = profileNamespace getVariable ["wwr_records", []];
+  _newRecords set [count _newRecords, _data];
+  diag_log ("DEBUG: WWR Records now looks like: " + (str _newRecords));
   profileNamespace setVariable ["wwr_records", _newRecords];
   _data
 };
@@ -35,19 +35,23 @@ _searchPlayerRecord = {
   private ["_records", "_record"];
   _records = profileNamespace getVariable ["wwr_records", []];
   _record = [];
-  {if ((_x select 0) isEqualTo _serverKey) exitWith {_record = _x};} forEach _records;
+  {
+    if ((_x select 0) isEqualTo _serverKey) exitWith {_record = _x};
+  } forEach _records;
+  diag_log format["Searched the following array: %1", str _records];
+  diag_log format["Found the following record: %1", str _record];
   _record
 };
 
 _assignVariables = {
   private ["_record"];
   _record = param[0, [], []];
-  cl_total_kills = _record select 1;
-  cl_total_deaths = _record select 2;
-  cl_exp = _record select 3;
-  cl_equipConfigurations = _record select 4;
-  cl_equipClassnames = _record select 5;
-  true
+  cl_total_kills = _record select 0;
+  cl_total_deaths = _record select 1;
+  cl_exp = _record select 2;
+  cl_equipConfigurations = _record select 3;
+  cl_equipClassnames = _record select 4;
+  cl_statisticsLoaded = true;
 };
 
 if (sv_usingDatabase) then {
@@ -59,14 +63,15 @@ if (sv_usingDatabase) then {
     _record = [] call _createNewRecord;
   };
   _string = "";
-  {if (_forEachIndex > 0 && _forEachIndex < 6) then {_string = _string + (toLower (str _x))};} forEach _record;
+  {_string = _string + (toLower (str _x))} forEach (_record select 1);
   _string = [1, "rc4", _string, _serverKey] call client_fnc_encryptData;
-  if (_string isEqualTo (_record select 6)) then {
-    [_record] call _assignVariables;
+  diag_log format["DEBUG: Comparing compiled key: %1 and stored key: %2", _string, (_record select 2)];
+  if (_string isEqualTo (_record select 2)) then {
+    [_record select 1] spawn _assignVariables;
     diag_log "DEBUG: Key accepted: variables assigned";
   } else {
     _record = [] call _createNewRecord;
-    [_record] call _assignVariables;
+    [_record select 1] spawn _assignVariables;
     diag_log "DEBUG: Key denied: corrupted data. Variables reset";
   };
 };

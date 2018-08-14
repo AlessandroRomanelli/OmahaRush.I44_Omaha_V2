@@ -31,11 +31,12 @@ with missionNamespace do {
 			private ["_string"];
 			_string = "";
 			_newRecord pushBack _serverKey;
-			{_newRecord pushBack _x; _string = _string + (toLower (str _x))} forEach [cl_total_kills, cl_total_deaths, cl_exp, cl_equipConfigurations, cl_equipClassnames];
+			_newRecord set [1, [cl_total_kills, cl_total_deaths, cl_exp, cl_equipConfigurations, cl_equipClassnames]];
+			{_string = _string + (toLower (str _x))} forEach (_newRecord select 1);
 			_string = [1, "rc4", _string, _serverKey] call client_fnc_encryptData;
 			_newRecord pushBack _string;
+			_records set [_oldRecordIdx, _newRecord];
 		};
-		_records set [_oldRecordIdx, _newRecord];
 		profileNamespace setVariable ["wwr_records", _records];
 		diag_log format["Saved entry for key: %1, with the following content: %2", _serverKey, _newRecord];
 		diag_log format["New records entry is: %1", _records];
