@@ -47,7 +47,7 @@ if (isServer) then {
 			_soundTime = _soundTime - 1;
 			if (_time > 20) then {
 				if (_soundTime % 3 == 0) then {
-					playSound3D [_beep, sv_cur_obj, false, getPosATL sv_cur_obj, 0, 1, 300];
+					playSound3D [_beep, sv_cur_obj, false, getPosATL sv_cur_obj, 1, 1, 300];
 				};
 			};
 			if (_time >= 10 && _time <= 20) then {

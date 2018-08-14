@@ -8,53 +8,65 @@ scriptName "fn_loadStatistics";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_loadStatistics.sqf"
-#define CL_PROPS [cl_total_kills, cl_total_deaths, cl_exp, cl_equipConfigurations, cl_equipClassnames]
 if (isServer && !hasInterface) exitWith {};
 
+
+private ["_createNewRecord", "_searchPlayerRecord", "_assignVariables", "_serverKey"];
 _serverKey = getText(missionConfigFile >> "GeneralConfig" >> "serverKey");
 
-_resetPlayer = {
-  _assignVars = param[0, false, [false]];
-  profileNamespace setVariable ["wwr_cl_total_kills", 0];
-  profileNamespace setVariable ["wwr_cl_total_deaths", 0];
-  profileNamespace setVariable ["wwr_cl_exp", 0];
-  profileNamespace setVariable ["wwr_cl_equipConfigurations", []];
-  profileNamespace setVariable ["wwr_cl_equipClassnames", ["", "", ""]];
-  _data = [1, "rc4", "000[]["""","""",""""]", _serverKey] call client_fnc_encryptData;
-  profilenamespace setVariable ["wwr_cl_key", _data];
-  profileNamespace setVariable ["wwr_hasRecord", true];
-  if (_assignVars) then {
-    cl_total_kills = 0;
-    cl_total_deaths = 0;
-    cl_exp = 0;
-    cl_equipConfigurations = [];
-    cl_equipClassnames = ["", "", ""];
-  };
-  _assignVars
+_createNewRecord = {
+  private ["_data", "_string", "_newRecords"];
+  _data = [];
+  _data pushBack _serverKey;
+  for "_i" from 1 to 3 do {_data pushBack 0};
+  _data pushBack [];
+  _data pushBack ["", "", ""];
+  _string = "";
+  {
+    _string = _string + (toLower (str _x));
+  } forEach _data;
+  _string = [1, "rc4", _string, _serverKey] call client_fnc_encryptData;
+  _newRecords = (profileNamespace getVariable ["wwr_records", []]) pushBackUnique _data;
+  profileNamespace setVariable ["wwr_records", _newRecords];
+  _data
+};
+
+_searchPlayerRecord = {
+  private ["_records", "_record"];
+  _records = profileNamespace getVariable ["wwr_records", []];
+  _record = [];
+  {if ((_x select 0) isEqualTo _serverKey) exitWith {_record = _x};} forEach _records;
+  _record
+};
+
+_assignVariables = {
+  private ["_record"];
+  _record = param[0, [], []];
+  cl_total_kills = _record select 1;
+  cl_total_deaths = _record select 2;
+  cl_exp = _record select 3;
+  cl_equipConfigurations = _record select 4;
+  cl_equipClassnames = _record select 5;
+  true
 };
 
 if (sv_usingDatabase) then {
   [player] remoteExec ["server_fnc_db_getPlayer",2];
 } else {
-  if !(profileNamespace getVariable ["wwr_hasRecord", false]) then {
-    [false] call _resetPlayer;
-    diag_log "DEBUG: No record found for player, resetting statistics";
+  private ["_record", "_string"];
+  _record = [] call _searchPlayerRecord;
+  if (count _record == 0) then {
+    _record = [] call _createNewRecord;
   };
-  cl_total_kills = profileNamespace getVariable ["wwr_cl_total_kills", 0];
-  cl_total_deaths = profileNamespace getVariable ["wwr_cl_total_deaths", 0];
-  cl_exp = profileNamespace getVariable ["wwr_cl_exp", 0];
-  cl_equipConfigurations = profileNamespace getVariable ["wwr_cl_equipConfigurations", []];
-  cl_equipClassnames = profileNamespace getVariable ["wwr_cl_equipClassnames", ["", "", ""]];
-  _key = profileNamespace getVariable ["wwr_cl_key", ""];
-  _key = [0, "rc4", _key, _serverKey] call client_fnc_encryptData;
-  _data = "";
-  {_data = _data + str _x} forEach CL_PROPS;
-  if (_key isEqualTo _data) then {
-    cl_statisticsLoaded = true;
-    diag_log "DEBUG: Key was right";
+  _string = "";
+  {if (_forEachIndex > 0 && _forEachIndex < 6) then {_string = _string + (toLower (str _x))};} forEach _record;
+  _string = [1, "rc4", _string, _serverKey] call client_fnc_encryptData;
+  if (_string isEqualTo (_record select 6)) then {
+    [_record] call _assignVariables;
+    diag_log "DEBUG: Key accepted: variables assigned";
   } else {
-    [true] call _resetPlayer;
-    cl_statisticsLoaded = true;
-    diag_log "DEBUG: Key was wrong, altered variables detected, player reset";
+    _record = [] call _createNewRecord;
+    [_record] call _assignVariables;
+    diag_log "DEBUG: Key denied: corrupted data. Variables reset";
   };
 };

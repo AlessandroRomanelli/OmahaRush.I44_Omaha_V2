@@ -8,7 +8,6 @@ scriptName "fn_saveStatistics";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_saveStatistics.sqf"
-#define CL_PROPS [cl_total_kills, cl_total_deaths, cl_exp, cl_equipConfigurations, cl_equipClassnames]
 
 if (isServer && !hasInterface) exitWith {};
 saveProfileNamespace;
@@ -18,18 +17,29 @@ saveProfileNamespace;
 with missionNamespace do {
 	// No database no saving!
 	if (!sv_usingDatabase) exitWith {
-		profileNamespace setVariable ["wwr_cl_total_kills", cl_total_kills];
-	  profileNamespace setVariable ["wwr_cl_total_deaths", cl_total_deaths];
-	  profileNamespace setVariable ["wwr_cl_exp", cl_exp];
-	  profileNamespace setVariable ["wwr_cl_equipConfigurations", cl_equipConfigurations];
-	  profileNamespace setVariable ["wwr_cl_equipClassnames", cl_equipClassnames];
-	  profileNamespace setVariable ["wwr_hasRecord", true];
-		_data = "";
-		{_data = _data + str _x} forEach CL_PROPS;
-		_data = [1, "rc4", _data, getText(missionConfigFile >> "GeneralConfig" >> "serverKey")] call client_fnc_encryptData;
-		profileNamespace setVariable ["wwr_cl_key", _data];
+		private ["_records", "_newRecord", "_oldRecordIdx", "_serverKey"];
+		_newRecord = [];
+		_serverKey = getText(missionConfigFile >> "GeneralConfig" >> "serverKey");
+		_records = profileNamespace getVariable ["wwr_records", []];
+		_oldRecordIdx = -1;
+		{
+			if ((_x select 0) isEqualTo _serverKey) exitWith {
+				_oldRecordIdx = _forEachIndex;
+			};
+		} forEach _records;
+		if !(_oldRecordIdx isEqualTo -1) then {
+			private ["_string"];
+			_string = "";
+			_newRecord pushBack _serverKey;
+			{_newRecord pushBack _x; _string = _string + (toLower (str _x))} forEach [cl_total_kills, cl_total_deaths, cl_exp, cl_equipConfigurations, cl_equipClassnames];
+			_string = [1, "rc4", _string, _serverKey] call client_fnc_encryptData;
+			_newRecord pushBack _string;
+		};
+		_records set [_oldRecordIdx, _newRecord];
+		profileNamespace setVariable ["wwr_records", _records];
+		diag_log format["Saved entry for key: %1, with the following content: %2", _serverKey, _newRecord];
+		diag_log format["New records entry is: %1", _records];
 		saveProfileNamespace;
-		diag_log ("DEBUG: Saved profileNamespace with encryption key: "+_data);
 	};
 
 	[player, [
