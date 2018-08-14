@@ -43,7 +43,7 @@ cl_assistsInfo = [];
 // Setup the objective icon at the top
 if (player getVariable "gameSide" == "defenders") then {
 	disableSerialization;
-	_d = uiNamespace getVariable ["rr_objective_gui", displayNull];
+	private _d = uiNamespace getVariable ["rr_objective_gui", displayNull];
 	(_d displayCtrl 0) ctrlSetText "pictures\objective_defender.paa";
 };
 
@@ -73,6 +73,7 @@ if (sv_gameCycle % 2 == 0) then {
 	};
 };
 
+private ["_marker1", "_marker2"];
 if (player getVariable "gameSide" == "defenders") then {
 	_marker1 = createMarkerLocal ["mobile_respawn_defenders",[0,0]];
 	_marker1 setMarkerTypeLocal "b_unknown";
@@ -95,7 +96,7 @@ if (player getVariable "gameSide" == "defenders") then {
 [] spawn client_fnc_updateMarkers;
 
 // Hide hud
-_3dcursor = [false, true] select (paramsArray#17);
+private _3dcursor = [false, true] select (paramsArray#17);
 showHUD [true,false,false,false,false,true,false,_3dcursor,false];
 
 // Run equipment checks
@@ -106,14 +107,14 @@ showHUD [true,false,false,false,false,true,false,_3dcursor,false];
 // Disable voice channels
 [] spawn client_fnc_disableChannels;
 
-_side = player getVariable "gameSide";
-_sideLoadout = [] call client_fnc_getCurrentSideLoadout;
+private _side = player getVariable "gameSide";
+private _sideLoadout = [] call client_fnc_getCurrentSideLoadout;
 
-_uniforms = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "uniforms"));
-_goggles = (getText(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "goggles"));
-_vests		 = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "vests"));
-_headgears = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "headgears"));
-_backpacks = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "backpacks"));
+private _uniforms = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "uniforms"));
+private _goggles = (getText(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "goggles"));
+private _vests		 = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "vests"));
+private _headgears = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "headgears"));
+private _backpacks = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "backpacks"));
 
 if (count _uniforms > 0) then {player forceAddUniform (selectRandom _uniforms);};
 if (_goggles != "") then {player addGoggles _goggles;};
@@ -133,15 +134,15 @@ player assignItem "ItemGPS";*/
 waitUntil {!isNil "sv_stage1_obj" && !isNil "sv_stage2_obj" && !isNil "sv_stage3_obj" && !isNil "sv_stage4_obj"};
 
 // Get cam pos for spawn menu cam
-_stage = "null";
-while {_stage == "null"} do {
+private _stage = "";
+while {_stage == ""} do {
 	_stage = [] call client_fnc_getCurrentStageString;
 };
 _side = player getVariable "gameSide";
-_pos = getArray(missionConfigFile >> "MapSettings" >> "Stages" >> _stage >> "Spawns" >> _side);
+private _pos = getArray(missionConfigFile >> "MapSettings" >> "Stages" >> _stage >> "Spawns" >> _side);
 
 // Determine point between current pos and target pos
-_targetPos = [_pos, getPos sv_cur_obj] call client_fnc_getSectionCenter;
+private _targetPos = [_pos, getPos sv_cur_obj] call client_fnc_getSectionCenter;
 
 // Set cam pos height
 _pos set[2, 400];
@@ -154,7 +155,7 @@ setViewDistance 1000;
 removeAllWeapons player;
 
 // Create spawn cam
-_created = false;
+private _created = false;
 if (isNil "cl_spawnmenu_cam") then {
 	diag_log "SPAWNMENU_CAM WAS NIL";
 	cl_spawnmenu_cam = "camera" camCreate (getPos player);
@@ -196,7 +197,7 @@ createDialog "rr_spawnmenu";
 
 // Disable ESC
 (findDisplay 5000) displayAddEventHandler ["KeyDown",{
-	_handled = false;
+	private _handled = false;
 	if ((_this select 1) == 1) then {
 		_handled = true; // Block ESC
 	};
@@ -206,7 +207,7 @@ createDialog "rr_spawnmenu";
 // Blurry background?
 if (getNumber(missionConfigFile >> "GeneralConfig" >> "PostProcessing") == 1) then {
 	["DynamicBlur", 400, [0.4]] spawn {
-		params ["_name", "_priority", "_effect", "_handle"];
+		params ["_name", "_priority", "_effect"];
 		while {
 			cl_spawnmenu_blur = ppEffectCreate [_name, _priority];
 			cl_spawnmenu_blur < 0
@@ -222,29 +223,29 @@ if (getNumber(missionConfigFile >> "GeneralConfig" >> "PostProcessing") == 1) th
 // Populate the structured texts
 [] spawn client_fnc_populateSpawnMenu;
 
-_menuDisplay = (findDisplay 5000);
+private _menuDisplay = (findDisplay 5000);
 
 scaleCtrl = {
 	params [["_ctrl", controlNull, [controlNull]],["_factor", 0, [0]], ["_time", 0, [0]]];
-	_ctrlPos = ctrlPosition _ctrl;
-	_delta = ((_ctrlPos select 2)*(_factor - 1))/2;
-	_newPos = [(_ctrlPos select 0) - _delta, (_ctrlPos select 1) - _delta, (_ctrlPos select 2)*_factor, (_ctrlPos select 3)*_factor];
-	_ctrl ctrlSetPosition _newPos;
+	private _ctrlPos = ctrlPosition _ctrl;
+	private _delta = ((_ctrlPos select 2)*(_factor - 1))/2;
+	private _newPos = [(_ctrlPos select 0) - _delta, (_ctrlPos select 1) - _delta, (_ctrlPos select 2)*_factor, (_ctrlPos select 3)*_factor];
+  _ctrl ctrlSetPosition _newPos;
 	_ctrl ctrlCommit _time;
 	true
 };
 
 animateCtrl = {
 	params [["_objective", objNUll, [objNull]],["_ctrl", controlNull, [controlNull]],["_factor", 0, [0]], ["_time", 0, [0]]];
-	_ctrlPos = ctrlPosition _ctrl;
+	private _ctrlPos = ctrlPosition _ctrl;
 	if (!isNil "cl_objectiveSpawnAnimation") exitWith {};
 		cl_objectiveSpawnAnimation = true;
-	while {_objective isEqualTo sv_cur_obj} do {
+	while {(str _objective) isEqualTo (str sv_cur_obj)} do {
 		[_ctrl, _factor, _time] call scaleCtrl;
-		sleep _time + 0.1;
+		sleep (_time + 0.1);
 		_ctrl ctrlSetPosition _ctrlPos;
 		_ctrl ctrlCommit _time;
-		sleep _time + 0.1;
+		sleep (_time + 0.1);
 	};
 	_ctrl ctrlSetPosition _ctrlPos;
 	_ctrl ctrlCommit 0;
@@ -255,14 +256,13 @@ animateCtrl = {
 updateObjectiveProgress = {
 	params[["_display", displayNull, [displayNull]]];
 	for "_i" from 1 to 4 do {
-		_idc = 1200 + _i;
-		_ctrlObj = _display displayCtrl _idc;
-		_IntToAlpha = ["", "A", "B", "C", "D"];
-		_playerSide = player getVariable ["gameSide", "defenders"];
-		_picturePath = "pictures\"+(format["obj_%1_%2", _IntToAlpha select _i, _playerSide])+".paa";
+		private _idc = 1200 + _i;
+		private _ctrlObj = _display displayCtrl _idc;
+		private _IntToAlpha = ["", "A", "B", "C", "D"];
+		private _playerSide = player getVariable ["gameSide", "defenders"];
+		private _picturePath = "pictures\"+(format["obj_%1_%2", _IntToAlpha select _i, _playerSide])+".paa";
+		private _objective = missionNamespace getVariable [format["sv_stage%1_obj", _i], objNull];
 		_ctrlObj ctrlSetText _picturePath;
-		_objective = missionNamespace getVariable [format["sv_stage%1_obj", _i], objNull];
-		_ctrlPos = ctrlPosition _ctrlObj;
 		if !(_objective isEqualTo sv_cur_obj) then {
 			_ctrlObj ctrlSetTextColor [1,1,1,0.25];
 		} else {
@@ -335,7 +335,7 @@ disableSerialization;
 }];
 
 (_menuDisplay displayCtrl 16) ctrlAddEventHandler ["ButtonDown",{
-	_secondaryWeapons = cl_equipConfigurations select {(getText(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> _x >> "type")) == "secondary"};
+	private _secondaryWeapons = cl_equipConfigurations select {(getText(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> _x >> "type")) == "secondary"};
 	if (count _secondaryWeapons != 0) then {
 		[] spawn client_fnc_spawnMenu_displaySecondaryWeaponSelection;
 	};
@@ -361,9 +361,6 @@ disableSerialization;
 	[] spawn client_fnc_spawnMenu_displayGroupManagement;
 }];
 
-// Load available classes and select our preferred one
-[] spawn client_fnc_spawnMenu_loadClasses;
-
 // Hide the weapon selection listbox and its background + the attachment listboxes and their backgrounds
 {
 	(_menuDisplay displayCtrl _x) ctrlShow false;
@@ -374,9 +371,11 @@ disableSerialization;
 
 [] spawn {
 	[] spawn client_fnc_loadSpawnpoints;
+	[] spawn client_fnc_spawnMenu_loadClasses;
 	while {dialog} do {
-		sleep 0.05;
+		sleep 0.2;
 		[] spawn client_fnc_loadSpawnpoints;
+		[] spawn client_fnc_spawnMenu_loadClasses;
 	};
 };
 
@@ -395,11 +394,11 @@ player setSpeaker "NoVoice";
 
 [true] spawn client_fnc_drawMapUnits;
 
-_registeredGroups = ["GetAllGroupsOfSide"] call BIS_fnc_dynamicGroups;
+private _registeredGroups = ["GetAllGroupsOfSide"] call BIS_fnc_dynamicGroups;
 if !((group player) in _registeredGroups) then {
 	if !(count _registeredGroups isEqualTo 0) then {
 	  {
-	    _privateGroup = _x getVariable ["bis_dg_pri", false];
+	    private _privateGroup = _x getVariable ["bis_dg_pri", false];
 	    if ((count units _x > 0) && (count units _x < 5) && !_privateGroup) exitWith {
 	      ["AddGroupMember", [_x, player]] remoteExec ["BIS_fnc_dynamicGroups", 2];
 	    };

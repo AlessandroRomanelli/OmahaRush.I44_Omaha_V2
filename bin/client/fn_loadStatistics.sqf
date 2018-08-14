@@ -11,30 +11,27 @@ scriptName "fn_loadStatistics";
 if (isServer && !hasInterface) exitWith {};
 
 
-private ["_createNewRecord", "_searchPlayerRecord", "_assignVariables", "_serverKey"];
-_serverKey = getText(missionConfigFile >> "GeneralConfig" >> "serverKey");
+private _serverKey = getText(missionConfigFile >> "GeneralConfig" >> "serverKey");
 
-_createNewRecord = {
-  private ["_data", "_string", "_newRecords"];
-  _data = [_serverKey, [0,0,0,[],["","",""]]];
-  _string = "";
+private _createNewRecord = {
+  private _data = [_serverKey, [0,0,0,[],["","",""]]];
+  private _string = "";
   {
     _string = _string + (toLower (str _x));
   } forEach (_data select 1);
   _string = [1, "rc4", _string, _serverKey] call client_fnc_encryptData;
   _data pushBack _string;
   diag_log ("DEBUG: Newly created record: " + str _data);
-  _newRecords = profileNamespace getVariable ["wwr_records", []];
-  _newRecords set [count _newRecords, _data];
+  private _newRecords = profileNamespace getVariable ["wwr_records", []];
+  _newRecords pushBackUnique _data;
   diag_log ("DEBUG: WWR Records now looks like: " + (str _newRecords));
   profileNamespace setVariable ["wwr_records", _newRecords];
   _data
 };
 
-_searchPlayerRecord = {
-  private ["_records", "_record"];
-  _records = profileNamespace getVariable ["wwr_records", []];
-  _record = [];
+private _searchPlayerRecord = {
+  private _records = profileNamespace getVariable ["wwr_records", []];
+  private _record = [];
   {
     if ((_x select 0) isEqualTo _serverKey) exitWith {_record = _x};
   } forEach _records;
@@ -43,9 +40,8 @@ _searchPlayerRecord = {
   _record
 };
 
-_assignVariables = {
-  private ["_record"];
-  _record = param[0, [], []];
+private _assignVariables = {
+  private _record = param[0, [], []];
   cl_total_kills = _record select 0;
   cl_total_deaths = _record select 1;
   cl_exp = _record select 2;
