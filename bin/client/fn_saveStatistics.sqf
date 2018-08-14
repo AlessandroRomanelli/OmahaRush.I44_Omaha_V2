@@ -17,19 +17,17 @@ saveProfileNamespace;
 with missionNamespace do {
 	// No database no saving!
 	if (!sv_usingDatabase) exitWith {
-		private ["_records", "_newRecord", "_oldRecordIdx", "_serverKey"];
-		_newRecord = [];
-		_serverKey = getText(missionConfigFile >> "GeneralConfig" >> "serverKey");
-		_records = profileNamespace getVariable ["wwr_records", []];
-		_oldRecordIdx = -1;
+		private _newRecord = [];
+		private _serverKey = getText(missionConfigFile >> "GeneralConfig" >> "serverKey");
+		private _records = profileNamespace getVariable ["wwr_records", []];
+		private _oldRecordIdx = -1;
 		{
 			if ((_x select 0) isEqualTo _serverKey) exitWith {
 				_oldRecordIdx = _forEachIndex;
 			};
 		} forEach _records;
 		if !(_oldRecordIdx isEqualTo -1) then {
-			private ["_string"];
-			_string = "";
+			private _string = "";
 			_newRecord pushBack _serverKey;
 			_newRecord set [1, [cl_total_kills, cl_total_deaths, cl_exp, cl_equipConfigurations, cl_equipClassnames]];
 			{_string = _string + (toLower (str _x))} forEach (_newRecord select 1);
