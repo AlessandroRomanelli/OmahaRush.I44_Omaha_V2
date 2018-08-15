@@ -23,7 +23,11 @@ private _createNewRecord = {
   _data pushBack _string;
   diag_log ("DEBUG: Newly created record: " + str _data);
   private _newRecords = profileNamespace getVariable ["wwr_records", []];
-  _newRecords pushBackUnique _data;
+  if (_newRecords isEqualTo []) then {
+    _newRecords = [_data];
+  } else {
+    _newRecords pushBackUnique _data;
+  };
   diag_log ("DEBUG: WWR Records now looks like: " + (str _newRecords));
   profileNamespace setVariable ["wwr_records", _newRecords];
   _data
