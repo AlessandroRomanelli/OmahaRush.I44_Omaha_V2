@@ -25,7 +25,7 @@ if (!isNil "cl_actionIDs") then {
 
 
 // Any beacons left?
-_beacon = player getVariable ["assault_beacon_obj", objNull];
+private _beacon = player getVariable ["assault_beacon_obj", objNull];
 if (!isNull _beacon) then {
 	deleteVehicle _beacon;
 };
@@ -39,7 +39,7 @@ if (!isNull _beacon) then {
 // Setup the objective icon at the top
 if (player getVariable "gameSide" == "defenders") then {
 	disableSerialization;
-	_d = uiNamespace getVariable ["rr_objective_gui", displayNull];
+	private _d = uiNamespace getVariable ["rr_objective_gui", displayNull];
 	(_d displayCtrl 0) ctrlSetText "pictures\objective_defender.paa";
 };
 
@@ -139,20 +139,20 @@ if (isNil "rr_iconrenderer_executed") then {
 		/* _stage = [] call client_fnc_getCurrentStageString; */
 
 		if (count (sv_cur_obj getVariable ["positionAGL", []]) == 0) then {
-			_pos = ASLToAGL (getPosASL sv_cur_obj);
+			private _pos = ASLToAGL (getPosASL sv_cur_obj);
 			_pos set [2, (_pos select 2) + 0.5];
 			sv_cur_obj setVariable ["positionAGL", _pos];
 		};
 
-		_pos = sv_cur_obj getVariable "positionAGL";
+		private _pos = sv_cur_obj getVariable "positionAGL";
 
-		_alpha = 1 - ((((player getRelDir _pos) - 180)/180)^30);
+		private _alpha = 1 - ((((player getRelDir _pos) - 180)/180)^30);
 
 		if ((sv_cur_obj getVariable ["status", -1]) isEqualTo 1) then {
 			_alpha = 2/3 + (1/3*cos(100*diag_tickTime*pi));
 		};
 
-		_objIsArmed = sv_cur_obj getVariable ["status", -1] isEqualTo 1;
+		private _objIsArmed = sv_cur_obj getVariable ["status", -1] isEqualTo 1;
 		if (player getVariable ["gameSide", "defenders"] == "defenders") then {
 			if (_objIsArmed) then {
 				drawIcon3D [MISSION_ROOT+"pictures\objective_defender_armed.paa",[1,1,1,_alpha],_pos,1.5,1.5,0,format["Defuse (%1m)", round(player distance sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
@@ -181,8 +181,8 @@ if (isNil "rr_iconrenderer_executed") then {
 
 		// Team icons
 		{
-			_unit = _x select 0;
-			_pos = getPosATLVisual _unit;
+			private _unit = _x select 0;
+			private _pos = getPosATLVisual _unit;
 			_pos set [2, (_pos select 2) + 1.85];
 			if (_unit == (driver vehicle cursorObject) || _unit == (driver vehicle cursorTarget)) then {
 				drawIcon3D[_x select 2, [1,1,1,0.75], _pos, 0.5, 0.5, 0, _x select 1, 2, 0.03, "PuristaMedium", "center", false];
@@ -201,29 +201,27 @@ if (isNil "rr_iconrenderer_executed") then {
 		};
 
 
-		_d = uiNamespace getVariable ["rr_objective_gui", displayNull];
+		private _d = uiNamespace getVariable ["rr_objective_gui", displayNull];
 		(_d displayCtrl 1) ctrlSetStructuredText parseText format ["<t size='1' color='#FFFFFF' shadow='2' font='PuristaMedium' align='left'>%1</t>", sv_tickets];
 		(_d displayCtrl 4) ctrlSetStructuredText parseText format ["<t size='1' color='#FFFFFF' shadow='2' font='PuristaMedium' align='right'>%1</t>", [cl_matchTime, "MM:SS"] call bis_fnc_secondsToString];
 		(_d displayCtrl 2) progressSetPosition (sv_tickets / sv_tickets_total);
 
 		// MERGE OF INGAME GUI
-		_hud = uiNameSpace getVariable ["playerHUD",displayNull];
-		_HUD_currentAmmo = _hud displayCtrl 100;
-		_HUD_reserveAmmo = _hud displayCtrl 101;
-		_HUD_firemode = _hud displayCtrl 102;
-		_HUD_healthPlus = _hud displayCtrl 103;
-		_HUD_healthPoints = _hud displayCtrl 104;
-		_HUD_zeroing = _hud displayCtrl 105;
-		_HUD_slashBetweenAmmo = _hud displayCtrl 106;
-		_HUD_grenades = _hud displayCtrl 107;
-		_HUD_typeGrenade = _hud displayCtrl 108;
+		private _hud = uiNameSpace getVariable ["playerHUD",displayNull];
+		private _HUD_currentAmmo = _hud displayCtrl 100;
+		private _HUD_reserveAmmo = _hud displayCtrl 101;
+		private _HUD_firemode = _hud displayCtrl 102;
+		private _HUD_healthPoints = _hud displayCtrl 104;
+		private _HUD_zeroing = _hud displayCtrl 105;
+		private _HUD_grenades = _hud displayCtrl 107;
+		private _HUD_typeGrenade = _hud displayCtrl 108;
 
-		_currentAmmo = 0;
-		_reserveAmmo = 0;
-		_grenades    = 0;
-		_fireMode = "";
+		private _currentAmmo = 0;
+		private _reserveAmmo = 0;
+		private _grenades    = 0;
+		private _fireMode = "";
 
-		_mode = currentWeaponMode (gunner (vehicle player));
+		private _mode = currentWeaponMode (gunner (vehicle player));
 		if (_mode isEqualType "STRING") then {
 			if (_mode == "Single") then {_fireMode = "SNGL"};
 			if (_mode in ["Burst","Burst2rnd"]) then {_fireMode = "BRST"};
@@ -253,13 +251,14 @@ if (isNil "rr_iconrenderer_executed") then {
 			} else {
 				_currentAmmo = (vehicle player) ammo (currentWeapon (vehicle player));
 				_reserveAmmo = [] call {
-					_reserveAmmo = 0 - ((vehicle player) ammo (currentWeapon (vehicle player)));
-					{if ((_x select 0) isEqualto (currentMagazine (vehicle player))) then {_reserveAmmo = _reserveAmmo + (_x select 1)}} forEach magazinesAmmo (vehicle player);
-					_reserveAmmo};
+					private _ammoLeft = 0 - ((vehicle player) ammo (currentWeapon (vehicle player)));
+					{if ((_x select 0) isEqualto (currentMagazine (vehicle player))) then {_ammoLeft = _ammoLeft + (_x select 1)}} forEach magazinesAmmo (vehicle player);
+					_ammoLeft
+				};
 			};
 		};
 
-		_grenadeIcon = if (toLower ((currentThrowable player) select 0) in ["lib_us_mk_2", "lib_shg24", "lib_rg42"]) then {"pictures\frag.paa"} else {"pictures\smoke.paa"};
+		private _grenadeIcon = if (toLower ((currentThrowable player) select 0) in ["lib_us_mk_2", "lib_shg24", "lib_rg42"]) then {"pictures\frag.paa"} else {"pictures\smoke.paa"};
 		if ((currentThrowable player) isEqualto []) then {_grenadeIcon = "";};
 
 		if (_grenades isEqualTo 0) then {_grenades = ""};
@@ -274,7 +273,7 @@ if (isNil "rr_iconrenderer_executed") then {
 
 		// warning if we are too close to the enemy spawn
 		if (alive player && {!(vehicle player isKindOf "Air")} && {player getVariable ["isAlive", false]}) then {
-			_safeSpawnDistance = getNumber(missionConfigFile >> "MapSettings" >> "safeSpawnDistance");
+			private _safeSpawnDistance = getNumber(missionConfigFile >> "MapSettings" >> "safeSpawnDistance");
 			if (player distance (getMarkerPos cl_enemySpawnMarker) < _safeSpawnDistance) then {
 				30 cutRsc ["rr_restrictedAreaSpawn", "PLAIN"];
 				if (isNil "cl_restrictedArea_thread") then {
@@ -284,11 +283,11 @@ if (isNil "rr_iconrenderer_executed") then {
 		};
 
 		if (player getVariable ["isAlive", false]) then {
-			_isPlayerAttacking = player getVariable ["gameSide", "attackers"] == "attackers";
-			if !((vehicle player) inArea playArea) then {
+			private _isPlayerAttacking = player getVariable ["gameSide", "attackers"] == "attackers";
+			if !(((vehicle player) inArea playArea) || ((vehicle player) isKindOf "Air")) then {
 				30 cutRsc ["rr_restrictedArea", "PLAIN"];
-				_display = uiNamespace getVariable ["rr_restrictedArea", displayNull];
-				_outOfBoundsTimeout = if (player getVariable ["isFallingBack", false]) then [{paramsArray#8}, {paramsArray#7}];
+				private _display = uiNamespace getVariable ["rr_restrictedArea", displayNull];
+				private _outOfBoundsTimeout = if (player getVariable ["isFallingBack", false]) then [{paramsArray#8}, {paramsArray#7}];
 				if (diag_tickTime - (player getVariable "entryTime") < _outOfBoundsTimeout) then {
 					if (!_isPlayerAttacking && player getVariable "isFallingBack") then {
 						(_display displayCtrl 0) ctrlSetStructuredText parseText "<t size='3.5' color='#FFFFFF' shadow='2' align='center' font='PuristaBold'>FALL BACK</t><br/><t size='2' color='#FFFFFF' shadow='2' align='center'>YOU ARE BEYOND OUR LAST DEFENCE</t>";

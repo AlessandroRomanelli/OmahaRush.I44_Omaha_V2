@@ -104,6 +104,22 @@ cl_soundLevel = 1;
 		};
 	};
 
+	// Space bar to deploy parachute
+	if ((_this select 1) == 57) then {
+		if ((isNull (objectParent player)) && (((getPos player) select 2) > 30)) then {
+			_h = true;
+			private _posPlayer = position player;
+			private _dirPlayer = getDir player;
+			private _velPlayer = velocity player;
+			{_velPlayer set [_forEachIndex, _x/5]} forEach _velPlayer;
+			private _para = "NonSteerable_Parachute_F" createVehicle _posPlayer;
+			player moveInDriver _para;
+			_para setPos _posPlayer;
+			_para setVelocity _velPlayer;
+			_para setDir _dirPlayer;
+		};
+	};
+
 	// F1 - OBJECTS DUMP
 	if ((_this select 1) == 59) then {
 		_h = true;

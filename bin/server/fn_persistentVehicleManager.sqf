@@ -26,7 +26,7 @@ private _configs = _configs + ("true" configClasses (missionConfigFile >> "MapSe
 } forEach _configs;
 
 // Inline functions
-private _sv_getVehicleByID = {
+sv_getVehicleByID = {
 	private _id = param[0,"",[""]];
 	private _ret = objNull;
 	{
@@ -36,7 +36,7 @@ private _sv_getVehicleByID = {
 	} forEach sv_persistentVehicles;
 	_ret;
 };
-private _sv_deleteNullVehicles = {
+sv_deleteNullVehicles = {
 	private _newList = [];
 	{
 		if (!isNull _x) then {
@@ -68,6 +68,9 @@ private _sv_spawnVehicle = {
 	private _arrayToEdit = param[2,[],[[]]];
 	//diag_log "_0";
 
+	private _serverPopulation = count allPlayers;
+	if (getNumber(_config >> "populationReq") > _serverPopulation) exitWith {};
+
 	// Vehicle is not being handled yet, handle it now
 	sv_persistentVehiclesAwaitingRespawn pushBack (configName _config);
 
@@ -79,10 +82,10 @@ private _sv_spawnVehicle = {
 	//diag_log "_1";
 
 	// Check if there is a old vehicle, if yes, delete it
-	private _oldVeh = [configName _config] call _sv_getVehicleByID;
+	private _oldVeh = [configName _config] call sv_getVehicleByID;
 	if (!isNull _oldVeh) then {
 		deleteVehicle _oldVeh;
-		[] call _sv_deleteNullVehicles;
+		[] call sv_deleteNullVehicles;
 		//diag_log "__1";
 	};
 
@@ -92,12 +95,20 @@ private _sv_spawnVehicle = {
 	private _posATL = getArray(_config >> "positionATL");
 	private _dir = getNumber(_config >> "dir");
 	private _className = getText(_config >> "classname");
-	private _vehicle = createVehicle [_className, [-200,-200,0], [], 200, "CAN_COLLIDE"];
-	if (_vehicle isKindOf "Air") then {
+	private _vehicle = objNull;
+	if (_className isKindOf "Air") then {
+		_vehicle = createVehicle [_className, [-200,-200,0], [], 200, "FLY"];
+		_dir = _posATL getDir (getPos sv_cur_obj);
+		private _velocity = [(sin _dir)*55, (cos _dir)*55, 0];
+		_vehicle setPosATL _posATL;
+		_vehicle setDir _dir;
+		_vehicle setVelocity _velocity;
 		_vehicle enableSimulation false;
+	} else {
+		_vehicle = createVehicle [_className, [-200,-200,0], [], 200, "CAN_COLLIDE"];
+		_vehicle setDir _dir;
+		_vehicle setPosATL _posATL;
 	};
-	_vehicle setDir _dir;
-	_vehicle setPosATL _posATL;
 	_vehicle setVariable ["id", configName (_config), true];
 	_vehicle setVariable ["config", _config];
 
@@ -157,7 +168,7 @@ while {sv_gameStatus == 2} do {
 		if (!_isRespawning) then {
 			// Vehicle isnt respawning, check if has been destroyed
 			//diag_log "1";
-			private _v = [configName _config] call _sv_getVehicleByID;
+			private _v = [configName _config] call sv_getVehicleByID;
 
 			if (isNull _v || !alive _v || !canMove _v) then {
 				//diag_log "2";

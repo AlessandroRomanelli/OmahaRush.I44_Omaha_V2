@@ -9,17 +9,36 @@ scriptName "fn_monitorVehicle";
 --------------------------------------------------------------------*/
 #define __filename "fn_monitorVehicle.sqf"
 
-_vehicle = param[0, objNull, [objNull]];
+private _vehicle = param[0, objNull, [objNull]];
 
 // Wait until a unit is in the vehicle
 waitUntil {{alive _x} count (crew _vehicle) > 0 || (!alive _vehicle)};
+
+if (_vehicle isKindOf "Air") then {
+	_vehicle enableSimulation true;
+	[_vehicle] spawn {
+		private _vehicle = param[0, objNull, [objNull]];
+		private _side = ["Attacker", "Defender"] select ((player getVariable ["gameSide", "defenders"]) isEqualTo "defenders");
+		private _configs = "true" configClasses (missionConfigFile >> "MapSettings" >> "PersistentVehicles" >> _side);
+		_configs = _configs select {(getText(_x >> "className")) isEqualTo (typeOf _vehicle)};
+		if (count _configs != 0) then {
+			private _fuelTime = getNumber((_configs select 0) >> "fuelTime");
+			private _time = _fuelTime;
+			while {_time >= 0} do {
+				_vehicle setFuel (_time/_fuelTime);
+				sleep 1;
+				_time = _time - 1;
+			};
+		};
+	};
+};
 
 // Now wait until all units have left the vehicle
 waitUntil {{alive _x} count (crew _vehicle) == 0 || (!alive _vehicle)};
 
 // Wait 45 seconds
-_start = diag_tickTime;
-_exit = false;
+private _start = diag_tickTime;
+private _exit = false;
 
 while {diag_tickTime - _start < 35 && !_exit && (alive _vehicle)} do {
 	sleep 1;
