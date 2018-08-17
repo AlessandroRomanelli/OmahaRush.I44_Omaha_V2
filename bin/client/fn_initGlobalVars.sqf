@@ -29,7 +29,6 @@ cl_mcomDefAtt = 0;
 cl_pointsBelowMinimumPlayers = 0;
 cl_enemySpawnMarker = "";
 cl_blockTimer = false;
-TEMPWARNING = nil;
 cl_onEachFrame_squad_members = [];
 cl_onEachFrame_squad_beacons = [];
 cl_onEachFrame_team_members = [];
