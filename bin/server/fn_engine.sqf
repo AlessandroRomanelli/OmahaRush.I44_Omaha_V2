@@ -75,12 +75,12 @@ while {true} do {
 	// Start persistent vehicle manager
 	if (isClass(missionConfigFile >> "MapSettings" >> "PersistentVehicles")) then {
 		sv_persistentVehicleManager_thread = [] spawn server_fnc_persistentVehicleManager;
-		["Vehicle manager has been started"] spawn server_fnc_log;
+		["Persistent vehicles manager has been started"] spawn server_fnc_log;
 	};
 
 	// Start stage vehicle manager (vehicles that spawn at different locations)
 	sv_stageVehicleManager_thread = [] spawn server_fnc_stageVehicleManager;
-	["Stage vehicle manager has been started"] spawn server_fnc_log;
+	["Stage vehicles manager has been started"] spawn server_fnc_log;
 
 	// Start autobalancer (will auto close when the match ends)
 	if ((paramsArray#13) == 1) then {

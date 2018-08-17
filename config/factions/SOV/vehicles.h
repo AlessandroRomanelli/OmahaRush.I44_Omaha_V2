@@ -10,6 +10,13 @@ class Vehicle {
   populationReq = 0;
 };
 
+class Plane: Vehicle {
+  displayName = "";
+  className = "";
+  respawn = 120;
+  populationReq = 40;
+};
+
 class H_Tank: Vehicle {
   displayName = "IS-2";
   className = "LIB_JS2_43";

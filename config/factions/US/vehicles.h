@@ -10,6 +10,13 @@ class Vehicle {
   script = "";
 };
 
+class Plane: Vehicle {
+  displayName = "";
+  className = "";
+  respawn = 120;
+  populationReq = 40;
+};
+
 class H_Tank: Vehicle {
   displayName = "M4A3 Sherman Firefly";
   className = "LIB_M4A4_FIREFLY";
