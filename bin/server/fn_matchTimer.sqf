@@ -9,22 +9,29 @@ scriptName "fn_matchTimer";
 --------------------------------------------------------------------*/
 #define __filename "fn_matchTimer.sqf"
 
-_matchStart = param[0,false,[false]];
-_additionalTime = param[1,0,[0]];
+private _matchStart = param[0,false,[false]];
+private _additionalTime = param[1,0,[0]];
 
 /* _stageTime = getNumber(missionConfigFile >> "MapSettings" >> "roundTime"); */
-_stageTime = ceil (paramsArray#3 * 60);
+private _stageTime = ceil (paramsArray#3 * 60);
 
 sv_matchTime =  _stageTime + _additionalTime;
 sv_fallBack_timeLeft = _additionalTime;
 
+if (_matchStart) then {
+	[_additionalTime] spawn {
+		sleep (param[0, 0, [0]]);
+		[] call server_fnc_refreshTickets;
+	};
+};
+
 // Start timer on all clients
 //[sv_matchTime] remoteExec ["client_fnc_matchTimer"];
 
-_time = sv_matchTime;
+private _time = sv_matchTime;
 while {_time > 0 && sv_gameStatus == 2} do {
 	sleep 1;
-	_status = sv_cur_obj getVariable ["status", -1];
+	private _status = sv_cur_obj getVariable ["status", -1];
 	if !(_status == 0 || _status == 1) then {
 		_time = _time - 1;
 	};

@@ -11,14 +11,14 @@ scriptName "fn_engine";
 
 ["Server engine has been started"] spawn server_fnc_log;
 
-_fallBackTime = paramsArray#8;
+private _fallBackTime = paramsArray#8;
 
 // Server is now ready
 sv_serverReady = true;
 [["sv_serverReady"]] spawn server_fnc_updateVars;
 
 // Persistent weather
-_mapWeather = paramsArray#12;
+private _mapWeather = paramsArray#12;
 if (_mapWeather == 0) then {
 	[] spawn server_fnc_loadPersistentWeather;
 	["Persistent weather loaded"] spawn server_fnc_log;
@@ -96,16 +96,14 @@ while {true} do {
 	[["sv_gameCycle"]] spawn server_fnc_updateVars;
 	[format["Cycle %1 has been finished", sv_gameCycle]] spawn server_fnc_log;
 
-	_missions = getArray(missionConfigFile >> "GeneralConfig" >> "mapsPool");
-	_currentMission = [format["%1.%2", missionName, worldName]];
-
-	_missionsPool = _missions - _currentMission;
-
 	// If we have OnMatchEndRestart enabled, restart the mission rather than just keep running
 	if (((sv_gameCycle >= (paramsArray#11)) || (((paramsArray#10) != -1) && ((paramsArray#10) <= diag_tickTime))) && isDedicated) then {
 		["Attempting to restart mission...."] spawn server_fnc_log;
 		sleep 1;
 		with uiNamespace do {
+			private _missions = getArray(missionConfigFile >> "GeneralConfig" >> "mapsPool");
+			private _currentMission = [format["%1.%2", missionName, worldName]];
+			private _missionsPool = _missions - _currentMission;
 			(getText(missionConfigFile >> "GeneralConfig" >> "commandPassword")) serverCommand format["#mission %1 custom", selectRandom _missionsPool];
 		};
 	};
