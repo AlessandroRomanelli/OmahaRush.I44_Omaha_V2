@@ -394,7 +394,7 @@ player setSpeaker "NoVoice";
 
 [true] spawn client_fnc_drawMapUnits;
 
-private _registeredGroups = ["GetAllGroupsOfSide"] call BIS_fnc_dynamicGroups;
+private _registeredGroups = ["GetAllGroupsOfSide", [playerSide]] call BIS_fnc_dynamicGroups;
 if !((group player) in _registeredGroups) then {
 	if !(count _registeredGroups isEqualTo 0) then {
 	  {

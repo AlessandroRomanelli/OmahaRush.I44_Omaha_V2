@@ -45,14 +45,12 @@ private _createNewRecord = {
 private _searchPlayerRecord = {
   // Fetch records array
   private _records = profileNamespace getVariable ["wwr_records", []];
-  private _record = [];
   // Check whether we have a record for the current serverKey in use
-  {
-    if ((_x select 0) isEqualTo _serverKey) exitWith {_record = _x};
-  } forEach _records;
+  private _idx = _records findIf {(_x select 0) isEqualTo _serverKey};
+  if (_idx isEqualTo -1) exitWith {[]};
   diag_log format["Searched the following array: %1", str _records];
-  diag_log format["Found the following record: %1", str _record];
-  _record
+  diag_log format["Found the following record: %1", str (_records select _idx)];
+  (_records select _idx);
 };
 
 // Assigns the selected record to the player's global variables
