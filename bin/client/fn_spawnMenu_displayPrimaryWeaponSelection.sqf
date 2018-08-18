@@ -11,7 +11,7 @@ scriptName "fn_spawnMenu_displayPrimaryWeaponSelection";
 if (isServer && !hasInterface) exitWith {};
 
 disableSerialization;
-_d = findDisplay 5000;
+private _d = findDisplay 5000;
 
 diag_log "0";
 
@@ -52,7 +52,7 @@ lbClear (_d displayCtrl 3);
 diag_log "3";
 diag_log str cl_equipConfigurations;
 
-_primaryWeapons = cl_equipConfigurations select {(getText(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> _x >> "type")) == "primary"};
+private _primaryWeapons = cl_equipConfigurations select {(getText(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> _x >> "type")) == "primary"};
 // Load all weapons into the listbox
 {
 	diag_log str _x;
@@ -61,7 +61,7 @@ _primaryWeapons = cl_equipConfigurations select {(getText(missionConfigFile >> "
 	if (_x != "") then {
 
 		// Add weapon to list of weapons
-		_allowedClasses = getArray(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> _x >> "roles");
+		private _allowedClasses = getArray(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> _x >> "roles");
 		if (cl_class in _allowedClasses) then {
 
 			diag_log "2";
@@ -75,14 +75,14 @@ _primaryWeapons = cl_equipConfigurations select {(getText(missionConfigFile >> "
 	};
 } forEach _primaryWeapons;
 
-_faction = getText(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> "faction");
+private _faction = getText(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> "faction");
 (_d displayCtrl 3) lbSetCurSel (profileNamespace getVariable [format["rr_prefPWeaponIdx_%1_%2", cl_class, _faction], 0]);
 
 // Give control
 (_d displayCtrl 3) ctrlAddEventHandler ["LBSelChanged", {
 	disableSerialization;
 	_d = findDisplay 5000;
-	_idx = lbCurSel (_d displayCtrl 3);
+	private _idx = lbCurSel (_d displayCtrl 3);
 	cl_equipClassnames set [0, (_d displayCtrl 3) lbData _idx];
 	_faction = getText(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> "faction");
 	profileNamespace setVariable [format["rr_prefPWeaponIdx_%1_%2", cl_class, _faction], _idx];

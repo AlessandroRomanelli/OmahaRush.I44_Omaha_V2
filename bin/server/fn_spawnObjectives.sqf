@@ -10,25 +10,25 @@ scriptName "fn_spawnObjectives";
 #define __filename "fn_spawnObjectives.sqf"
 
 //Init array of objects nearby our objectives
-_objects = [];
+private _objects = [];
 
 for "_i" from 1 to 4 do {
 	//Get data out of config
-	_class = getText(missionConfigFile >> "MapSettings" >> "Stages" >> format["Stage%1", _i] >> "Objective" >> "classname");
-	_posATL = getArray(missionConfigFile >> "MapSettings" >> "Stages" >> format["Stage%1", _i] >> "Objective" >> "positionATL");
-	_dir = getNumber(missionConfigFile >> "MapSettings" >> "Stages" >> format["Stage%1", _i] >> "Objective" >> "dir");
+	private _class = getText(missionConfigFile >> "MapSettings" >> "Stages" >> format["Stage%1", _i] >> "Objective" >> "classname");
+	private _posATL = getArray(missionConfigFile >> "MapSettings" >> "Stages" >> format["Stage%1", _i] >> "Objective" >> "positionATL");
+	private _dir = getNumber(missionConfigFile >> "MapSettings" >> "Stages" >> format["Stage%1", _i] >> "Objective" >> "dir");
 
 	//Create object and make it invincible
-	_obj = createVehicle [_class, _posATL, [], 0, "CAN_COLLIDE"];
+	private _obj = createVehicle [_class, _posATL, [], 0, "CAN_COLLIDE"];
 	_obj allowDamage false;
 	_obj setDir _dir;
 	_obj setPosATL _posATL;
 
 	missionNamespace setVariable [format["sv_stage%1_obj", _i], _obj];
-	_objective = missionNamespace getVariable (format["sv_stage%1_obj", _i]);
+	private _objective = missionNamespace getVariable (format["sv_stage%1_obj", _i]);
 	_objective setVariable ['status', -1, true];
 	_objects append (nearestTerrainObjects [_objective, [], 75, false]);
-	_fences = nearestTerrainObjects [_objective, ["FENCE", "WALL"], 75, false];
+	private _fences = nearestTerrainObjects [_objective, ["FENCE", "WALL"], 75, false];
 	_objects = _objects - _fences;
 };
 

@@ -10,7 +10,7 @@ scriptName "fn_giveStatistics";
 #define __filename "fn_giveStatistics.sqf"
 if (isServer && !hasInterface) exitWith {};
 
-_playerData = param[0,[],[[]]];
+private _playerData = param[0,[],[[]]];
 
 // Set vars
 cl_total_kills = _playerData select 0;

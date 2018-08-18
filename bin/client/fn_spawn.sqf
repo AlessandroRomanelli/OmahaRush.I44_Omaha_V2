@@ -127,7 +127,7 @@ if (count _backpacks > 0) then {player addBackpack (selectRandom _backpacks);};
 player assignItem "ItemGPS";*/
 
 // Markers
-[] spawn client_fnc_updateRestrictions;
+[playArea] spawn client_fnc_updateRestrictions;
 
 
 // Wait until the objectives are available

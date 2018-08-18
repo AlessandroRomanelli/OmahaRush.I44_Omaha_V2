@@ -16,7 +16,7 @@ if (true) exitWith {};
 
 // Remove all actions
 removeAllActions player;
-_objects = allPlayers;
+private _objects = allPlayers;
 {
 	removeAllActions _x;
 	for "_i" from 0 to 100 step 1 do

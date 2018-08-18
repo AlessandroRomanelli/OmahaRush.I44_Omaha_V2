@@ -17,7 +17,7 @@ _queryStmt = param [0,"",[""]];
 _mode = param [1,1,[0]];
 _multiarr = param [2,false,[false]];
 
-_result = "extDB3" callExtension format["%1:%2:%3",_mode, sv_db_id, _queryStmt];
+private _result = "extDB3" callExtension format["%1:%2:%3",_mode, sv_db_id, _queryStmt];
 
 if(_mode == 1) exitWith {
 	true;
@@ -44,7 +44,7 @@ while{_loop} do
 			_queryResult = "";
 
 			while{true} do {
-				_pipe = "extDB3" callExtension format["5:%1", _key];
+				private _pipe = "extDB3" callExtension format["5:%1", _key];
 				if(_pipe == "") exitWith {_loop = false};
 				_queryResult = _queryResult + _pipe;
 			};

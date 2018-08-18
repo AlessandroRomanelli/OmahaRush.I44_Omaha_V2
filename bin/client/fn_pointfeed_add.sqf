@@ -10,8 +10,8 @@ scriptName "fn_pointfeed_add";
 #define __filename "fn_pointfeed_add.sqf"
 if (isServer && !hasInterface) exitWith {};
 
-_toAdd = param[0,"",[""]];
-_points = param[1,0,[0]];
+private _toAdd = param[0,"",[""]];
+private _points = param[1,0,[0]];
 
 if (_toAdd == "") exitWith {};
 
@@ -21,7 +21,7 @@ cl_pointfeed_points = cl_pointfeed_points + _points;
 // Insert into feed
 cl_pointfeed_text = _toAdd + "<br/>" + cl_pointfeed_text;
 
-_finalText = "<t align='right' size='1.4' shadow='2' font='PuristaMedium' color='#FFFFFF'>" + cl_pointfeed_text + "</t>";
+private _finalText = "<t align='right' size='1.4' shadow='2' font='PuristaMedium' color='#FFFFFF'>" + cl_pointfeed_text + "</t>";
 
 // Display everything
 ((uiNamespace getVariable ["rr_pointfeed",displayNull]) displayCtrl 0) ctrlSetPosition [0.29375 * safezoneW + safezoneX, 0.715 * safezoneH + safezoneY];

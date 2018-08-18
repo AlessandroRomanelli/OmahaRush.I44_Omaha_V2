@@ -11,7 +11,7 @@ scriptName "fn_spawnMenu_displaySecondaryWeaponSelection";
 if (isServer && !hasInterface) exitWith {};
 
 disableSerialization;
-_d = findDisplay 5000;
+private _d = findDisplay 5000;
 
 // Exit if this menu is already open
 if (cl_spawnmenu_currentWeaponSelectionState == 2) exitWith {
@@ -53,7 +53,7 @@ cl_spawnmenu_currentWeaponSelectionState = 2;
 lbClear (_d displayCtrl 3);
 
 // Load all weapons into the listbox
-_secondaryWeapons = cl_equipConfigurations select {(getText(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> _x >> "type")) == "secondary"};
+private _secondaryWeapons = cl_equipConfigurations select {(getText(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> _x >> "type")) == "secondary"};
 {
 	(_d displayCtrl 3) lbAdd (([_x] call client_fnc_weaponDetails) select 1);
 	(_d displayCtrl 3) lbSetPicture [(lbSize (_d displayCtrl 3)) - 1, (([_x] call client_fnc_weaponDetails) select 2)];

@@ -1,5 +1,4 @@
 /*
-	Function: ALiVE_fnc_crypt
 	Author(s): Naught
 	Version: 1.0
 	Description:

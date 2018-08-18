@@ -10,7 +10,7 @@ scriptName "fn_spawnBeaconSoundLoop";
 #define __filename "fn_spawnBeaconSoundLoop.sqf"
 if (isServer && !hasInterface) exitWith {};
 
-_beacon = param[0,objNull,[objNull]];
+private _beacon = param[0,objNull,[objNull]];
 
 while {!isNull _beacon} do {
 	sleep 2;

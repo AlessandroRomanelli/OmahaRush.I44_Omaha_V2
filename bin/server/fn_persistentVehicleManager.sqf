@@ -45,7 +45,8 @@ sv_deleteNullVehicles = {
 	} forEach sv_persistentVehicles;
 	sv_persistentVehicles = _newList;
 };
-/* private _sv_tryRespawn = {
+
+sv_tryRespawn = {
 	private _v = _this select 0;
 	// Terminate old script handling this vehicle
 	if (!isNull (_v getVariable ["vehicle_getout_thread", scriptNull])) then {
@@ -60,11 +61,11 @@ sv_deleteNullVehicles = {
 	};
 	// Set handler on vehicle
 	_v setVariable ["vehicle_getout_thread", _scriptHandler];
-}; */
+};
 
 private _sv_spawnVehicle = {
 	private _config = param[0,configNull,[configNull]];
-	private _initialSpawn = param[1,false,[false]];
+	/* private _initialSpawn = param[1,false,[false]]; */
 	private _arrayToEdit = param[2,[],[[]]];
 	//diag_log "_0";
 
@@ -75,8 +76,8 @@ private _sv_spawnVehicle = {
 	sv_persistentVehiclesAwaitingRespawn pushBack (configName _config);
 
 	// Wait the respawn time
-	private _sleepTime = 0;
-	if (!_initialSpawn) then {_sleepTime = getNumber(_config >> "respawnTime")};
+	private _sleepTime = getNumber(_config >> "respawnTime");
+	/* if (!_initialSpawn) then {_sleepTime = getNumber(_config >> "respawnTime")}; */
 	sleep _sleepTime;
 
 	//diag_log "_1";

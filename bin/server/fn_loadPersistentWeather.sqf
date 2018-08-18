@@ -10,9 +10,9 @@ scriptName "fn_loadPersistentWeather";
 #define __filename "fn_loadPersistentWeather.sqf"
 
 // Time
-_time = [1944,6,23,round random [4, 12, 20],round random 60];
+private _time = [1944,6,23,round random [4, 12, 20],round random 60];
 setDate _time;
-_fog = (round random [0, 0, 20])/100;
+private _fog = (round random [0, 0, 20])/100;
 
 // Overcast
 skipTime -24;

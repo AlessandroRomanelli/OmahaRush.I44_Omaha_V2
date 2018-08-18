@@ -9,10 +9,10 @@ scriptName "fn_loadWeather";
 --------------------------------------------------------------------*/
 #define __filename "fn_loadWeather.sqf"
 
-_time = getArray(missionConfigFile >> "MapSettings" >> "date");
-_fog = getNumber(missionConfigFile >> "MapSettings" >> "fog");
-_rain = getNumber(missionConfigFile >> "MapSettings" >> "rain");
-_overcast = getNumber(missionConfigFile >> "MapSettings" >> "rain");
+private _time = getArray(missionConfigFile >> "MapSettings" >> "date");
+private _fog = getNumber(missionConfigFile >> "MapSettings" >> "fog");
+private _rain = getNumber(missionConfigFile >> "MapSettings" >> "rain");
+private _overcast = getNumber(missionConfigFile >> "MapSettings" >> "rain");
 
 // Apply overcast value
 // This has to be done via skipping as ArmA has to calculate the clouds
@@ -29,10 +29,11 @@ setDate _time;
 0 setFog _fog;
 
 [_fog] spawn {
-	_tick = diag_tickTime;
+	private _fog = param[0, 0, [0]];
+	private _tick = diag_tickTime;
 	while {diag_tickTime - _tick < 120} do
 	{
 		sleep 1;
-		0 setFog (_this select 0);
+		0 setFog _fog;
 	};
 };

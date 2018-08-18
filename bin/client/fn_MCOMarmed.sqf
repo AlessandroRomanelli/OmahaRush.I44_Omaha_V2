@@ -10,7 +10,7 @@ scriptName "fn_MCOMarmed";
 #define __filename "fn_MCOMarmed.sqf"
 
 // Planter
-_planter = param[0,objNull,[objNull]];
+private _planter = param[0,objNull,[objNull]];
 
 // Display warning
 ["EXPLOSIVES HAVE BEEN SET"] spawn client_fnc_displayObjectiveMessage;
@@ -20,7 +20,7 @@ _planter = param[0,objNull,[objNull]];
 ["EXPLOSIVES ARMED","The objective has been armed. Attackers will not lose tickets while it is."] spawn client_fnc_hint;
 
 // Start sound loop if we are the server
-_wasServer = false;
+private _wasServer = false;
 if (isServer) then {
 	_wasServer = true;
 
@@ -30,10 +30,10 @@ if (isServer) then {
 
 	sv_mcom_thread = [] spawn {
 		// Countdown of 60 seconds
-		_time = 60;
-		_soundTime = 60;
-		_status = sv_cur_obj getVariable ["status", -1];
-		_beep = MISSION_ROOT + "sounds\beep.ogg";
+		private _time = 60;
+		private _soundTime = 60;
+		private _status = sv_cur_obj getVariable ["status", -1];
+		private _beep = MISSION_ROOT + "sounds\beep.ogg";
 		// If the objective is armed and there's still time on the clock
 		playSound3D [_beep, sv_cur_obj, false, getPosATL sv_cur_obj, 20, 1, 300];
 		while {((_status == 1) || (_status == 0)) && _time >= 0} do {
@@ -82,7 +82,7 @@ if (isServer) then {
 		// Explosion
 		"HelicopterExploBig" createVehicle getPosATL sv_cur_obj;
 
-		_killZone = sv_cur_obj nearEntities ["Man", 25];
+		private _killZone = sv_cur_obj nearEntities ["Man", 25];
 		{
 			if ((_x distance sv_cur_obj < 10) || {_x distance sv_cur_obj < 25 && {([sv_cur_obj, "VIEW"] checkVisibility [eyePos sv_cur_obj, eyePos _x]) > 0.1}}) then {
 				player setDamage 1;
@@ -109,7 +109,7 @@ if (isServer) then {
 				terminate sv_matchTimer_thread;
 			};
 			// Start the timer again with additional time counting in the fallback phase
-			_fallBackTime = paramsArray#8;
+			private _fallBackTime = paramsArray#8;
 			[false, _fallBackTime] spawn server_fnc_matchTimer;
 
 			// refresh tickets
@@ -124,7 +124,7 @@ if (isServer) then {
 // Did we plant? Should be give ourself points?
 if (_planter == player) then {
 	// Wait until estimated explosion time
-	_objective = sv_cur_obj;
+	private _objective = sv_cur_obj;
 	waitUntil {(_objective getVariable ["status", -1] == 3) || (_objective != sv_cur_obj)};
 
 	// Still the same objective? Looks like we werent successful...

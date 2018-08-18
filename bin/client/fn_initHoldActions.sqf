@@ -14,8 +14,8 @@ if (isServer && !hasInterface) exitWith {};
 
 
 mg_conditionShowOnMyself = {
-	_currentAmmo = 0;
-	_reserveAmmo = 0;
+	private _currentAmmo = 0;
+	private _reserveAmmo = 0;
 
 	{
 		if ((_x select 0) == (currentMagazine player) AND (_x select 2)) then
@@ -30,7 +30,7 @@ mg_conditionShowOnMyself = {
 
 	((_currentAmmo + _reserveAmmo) <= 10) && !(player getVariable ["ammo_restored",false])
 };
-_mg_code = {
+private _mg_code = {
 	[player] remoteExec ["client_fnc_restoreAmmo", cl_lastActionTarget];
 
 	// Pointsssss
@@ -43,19 +43,21 @@ _mg_code = {
 	cl_lastActionTarget setVariable ["ammo_restored",true];
 
 	[cl_lastActionTarget] spawn {
-		if ((_this select 0) == player) then {
+		private _lastActionTarget = param[0, objNull, [objNull]];
+		if (_lastActionTarget isEqualTo player) then {
 			sleep 60;
 		} else {
 			sleep 13;
 		};
 
 		// allow us to restore ammo again
-		(_this select 0) setVariable ["ammo_restored",false];
+		_lastActionTarget setVariable ["ammo_restored",false];
 	};
 };
 
 diag_log "Setting up handlers... 1";
 
+private ["_id"];
 // Ammunition for myself
 _id = [
 /* 0 object */							player,
@@ -101,11 +103,11 @@ cl_actionIDs pushBack _id;
 diag_log "Setting up handlers... 3";
 
 // Planting and defusing objectives
-_cond = "";
-_text = "";
-_completion = {};
-_interruption = {};
-_duration = 4;
+private _cond = "";
+private _text = "";
+private _completion = {};
+private _interruption = {};
+private _duration = 4;
 if ((player getVariable "gameSide") == "defenders") then {
 	_text = "Disarm Explosives";
 	_cond = "(cursorTarget distance _this) < 4 && (cursorTarget == sv_cur_obj) && {(cursorTarget getVariable ['status',-1] == 1) || (cursorTarget getVariable ['status', -1] == 0 && (_this isEqualTo player))}";
@@ -144,7 +146,7 @@ cl_actionIDs pushBack _id;
 diag_log "Setting up handlers... 5";
 
 // Vehicle ammunition
-_completed = {
+private _completed = {
 	if (player distance cl_lastActionTarget > 5) exitWith {};
 
 	["<t size='1.3' color='#FFFFFF'>AMMUNITION REPLENISHED</t>", 50] spawn client_fnc_pointfeed_add;
@@ -153,25 +155,17 @@ _completed = {
 	// Make sure we cant spam it
 	cl_lastActionTarget setVariable ["ammo_restored",true];
 
-	// Restore ammo depending on type of vehicle
-	/*switch (typeOf cl_lastActionTarget) do
-	{
-		case "B_Heli_Light_01_armed_F":
-		{
-			cl_lastActionTarget setAmmo ["M134_minigun", 2000];
-			//_target addMagazine "120Rnd_CMFlare_Chaff_Magazine";
-		};
-	};*/
-
 	[cl_lastActionTarget] spawn {
 		sleep 120;
-
+		private _lastActionTarget = param[0, objNull, [objNull]];
 		// allow us to restore ammo again
-		(_this select 0) setVariable ["ammo_restored",false];
+		_lastActionTarget setVariable ["ammo_restored",false];
 	};
 };
+
 cl_vehicleAmmoTypes = [] call client_fnc_getAllAmmoVehicles;
-_completedEngineer = {
+
+private _completedEngineer = {
 	if (player distance cl_lastActionTarget > 5) exitWith {};
 	["<t size='1.3' color='#FFFFFF'>VEHICLE REPAIRED</t>", 50] spawn client_fnc_pointfeed_add;
 	[50] spawn client_fnc_addPoints;
@@ -183,9 +177,9 @@ _completedEngineer = {
 
 	[cl_lastActionTarget] spawn {
 		sleep 120;
-
+		private _lastActionTarget = param[0, objNull, [objNull]];
 		// allow us to restore ammo again
-		(_this select 0) setVariable ["repaired",false];
+		_lastActionTarget setVariable ["repaired",false];
 	};
 };
 

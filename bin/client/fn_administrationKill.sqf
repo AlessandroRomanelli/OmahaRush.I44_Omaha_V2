@@ -11,7 +11,7 @@ scriptName "fn_administrationKill";
 if (isServer && !hasInterface) exitWith {};
 
 // Reason
-_reason = param[0,"",[""]];
+private _reason = param[0,"",[""]];
 
 // Kill me
 player setDamage 1;

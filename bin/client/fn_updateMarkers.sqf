@@ -10,11 +10,11 @@ scriptName "fn_updateMarkers";
 #define __filename "fn_updateMarkers.sqf"
 if (isServer && !hasInterface) exitWith {};
 
-_objMarkerStatusUpdate = param[0, false, [false]];
+private _objMarkerStatusUpdate = param[0, false, [false]];
 
 if !(_objMarkerStatusUpdate) then {
-	_HQPos1 = getArray(missionConfigFile >> "MapSettings" >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Spawns" >> "defenders");
-	_HQPos2 = getArray(missionConfigFile >> "MapSettings" >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Spawns" >> "attackers");
+	private _HQPos1 = getArray(missionConfigFile >> "MapSettings" >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Spawns" >> "defenders");
+	private _HQPos2 = getArray(missionConfigFile >> "MapSettings" >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Spawns" >> "attackers");
 	"mobile_respawn_defenders" setMarkerPosLocal _HQPos1;
 	"mobile_respawn_attackers" setMarkerPosLocal _HQPos2;
 
@@ -35,7 +35,7 @@ if !(_objMarkerStatusUpdate) then {
 
 	"objective" setMarkerPosLocal getPos sv_cur_obj;
 } else {
-	_status = sv_cur_obj getVariable ["status", -1];
+	private _status = sv_cur_obj getVariable ["status", -1];
 	if (_status isEqualTo -1) exitWith {
 		"objective" setMarkerColorLocal "ColorBlack";
 		"objective" setMarkerTextLocal " Objective";

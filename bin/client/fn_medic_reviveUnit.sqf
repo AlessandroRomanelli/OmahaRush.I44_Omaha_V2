@@ -10,7 +10,7 @@ scriptName "fn_medic_reviveUnit";
 #define __filename "fn_medic_reviveUnit.sqf"
 if (isServer && !hasInterface) exitWith {};
 
-_unit = param[0,objNull,[objNull]];
+private _unit = param[0,objNull,[objNull]];
 
 // Unit still dead?
 if (alive _unit) exitWith {};
@@ -21,7 +21,6 @@ _unit setVariable ["unitDmg", 0];
 // We've done good! Give me points and a dank animation!
 ["<t size='1.3' color='#FFFFFF'>TEAMMATE REVIVED</t>", 100] spawn client_fnc_pointfeed_add;
 [100] spawn client_fnc_addPoints;
-diag_log "test____3";
 
 // Revive unit
 [player] remoteExec ["client_fnc_revive",_unit];

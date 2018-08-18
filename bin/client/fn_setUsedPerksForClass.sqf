@@ -12,18 +12,18 @@ if (isServer && !hasInterface) exitWith {};
 
 disableSerialization;
 
-_class = param[0,"",[""]];
+private _class = param[0,"",[""]];
 if (_class == "") exitWith {};
 
 // Get from display
-_d = findDisplay 8000;
+private _d = findDisplay 8000;
 if (isNull _d) exitWith {};
 
-_lbClass = _d displayCtrl 0;
-_lbSquad = _d displayCtrl 1;
+private _lbClass = _d displayCtrl 0;
+private _lbSquad = _d displayCtrl 1;
 
 // Save class
-_dataArray = [];
+private _dataArray = [];
 
 if ((lbCurSel _lbClass) != -1) then {
 	_dataArray set [0, _lbClass lbData (lbCurSel _lbClass)];

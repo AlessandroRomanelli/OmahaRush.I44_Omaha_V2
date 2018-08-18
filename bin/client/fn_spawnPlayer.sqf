@@ -20,18 +20,18 @@ if (cl_equipClassnames select 0 == "") exitWith {
 };
 
 disableSerialization;
-_d = findDisplay 5000;
+private _d = findDisplay 5000;
 
 // Class and perks
-_class = param[0,"medic",[""]];
+private _class = param[0,"medic",[""]];
 
-_isClassRestricted = [_class] call client_fnc_checkClassRestriction;
+private _isClassRestricted = [_class] call client_fnc_checkClassRestriction;
 if (_isClassRestricted) exitWith {
 	[] spawn client_fnc_spawnMenu_loadClasses;
 };
 
 cl_class = _class;
-_perkData = [cl_class] call client_fnc_getUsedPerksForClass;
+private _perkData = [cl_class] call client_fnc_getUsedPerksForClass;
 cl_classPerk = _perkData select 0;
 cl_squadPerk = _perkData select 1;
 
@@ -42,7 +42,7 @@ cl_squadPerks = [] call client_fnc_getSquadPerks;
 cl_equipClassnames set [2, _class];
 
 // Get value from listbox
-_value = (_d displayCtrl 9) lbValue (lbCurSel (_d displayCtrl 9));
+private _value = (_d displayCtrl 9) lbValue (lbCurSel (_d displayCtrl 9));
 
 // Successfull spawn inline function (stupid design) | Will be called from the child scripts if the spawn was successfull
 cl_spawn_succ = {
@@ -75,7 +75,7 @@ cl_spawn_succ = {
 	cl_inSpawnMenu = false;
 
 	// Hide hud
-	_3dcursor = [false, true] select (paramsArray#17);
+	private _3dcursor = [false, true] select (paramsArray#17);
 	showHUD [true,false,false,false,false,true,false,_3dcursor,false];
 
 	// Run check if we have been moved to an OK position, if not, move us to our HQ, failed spawn as it seems...
@@ -89,10 +89,10 @@ cl_spawn_succ = {
 	};
 };
 
-_deleteBlurr = {
+/* private _deleteBlurr = {
 	// Delete blurry effect
-	0 = ["DynamicBlur", 400, [0]] spawn {
-		params ["_name", "_priority", "_effect", "_handle"];
+	["DynamicBlur", 400, [0]] spawn {
+		params ["_name", "_priority", "_effect"];
 		while {
 			cl_spawnmenu_blur = ppEffectCreate [_name, _priority];
 			cl_spawnmenu_blur < 0
@@ -103,13 +103,13 @@ _deleteBlurr = {
 		cl_spawnmenu_blur ppEffectAdjust _effect;
 		cl_spawnmenu_blur ppEffectCommit 0.1;
 	};
-};
+}; */
 
 switch (_value) do
 {
 	case -2: // Vehicle (classname given as data)
 	{
-		_configName = (_d displayCtrl 9) lbData (lbCurSel (_d displayCtrl 9));
+		private _configName = (_d displayCtrl 9) lbData (lbCurSel (_d displayCtrl 9));
 		[_configName] spawn client_fnc_spawnPlayerInVehicle;
 	};
 
@@ -120,7 +120,7 @@ switch (_value) do
 
 	default // Beacon or squad member (squad member may be in vehicle)
 	{
-		_data = (_d displayCtrl 9) lbData (lbCurSel (_d displayCtrl 9));
+		private _data = (_d displayCtrl 9) lbData (lbCurSel (_d displayCtrl 9));
 
 		// Soldier selected, is he in combat?
 		if (_data == "inCombat") exitWith {
@@ -128,8 +128,8 @@ switch (_value) do
 		};
 
 		// Get unit to spawn at
-		_unit = (units group player) select _value;
-		_beacon = _unit getVariable ["assault_beacon_obj", objNull];
+		private _unit = (units group player) select _value;
+		private _beacon = _unit getVariable ["assault_beacon_obj", objNull];
 
 		if (_data == "beacon") then {
 			// Spawn at object

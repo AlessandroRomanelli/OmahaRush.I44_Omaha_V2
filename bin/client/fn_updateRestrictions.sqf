@@ -8,20 +8,24 @@ scriptName "fn_updateRestrictions";
 #define __filename "fn_updateRestrictions.sqf"
 if (isServer && !hasInterface) exitWith {};
 
-_currentStage = [] call client_fnc_getCurrentStageString;
+private _trigger = param[0, objNull, [objNull]];
 
-_isPlayerAttacking = (player getVariable "gameSide" == "attackers");
-_side = [["Defender", "mobile_respawn_attackers"], ["Attacker", "mobile_respawn_defenders"]] select (_isPlayerAttacking);
+if (isNull _trigger) exitWith {};
 
-_area = (getArray(missionConfigFile >> "MapSettings" >> "Stages" >> _currentStage >> "Area" >> (_side select 0) >> "area"));
+private _currentStage = [] call client_fnc_getCurrentStageString;
+
+private _isPlayerAttacking = (player getVariable "gameSide" == "attackers");
+private _side = [["Defender", "mobile_respawn_attackers"], ["Attacker", "mobile_respawn_defenders"]] select (_isPlayerAttacking);
+
+private _area = (getArray(missionConfigFile >> "MapSettings" >> "Stages" >> _currentStage >> "Area" >> (_side select 0) >> "area"));
 _area set [3, true];
-_pos = (getArray(missionConfigFile >> "MapSettings" >> "Stages" >> _currentStage >> "Area" >> (_side select 0) >> "positionATL"));
+private _pos = (getArray(missionConfigFile >> "MapSettings" >> "Stages" >> _currentStage >> "Area" >> (_side select 0) >> "positionATL"));
 
-playArea setPos _pos;
-playArea setTriggerArea _area;
+_trigger setPos _pos;
+_trigger setTriggerArea _area;
 
 // Update enemy base marker name
-_enemyMarkerName = _side select 1;
+private _enemyMarkerName = _side select 1;
 cl_enemySpawnMarker = _enemyMarkerName;
 
 true

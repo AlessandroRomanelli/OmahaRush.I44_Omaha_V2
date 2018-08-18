@@ -1,10 +1,9 @@
 scriptName "fn_setupEventHandlers";
 /*--------------------------------------------------------------------
-	Author: Maverick (ofpectag: MAV)
+	Author: Maverick (ofpectag: MAV) & A. Roman
     File: fn_setupEventHandlers.sqf
 
-	<Maverick Applications>
-    Written by Maverick Applications (www.maverick-apps.de)
+    Written by both authors
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_setupEventHandlers.sqf"
@@ -59,7 +58,7 @@ addMissionEventHandler["EachFrame", {
 }] call bis_fnc_addScriptedEventHandler;
 
 [missionNamespace, "playAreaChanged", {
-		[] spawn client_fnc_updateLine;
+		["playArea"] spawn client_fnc_updateLine;
 }] call bis_fnc_addScriptedEventHandler;
 
 [missionNamespace, "objStatusChanged", {
@@ -237,7 +236,7 @@ player addEventHandler ["Killed", {
 
 // Handledamage
 player addEventHandler ["HandleDamage", {
-	params ["_unit", "_hitSelection", "_damage", "_shooter", "_projectile", "_hitIndex", "_instigator", "_hitPoint"];
+	params ["_unit", "_hitSelection", "_damage", "_shooter"];
 	private _currentDmg = _unit getVariable ["unitDmg", 0];
 	//If critical damage to the head kill the victim and reward the shooter with HS bonus
 	if (side _shooter != side _unit && {_currentDmg <= 1}) then {
@@ -283,7 +282,8 @@ player addEventHandler ["HandleDamage", {
 
 // Getin Eventhandler for vehicles
 player addEventHandler ["GetInMan", {
-	params ["_unit", "_role", "_vehicle", "_turret"];
+	private _unit = param[0, objNull, [objNull]];
+	private _vehicle = param[2, objNull, [objNull]];
 	_vehicle allowDamage true;
 
 	if (count crew _vehicle > 0 && {_vehicle getVariable ["last_man", objNull] != objNull}) then {
@@ -292,7 +292,7 @@ player addEventHandler ["GetInMan", {
 
 	_vehicle removeAllEventHandlers "Killed";
 	_vehicle addEventHandler ["Killed", {
-		params ["_vehicle", "_killer", "_instigator", "_useEffects"];
+		params ["_vehicle", "_killer", "_instigator"];
 
 		private _sendVehicleKill = {
 			params ["_vehicle", "_killer"];
@@ -336,7 +336,7 @@ player addEventHandler ["GetInMan", {
 	// Always make sure we have an hit eventhandler
 	_vehicle removeAllEventHandlers "HandleDamage";
 	_vehicle addEventHandler ["HandleDamage", {
-		params ["_vehicle", "_hitSelection", "_damage", "_shooter", "_projectile", "_hitIndex", "_instigator", "_hitPoint"];
+		params ["_vehicle", "_hitSelection", "_damage", "_shooter", "_projectile"];
   	private _rockets = ["LIB_60mm_M6", "LIB_R_88mm_RPzB"];
 		if (_vehicle isKindOf "Tank" && {_projectile in _rockets}) then {
 			_damage = damage _vehicle + (_damage*2);
@@ -392,7 +392,7 @@ player addEventHandler ["GetInMan", {
 					sleep (_fuelTime - 10);
 					private _timeLeft = 10;
 					while {_timeLeft > 0 && ((vehicle player) isEqualTo _vehicle)} do {
-						[format["YOU'LL RUN OUT OF FUEL IN %1 SECONDS<br /><t size='1.25'>PREPARE TO BAIL!</t>", _timeLeft]] spawn client_fnc_displayError;
+						[format["YOU'LL RUN OUT OF FUEL IN %1 SECONDS<br /><t size='1.25'>PREPARE TO BAIL OUT!</t>", _timeLeft]] spawn client_fnc_displayError;
 						sleep 1;
 						_timeLeft = _timeLeft - 1;
 					};
@@ -408,12 +408,14 @@ player addEventHandler ["GetOutMan", {
 		_vehicle setVariable ["last_man", player, true];
 	};
 	private _pos = getPos player;
-	if ((_vehicle isKindOf "Air") && (_pos select 2 > 30)) then {
+	if ((_vehicle isKindOf "Air") && (_pos select 2 > 5)) then {
 		private _velPlayer = velocity player;
 		{_velPlayer set [_forEachIndex, _x/5]} forEach _velPlayer;
 		player setVelocity _velPlayer;
-		["PRESS <t size='1.25'>[SPACE BAR]</t> TO OPEN YOUR PARACHUTE!"] spawn client_fnc_displayInfo;
-		[] spawn {
+		if (player getVariable ["hasChute", true]) then {
+			["PRESS <t size='1.5'>[SPACE BAR]</t> TO OPEN YOUR PARACHUTE!"] spawn client_fnc_displayInfo;
+		};
+		/* [] spawn {
 			waitUntil{((getPosATL player) select 2) < 30};
 			if (isNull (objectParent player)) then {
 				private _velPlayer = velocity player;
@@ -426,6 +428,6 @@ player addEventHandler ["GetOutMan", {
 				_para setVelocity _velPlayer;
 				_para setDir _dirPlayer;
 			};
-		};
+		}; */
 	};
 }];
