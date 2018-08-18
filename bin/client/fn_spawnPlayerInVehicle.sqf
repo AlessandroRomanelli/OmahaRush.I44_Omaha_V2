@@ -10,10 +10,10 @@ scriptName "fn_spawnPlayerInVehicle";
 #define __filename "fn_spawnPlayerInVehicle.sqf"
 if (isServer && !hasInterface) exitWith {};
 
-_configName = param[0,"",[""]];
+private _configName = param[0,"",[""]];
 
-_side = if (player getVariable "gameSide" == "defenders") then {"Defender"} else {"Attacker"};
-_config = (missionConfigFile >> "MapSettings" >> "PersistentVehicles" >> _side >> _configName);
+private _side = if (player getVariable "gameSide" == "defenders") then {"Defender"} else {"Attacker"};
+private _config = (missionConfigFile >> "MapSettings" >> "PersistentVehicles" >> _side >> _configName);
 
 // If the config is null its most likely a stage vehicle
 if (isNull _config) then {
@@ -24,16 +24,15 @@ if (isNull _config) then {
 	};
 };
 
-_pos = getArray(_config >> "positionATL");
-_class = getText(_config >> "classname");
-_displayName = getText(_config >> "displayName");
-_objects = nearestObjects [_pos, [_class], 5];
+private _pos = getArray(_config >> "positionATL");
+private _class = getText(_config >> "classname");
+private _objects = nearestObjects [_pos, [_class], 5];
 if (count _objects < 1) exitWith {["Vehicle unavailable"] spawn client_fnc_displayError;};
 
-_vehicle = _objects select 0;
+private _vehicle = _objects select 0;
 
 // Put player into vehicle
-_vehicleNoSpace = !([player, _vehicle] call client_fnc_moveUnitIntoVehicle);
+private _vehicleNoSpace = !([player, _vehicle] call client_fnc_moveUnitIntoVehicle);
 
 // Was the vehicle full?
 if (_vehicleNoSpace) exitWith {
@@ -53,8 +52,8 @@ cl_spawnmenu_cam camCommitPrepared 1;
 
 // Motion blurr
 if (getNumber(missionConfigFile >> "GeneralConfig" >> "PostProcessing") == 1) then {
-	0 = ["DynamicBlur", 400, [3]] spawn {
-		params ["_name", "_priority", "_effect", "_handle"];
+	["DynamicBlur", 400, [3]] spawn {
+		params ["_name", "_priority", "_effect"];
 		while {
 			cl_spawnmenu_blur = ppEffectCreate [_name, _priority];
 			cl_spawnmenu_blur < 0
@@ -75,8 +74,8 @@ sleep 0.4;
 
 // Delete blurry effect
 if (getNumber(missionConfigFile >> "GeneralConfig" >> "PostProcessing") == 1) then {
-	0 = ["DynamicBlur", 400, [0]] spawn {
-		params ["_name", "_priority", "_effect", "_handle"];
+	["DynamicBlur", 400, [0]] spawn {
+		params ["_name", "_priority", "_effect"];
 		while {
 			cl_spawnmenu_blur = ppEffectCreate [_name, _priority];
 			cl_spawnmenu_blur < 0
@@ -121,7 +120,7 @@ if (player getVariable "gameSide" == "defenders") then {
 // Display instructions hint for currently selected perk
 [] spawn {
 	sleep 10.3;
-	_instructions = [cl_classPerk] call client_fnc_getPerkInstructions;
+	private _instructions = [cl_classPerk] call client_fnc_getPerkInstructions;
 	[_instructions select 0, _instructions select 1] spawn client_fnc_hint;
 
 	// Reload mcom interaction

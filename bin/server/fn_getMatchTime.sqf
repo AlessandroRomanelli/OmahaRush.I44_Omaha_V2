@@ -10,6 +10,6 @@ scriptName "fn_getMatchTime";
 #define __filename "fn_getMatchTime.sqf"
 
 waitUntil {sv_gameStatus == 2};
-_returnTo = param[0, objNull, [objNull]];
+private _returnTo = param[0, objNull, [objNull]];
 // Match time // Time in seconds until spawning is allowed
 [sv_matchTime, sv_fallBack_timeLeft] remoteExec ["client_fnc_initMatchTimer", _returnTo];

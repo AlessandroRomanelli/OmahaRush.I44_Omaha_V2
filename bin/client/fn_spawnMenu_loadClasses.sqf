@@ -13,18 +13,17 @@ if (isServer && !hasInterface) exitWith {};
 disableSerialization;
 
 // Spawn menu display listbox
-_d = findDisplay 5000;
-_l = _d displayCtrl 300;
+private _d = findDisplay 5000;
+private _l = _d displayCtrl 300;
 
 _l ctrlRemoveAllEventHandlers "LBSelChanged";
 // Allow listbox selection changes to update our "customize class" button (some classes are not customizeable atm so theres no reason for people to be able to click it)
 _l ctrlAddEventHandler ["LBSelChanged", {
-	_classSelected = (_this select 0) lbData (_this select 1);
-
-	_weaponAllowedClasses = getArray(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> cl_equipClassNames select 0 >> "roles");
+	private _classSelected = (_this select 0) lbData (_this select 1);
+	private _weaponAllowedClasses = getArray(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> cl_equipClassNames select 0 >> "roles");
 	if !(_classSelected in _weaponAllowedClasses) then {
-		_faction = getText(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> "faction");
-		_weapon = profileNamespace getVariable [format["rr_prefPWeapon_%1_%2", _classSelected, _faction], ""];
+		private _faction = getText(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> "faction");
+		private _weapon = profileNamespace getVariable [format["rr_prefPWeapon_%1_%2", _classSelected, _faction], ""];
 		(_d displayCtrl 3) lbSetCurSel (profileNamespace getVariable [format["rr_prefPWeaponIdx_%1_%2", cl_class, _faction], 0]);
 		cl_equipClassnames set [0, _weapon];
 	};
@@ -75,7 +74,7 @@ _l ctrlAddEventHandler ["LBSelChanged", {
 
 lbClear _l;
 
-_classRestrictionEnabled = [false, true] select (paramsArray#18);
+private _classRestrictionEnabled = [false, true] select (paramsArray#18);
 
 if !(_classRestrictionEnabled) then {
 
@@ -100,13 +99,13 @@ if !(_classRestrictionEnabled) then {
 	_l lbAdd "Recon";
 	_l lbSetData [(lbSize _l) - 1, "recon"];
 } else {
-	_countClassPlayers = {
-		_class = param[0, "", [""]];
-		_sameSidePlayers = allPlayers select {if (playerSide isEqualTo (side _x)) then {true}};
-		_sameClassPlayers = _sameSidePlayers select {if (_x getVariable ["class", "medic"] isEqualTo _class) then {true}};
-		_classLimit = ((format ["ClassLimits_%1", _class]) call bis_fnc_getParamValue)/10;
-		_maxClassPlayers = if(_classLimit != 1) then {floor ((count _sameSidePlayers) * _classLimit)} else {-1};
-		_playerOfClass = player in _sameClassPlayers;
+	private _countClassPlayers = {
+		private _class = param[0, "", [""]];
+		private _sameSidePlayers = allPlayers select {if (playerSide isEqualTo (side _x)) then {true}};
+		private _sameClassPlayers = _sameSidePlayers select {if (_x getVariable ["class", "medic"] isEqualTo _class) then {true}};
+		private _classLimit = ((format ["ClassLimits_%1", _class]) call bis_fnc_getParamValue)/10;
+		private _maxClassPlayers = if(_classLimit != 1) then {floor ((count _sameSidePlayers) * _classLimit)} else {-1};
+		private _playerOfClass = player in _sameClassPlayers;
 		[count _sameClassPlayers, _maxClassPlayers, _playerOfClass];
 	};
 
@@ -120,7 +119,7 @@ if !(_classRestrictionEnabled) then {
 	_l lbSetData [(lbSize _l) - 1, "medic"];
 
 	// Support
-	_supportData = ["support"] call _countClassPlayers;
+	private _supportData = ["support"] call _countClassPlayers;
 	if (_supportData select 1 isEqualTo -1) then {
 		_l lbAdd "Support";
 	} else {
@@ -135,7 +134,7 @@ if !(_classRestrictionEnabled) then {
 
 
 	// Engineer
-	_engineerData = ["engineer"] call _countClassPlayers;
+	private _engineerData = ["engineer"] call _countClassPlayers;
 	if (_engineerData select 1 isEqualTo -1) then {
 		_l lbAdd "Engineer";
 	} else {
@@ -149,7 +148,7 @@ if !(_classRestrictionEnabled) then {
 	_l lbSetData [(lbSize _l) - 1, "engineer"];
 
 	// Recon
-	_reconData = ["recon"] call _countClassPlayers;
+	private _reconData = ["recon"] call _countClassPlayers;
 	if (_reconData select 1 isEqualTo -1) then {
 		_l lbAdd "Recon";
 	} else {
@@ -164,13 +163,13 @@ if !(_classRestrictionEnabled) then {
 };
 
 // Get preferred class index from profileNamespace
-_i = profileNamespace getVariable ["rr_class_preferredIndex", 0];
+private _i = profileNamespace getVariable ["rr_class_preferredIndex", 0];
 
 // Select listbox item
 _l lbSetCurSel _i;
 
 // Allow our sweet sour dank memes so I learned how to bunny hop button to be able to open the menu depending on our selected class
 ((findDisplay 5000) displayCtrl 301) ctrlAddEventHandler ["ButtonDown", {
-	_class = ((findDisplay 5000) displayCtrl 300) lbData (lbCurSel ((findDisplay 5000) displayCtrl 300));
+	private _class = ((findDisplay 5000) displayCtrl 300) lbData (lbCurSel ((findDisplay 5000) displayCtrl 300));
 	[_class] spawn client_fnc_spawnMenu_displayClassCustomization;
 }];

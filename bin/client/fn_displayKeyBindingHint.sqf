@@ -9,7 +9,7 @@ scriptName "fn_displayKeyBindingHint";
 --------------------------------------------------------------------*/
 #define __filename "fn_displayKeyBindingHint.sqf"
 
-_text = param[0,"",[""]];
+private _text = param[0,"",[""]];
 
 28 cutRsc ["rr_keyBindingHint", "PLAIN"];
 ((uiNamespace getVariable ["rr_keyBindingHint", displayNull]) displayCtrl 0) ctrlSetStructuredText parseText _text;

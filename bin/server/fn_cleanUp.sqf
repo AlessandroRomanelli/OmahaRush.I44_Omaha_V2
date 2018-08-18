@@ -9,7 +9,7 @@ scriptName "fn_cleanUp";
 --------------------------------------------------------------------*/
 #define __filename "fn_cleanUp.sqf"
 
-_allObjects = (allMissionObjects "Man") + (allMissionObjects "GroundWeaponHolder") + (allMissionObjects "LandVehicle") + (allMissionObjects "Air") + (allMissionObjects "WeaponHolder") + (allMissionObjects "LIB_GerRadio") + (allMissionObjects "LIB_Static_opelblitz_radio") + (allMissionObjects "LIB_SovRadio");
+private _allObjects = (allMissionObjects "Man") + (allMissionObjects "GroundWeaponHolder") + (allMissionObjects "LandVehicle") + (allMissionObjects "Air") + (allMissionObjects "WeaponHolder") + (allMissionObjects "LIB_GerRadio") + (allMissionObjects "LIB_Static_opelblitz_radio") + (allMissionObjects "LIB_SovRadio");
 
 // If we have vehicles, delete them aswell
 if (!isNil "sv_persistentVehicles") then {

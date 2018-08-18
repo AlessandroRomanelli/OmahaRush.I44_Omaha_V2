@@ -10,8 +10,8 @@ scriptName "fn_evaluateAssistInfo";
 #define __filename "fn_evaluateAssistInfo.sqf"
 if (isServer && !hasInterface) exitWith {};
 
-_info = param[0,[],[[]]];
-_killer = param[1,objNull,[objNull]];
+private _info = param[0,[],[[]]];
+private _killer = param[1,objNull,[objNull]];
 
 // No data, no passing
 ["Assistinfo called -1"] call server_fnc_log;
@@ -25,7 +25,7 @@ if (_killer == player) exitWith {};
 [str _info] call server_fnc_log;
 
 // Get all data from the array regarding us
-_myData = [];
+private _myData = [];
 {
 	if ((_x select 0) == player) then {
 		_myData = _x;
@@ -39,7 +39,7 @@ _myData = [];
 if (count _myData == 0) exitWith {["No own data"] call server_fnc_log;};
 
 // Round decimals
-_damage = _myData select 1;
+private _damage = _myData select 1;
 _damage = round (_damage * (10 ^ 2)) / (10 ^ 2);
 if (_damage >= 1) then {_damage = 1;};
 _myData set [1, _damage];

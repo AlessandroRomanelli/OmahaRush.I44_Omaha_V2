@@ -10,8 +10,8 @@ scriptName "fn_onEachFramePreparation";
 #define __filename "fn_onEachFramePreparation.sqf"
 
 // Inline function to determine icon
-_getIcon = {
-	_unit = param[0,objNull,[objNull]];
+private _getIcon = {
+	private _unit = param[0,objNull,[objNull]];
 	if (_unit getVariable ["class",""] == "medic") exitWith {"pictures\medic.paa"};
 	if (_unit getVariable ["class",""] == "engineer") exitWith {"pictures\engineer.paa"};
 	if (_unit getVariable ["class",""] == "support") exitWith {"pictures\support.paa"};
@@ -27,20 +27,20 @@ cl_onEachFrame_team_reviveable = [];
 
 while {true} do {
 	// Temp vars
-	_squad_members = [];
-	_squad_beacons = [];
-	_team_members = [];
-	_toBeRevived = [];
+	private _squad_members = [];
+	private _squad_beacons = [];
+	private _team_members = [];
+	private _toBeRevived = [];
 
 	// Fill with data
 	{
-		_name = (_x getVariable ["name", "ERROR: No Name"]);
+		private _name = (_x getVariable ["name", "ERROR: No Name"]);
 		if (_x != player) then {
 			if (side (group _x) == side (group player)) then {
 				if ((group _x) == (group player)) then {
 					// Does this unit provide a beacon
 					if (cl_inSpawnMenu) then {
-						_beacon = _x getVariable ["assault_beacon_obj", objNull];
+						private _beacon = _x getVariable ["assault_beacon_obj", objNull];
 						if (!isNull _beacon) then {
 							_squad_beacons pushBack [(getPosATLVisual _beacon), format["%1's Spawnbeacon", _name]];
 						};
@@ -50,8 +50,8 @@ while {true} do {
 					if (alive _x) then {
 						// The player should not be on the debug island
 						if (_x distance cl_safePos > 200) then {
-							_alpha = [0.75, 0.55] select (_x distance player > 50);
-							_icon = [_x] call _getIcon;
+							private _alpha = [0.75, 0.55] select (_x distance player > 50);
+							private _icon = [_x] call _getIcon;
 							_squad_members pushBack [_x, _name, (MISSION_ROOT+_icon), _alpha];
 						};
 					};
@@ -73,7 +73,7 @@ while {true} do {
 
 	// Own beacon?
 	if (cl_inSpawnMenu) then {
-		_myBeacon = player getVariable ["assault_beacon_obj", objNull];
+		private _myBeacon = player getVariable ["assault_beacon_obj", objNull];
 		if (!isNull _myBeacon) then {
 			_squad_beacons pushBack [(getPosATLVisual _myBeacon), format["%1's Spawnbeacon", (player getVariable ["name", "ERROR: No Name"])]];
 		};

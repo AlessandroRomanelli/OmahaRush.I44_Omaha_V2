@@ -1,20 +1,20 @@
 scriptName "fn_teleport";
 /*--------------------------------------------------------------------
-	Author: Roman
+	Author: A.Roman
     File: fn_teleport.sqf
 
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
-_dest = param [0, objNull];
-_path = param [1, "tunnels"];
+private _dest = param [0, objNull];
+private _path = param [1, "tunnels"];
 
 if (({isPlayer _x && (_x getVariable ["gameSide", "attackers"] != player getVariable ["gameSide", "defenders"])} count (getPosWorld _dest nearEntities ["Man", 20])) > 0) exitWith {
   ["Enemies detected near tunnel exit"] spawn client_fnc_displayError;
 };
 
-_dir = random 359;
-_rdist = random 2;
-_pos = cl_safePos;
+private _dir = random 359;
+private _rdist = random 2;
+private _pos = cl_safePos;
 _pos set [0, (_pos select 0)+sin(_dir)*_rdist];
 _pos set [1, (_pos select 1)+cos(_dir)*_rdist];
 

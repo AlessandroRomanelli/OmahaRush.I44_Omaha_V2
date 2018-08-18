@@ -11,9 +11,9 @@ scriptName "fn_spawnPlayerAtObject";
 if (isServer && !hasInterface) exitWith {};
 
 // Unit
-_unit = param[0,objNull,[objNull]];
-_sendPoints = param[1,true,[true]];
-_inVehicle = param[2,false,[false]];
+private _unit = param[0,objNull,[objNull]];
+private _sendPoints = param[1,true,[true]];
+private _inVehicle = param[2,false,[false]];
 
 // CHECKS TO DO BEFORE SPAWNING
 // Invalid spawnpoint check (spawnpoint is not within the playable area)
@@ -22,11 +22,11 @@ if ((!alive _unit) || (_unit distance sv_cur_obj) > 5000) exitWith {
 	["Spawnpoint unavailable"] spawn client_fnc_displayError;
 };
 
-_vehicleNoSpace = false;
+private _vehicleNoSpace = false;
 // Put player into vehicle
 if (_inVehicle) then {
-	_vehicle = vehicle _unit;
-	_vehicleNoSpace = !([player, _vehicle] call client_fnc_moveUnitIntoVehicle);
+	private _vehicle = vehicle _unit;
+  _vehicleNoSpace = !([player, _vehicle] call client_fnc_moveUnitIntoVehicle);
 };
 
 // Was the vehicle full?
@@ -37,7 +37,7 @@ if (_vehicleNoSpace) exitWith {
 // Close spawn dialog
 closeDialog 0;
 
-_spawnPos = _unit modelToWorld [0,-1,0];
+private _spawnPos = _unit modelToWorld [0,-1,0];
 
 // Beacon?
 if (_unit isKindOf "Land_Laptop_device_F") then {
@@ -67,10 +67,11 @@ cl_spawnmenu_cam camPreparePos (ASLToATL (eyePos player));
 cl_spawnmenu_cam camPrepareTarget sv_cur_obj;
 cl_spawnmenu_cam camCommitPrepared 1;
 
+private _PPon = [false, true] select (getNumber(missionConfigFile >> "GeneralConfig" >> "PostProcessing") == 1);
 // Motion blurr
-if (getNumber(missionConfigFile >> "GeneralConfig" >> "PostProcessing") == 1) then {
-	0 = ["DynamicBlur", 400, [3]] spawn {
-		params ["_name", "_priority", "_effect", "_handle"];
+if (_PPon) then {
+	["DynamicBlur", 400, [3]] spawn {
+		params ["_name", "_priority", "_effect"];
 		while {
 			cl_spawnmenu_blur = ppEffectCreate [_name, _priority];
 			cl_spawnmenu_blur < 0
@@ -90,9 +91,9 @@ sleep 0.7;
 sleep 0.4;
 
 // Delete blurry effect
-if (getNumber(missionConfigFile >> "GeneralConfig" >> "PostProcessing") == 1) then {
-	0 = ["DynamicBlur", 400, [0]] spawn {
-		params ["_name", "_priority", "_effect", "_handle"];
+if (_PPon) then {
+	["DynamicBlur", 400, [0]] spawn {
+		params ["_name", "_priority", "_effect"];
 		while {
 			cl_spawnmenu_blur = ppEffectCreate [_name, _priority];
 			cl_spawnmenu_blur < 0
@@ -128,7 +129,7 @@ if (player getVariable "gameSide" == "defenders") then {
 // Display instructions hint for currently selected perk
 [] spawn {
 	sleep 10.3;
-	_instructions = [cl_classPerk] call client_fnc_getPerkInstructions;
+	private _instructions = [cl_classPerk] call client_fnc_getPerkInstructions;
 	[_instructions select 0, _instructions select 1] spawn client_fnc_hint;
 	// Reload mcom interaction
 	[] spawn client_fnc_objectiveActionUpdate;

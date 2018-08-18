@@ -10,16 +10,16 @@ scriptName "fn_revive";
 #define __filename "fn_revive.sqf"
 if (isServer && !hasInterface) exitWith {};
 
-_savior = param [0, objNull, [objNull]];
-_adminRevive = param [1, false, [false]];
+private _savior = param [0, objNull, [objNull]];
+private _adminRevive = param [1, false, [false]];
 
 // Pos
-_pos = getPosATL player;
+private _pos = getPosATL player;
 
 if (!(_adminRevive) && {!isNull _savior && _pos distance (getPosWorld _savior) > 10}) then {
 	_pos = getPosATL _savior;
-	_dir = getDir _savior;
-	_rdist = random 2;
+	private _dir = getDir _savior;
+	private _rdist = random 2;
 	_pos set [0, (_pos select 0)+sin(_dir)*_rdist];
 	_pos set [1, (_pos select 1)+cos(_dir)*_rdist];
 };
@@ -55,7 +55,7 @@ camDestroy cl_spawnmenu_cam;
 player switchCamera "INTERNAL";
 
 // Destroy all objects that are left of us
-_objs = nearestObjects [player, ["Man","GroundWeaponHolder", "WeaponHolder"], 5];
+private _objs = nearestObjects [player, ["Man","GroundWeaponHolder", "WeaponHolder"], 5];
 {
 	deleteVehicle _x;
 } forEach _objs;

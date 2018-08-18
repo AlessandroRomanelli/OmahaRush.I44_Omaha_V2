@@ -11,9 +11,9 @@ scriptName "fn_importantObjects";
 
 if (true) exitWith {};
 
-_types = [];
+private _types = [];
 
-_objects = nearestObjects [sv_cur_obj, _types, 2000];
+private _objects = nearestObjects [sv_cur_obj, _types, 2000];
 
 {
 	_x enableSimulationGlobal false;

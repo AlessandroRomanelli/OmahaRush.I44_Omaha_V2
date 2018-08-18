@@ -12,14 +12,14 @@ if (isServer && !hasInterface) exitWith {};
 
 disableSerialization;
 
-_classname = param[0,"",[""]];
+private _classname = param[0,"",[""]];
 if (_classname == "") exitWith {};
 
 // Display unlock layer
 120 cutRsc ["rr_weaponUnlockSingle","PLAIN"];
 
 // Get display
-_display = uiNamespace getVariable ["rr_weaponUnlockSingle",displayNull];
+private _display = uiNamespace getVariable ["rr_weaponUnlockSingle",displayNull];
 
 // Display weapon and text
 (_display displayCtrl 0) ctrlSetStructuredText parseText "<t size='2.5' align='center' shadow='2'>NEW WEAPON UNLOCKED</t>";

@@ -1,10 +1,9 @@
 scriptName "fn_init";
 /*--------------------------------------------------------------------
-	Author: Maverick (ofpectag: MAV)
+	Author: Maverick (ofpectag: MAV) & A. Roman
     File: fn_init.sqf
 
-	<Maverick Applications>
-    Written by Maverick Applications (www.maverick-apps.de)
+    Written by both authors
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_init.sqf"
@@ -17,7 +16,7 @@ cl_init_done = false;
 
 // Skip the briefing screen whenever possible
 if (hasInterface) then {
-    0 = [] spawn {
+    [] spawn {
         waitUntil {
             if (getClientState == "BRIEFING READ") exitWith {true};
             if (!isNull findDisplay 53) exitWith {
@@ -102,7 +101,7 @@ if (sv_gameCycle % 2 == 0) then {
 /* if (getNumber(missionConfigFile >> "GeneralConfig" >> "debug") == 1) then {
 	cl_exp = 10000000000;
 }; */
-
+private ["_marker1", "_marker2", "_marker3", "_marker4", "_trigger"];
 if (player getVariable "gameSide" == "defenders") then {
 	_marker1 = createMarkerLocal ["mobile_respawn_defenders",[0,0]];
 	_marker1 setMarkerTypeLocal "b_unknown";
@@ -147,8 +146,8 @@ missionNamespace setVariable ["playArea", _trigger];
 
 
 // Safepos markers (make sure units will not plop up on the battlefield)
-_safeMarker1 = createMarkerLocal ["respawn_defenders", cl_safePos];
-_safeMarker1 = createMarkerLocal ["respawn_attackers", cl_safePos];
+/* private _safeMarker1 = createMarkerLocal ["respawn_defenders", cl_safePos];
+private _safeMarker2 = createMarkerLocal ["respawn_attackers", cl_safePos]; */
 
 // Get time from server IF the match is already going or is about to, if not, it doesnt really matter
 if (sv_gameStatus in [1,2]) then {

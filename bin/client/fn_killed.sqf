@@ -33,15 +33,15 @@ if (!isNull (missionNamespace getVariable ["cl_reloadFlares_thread", scriptNull]
 };
 
 // Move above body
-_pos = player modelToWorld [0.1,0.1,3];
-_targetPos = (getPosATL player);
+private _pos = player modelToWorld [0.1,0.1,3];
+private _targetPos = (getPosATL player);
 _targetPos set [2, 0];
 cl_spawnmenu_cam camPreparePos _pos;
 cl_spawnmenu_cam camPrepareTarget _targetPos;
 cl_spawnmenu_cam camCommitPrepared 1;
 
 // Are no alive units left? Send a respawn request to the server
-_vehicle = vehicle player;
+private _vehicle = vehicle player;
 if (_vehicle != player) then {
 	if ({alive _x} count (crew _vehicle) == 0) then {
 		[_vehicle] remoteExec ["sv_tryRespawn", 2];
@@ -55,14 +55,14 @@ if !(isNull objectParent player) then {moveOut player};
 sleep 0.1;
 
 // Destroy all objects that are left of us
-_objs = nearestObjects [_pos, ["Man","GroundWeaponHolder", "WeaponHolder"], 5];
+private _objs = nearestObjects [_pos, ["Man","GroundWeaponHolder", "WeaponHolder"], 5];
 {
 	deleteVehicle _x;
 } forEach _objs;
 
 // Reduce ticket count if we are an attacker
 if (player getVariable "gameSide" == "attackers") then {
-	_isObjArmed = sv_cur_obj getVariable ["status", -1] == 1;
+	private _isObjArmed = sv_cur_obj getVariable ["status", -1] == 1;
 	if (sv_tickets > 0 && !(_isObjArmed)) then {
 		sv_tickets = sv_tickets - 1;
 		publicVariable "sv_tickets";

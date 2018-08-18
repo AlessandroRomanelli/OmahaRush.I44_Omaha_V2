@@ -14,12 +14,12 @@ if (isServer && !hasInterface) exitWith {};
 disableSerialization;
 
 // Get dialog
-_d = findDisplay 5000;
+private _d = findDisplay 5000;
 
 // Get selected equip to be displayed
-_equip = [] call client_fnc_getLoadedEquipment;
-_primary = _equip select 0;
-_secondary = _equip select 1;
+private _equip = [] call client_fnc_getLoadedEquipment;
+private _primary = _equip select 0;
+private _secondary = _equip select 1;
 if (_primary == "") then {
 	(_d displayCtrl 5) ctrlSetStructuredText parseText "<t size='4' color='#990000' shadow='2' font='PuristaMedium' align='center'>N/A</t>";
 	(_d displayCtrl 1001) ctrlSetStructuredText parseText "<t size='1.25' color='#990000' shadow='2' font='PuristaMedium' align='center'>NO WEAPON SELECTED</t>";
@@ -28,7 +28,7 @@ if (_primary == "") then {
 
 if (_secondary == "") then {
 	(_d displayCtrl 7) ctrlSetStructuredText parseText "<t size='4' color='#990000' shadow='2' font='PuristaMedium' align='center'>N/A</t>";
-	_secondaryWeapons = cl_equipConfigurations select {(getText(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> _x >> "type")) == "secondary"};
+	private _secondaryWeapons = cl_equipConfigurations select {(getText(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> _x >> "type")) == "secondary"};
 	if (count _secondaryWeapons != 0) then {
 		(_d displayCtrl 1004) ctrlSetStructuredText parseText "<t size='1.25' color='#990000' shadow='2' font='PuristaMedium' align='center'>NO WEAPON SELECTED</t>";
 		(_d displayCtrl 2001) ctrlSetStructuredText parseText "<t size='0.75' color='#FFFFFF' shadow='2' font='PuristaMedium' align='center'>[CLICK ABOVE TO SELECT]</t>";
@@ -83,9 +83,9 @@ if (_secondary != "") then {
 }; */
 
 // Get unlock progress
-_progress = [] call client_fnc_getNextUnlockableWeapon;
+private _progress = [] call client_fnc_getNextUnlockableWeapon;
 
-_text = if ((_progress select 2) != "") then {
+private _text = if ((_progress select 2) != "") then {
 	format["<t align='center' shadow='2' size='4.6'><img image='%1'/></t>",([_progress select 2] call client_fnc_weaponDetails) select 2]
 } else {
 	""

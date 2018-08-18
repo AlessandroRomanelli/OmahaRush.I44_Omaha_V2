@@ -106,9 +106,11 @@ private _sv_stage_spawnVehicle = {
 
 	// Tell upper script that this vehicle has respawned
 	//_arrayToEdit set [1, false];
-	private _vehicleIdx = sv_stageVehicleInfo find _config;
+	private _vehicleIdx = sv_stageVehicleInfo findif {(_x select 0) isEqualTo _config};
 	if (_vehicleIdx != -1) then {
-		sv_stageVehicleInfo set [_vehicleIdx, false];
+		private _entry = sv_stageVehicleInfo select _vehicleIdx;
+		_entry set [1, false];
+		sv_stageVehicleInfo set [_vehicleIdx, _entry];
 	};
 
 	// Vehicle monitoring
@@ -127,7 +129,7 @@ private _sv_stage_getCurrentStageVehicleDataIncOld = {
 	// Get data of current stage
 	private _stage = [] call client_fnc_getCurrentStageString;
 	private _configs = "true" configClasses (missionConfigFile >> "MapSettings" >> "Stages" >> _stage >> "Vehicles" >> "Attacker");
-	private _configs = _configs + ("true" configClasses (missionConfigFile >> "MapSettings" >> "Stages" >> _stage >> "Vehicles" >> "Defender"));
+	_configs = _configs + ("true" configClasses (missionConfigFile >> "MapSettings" >> "Stages" >> _stage >> "Vehicles" >> "Defender"));
 	// Cycle through definitely up to date configs and add them if these vehicles are currently not being monitored
 	{
 		private _config = _x;

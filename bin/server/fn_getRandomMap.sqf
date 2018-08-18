@@ -13,7 +13,7 @@ if (isNil "sv_map") then {
 	sv_map = "";
 };
 
-_newMap = sv_map;
+private _newMap = sv_map;
 
 while {sv_map == _newMap} do { // Make sure its not the same map
 	_newMap = configName (selectRandom ("true" configClasses (missionConfigFile >> "Maps")));

@@ -10,9 +10,9 @@ scriptName "fn_unlockAttachment";
 #define __filename "fn_unlockAttachment.sqf"
 if (isServer && !hasInterface) exitWith {};
 
-private ["_unlockedAttachments"];
+private _unlockedAttachments = [];
 
-_unlockableAttachments = [] call client_fnc_getUnlockableAttachments;
+private _unlockableAttachments = [] call client_fnc_getUnlockableAttachments;
 
 if (count _unlockableAttachments == 0) exitWith {
 	["All attachments for current weapon already unlocked"] spawn client_fnc_displayError;
@@ -20,13 +20,13 @@ if (count _unlockableAttachments == 0) exitWith {
 };
 
 // Select random attachment to unlock
-_unlockAttachmentClassname = selectRandom _unlockableAttachments;
+private _unlockAttachmentClassname = selectRandom _unlockableAttachments;
 
 // Now lets edit the original array >_>
 _unlockedAttachments pushBack _unlockAttachmentClassname;
 
-_curEquip = [] call client_fnc_getLoadedEquipment;
-_weaponInfo = [];
+private _curEquip = [] call client_fnc_getLoadedEquipment;
+private _weaponInfo = [];
 
 // Which of the two equipped weapons are we playing and what other info do we have about them?
 if (_curEquip select 0 select 0 == (currentWeapon player)) then {

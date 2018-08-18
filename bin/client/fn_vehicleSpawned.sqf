@@ -10,7 +10,7 @@ scriptName "fn_vehicleSpawned";
 #define __filename "fn_vehicleSpawned.sqf"
 if (isServer && !hasInterface) exitWith {};
 
-_v = param[0,objNull,[objNull]];
+private _v = param[0,objNull,[objNull]];
 
 // No vehicle?
 if (isNull _v) exitWith {};

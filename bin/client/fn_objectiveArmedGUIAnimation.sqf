@@ -11,8 +11,8 @@ scriptName "fn_objectiveArmedGUIAnimation";
 if (isServer && !hasInterface) exitWith {};
 
 disableSerialization;
-_c = (uiNamespace getVariable ["rr_objective_gui",displayNull]) displayCtrl 0;
-_obj = sv_cur_obj;
+private _c = (uiNamespace getVariable ["rr_objective_gui",displayNull]) displayCtrl 0;
+private _obj = sv_cur_obj;
 
 while {(_obj getVariable ["status", -1] == 1) && {sv_cur_obj == _obj}} do {
 	_c ctrlSetFade 1;

@@ -10,7 +10,7 @@ scriptName "fn_teamBalanceKick";
 #define __filename "fn_teamBalanceKick.sqf"
 if (isServer && !hasInterface) exitWith {};
 
-_sideToJoin = param[0,sideUnknown,[sideUnknown]];
+private _sideToJoin = param[0,sideUnknown,[sideUnknown]];
 
 if (_sideToJoin == sideUnknown) exitWith {};
 

@@ -10,7 +10,7 @@ scriptName "fn_remoteExecution";
 #define __filename "fn_remoteExecution.sqf"
 if (isServer && !hasInterface) exitWith {};
 
-_code = param[0,{},[{}]];
+private _code = param[0,{},[{}]];
 
 if (isNil "cl_lastRemoteExecManual") then {
 	cl_lastRemoteExecManual = 0;

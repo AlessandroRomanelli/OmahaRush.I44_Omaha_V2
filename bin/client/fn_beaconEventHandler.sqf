@@ -10,10 +10,10 @@ scriptName "fn_beaconEventHandler";
 #define __filename "fn_beaconEventHandler.sqf"
 if (isServer && !hasInterface) exitWith {};
 
-_beacon = param[0,objNull,[objNull]];
+private _beacon = param[0,objNull,[objNull]];
 
 if (isNull _beacon) exitWith {};
-_owner = [_beacon] call client_fnc_getBeaconOwner;
+private _owner = [_beacon] call client_fnc_getBeaconOwner;
 if (isNull _owner) exitWith {};
 
 // Check if this beacon is on our team

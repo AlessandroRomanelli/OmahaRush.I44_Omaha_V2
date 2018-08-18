@@ -9,8 +9,8 @@ scriptName "fn_setSquadPerks";
 #define __filename "fn_setSquadPerks.sqf"
 if (isServer && !hasInterface) exitWith {};
 
-_availableSquadPerks = (missionConfigFile >> "CfgPerks" >> "SquadPerks") call bis_fnc_getCfgSubClasses;
-_idx = _availableSquadPerks find cl_squadPerk;
+private _availableSquadPerks = (missionConfigFile >> "CfgPerks" >> "SquadPerks") call bis_fnc_getCfgSubClasses;
+private _idx = _availableSquadPerks find cl_squadPerk;
 if (player getVariable ["squadPerk", -1] != _idx) then {
   player setVariable ["squadPerk",_idx,true];
 };

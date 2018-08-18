@@ -10,8 +10,8 @@ scriptName "fn_displayKillfeed";
 #define __filename "fn_displayKillfeed.sqf"
 if (isServer && !hasInterface) exitWith {};
 
-_unit = param[0,objNull,[objNull]];
-_killer = param[1,objNull,[objNull]];
+private _unit = param[0,objNull,[objNull]];
+private _killer = param[1,objNull,[objNull]];
 
 if (isNil "cl_killfeed") exitWith {};
 
@@ -20,9 +20,9 @@ if (count cl_killfeed >= 5) then {
 	cl_killfeed deleteAt 0;
 };
 
-_possibleTurrentIndex = -2;
+private _possibleTurrentIndex = -2;
 if ((vehicle _killer) != _killer) then {
-	_v = vehicle _killer;
+	private _v = vehicle _killer;
 
 	// Check if we are the driver
 	if ((driver _v) == _killer) then {
@@ -36,7 +36,7 @@ if ((vehicle _killer) != _killer) then {
 };
 
 // Pushback into render array
-_reason = if (_possibleTurrentIndex in [-1, 0]) then {
+private _reason = if (_possibleTurrentIndex in [-1, 0]) then {
 	currentWeapon (vehicle _killer)
 } else {
 	currentWeapon _killer
