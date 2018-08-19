@@ -10,7 +10,7 @@ scriptName "fn_kill";
 #define __filename "fn_kill.sqf"
 if (isServer && !hasInterface) exitWith {};
 
-params [["_victim", objNull], ["_wasHS", false]];
+params [["_victim", objNull, [objNull]], ["_wasHS", false, [false]]];
 
 // Increase kills
 cl_kills = cl_kills + 1;
