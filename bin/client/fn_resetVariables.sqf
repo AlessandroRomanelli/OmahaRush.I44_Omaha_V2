@@ -215,6 +215,7 @@ if (isNil "rr_iconrenderer_executed") then {
 		private _HUD_zeroing = _hud displayCtrl 105;
 		private _HUD_grenades = _hud displayCtrl 107;
 		private _HUD_typeGrenade = _hud displayCtrl 108;
+		private _HUD_weaponName = _hud displayCtrl 1100;
 
 		private _currentAmmo = 0;
 		private _reserveAmmo = 0;
@@ -244,7 +245,7 @@ if (isNil "rr_iconrenderer_executed") then {
 				};
 			} forEach (magazinesAmmoFull player);
 		} else {
-			if (driver (vehicle player) == player) then {
+			if (driver (vehicle player) == player && {!((vehicle player) isKindOf "Air")}) then {
 				_currentAmmo = format ["%1", abs (floor (speed (vehicle player)))];
 				_reserveAmmo = format ["%1°", floor getDir (vehicle player)];
 				_fireMode = "KM/H";
@@ -263,6 +264,8 @@ if (isNil "rr_iconrenderer_executed") then {
 
 		if (_grenades isEqualTo 0) then {_grenades = ""};
 
+		private _weaponName = getText(configFile >> "cfgWeapons" >> currentWeapon (vehicle player) >> "displayName");
+
 		_HUD_currentAmmo  ctrlSetText format ["%1",_currentAmmo];
 		_HUD_reserveAmmo  ctrlSetText format ["%1",_reserveAmmo];
 		_HUD_firemode     ctrlSetStructuredText parseText format ["<t align='left' size='1'>[</t><t align='center' size='1'>%1</t><t align='right' size='1'>]</t>",_fireMode];
@@ -270,6 +273,7 @@ if (isNil "rr_iconrenderer_executed") then {
 		_HUD_zeroing  		ctrlSetText format ["%1m", currentZeroing player];
 		_HUD_typeGrenade	ctrlSetText _grenadeIcon;
 		_HUD_grenades			ctrlSetText format ["%1", _grenades];
+		_HUD_weaponName		ctrlSetText _weaponName;
 
 		// warning if we are too close to the enemy spawn
 		if (alive player && {!(vehicle player isKindOf "Air")} && {player getVariable ["isAlive", false]}) then {

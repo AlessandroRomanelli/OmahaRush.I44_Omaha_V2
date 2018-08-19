@@ -78,13 +78,13 @@ private _sv_stage_spawnVehicle = {
 	private _posATL = getArray(_config >> "positionATL");
 	private _dir = getNumber(_config >> "dir");
 	private _vehicle = createVehicle [getText(_config >> "classname"), [-200,-200,0], [], 200, "CAN_COLLIDE"];
-	_vehicle enableSimulation false;
+	_vehicle enableSimulationGlobal false;
 	_vehicle allowDamage false;
 	_vehicle setDir _dir;
 	_vehicle setPosATL _posATL;
 	_vehicle setVariable ["id", configName (_config), true];
 	_vehicle setVariable ["config", _config];
-	_vehicle enableSimulation true;
+	_vehicle enableSimulationGlobal true;
 	_vehicle allowDamage true;
 
 	// Clear vehicle

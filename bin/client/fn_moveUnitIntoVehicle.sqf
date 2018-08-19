@@ -15,6 +15,11 @@ params [["_unit", objNull, [objNull]], ["_vehicle", objNull, [objNull]]];
 if (isNull _unit || isNull _vehicle) exitWith {false};
 
 if (_vehicle isKindOf "Air") then {
+	_vehicle enableSimulation true;
+	_vehicle setVectorUp [0,0,1];
+	private _dir = getDir _vehicle;
+	private _velocity = [(sin _dir)*55, (cos _dir)*55, 0];
+	_vehicle setVelocity _velocity;
 	private _side = ["Attacker", "Defender"] select ((player getVariable ["gameSide", "defenders"]) isEqualTo "defenders");
 	private _configs = "true" configClasses (missionConfigFile >> "MapSettings" >> "PersistentVehicles" >> _side);
 	_configs = _configs select {(getText(_x >> "className")) isEqualTo (typeOf _vehicle)};

@@ -15,7 +15,7 @@ private _vehicle = param[0, objNull, [objNull]];
 waitUntil {{alive _x} count (crew _vehicle) > 0 || (!alive _vehicle)};
 
 if (_vehicle isKindOf "Air") then {
-	_vehicle enableSimulation true;
+	_vehicle enableSimulationGlobal true;
 	[_vehicle] spawn {
 		private _vehicle = param[0, objNull, [objNull]];
 		private _side = ["Attacker", "Defender"] select ((player getVariable ["gameSide", "defenders"]) isEqualTo "defenders");

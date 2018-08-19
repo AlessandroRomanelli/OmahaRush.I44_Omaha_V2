@@ -16,11 +16,15 @@ if (cl_pointsBelowMinimumPlayers > 15000) then {
 	cl_exp = 0;
 
 	// Save to database
-	[player, [
+	if (sv_usingDatabase) then {
+		[player, [
 		cl_total_kills,
 		cl_total_deaths,
 		cl_equipConfigurations,
 		cl_equipClassnames,
 		cl_exp
-	]] remoteExec ["server_fnc_db_setPlayer", 2];
+		]] remoteExec ["server_fnc_db_setPlayer", 2];
+	} else {
+		[] spawn client_fnc_saveStatistics;
+	};
 };

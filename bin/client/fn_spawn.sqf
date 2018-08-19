@@ -309,13 +309,17 @@ disableSerialization;
 
 // Event handlers for hover actions
 {
+	(_menuDisplay displayCtrl _x) ctrlRemoveAllEventHandlers "ButtonDown";
+	(_menuDisplay displayCtrl _x) ctrlRemoveAllEventHandlers "MouseEnter";
+	(_menuDisplay displayCtrl _x) ctrlRemoveAllEventHandlers "MouseExit";
 	(_menuDisplay displayCtrl _x) ctrlAddEventHandler ["MouseEnter", {
 		if ((_this select 0) isEqualTo ((findDisplay 5000) displayCtrl 15)) then {
 			if (cl_spawnmenu_currentWeaponSelectionState != 1) then {
 				((findDisplay 5000) displayCtrl 207) ctrlSetBackgroundColor [0.725,0.588,0.356,0.8];
 			};
 		} else {
-			if (cl_spawnmenu_currentWeaponSelectionState != 2) then {
+			private _secondaryWeapons = cl_equipConfigurations select {(getText(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> _x >> "type")) == "secondary"};
+			if (cl_spawnmenu_currentWeaponSelectionState != 2 && {count _secondaryWeapons != 0}) then {
 				((findDisplay 5000) displayCtrl 209) ctrlSetBackgroundColor [0.725,0.588,0.356,0.8];
 			};
 		};
@@ -330,11 +334,11 @@ disableSerialization;
 	}];
 } forEach [15,16];
 
-(_menuDisplay displayCtrl 15) ctrlAddEventHandler ["ButtonDown",{
+(_menuDisplay displayCtrl 15) ctrlAddEventHandler ["ButtonDown", {
 	[] spawn client_fnc_spawnMenu_displayPrimaryWeaponSelection;
 }];
 
-(_menuDisplay displayCtrl 16) ctrlAddEventHandler ["ButtonDown",{
+(_menuDisplay displayCtrl 16) ctrlAddEventHandler ["ButtonDown", {
 	private _secondaryWeapons = cl_equipConfigurations select {(getText(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> _x >> "type")) == "secondary"};
 	if (count _secondaryWeapons != 0) then {
 		[] spawn client_fnc_spawnMenu_displaySecondaryWeaponSelection;
@@ -342,10 +346,10 @@ disableSerialization;
 }];
 
 // Activate weapons' background event handler
-(_menuDisplay displayCtrl 2) ctrlEnable true;
+/* (_menuDisplay displayCtrl 2) ctrlEnable true; */
 
 // Close menu upon mouse exit
-(_menuDisplay displayCtrl 2) ctrlAddEventHandler ["MouseExit", {
+/* (_menuDisplay displayCtrl 2) ctrlAddEventHandler ["MouseExit", {
 	if (cl_spawnmenu_currentWeaponSelectionState != 0) then {
 		if (cl_spawnmenu_currentWeaponSelectionState == 1) then {
 			[] spawn client_fnc_spawnMenu_displayPrimaryWeaponSelection;
@@ -353,7 +357,7 @@ disableSerialization;
 			[] spawn client_fnc_spawnMenu_displaySecondaryWeaponSelection;
 		};
 	};
-}];
+}]; */
 
 /* (_menuDisplay displayCtrl 12) ctrlAddEventHandler ["ButtonDown",{[] spawn client_fnc_spawnMenu_displayPrimaryAttachmentSelection;}];
 (_menuDisplay displayCtrl 13) ctrlAddEventHandler ["ButtonDown",{[] spawn client_fnc_spawnMenu_displaySecondaryAttachmentSelection;}]; */
@@ -371,11 +375,11 @@ disableSerialization;
 
 [] spawn {
 	[] spawn client_fnc_loadSpawnpoints;
-	[] spawn client_fnc_spawnMenu_loadClasses;
+	[false] spawn client_fnc_spawnMenu_loadClasses;
 	while {dialog} do {
 		sleep 0.2;
 		[] spawn client_fnc_loadSpawnpoints;
-		[] spawn client_fnc_spawnMenu_loadClasses;
+		[true] spawn client_fnc_spawnMenu_loadClasses;
 	};
 };
 

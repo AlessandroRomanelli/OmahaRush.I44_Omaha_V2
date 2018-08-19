@@ -13,22 +13,6 @@ if (isServer && !hasInterface) exitWith {};
 disableSerialization;
 private _d = findDisplay 5000;
 
-// Exit if this menu is already open
-if (cl_spawnmenu_currentWeaponSelectionState == 2) exitWith {
-	cl_spawnmenu_currentWeaponSelectionState = 0;
-	{(_d displayCtrl _x) ctrlSetStructuredText parseText "<t size='0.75' color='#ffffff'' shadow='2' font='PuristaMedium' align='center'>[CLICK ABOVE TO OPEN]</t>"} forEach [2001,2002];
-	{
-		((findDisplay 5000) displayCtrl _x) ctrlShow false;
-	} forEach [
-		2,3,
-		20,21,22,25,23,24,26,27,28,29
-	];
-	(_d displayCtrl 209) ctrlSetBackgroundColor [0.12,0.14,0.16,0.8];
-};
-
-(_d displayCtrl 207) ctrlSetBackgroundColor [0.12,0.14,0.16,0.8];
-(_d displayCtrl 209) ctrlSetBackgroundColor [0.96,0.65,0.12,0.8];
-
 // Hide everything for now
 {
 	((findDisplay 5000) displayCtrl _x) ctrlShow false;
@@ -36,6 +20,16 @@ if (cl_spawnmenu_currentWeaponSelectionState == 2) exitWith {
 	2,3,
 	20,21,22,25,23,24,26,27,28,29
 ];
+
+// Exit if this menu is already open
+if (cl_spawnmenu_currentWeaponSelectionState == 2) exitWith {
+	{(_d displayCtrl _x) ctrlSetStructuredText parseText "<t size='0.75' color='#ffffff'' shadow='2' font='PuristaMedium' align='center'>[CLICK ABOVE TO OPEN]</t>"} forEach [2001,2002];
+	cl_spawnmenu_currentWeaponSelectionState = 0;
+	(_d displayCtrl 209) ctrlSetBackgroundColor [0.12,0.14,0.16,0.8];
+};
+
+(_d displayCtrl 207) ctrlSetBackgroundColor [0.12,0.14,0.16,0.8];
+(_d displayCtrl 209) ctrlSetBackgroundColor [0.96,0.65,0.12,0.8];
 
 // Duhh
 cl_spawnmenu_currentWeaponSelectionState = 2;
@@ -55,15 +49,15 @@ lbClear (_d displayCtrl 3);
 // Load all weapons into the listbox
 private _secondaryWeapons = cl_equipConfigurations select {(getText(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> _x >> "type")) == "secondary"};
 {
-	(_d displayCtrl 3) lbAdd (([_x] call client_fnc_weaponDetails) select 1);
-	(_d displayCtrl 3) lbSetPicture [(lbSize (_d displayCtrl 3)) - 1, (([_x] call client_fnc_weaponDetails) select 2)];
+	private _weaponData = [_x] call client_fnc_weaponDetails;
+	(_d displayCtrl 3) lbAdd (_weaponData select 1);
+	(_d displayCtrl 3) lbSetPicture [(lbSize (_d displayCtrl 3)) - 1, (_weaponData select 2)];
 	(_d displayCtrl 3) lbSetData [(lbSize (_d displayCtrl 3)) - 1, _x];
 
 	if (_x == (cl_equipClassnames select 1)) then {
 		(_d displayCtrl 3) lbSetCurSel ((lbSize (_d displayCtrl 3)) - 1);
 	};
 } forEach _secondaryWeapons;
-
 
 
 // Give control

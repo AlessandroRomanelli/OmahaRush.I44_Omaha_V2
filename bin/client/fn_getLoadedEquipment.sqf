@@ -20,7 +20,6 @@ if (count cl_equipConfigurations == 0) then {
 	private _configs = "true" configClasses (missionConfigFile >> "Unlocks" >> player getVariable "gameSide");
 
 	// Populare cl_equipConfigurations with all possible weapons
-	for "_i" from 0 to (count _configs - 1) step 1 do
 	{
 		// All weapons cheat
 		private _allWeapons = false;
@@ -28,22 +27,22 @@ if (count cl_equipConfigurations == 0) then {
 			_allWeapons = true;
 		}; */
 
-		if (getNumber((_configs select _i) >> "exp") <= cl_exp || _allWeapons) then {
+		if (getNumber(_x >> "exp") <= cl_exp || _allWeapons) then {
 
-			private _item = configName (_configs select _i);
+			private _item = configName _x;
 
 			// If no default equipped classname has been set yet
-			if (getText((_configs select _i) >> "type") == "primary" && (cl_equipClassnames select 0) == "" && cl_class in getArray((_configs select _i) >> "roles")) then {
-				cl_equipClassnames set[0, configName (_configs select _i)];
+			if ((getText(_x >> "type") == "primary") && {(cl_equipClassnames select 0) == ""} && {cl_class in getArray(_x >> "roles")}) then {
+				cl_equipClassnames set[0, configName _x];
 			};
-			if (getText((_configs select _i) >> "type") == "secondary" && (cl_equipClassnames select 1) == "") then {
-				cl_equipClassnames set[1, configName (_configs select _i)];
+			if ((getText(_x >> "type") == "secondary") && {(cl_equipClassnames select 1) == ""}) then {
+				cl_equipClassnames set[1, configName _x];
 			};
 
 			// Pushback into configuration pool
-			cl_equipConfigurations pushBack _item;
+			cl_equipConfigurations pushBackUnique _item;
 		};
-	};
+	} forEach _configs;
 };
 
 // Return

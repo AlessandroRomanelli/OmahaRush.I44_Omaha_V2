@@ -1028,6 +1028,19 @@ class rr_reloadingFlares {
 				sizeEx = /*safezoNeW/*/(1.9*0.04);
 				shadow = 2;
 			};
+			class RscText_1100: RscText
+			{
+			  idc = 1100;
+			  text = ""; //--- ToDo: Localize;
+			  x = 0.86575 * safezoneW + safezoneX;
+			  y = 0.8704 * safezoneH + safezoneY;
+			  w = 0.130208 * safezoneW;
+			  h = 0.0224076 * safezoneH;
+			  colorBackground[] = {-1,-1,-1,0};
+				shadow = 2;
+				font = "PuristaBold";
+				align = "right";
+			};
 		};
 	};
 
