@@ -36,13 +36,8 @@ private _after = +cl_equipConfigurations;
 if (count _before != count _after) then {
 	private _unlockedWeapons = [];
 	{
-		private _toCheck = _x select 0;
-		private _found = false;
-		{
-			if (_toCheck == (_x select 0)) then {
-				_found = true;
-			};
-		} forEach _before;
+		private _toCheck = _x;
+		private _found = _toCheck in _before;
 
 		// Not found? Unlocked!
 		if (!_found) then {
@@ -50,10 +45,7 @@ if (count _before != count _after) then {
 		};
 	} forEach _after;
 
-	private _unlockedClassnames = [];
-	{
-		_unlockedClassnames pushBack (_x select 0);
-	} forEach _unlockedWeapons;
+	private _unlockedClassnames = _unlockedWeapons;
 
 	// Display unlocked weapons
 	{

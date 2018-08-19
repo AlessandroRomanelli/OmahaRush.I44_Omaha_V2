@@ -157,10 +157,12 @@ player addEventHandler ["Hit",
 
 // Killed
 player addEventHandler ["Killed", {
-	params["_victim", "_killer", "_instigator"];
+	private _victim = _this select 0;
 	private _lastDeath = _victim getVariable ["lastDeath", 0];
 	//Avoiding more than one time each 1/10 of a second
 	if (diag_tickTime - _lastDeath > 0.1) then {
+		private _killer = _this select 1;
+		private _instigator = _this select 2;
 		// Increase deaths
 		cl_deaths = cl_deaths + 1;
 		cl_total_deaths = cl_total_deaths + 1;
