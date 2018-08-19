@@ -11,7 +11,7 @@ class Vehicle {
 };
 
 class Plane: Vehicle {
-  respawnTime = 420;
+  respawnTime = 300;
   populationReq = 30;
   fuelTime = 90;
 };
