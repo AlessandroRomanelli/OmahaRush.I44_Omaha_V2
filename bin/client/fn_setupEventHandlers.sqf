@@ -249,7 +249,7 @@ player addEventHandler ["HandleDamage", {
 			};
 		} else {
 			private _mgs = 			  ["LIB_MG34", "LIB_MG42", "LIB_FG42G", "LIB_DP28", "LIB_DT", "LIB_M1918A2_BAR", "LIB_M1919A4", "LIB_M1919A6", "LIB_MP44"];
-			private _bolts = 		  ["LIB_G3340", "LIB_K98_Late", "LIB_M1903A3_Springfield", "LIB_DELISLE", "LIB_K98", "LIB_M9130", "LIB_M38", "LIB_M44"];
+			private _bolts = 		  ["LIB_G3340", "LIB_K98_Late", "LIB_M1903A3_Springfield", "LIB_M1903A4_Springfield", "LIB_DELISLE", "LIB_K98", "LIB_K98ZF39", "LIB_M9130", "LIB_M38", "LIB_M44"];
 			private _smgs = 			["LIB_M1A1_Thompson", "LIB_M1928A1_Thompson", "LIB_M1928_Thompson", "LIB_MP38", "LIB_MP40", "LIB_M3_GreaseGun", "LIB_PPSh41_m"];
 			private _semiAutos =  ["LIB_G43", "LIB_M1A1_Carbine", "LIB_M1_Carbine", "LIB_M1_Garand", "LIB_G41", "LIB_SVT_40"];
 			private _pistols =	  ["LIB_P38", "LIB_M1895", "LIB_TT33", "LIB_M1896", "LIB_Colt_M1911"];
@@ -265,7 +265,9 @@ player addEventHandler ["HandleDamage", {
 				if (currentWeapon _shooter in _pistols) then {_hit = _damage/1};
 				_hit = _hit + _currentDmg;
 				_unit setVariable ["unitDmg", _hit];
-				_unit setDamage _hit;
+				if (_hit != 0) then {
+					_unit setDamage _hit;
+				};
 				_damage = damage _unit;
 			} else {
 	      _damage = _unit getHit _hitSelection;
