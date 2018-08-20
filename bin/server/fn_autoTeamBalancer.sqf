@@ -31,7 +31,7 @@ sv_autoTeamBalancerWarning = false;
 while {sv_gameStatus == 2} do {
 	sleep 60;
 
-	private _unitsTeam1 = {(side _x) isEqualTo WEST} count allPlayers;
+	private _unitsTeam1 = {(_x getVariable ["side", sideUnknown]) isEqualTo WEST} count allPlayers;
 	private _unitsTeam2 = (count allPlayers) - _unitsTeam1;
 
 	private _diff = abs(_unitsTeam1 - _unitsTeam2);
