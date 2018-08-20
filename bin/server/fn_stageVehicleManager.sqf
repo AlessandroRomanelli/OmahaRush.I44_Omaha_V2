@@ -18,7 +18,7 @@ sv_stageVehicleInfo = [];
 // Inline functions
 
 // Getter for vehicle with same ID of the query
-private _sv_stage_getVehicleByID = {
+sv_stage_getVehicleByID = {
 	private _id = param[0,"",[""]];
 	private _ret = objNull;
 	{
@@ -171,7 +171,7 @@ private _sv_stage_removeObsoleteVehicles = {
 	private _configs = param[0,[],[[]]];
 	private _vehicles = [];
 	{
-		private _v = [configName _x] call _sv_stage_getVehicleByID;
+		private _v = [configName (_x select 0)] call sv_stage_getVehicleByID;
 		if (!isNull _v) then {
 			_vehicles pushBack _v;
 		};
@@ -212,7 +212,7 @@ while {sv_gameStatus == 2} do {
 		if (!_isRespawning) then {
 			// Vehicle isnt respawning, check if has been destroyed
 			//diag_log "1";
-			private _v = [configName _config] call _sv_stage_getVehicleByID;
+			private _v = [configName _config] call sv_stage_getVehicleByID;
 
 			if ((isNull _v || !alive _v || !canMove _v) && (isNull (_v getVariable ["vehicle_getout_thread", scriptNull]))) then {
 				// Vehicle was ingame destroyed

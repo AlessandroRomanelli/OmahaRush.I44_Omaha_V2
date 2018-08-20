@@ -161,6 +161,7 @@ player addEventHandler ["Killed", {
 	private _lastDeath = _victim getVariable ["lastDeath", 0];
 	//Avoiding more than one time each 1/10 of a second
 	if (diag_tickTime - _lastDeath > 0.1) then {
+		_victim setVariable ["lastDeath", diag_tickTime];
 		private _killer = _this select 1;
 		private _instigator = _this select 2;
 		// Increase deaths
@@ -182,7 +183,6 @@ player addEventHandler ["Killed", {
 				[_victim, false] remoteExec ["client_fnc_kill", _killer];
 				_victim setVariable ["isAlive", false];
 			};
-			_victim setVariable ["lastDeath", diag_tickTime];
 			// you have been killed by message
 			[format ["You have been killed by<br/>%1", _killer getVariable ["name", "ERROR: No Name"]]] spawn client_fnc_displayInfo;
 
@@ -238,11 +238,13 @@ player addEventHandler ["Killed", {
 
 // Handledamage
 player addEventHandler ["HandleDamage", {
-	params ["_unit", "_hitSelection", "_damage", "_shooter"];
-	private _currentDmg = _unit getVariable ["unitDmg", 0];
+	params ["_unit", "_hitSelection", "_damage", "_shooter", "_projectile", "_hitIndex", "_instigator", "_hitPoint"];
+	if (!isNull _instigator) then {
+		_shooter = _instigator;
+	};
 	//If critical damage to the head kill the victim and reward the shooter with HS bonus
-	if (side _shooter != side _unit && {_currentDmg <= 1}) then {
-		if ((_hitSelection in ["head", "face_hub"]) && {_damage >= 1} && {alive _unit}) then {
+	if !((side _shooter) isEqualTo (side _unit)) then {
+		if ((_hitSelection in ["head", "face_hub"]) && {_damage >= 0.2} && {_unit getVariable ["isAlive", true]}) then {
 			if (!(_unit getVariable ["wasHS", false])) then {
 				[_unit, true] remoteExec ["client_fnc_kill",_shooter];
 				_unit setDamage 1;
@@ -250,30 +252,25 @@ player addEventHandler ["HandleDamage", {
 				_unit setVariable ["isAlive", false];
 			};
 		} else {
-			private _mgs = 			  ["LIB_MG34", "LIB_MG42", "LIB_FG42G", "LIB_DP28", "LIB_DT", "LIB_M1918A2_BAR", "LIB_M1919A4", "LIB_M1919A6", "LIB_MP44"];
+			private _mgs = 			  ["LIB_MG34", "LIB_MG42", "LIB_FG42G", "LIB_DP28", "LIB_DT", "LIB_M1918A2_BAR", "LIB_M1919A4", "LIB_M1919A6"];
 			private _bolts = 		  ["LIB_G3340", "LIB_K98_Late", "LIB_M1903A3_Springfield", "LIB_M1903A4_Springfield", "LIB_DELISLE", "LIB_K98", "LIB_K98ZF39", "LIB_M9130", "LIB_M38", "LIB_M44"];
-			private _smgs = 			["LIB_M1A1_Thompson", "LIB_M1928A1_Thompson", "LIB_M1928_Thompson", "LIB_MP38", "LIB_MP40", "LIB_M3_GreaseGun", "LIB_PPSh41_m"];
+			private _smgs = 			["LIB_M1A1_Thompson", "LIB_M1928A1_Thompson", "LIB_M1928_Thompson", "LIB_MP38", "LIB_MP40", "LIB_M3_GreaseGun", "LIB_PPSh41_m", "LIB_MP44"];
 			private _semiAutos =  ["LIB_G43", "LIB_M1A1_Carbine", "LIB_M1_Carbine", "LIB_M1_Garand", "LIB_G41", "LIB_SVT_40"];
 			private _pistols =	  ["LIB_P38", "LIB_M1895", "LIB_TT33", "LIB_M1896", "LIB_Colt_M1911"];
-	    if (_hitSelection isEqualTo "") then {
-				if (alive _unit && {_damage > 0.01} && {_damage < 1}) then {
+			if (_hitSelection isEqualTo "") then {
+				if (currentWeapon _shooter in _mgs) then {_damage = _damage/25};
+				if (currentWeapon _shooter in _bolts) then {_damage = _damage/0.5};
+				if (currentWeapon _shooter in _smgs) then {_damage =  _damage/5};
+				if (currentWeapon _shooter in _semiAutos) then {_damage = _damage/1.8};
+				if (currentWeapon _shooter in _pistols) then {_damage = _damage/2.5};
+				_damage = (damage _unit) + _damage;
+				if (_unit getVariable ["isAlive", true] && {_damage > 0} && {_damage < 1}) then {
 					_damage remoteExec ["client_fnc_MPHit", _shooter];
 				};
-				private _hit = 0;
-				if (currentWeapon _shooter in _mgs) then {_hit = _damage/4};
-				if (currentWeapon _shooter in _bolts) then {_hit = _damage/0.5};
-				if (currentWeapon _shooter in _smgs) then {_hit =  _damage/3};
-				if (currentWeapon _shooter in _semiAutos) then {_hit = _damage/1.8};
-				if (currentWeapon _shooter in _pistols) then {_hit = _damage/1};
-				_hit = _hit + _currentDmg;
-				_unit setVariable ["unitDmg", _hit];
-				if (_hit != 0) then {
-					_unit setDamage _hit;
-				};
-				_damage = damage _unit;
+				[str _damage] remoteExec ["hint", player_defend_1];
 			} else {
-	      _damage = _unit getHit _hitSelection;
-	    };
+				_damage = _unit getHit _hitSelection;
+			};
 		};
 	};
 
@@ -290,7 +287,7 @@ player addEventHandler ["GetInMan", {
 	private _vehicle = param[2, objNull, [objNull]];
 	_vehicle allowDamage true;
 
-	if (count crew _vehicle > 0 && {_vehicle getVariable ["last_man", objNull] != objNull}) then {
+	if ((count (crew _vehicle) > 0) && {_vehicle getVariable ["last_man", objNull] != objNull}) then {
 		_vehicle setVariable ["last_man", objNull, true];
 	};
 
@@ -324,7 +321,7 @@ player addEventHandler ["GetInMan", {
 		if (isNull _killer) exitWith {};
 
 		if (count (crew _vehicle) > 0) exitWith {
-			_unit = crew _vehicle select 0;
+			_unit = (crew _vehicle) select 0;
 			if ((player isEqualto _unit) && (_unit getVariable ["gameSide", "attackers"] != _killer getVariable ["gameSide", "defenders"])) then {
 				[_vehicle, _killer] spawn _sendVehicleKill;
 			};

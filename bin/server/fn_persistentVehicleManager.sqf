@@ -74,7 +74,7 @@ private _sv_spawnVehicle = {
 
 	// Wait the respawn time
 	private _sleepTime = getNumber(_config >> "respawnTime");
-	diag_log format["DEBUG: Call will wait for %1 seconds before proceeding", _sleepTime];
+	/* diag_log format["DEBUG: Call will wait for %1 seconds before proceeding", _sleepTime]; */
 	/* if (!_initialSpawn) then {_sleepTime = getNumber(_config >> "respawnTime")}; */
 	sleep _sleepTime;
 
@@ -98,13 +98,13 @@ private _sv_spawnVehicle = {
 	if (_className isKindOf "Air") then {
 		_vehicle = createVehicle [_className, [-200,-200,0], [], 200, "FLY"];
 		_dir = _posATL getDir (getPos sv_cur_obj);
-		diag_log format["DEBUG: Creating vehicle of class %1, at posATL: %2, dir: %3", _className, _posATL, _dir];
+		/* diag_log format["DEBUG: Creating vehicle of class %1, at posATL: %2, dir: %3", _className, _posATL, _dir]; */
 		private _velocity = [(sin _dir)*55, (cos _dir)*55, 0];
 		_vehicle setDir _dir;
 		_vehicle setPosATL _posATL;
 		_vehicle setVelocity _velocity;
 		_vehicle enableSimulationGlobal false;
-		diag_log format["DEBUG: Simulation for vehicle disabled, currently at: %1, should be at: %2", getPos _vehicle, _posATL];
+		/* diag_log format["DEBUG: Simulation for vehicle disabled, currently at: %1, should be at: %2", getPos _vehicle, _posATL]; */
 	} else {
 		_vehicle = createVehicle [_className, [-200,-200,0], [], 200, "CAN_COLLIDE"];
 		_vehicle setDir _dir;
@@ -168,14 +168,14 @@ while {sv_gameStatus == 2} do {
 		private _isRespawning = _x select 1;
 		// Check if vehicle is already respawning
 		if (!_isRespawning) then {
-			diag_log format["DEBUG: Attempting to spawn vehicle with ID: %1", configName _config];
+			/* diag_log format["DEBUG: Attempting to spawn vehicle with ID: %1", configName _config]; */
 			// Vehicle isnt respawning, check if has been destroyed
 			private _v = [configName _config] call sv_getVehicleByID;
 
 			if (isNull _v || !alive _v || !canMove _v) then {
 				private _populationReq = getNumber(_config >> "populationReq");
 				if (count allPlayers > _populationReq) then {
-					diag_log format["DEBUG: Enough more than %1 players were connected, spawn allowed", _populationReq];
+					/* diag_log format["DEBUG: Enough more than %1 players were connected, spawn allowed", _populationReq]; */
 					// Vehicle was ingame destroyed
 					private _thread = [_config, _matchStart, _x] spawn _sv_spawnVehicle;
 					_x set [1, true];
