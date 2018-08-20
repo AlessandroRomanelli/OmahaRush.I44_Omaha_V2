@@ -162,6 +162,7 @@ player addEventHandler ["Killed", {
 	//Avoiding more than one time each 1/10 of a second
 	if (diag_tickTime - _lastDeath > 0.1) then {
 		_victim setVariable ["lastDeath", diag_tickTime];
+		_victim setVariable ["wwr_unit_loadout", getUnitLoadout _victim];
 		private _killer = _this select 1;
 		private _instigator = _this select 2;
 		// Increase deaths

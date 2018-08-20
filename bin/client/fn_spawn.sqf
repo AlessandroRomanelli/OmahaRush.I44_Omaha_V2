@@ -107,7 +107,12 @@ showHUD [true,false,false,false,false,true,false,_3dcursor,false];
 // Disable voice channels
 [] spawn client_fnc_disableChannels;
 
-private _side = player getVariable "gameSide";
+removeUniform player;
+removeVest player;
+removeHeadgear player;
+removeBackpack player;
+
+/* private _side = player getVariable "gameSide";
 private _sideLoadout = [] call client_fnc_getCurrentSideLoadout;
 
 private _uniforms = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "uniforms"));
@@ -120,7 +125,7 @@ if (count _uniforms > 0) then {player forceAddUniform (selectRandom _uniforms);}
 if (_goggles != "") then {player addGoggles _goggles;};
 if (count _headgears > 0) then {player addHeadgear (selectRandom _headgears);};
 if (count _vests > 0) then {player addVest (selectRandom _vests);};
-if (count _backpacks > 0) then {player addBackpack (selectRandom _backpacks);};
+if (count _backpacks > 0) then {player addBackpack (selectRandom _backpacks);}; */
 
 // Shared items
 /*player addItem "ItemGPS";
@@ -138,7 +143,7 @@ private _stage = "";
 while {_stage == ""} do {
 	_stage = [] call client_fnc_getCurrentStageString;
 };
-_side = player getVariable "gameSide";
+private _side = player getVariable "gameSide";
 private _pos = getArray(missionConfigFile >> "MapSettings" >> "Stages" >> _stage >> "Spawns" >> _side);
 
 // Determine point between current pos and target pos

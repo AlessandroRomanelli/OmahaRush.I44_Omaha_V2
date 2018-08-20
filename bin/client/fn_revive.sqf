@@ -42,9 +42,6 @@ if (!isNull _savior) then {
 	["You have been revived"] spawn client_fnc_displayInfo;
 };
 
-// Lets get back our weapons + one mag which was in the old weapon
-[true] spawn client_fnc_equipWeapons;
-
 if (!isNil "rr_respawn_thread") then {
 	terminate rr_respawn_thread;
 };
@@ -60,8 +57,10 @@ private _objs = nearestObjects [player, ["Man","GroundWeaponHolder", "WeaponHold
 	deleteVehicle _x;
 } forEach _objs;
 
+player setUnitLoadout (player getVariable ["wwr_unit_loadout",[]]);
+
 // Give player all his items
-[] spawn client_fnc_equipAll;
+[true] spawn client_fnc_equipAll;
 
 // Reenable hud
 300 cutRsc ["default","PLAIN"];
