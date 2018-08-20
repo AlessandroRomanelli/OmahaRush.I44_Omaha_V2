@@ -30,7 +30,7 @@ private _classLimitException = {
 };
 
 // Count how many players are on our side
-private _sameSidePlayers = allPlayers select {if (playerSide isEqualTo (side _x)) then {true}};
+private _sameSidePlayers = allPlayers select {if (playerSide isEqualTo (_x getVariable ["side", sideUnknown])) then {true}};
 
 // Count how many players are playing with our same class
 private _sameClassPlayers = count (_sameSidePlayers select {if (_x getVariable ["class", "medic"] isEqualTo _class) then {true}});
