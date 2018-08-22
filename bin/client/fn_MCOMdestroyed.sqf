@@ -72,7 +72,7 @@ if (param[0,false,[false]]) then {
 	[format["DEFENDERS HAVE %1 SECONDS TO FALL BACK", _fallBackTime]] spawn client_fnc_displayObjectiveMessage;
 
 	if (!_isPlayerAttacking) then {
-		[playArea] spawn client_fnc_updateRestrictions;
+		[playArea, _fallBackTime] spawn client_fnc_updateRestrictions;
 	};
 
 	sleep (_fallBackTime-3);
