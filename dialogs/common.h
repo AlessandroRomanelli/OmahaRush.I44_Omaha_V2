@@ -167,7 +167,8 @@ class RscText {
     shadow = 1;
     colorShadow[] = {0, 0, 0, 0.5};
     font = "PuristaMedium";
-    SizeEx = "(((((safezoneW / safezoneH) min 1.2) / 1.2) / 25) * 1)";
+    SizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 1.5)";
+    size = "1.00 *     (pixelH * pixelGridNoUIScale * 1.5)";
     text = "";
     colorText[] = {1, 1, 1, 1.0};
     colorBackground[] = {0, 0, 0, 0};
@@ -246,7 +247,7 @@ class RscStructuredText {
     h = 0.035;
     w = 0.1;
     text = "";
-    size = "(((((safezoneW / safezoneH) min 1.2) / 1.2) / 25) * 1)";
+    size = "1.00 *     (pixelH * pixelGridNoUIScale * 1.5)";
     colorText[] = {1, 1, 1, 1.0};
     shadow = 1;
 
@@ -365,7 +366,7 @@ class RscShortcutButton {
     };
     period = 0.4;
     font = "PuristaMedium";
-    size = "(((((safezoneW / safezoneH) min 1.2) / 1.2) / 25) * 1)";
+    size = "1.00 *     (pixelH * pixelGridNoUIScale * 1.5)";
     sizeEx = "(((((safezoneW / safezoneH) min 1.2) / 1.2) / 25) * 1)";
     text = "";
     soundEnter[] = {"\A3\ui_f\data\sound\RscButton\soundEnter",0.09,1};
@@ -415,7 +416,7 @@ class RscButtonMenu : RscShortcutButton {
     period = 1.2;
     periodFocus = 0;
     periodOver = 1.2;
-    size = "(((((safezoneW / safezoneH) min 1.2) / 1.2) / 25) * 1)";
+    size = "1.00 *     (pixelH * pixelGridNoUIScale * 1.5)";
     sizeEx = "(((((safezoneW / safezoneH) min 1.2) / 1.2) / 25) * 1)";
     tooltipColorText[] = {1,1,1,1};
     tooltipColorBox[] = {1,1,1,1};
@@ -485,7 +486,7 @@ class RscShortcutButtonMain : RscShortcutButton {
     animTextureDefault = "\A3\ui_f\data\GUI\RscCommon\RscShortcutButtonMain\normal_ca.paa";
     period = 0.5;
     font = "PuristaMedium";
-    size = "(((((safezoneW / safezoneH) min 1.2) / 1.2) / 25) * 1.2)";
+    size = "1.00 *     (pixelH * pixelGridNoUIScale * 1.5)";
     sizeEx = "(((((safezoneW / safezoneH) min 1.2) / 1.2) / 25) * 1.2)";
     text = "";
     soundEnter[] = {"\A3\ui_f\data\sound\onover", 0.09, 1};

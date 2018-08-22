@@ -75,8 +75,9 @@ class rr_spawnmenu {
 			y = 0.2954 * safezoneH + safezoneY;
 			w = 0.255718 * safezoneW;
 			h = 0.4026 * safezoneH;
-			sizeEx = 0.04;
-			rowHeight = 0.1;
+      sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 2)";
+      rowHeight = "1.00 *     (pixelH * pixelGridNoUIScale * 5)";
+      wholeHeight = "1.00 *     (pixelH * pixelGridNoUIScale * 5)";
 			colorBackground[] = {0,0,0,0};
 			colorSelect[] = {1, 1, 1, 1};
 	    colorText[] = {1, 1, 1, 0.5};
@@ -356,8 +357,8 @@ class rr_spawnmenu {
 			h = 0.022 * safezoneH;
 			colorText[] = {0,0,0,1};
 			shadow = 0;
-			sizeEx = 0.04;
-		};
+      sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 1.5)";
+    };
 		class RscText_10032353462: RscText
 		{
 			idc = 203;
@@ -430,8 +431,8 @@ class rr_spawnmenu {
       color[] = {1,1,1,1};
 			colorText[] = {1,1,1,1};
 			colorBackground[] = {0.84,0.57,0.1,0.8};
-      size = 0.04;
-      sizeEx = 0.04;
+      size = "1.00 *     (pixelH * pixelGridNoUIScale * 1)";
+      /* sizeEx = 0.04; */
 		};
 		/* class RscText_10057667: RscText
 		{
@@ -565,9 +566,9 @@ class rr_spawnmenu {
 			y = 0.291 * safezoneH + safezoneY;
 			w = 0.159844 * safezoneW;
 			h = 0.253 * safezoneH;
-			sizeEx = 0.04;
-			rowHeight = 0.06;
-			wholeHeight = 0.06;
+      sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 1.75)";
+      rowHeight = "1.00 *     (pixelH * pixelGridNoUIScale * 2.5)";
+      wholeHeight = "1.00 *     (pixelH * pixelGridNoUIScale * 2.5)";
 			colorBackground[] = {0,0,0,0};
 			colorSelect[] = {1, 1, 1, 1};
 		    colorText[] = {1, 1, 1, 0.5};
@@ -602,7 +603,7 @@ class rr_spawnmenu {
 			colorBackground[] = {0.96,0.65,0.12,0.8};
 			font = "PuristaBold";
 			sizeEx = 0.08;
-			size = 0.06;
+      size = "1.00 *     (pixelH * pixelGridNoUIScale * 2.5)";
 		};
 		class classeslistbox: RscListbox
 		{
@@ -611,9 +612,9 @@ class rr_spawnmenu {
 			y = 0.577 * safezoneH + safezoneY;
 			w = 0.159844 * safezoneW;
 			h = 0.099 * safezoneH;
-			sizeEx = 0.04;
-			rowHeight = 0.04;
-			wholeHeight = 0.04;
+      sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 1.6)";
+      rowHeight = "1.00 *     (pixelH * pixelGridNoUIScale * 1.6)";
+      wholeHeight = "1.00 *     (pixelH * pixelGridNoUIScale * 1.6)";
 			colorBackground[] = {0.12,0.14,0.16,0.8};
 			colorSelect[] = {1, 1, 1, 1};
 		    colorText[] = {1, 1, 1, 0.5};
@@ -796,8 +797,9 @@ class rr_class_customization {
 			y = 0.357 * safezoneH + safezoneY;
 			w = 0.20625 * safezoneW;
 			h = 0.308 * safezoneH;
-			sizeEx = 0.05;
-			rowHeight = 0.1;
+      sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 2)";
+      rowHeight = "1.00 *     (pixelH * pixelGridNoUIScale * 3.5)";
+      wholeHeight = "1.00 *     (pixelH * pixelGridNoUIScale * 3.5)";
 			shadow = 2;
 			colorBackground[] = {0,0,0,0};
 			colorSelect[] = {1, 1, 1, 1};
@@ -813,8 +815,9 @@ class rr_class_customization {
 			y = 0.357 * safezoneH + safezoneY;
 			w = 0.20625 * safezoneW;
 			h = 0.308 * safezoneH;
-			sizeEx = 0.05;
-			rowHeight = 0.1;
+      sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 2)";
+      rowHeight = "1.00 *     (pixelH * pixelGridNoUIScale * 3.5)";
+      wholeHeight = "1.00 *     (pixelH * pixelGridNoUIScale * 3.5)";
 			shadow = 2;
 			colorBackground[] = {0,0,0,0};
 			colorSelect[] = {1, 1, 1, 1};

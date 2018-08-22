@@ -103,6 +103,8 @@ cl_spawn_succ = {
 	};
 }; */
 
+[] spawn client_fnc_saveStatistics;
+
 switch (_value) do
 {
 	case -2: // Vehicle (classname given as data)
