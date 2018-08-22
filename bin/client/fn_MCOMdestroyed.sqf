@@ -19,7 +19,7 @@ if (isServer && !hasInterface) exitWith {};
 //cl_blockSpawnForSide = "attackers";
 //[] spawn client_fnc_displaySpawnRestriction;
 
-private _fallBackTime = paramsArray#8;
+private _fallBackTime = [] call client_fnc_getFallbackTime;
 
 // Clean our spawnbeacons
 private _beacon = player getVariable ["assault_beacon_obj", objNull];
@@ -72,7 +72,7 @@ if (param[0,false,[false]]) then {
 	[format["DEFENDERS HAVE %1 SECONDS TO FALL BACK", _fallBackTime]] spawn client_fnc_displayObjectiveMessage;
 
 	if (!_isPlayerAttacking) then {
-		[playArea, _fallBackTime] spawn client_fnc_updateRestrictions;
+		[playArea, (_fallBackTime-3)] spawn client_fnc_updateRestrictions;
 	};
 
 	sleep (_fallBackTime-3);

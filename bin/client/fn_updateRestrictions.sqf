@@ -31,21 +31,24 @@ private _newArea = (getArray(missionConfigFile >> "MapSettings" >> "Stages" >> _
 _newArea set [3, true];
 private _newPos = (getArray(missionConfigFile >> "MapSettings" >> "Stages" >> _currentStage >> "Area" >> (_side select 0) >> "positionATL"));
 
-// Set time to 0 and start counting
-private _time = 0;
-while {_time < _transitionTime} do {
-  // If we add 0.03 each 0.03 seconds, do we get 1:1 time ratio? Hopefully!
-  _time = _time + 0.03;
-  // What is the progress of the transition?
-  private _percentage = _time/_transitionTime;
-  // We take the initial state and we add do it the difference between the new and the current data, times the progress in our transition
-  private _tickPos = [(_currentPos select 0) + (((_newPos select 0) - (_currentpos select 0))*_percentage), (_currentPos select 1) + (((_newPos select 1) - (_currentpos select 1))*_percentage), 0];
-  private _tickArea = [(_currentArea select 0) + (((_newArea select 0) - (_currentArea select 0))*_percentage), (_currentArea select 1) + (((_newArea select 1) - (_currentArea select 1))*_percentage), (_currentArea select 2) + (((_newArea select 2) - (_currentArea select 2))*_percentage), true, -1];
-  // We set our trigger accordingly
-  _trigger setPos _tickPos;
-  _trigger setTriggerArea _tickArea;
-  // Good ol' 33FPS
-  sleep 0.03;
+private _startTime = diag_tickTime;
+if (_transitionTime > 0) then {
+  ["triggerTransition", "onEachFrame", {
+    params ["_transitionTime", "_currentPos", "_currentArea", "_newArea", "_newPos", "_trigger", "_startTime"];
+    private _percentage = (diag_tickTime - _startTime)/_transitionTime;
+    if (_percentage <= 1) then {
+      private _tickPos = [(_currentPos select 0) + (((_newPos select 0) - (_currentpos select 0))*_percentage), (_currentPos select 1) + (((_newPos select 1) - (_currentpos select 1))*_percentage), 0];
+      private _tickArea = [(_currentArea select 0) + (((_newArea select 0) - (_currentArea select 0))*_percentage), (_currentArea select 1) + (((_newArea select 1) - (_currentArea select 1))*_percentage), (_currentArea select 2) + (((_newArea select 2) - (_currentArea select 2))*_percentage), true, -1];
+      // We set our trigger accordingly
+      systemChat ("Progress: "+(str _percentage)+", Time left: "+(str (_transitionTime - _time)));
+      _trigger setPos _tickPos;
+      _trigger setTriggerArea _tickArea;
+    };
+  }, [_transitionTime, _currentPos, _currentArea, _newArea, _newPos, _trigger, _startTime]] call bis_fnc_addStackedEventHandler;
+
+  waitUntil{sleep 1; diag_ticktime > (_startTime + _transitionTime)};
+
+  ["triggerTransition", "onEachFrame"] call bis_fnc_removeStackedEventHandler;
 };
 
 _trigger setPos _newPos;

@@ -103,6 +103,7 @@ class Maverick_Functions_Client {
 		class setSquadPerks {};
 		class checkClassRestriction {};
 		class encryptData {};
+		class getFallbackTime {};
 		// Pointfeed
 		class pointfeed_add {};
 

@@ -21,7 +21,7 @@ if (player getVariable "gameSide" == "defenders") then {
 	_HQPos = getArray(missionConfigFile >> "MapSettings" >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Spawns" >> "attackers");
 };
 
-private _spawnPos = _HQPos findEmptyPosition [0,25];
+private _spawnPos = _HQPos findEmptyPosition [0,20];
 
 [] spawn client_fnc_equipAll;
 
