@@ -91,7 +91,7 @@ player switchCamera "INTERNAL";
 [] spawn client_fnc_resetVariables;
 
 // Do not allow spawning within the first 30 seconds
-private _fallBackTime = paramsArray#8;
+private _fallBackTime = [] call client_fnc_getFallbackTime;
 cl_blockSpawnUntil = diag_tickTime + _fallBackTime;
 cl_blockSpawnForSide = "attackers";
 [] spawn client_fnc_displaySpawnRestriction;
@@ -106,7 +106,7 @@ private _roundTime = ceil (paramsArray#3 * 60);
 
 // Give us points for playing :)
 [] spawn {
-	private _fallBackTime = paramsArray#8;
+	private _fallBackTime = [] call client_fnc_getFallbackTime;
 	sleep 3;
 	// Message about preparation phase
 	[format ["DEFENDERS HAVE %1 SECONDS TO PREPARE", _fallBackTime]] spawn client_fnc_displayObjectiveMessage;

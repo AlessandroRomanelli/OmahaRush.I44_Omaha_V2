@@ -1,4 +1,6 @@
 faction = "SOV";
+marker = "LIB_Faction_RKKA";
+
 
 class Vehicle {
   displayName = "";

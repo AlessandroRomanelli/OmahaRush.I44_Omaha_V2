@@ -11,7 +11,7 @@ scriptName "fn_restrictedArea";
 
 player setVariable ["entryTime", diag_tickTime];
 
-private _fallBackTime = paramsArray#8;
+private _fallBackTime = [] call client_fnc_getFallbackTime;;
 private _OOBTime = paramsArray#7;
 private _outOfBoundsTimeout = if (player getVariable ["isFallingBack", false]) then [{_fallBackTime}, {_OOBTime;}];
 

@@ -109,7 +109,7 @@ if (isServer) then {
 				terminate sv_matchTimer_thread;
 			};
 			// Start the timer again with additional time counting in the fallback phase
-			private _fallBackTime = paramsArray#8;
+			private _fallBackTime = [] call client_fnc_getFallbackTime;
 			[false, _fallBackTime] spawn server_fnc_matchTimer;
 
 			// refresh tickets

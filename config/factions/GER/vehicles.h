@@ -1,4 +1,5 @@
 faction = "GER";
+marker = "LIB_Faction_WEHRMACHT";
 
 class Vehicle {
   displayName = "";
