@@ -13,10 +13,14 @@ if (cl_pointsBelowMinimumPlayers > 15000) then {
 	["Your progress has been reset for boosting"] call server_fnc_log;
 
 	// Reset points
-	cl_exp = 0;
+	cl_exp_assault = 0;
+	cl_exp_medic = 0;
+	cl_exp_engineer = 0;
+	cl_exp_support = 0;
+	cl_exp_recon = 0;
 
 	// Save to database
-	if (sv_usingDatabase) then {
+	/* if (sv_usingDatabase) then {
 		[player, [
 		cl_total_kills,
 		cl_total_deaths,
@@ -24,7 +28,7 @@ if (cl_pointsBelowMinimumPlayers > 15000) then {
 		cl_equipClassnames,
 		cl_exp
 		]] remoteExec ["server_fnc_db_setPlayer", 2];
-	} else {
-		[] spawn client_fnc_saveStatistics;
-	};
+	} else { */
+	[] spawn client_fnc_saveStatistics;
+	/* }; */
 };

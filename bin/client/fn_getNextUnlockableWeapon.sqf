@@ -16,8 +16,9 @@ private _unlocks = "true" configClasses (missionConfigFile >> "Unlocks" >> playe
 // Lets look for the last item we unlocked
 private _lastUnlock = "";
 private _highest = 0;
+private _exp = missionNamespace getVariable [format["cl_exp_%1", cl_class], 0];
 {
-	if (((getNumber(_x >> "exp")) > _highest && (getNumber(_x >> "exp")) < cl_exp)) then {
+	if (((getNumber(_x >> "exp")) > _highest && (getNumber(_x >> "exp")) < _exp)) then {
 		_highest = (getNumber(_x >> "exp"));
 		_lastUnlock = configName _x;
 	};
@@ -27,7 +28,7 @@ private _highest = 0;
 private _nextUnlock = "";
 private _lowest = 999999999999999999;
 {
-	if (((getNumber(_x >> "exp")) < _lowest && (getNumber(_x >> "exp")) > cl_exp)) then {
+	if (((getNumber(_x >> "exp")) < _lowest && (getNumber(_x >> "exp")) > _exp)) then {
 		_lowest = (getNumber(_x >> "exp"));
 		_nextUnlock = configName _x;
 	};
@@ -49,7 +50,7 @@ if (_topExp == 0) then {
 };
 
 // MATH SO COMPLICATED!??!
-private _expGained = (cl_exp - _bottomExp);
+private _expGained = (_exp - _bottomExp);
 private _totalExpRequired = (_topExp - _bottomExp);
 
 [_expGained, _totalExpRequired, _nextUnlock]

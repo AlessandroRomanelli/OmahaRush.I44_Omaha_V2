@@ -23,13 +23,15 @@ private _find = {
 	_ret
 };
 
+private _exp = missionNamespace getVariable [format["cl_exp_%1", cl_class], 0];
+
 // Cycle through all unlocked weapons and check if they exit in the equip array, if not, add them
 if (count cl_equipConfigurations != 0) then {
 	// Get all unlockable weapons
 	private _configs = "true" configClasses (missionConfigFile >> "Unlocks" >> player getVariable "gameSide");
 	// Populate cl_equipConfigurations with all possible weapons
 	{
-		if (getNumber(_x >> "exp") <= cl_exp) then {
+		if (getNumber(_x >> "exp") <= _exp) then {
 			// Weapon has been unlocked, display it
 			/* _item = [
 				configName (_configs select _i), // Weapon classname
@@ -49,7 +51,7 @@ if (true) then {
 	{
 		// Check if unlocked
 		private _isConfig = isClass(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> _x);
-		private _isUnlocked = (getNumber(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> _x >> "exp")) <= cl_exp;
+		private _isUnlocked = (getNumber(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> _x >> "exp")) <= _exp;
 		private _isRightClass = cl_class in (getArray(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> _x >> "roles"));
 
 		if (_isConfig && _isUnlocked && _isRightClass) then {

@@ -26,8 +26,8 @@ if (count cl_equipConfigurations == 0) then {
 		/* if (!sv_usingDatabase) then {
 			_allWeapons = true;
 		}; */
-
-		if (getNumber(_x >> "exp") <= cl_exp || _allWeapons) then {
+		private _exp = missionNamespace getVariable [format["cl_exp_%1", cl_class], 0];
+		if (getNumber(_x >> "exp") <= _exp || _allWeapons) then {
 
 			private _item = configName _x;
 

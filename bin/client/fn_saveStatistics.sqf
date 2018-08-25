@@ -15,14 +15,14 @@ saveProfileNamespace;
 // SAVE!!
 with missionNamespace do {
 	// If server is not using a database
-	if (!sv_usingDatabase) exitWith {
+	/* if (!sv_usingDatabase) exitWith { */
 		private _newRecord = [];
 		private _serverKey = getText(missionConfigFile >> "GeneralConfig" >> "serverKey");
 		private _records = profileNamespace getVariable ["wwr_records", []];
 		private _string = "";
 		// Begin assembling the record array
 		_newRecord pushBack _serverKey;
-		_newRecord pushBack [cl_total_kills, cl_total_deaths, cl_exp, cl_equipConfigurations, cl_equipClassnames];
+		_newRecord pushBack [cl_total_kills, cl_total_deaths, [cl_exp_assault ,cl_exp_medic ,cl_exp_engineer ,cl_exp_support ,cl_exp_recon], cl_equipConfigurations, cl_equipClassnames];
 		// Stringify and concatenate stats
 		{_string = _string + (toLower (str _x))} forEach (_newRecord select 1);
 		// Encrypt stats
@@ -46,13 +46,13 @@ with missionNamespace do {
 		diag_log format["Saved entry for key: %1, with the following content: %2", _serverKey, _newRecord];
 		diag_log format["New records entry is: %1", _records];
 		saveProfileNamespace;
-	};
+	/* }; */
 
-	[player, [
+	/* [player, [
 		cl_total_kills,
 		cl_total_deaths,
 		cl_equipConfigurations,
 		cl_equipClassnames,
 		cl_exp
-	]] remoteExec ["server_fnc_db_setPlayer", 2];
+	]] remoteExec ["server_fnc_db_setPlayer", 2]; */
 };

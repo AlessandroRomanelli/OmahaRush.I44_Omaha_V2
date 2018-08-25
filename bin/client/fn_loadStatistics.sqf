@@ -15,7 +15,7 @@ private _serverKey = getText(missionConfigFile >> "GeneralConfig" >> "serverKey"
 // Create a new entry in the player record
 private _createNewRecord = {
   // Default data [Key, [Stats], Hash]
-  private _data = [_serverKey, [0,0,0,[],["","",""]]];
+  private _data = [_serverKey, [0,0,[0,0,0,0,0],[],["","",""]]];
   private _string = "";
   // Stringify and concatenate all the stats
   {
@@ -87,7 +87,11 @@ private _assignVariables = {
   private _record = param[0, [], []];
   cl_total_kills = _record select 0;
   cl_total_deaths = _record select 1;
-  cl_exp = _record select 2;
+  cl_exp_assault = (_record select 2) select 0;
+  cl_exp_medic = (_record select 2) select 1;
+  cl_exp_engineer = (_record select 2) select 2;
+  cl_exp_support = (_record select 2) select 3;
+  cl_exp_recon = (_record select 2) select 4;
   cl_equipConfigurations = _record select 3;
   cl_equipClassnames = _record select 4;
   cl_statisticsLoaded = true;
@@ -109,12 +113,23 @@ private _removeOldRecord = {
   true;
 };
 
-if (sv_usingDatabase) then {
+/* if (sv_usingDatabase) then {
   // Fetch data from MySQL database
   [player] remoteExec ["server_fnc_db_getPlayer",2];
-} else {
+} else { */
   // Fetch data from profileNamespace
   private ["_record"];
+
+  // Check if we are resetting
+  private _toBeReset = profileNamespace getVariable ["wwr_toBeReset", ""] isEqualTo "v070";
+  if (_toBeReset) exitWith {
+    profileNamespace setVariable ["wwr_toBeReset", "v070"];
+    _record = [] call _createNewRecord;
+    [_record select 1] spawn _assignVariables;
+    [_record, "wwr_records", _serverKey] call _updateEntry;
+    [_record, "wwr_records_backups", _serverKey] call _updateEntry;
+  };
+
   // Search for an already existing record with the serverKey in use
   private _records = profileNamespace getVariable ["wwr_records", []];
   private _backups = profileNamespace getVariable ["wwr_records_backups", []];
@@ -168,4 +183,4 @@ if (sv_usingDatabase) then {
   };
   diag_log format["DEBUG: Records array: %1", _records, _serverKey];
   diag_log format["DEBUG: Backups array: %1", _backups, _serverKey];
-};
+/* }; */
