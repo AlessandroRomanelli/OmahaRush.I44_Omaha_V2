@@ -29,9 +29,10 @@ private _exp = missionNamespace getVariable [format["cl_exp_%1", cl_class], 0];
 if (count cl_equipConfigurations != 0) then {
 	// Get all unlockable weapons
 	private _configs = "true" configClasses (missionConfigFile >> "Unlocks" >> player getVariable "gameSide");
+	private _maxExp = selectMax [cl_exp_assault, cl_exp_medic, cl_exp_engineer, cl_exp_support, cl_exp_recon];
 	// Populate cl_equipConfigurations with all possible weapons
 	{
-		if (getNumber(_x >> "exp") <= _exp) then {
+		if ((getNumber(_x >> "exp") <= _exp) || ((getText(_x >> "type") isEqualTo "secondary") && (_maxExp > getNumber(_x >> "exp")))) then {
 			// Weapon has been unlocked, display it
 			/* _item = [
 				configName (_configs select _i), // Weapon classname

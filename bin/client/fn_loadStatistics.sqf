@@ -62,6 +62,7 @@ private _updateEntry = {
 
 private _encodeStats = {
   private _stats = param[0, [], [[]]];
+  diag_log format["DEBUG: Encoding the following array: %1", _stats];
   private _hash = "";
   // For each statistic, stringify and concatenate
   {_hash = _hash + (toLower (str _x))} forEach _stats;
@@ -102,6 +103,7 @@ private _removeOldRecord = {
   // Fetch all records
   private _records = profileNamespace getVariable ["wwr_records", []];
   private _backups = profileNamespace getVariable ["wwr_records_backups", []];
+  if ((count _records) isEqualTo 0 && (count _backups) isEqualTo 0) exitWith {false};
   // Find the index of record with the same serverKey
   private _idx_records = _records findIf {(_x select 0) isEqualTo _serverKey};
   private _idx_backups = _backups findIf {(_x select 0) isEqualTo _serverKey};
@@ -121,13 +123,10 @@ private _removeOldRecord = {
   private ["_record"];
 
   // Check if we are resetting
-  private _toBeReset = profileNamespace getVariable ["wwr_toBeReset", ""] isEqualTo "v070";
-  if (_toBeReset) exitWith {
+  private _toBeReset = !(profileNamespace getVariable ["wwr_toBeReset", ""] isEqualTo "v070");
+  if (_toBeReset) then {
     profileNamespace setVariable ["wwr_toBeReset", "v070"];
-    _record = [] call _createNewRecord;
-    [_record select 1] spawn _assignVariables;
-    [_record, "wwr_records", _serverKey] call _updateEntry;
-    [_record, "wwr_records_backups", _serverKey] call _updateEntry;
+    [] call _removeOldRecord;
   };
 
   // Search for an already existing record with the serverKey in use
@@ -138,9 +137,10 @@ private _removeOldRecord = {
 
   // If we haven't found anything
   if ((count _record) isEqualTo 0) then {
-    // Create a fresh record instead
+    // Search in the backups
     _record = [_backups] call _searchPlayerRecords;
     if ((count _record) isEqualTo 0) then {
+      // Create a fresh record instead
       _record = [] call _createNewRecord;
     };
   };

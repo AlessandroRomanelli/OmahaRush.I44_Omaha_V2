@@ -19,15 +19,11 @@ if (count cl_equipConfigurations == 0) then {
 	// Get all unlockable weapons
 	private _configs = "true" configClasses (missionConfigFile >> "Unlocks" >> player getVariable "gameSide");
 
-	// Populare cl_equipConfigurations with all possible weapons
+	private _maxExp = selectMax [cl_exp_assault, cl_exp_medic, cl_exp_engineer, cl_exp_support, cl_exp_recon];
+	// Populate cl_equipConfigurations with all possible weapons
 	{
-		// All weapons cheat
-		private _allWeapons = false;
-		/* if (!sv_usingDatabase) then {
-			_allWeapons = true;
-		}; */
 		private _exp = missionNamespace getVariable [format["cl_exp_%1", cl_class], 0];
-		if (getNumber(_x >> "exp") <= _exp || _allWeapons) then {
+		if ((getNumber(_x >> "exp") <= _exp) || (((getText(_x >> "type")) isEqualTo "secondary") && (_maxExp > (getNumber(_x >> "exp"))))) then {
 
 			private _item = configName _x;
 
