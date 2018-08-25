@@ -10,15 +10,16 @@ scriptName "fn_revive";
 #define __filename "fn_revive.sqf"
 if (isServer && !hasInterface) exitWith {};
 
-_savior = param [0, objNull, [objNull]];
+private _savior = param [0, objNull, [objNull]];
+private _adminRevive = param [1, false, [false]];
 
 // Pos
-_pos = getPosATL player;
+private _pos = getPosATL player;
 
-if (_pos distance (getPosWorld _savior) > 10) then {
+if (!(_adminRevive) && {!isNull _savior && _pos distance (getPosWorld _savior) > 10}) then {
 	_pos = getPosATL _savior;
-	_dir = getDir _savior;
-	_rdist = random 2;
+	private _dir = getDir _savior;
+	private _rdist = random 2;
 	_pos set [0, (_pos select 0)+sin(_dir)*_rdist];
 	_pos set [1, (_pos select 1)+cos(_dir)*_rdist];
 };
@@ -32,12 +33,14 @@ sleep 0.2;
 
 // Set pos
 player setPosATL _pos;
+player playActionNow "PlayerProne";
 
 // Message
-[format ["You have been revived by %1", name _savior]] spawn client_fnc_displayInfo;
-
-// Lets get back our weapons + one mag which was in the old weapon
-[true] spawn client_fnc_equipWeapons;
+if (!isNull _savior) then {
+	[format ["You have been revived by %1", _savior getVariable ["name", "ERROR: No Name"]]] spawn client_fnc_displayInfo;
+} else {
+	["You have been revived"] spawn client_fnc_displayInfo;
+};
 
 if (!isNil "rr_respawn_thread") then {
 	terminate rr_respawn_thread;
@@ -49,13 +52,15 @@ camDestroy cl_spawnmenu_cam;
 player switchCamera "INTERNAL";
 
 // Destroy all objects that are left of us
-_objs = nearestObjects [player, ["Man","GroundWeaponHolder", "WeaponHolder"], 5];
+private _objs = nearestObjects [player, ["Man","GroundWeaponHolder", "WeaponHolder"], 5];
 {
 	deleteVehicle _x;
 } forEach _objs;
 
+player setUnitLoadout (player getVariable ["wwr_unit_loadout",[]]);
+
 // Give player all his items
-[] spawn client_fnc_equipAll;
+[true] spawn client_fnc_equipAll;
 
 // Reenable hud
 300 cutRsc ["default","PLAIN"];

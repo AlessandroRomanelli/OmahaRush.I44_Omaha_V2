@@ -99,7 +99,11 @@ class Maverick_Functions_Client {
 		class getCurrentSideLoadout {};
 		class initGlobalVars {};
 		class brightNight {postInit = 1;};
-
+		class getSquadPerks {};
+		class setSquadPerks {};
+		class checkClassRestriction {};
+		class encryptData {};
+		class getFallbackTime {};
 		// Pointfeed
 		class pointfeed_add {};
 

@@ -9,8 +9,8 @@ scriptName "fn_initMatchTimer";
 --------------------------------------------------------------------*/
 #define __filename "fn_initMatchTimer.sqf"
 
-_time = param[0,0,[0]];
-_spawningProhibitedFor = param[1,0,[0]];
+private _time = param[0,0,[0]];
+private _spawningProhibitedFor = param[1,0,[0]];
 
 if (!isNil "cl_matchTimer_thread") then {
 	terminate cl_matchTimer_thread;

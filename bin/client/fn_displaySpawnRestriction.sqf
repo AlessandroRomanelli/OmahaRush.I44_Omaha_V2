@@ -14,7 +14,7 @@ scriptName "fn_displaySpawnRestriction";
 
 // Update text
 while {cl_blockSpawnUntil - diag_tickTime > 0} do {
-	((uiNamespace getVariable ["rr_keyBindingHintPermanent", displayNull]) displayCtrl 0) ctrlSetStructuredText parseText format ["<t size='1' color='#FFFFFF' shadow='2' align='center' t font='PuristaBold'><t color='#FD1A07'>%1</t> SECONDS UNTIL PUSH</t>", [cl_blockSpawnUntil - diag_tickTime, "MM:SS"] call BIS_fnc_secondsToString];
+	((uiNamespace getVariable ["rr_keyBindingHintPermanent", displayNull]) displayCtrl 0) ctrlSetStructuredText parseText format ["<t size='1' color='#FFFFFF' shadow='2' align='center' font='PuristaBold'><t color='#FD1A07'>%1</t> SECONDS UNTIL PUSH</t>", [cl_blockSpawnUntil - diag_tickTime, "MM:SS"] call BIS_fnc_secondsToString];
 	sleep 1;
 };
 

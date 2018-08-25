@@ -11,7 +11,7 @@ scriptName "fn_spawnMenu_displaySecondaryAttachmentSelection";
 if (isServer && !hasInterface) exitWith {};
 
 disableSerialization;
-_d = findDisplay 5000;
+/* private _d = findDisplay 5000; */
 
 // Exit if this menu is already open
 if (cl_spawnmenu_currentWeaponSelectionState == 4) exitWith {

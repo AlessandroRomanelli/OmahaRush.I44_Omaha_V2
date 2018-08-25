@@ -9,14 +9,28 @@ scriptName "fn_moveUnitIntoVehicle";
 --------------------------------------------------------------------*/
 #define __filename "fn_moveUnitIntoVehicle.sqf"
 
-_unit = param[0,objNull,[objNull]];
-_vehicle = param[1,objNull,[objNull]];
+params [["_unit", objNull, [objNull]], ["_vehicle", objNull, [objNull]]];
 
 // wow
 if (isNull _unit || isNull _vehicle) exitWith {false};
 
+if (_vehicle isKindOf "Air") then {
+	_vehicle enableSimulation true;
+	_vehicle setVectorUp [0,0,1];
+	private _dir = getDir _vehicle;
+	private _velocity = [(sin _dir)*55, (cos _dir)*55, 0];
+	_vehicle setVelocity _velocity;
+	private _side = ["Attacker", "Defender"] select ((player getVariable ["gameSide", "defenders"]) isEqualTo "defenders");
+	private _configs = "true" configClasses (missionConfigFile >> "MapSettings" >> "PersistentVehicles" >> _side);
+	_configs = _configs select {(getText(_x >> "className")) isEqualTo (typeOf _vehicle)};
+	if (count _configs != 0) then {
+		private _fuelTime = getNumber(_configs select 0 >> "fuelTime");
+		[format["YOU HAVE %1 SECONDS WORTH OF FUEL, BE QUICK!", _fuelTime]] spawn client_fnc_displayInfo;
+	};
+};
+
 // try i guess
-_ret = false;
+private _ret = false;
 
 if (!_ret) then {
 	_unit moveInDriver _vehicle;
@@ -38,5 +52,7 @@ if (!_ret) then {
 	sleep 0.1;
 	if (vehicle _unit != _unit) then {_ret = true};
 };
+
+_vehicle enableSimulation true;
 
 _ret

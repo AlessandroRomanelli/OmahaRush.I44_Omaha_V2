@@ -10,25 +10,23 @@ scriptName "fn_instantTeamBalanceCheck";
 #define __filename "fn_instantTeamBalanceCheck.sqf"
 
 // Is this even enabled
-_enableATB = "AutoTeamBalancer" call bis_fnc_getParamValue;
+private _enableATB = paramsArray#13;
 if (_enableATB != 1) exitWith {};
 
 // Check if server has been online for 300 seconds already
 if (serverTime < 300) exitWith {};
 
 // Run side checks
-_unitsAttacker = {side _x == independent} count AllPlayers;
-_unitsDefender = {side _x == WEST} count AllPlayers;
+private _unitsTeam1 = {(_x getVariable ["side", sideUnknown]) isEqualTo WEST} count allPlayers;
+private _unitsTeam2 = (count allPlayers) - _unitsTeam1;
+diag_log format["DEBUG: TeamBalanceCheck.. TeamBLUE: %1, TeamRED: %2, Total: %3", _unitsTeam1, _unitsTeam2, count allPlayers];
 
-_diff = if (_unitsAttacker <= _unitsDefender) then {_unitsDefender - _unitsAttacker} else {_unitsAttacker - _unitsDefender};
-_sideWithMoreUnits = if (_unitsAttacker <= _unitsDefender) then {WEST} else {independent};
+private _diff = abs(_unitsTeam1 - _unitsTeam2);
+private _sideWithMoreUnits = if (_unitsTeam2 <= _unitsTeam1) then {WEST} else {independent};
 
-_maxDiff = "AutoTeamBalanceAtDifference" call bis_fnc_getParamValue;
+private _maxDiff = paramsArray#14;
+private _ending = ["teamFullWEST", "teamFullindependent"] select (playerSide isEqualTo WEST);
 
-if (playerSide == _sideWithMoreUnits AND _diff > 2) then {
-	if (player getVariable "gameSide" == "defenders") then {
-		endMission "teamFullindependent";
-	} else {
-		endMission "teamFullWEST";
-	};
+if ((playerSide isEqualTo _sideWithMoreUnits) && (_diff > _maxDiff)) then {
+	endMission _ending;
 };

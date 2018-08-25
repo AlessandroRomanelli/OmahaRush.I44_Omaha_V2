@@ -16,7 +16,7 @@ if("extDB3" callExtension "9:LOCK_STATUS" == "[0]") then {
     uiNamespace setVariable ["sv_db_id",sv_db_id];
 
     //Retrieve extDB version
-    _result = "extDB3" callExtension "9:VERSION";
+    private _result = "extDB3" callExtension "9:VERSION";
 
     if(_result == "") exitWith {
 
@@ -25,7 +25,7 @@ if("extDB3" callExtension "9:LOCK_STATUS" == "[0]") then {
         ["The extDB version is outdated"] spawn server_fnc_log;
     };*/
 
-    _dbName = getText(missionConfigFile >> "GeneralConfig" >> "databaseName");
+    private _dbName = getText(missionConfigFile >> "GeneralConfig" >> "databaseName");
 
     //Initialize connection to Database
     _result = "extDB3" callExtension format["9:ADD_DATABASE:%1", _dbName];

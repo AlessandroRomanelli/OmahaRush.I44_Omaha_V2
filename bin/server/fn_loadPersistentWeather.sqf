@@ -10,29 +10,25 @@ scriptName "fn_loadPersistentWeather";
 #define __filename "fn_loadPersistentWeather.sqf"
 
 // Time
-_time = [1944,6,23,floor random [0, 12, 24],floor random 60];
+private _time = [1944,6,23,round random [4, 12, 20],round random 60];
 setDate _time;
-_fog = floor random 40/100;
+private _fog = (round random [0, 0, 20])/100;
 
 // Overcast
 skipTime -24;
-86400 setOvercast floor random 10/10;
+86400 setOvercast (round random [0,1,10])/10;
 skipTime 24;
 
 // Slow down ingame time
 setTimeMultiplier 10;
 
 // Set rain and fog
-0 setRain floor random 10/10;
-setWind [floor random 10/10, floor random 10/10, false];
+0 setRain ((floor random [0,0,10])/10);
+setWind [(floor random 10)/10, (floor random 10)/10, false];
 0 setWindDir random 359;
 0 setFog _fog;
 
-[_fog] spawn {
-	_fog = param [0];
-	for "_i" from 1 to 5 step 1 do
-	{
-    0 setFog _fog;
-		sleep 60;
-	};
-};
+
+86400 setOvercast (round random [0,1,10])/10;
+86400 setRain ((floor random [0,0,10])/10);
+86400 setFog _fog;

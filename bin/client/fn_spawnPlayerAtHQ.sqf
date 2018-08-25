@@ -14,14 +14,14 @@ if (isServer && !hasInterface) exitWith {};
 closeDialog 0;
 
 // Get spawn position
-_HQPos = [0,0,0];
+private _HQPos = [0,0,0];
 if (player getVariable "gameSide" == "defenders") then {
 	_HQPos = getArray(missionConfigFile >> "MapSettings" >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Spawns" >> "defenders");
 } else {
 	_HQPos = getArray(missionConfigFile >> "MapSettings" >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Spawns" >> "attackers");
 };
 
-_spawnPos = _HQPos findEmptyPosition [0,100];
+private _spawnPos = _HQPos findEmptyPosition [0,20];
 
 [] spawn client_fnc_equipAll;
 
@@ -29,17 +29,19 @@ _spawnPos = _HQPos findEmptyPosition [0,100];
 player setPos _spawnPos;
 
 // Make player look into the direction of the objective
-player setDir ((getDir player) + ([player, sv_cur_obj] call BIS_fnc_relativeDirTo));
+private _dir = _spawnPos getDir (getPos sv_cur_obj);
+player setDir _dir;
 
 // Move camera down to player, then delete it
 cl_spawnmenu_cam camPreparePos (ASLToATL (eyePos player));
 cl_spawnmenu_cam camPrepareTarget sv_cur_obj;
 cl_spawnmenu_cam camCommitPrepared 1;
 
+private _PPon = [false, true] select (getNumber(missionConfigFile >> "GeneralConfig" >> "PostProcessing") == 1);
 // Motion blurr
-if (getNumber(missionConfigFile >> "GeneralConfig" >> "PostProcessing") == 1) then {
-	0 = ["DynamicBlur", 400, [3]] spawn {
-		params ["_name", "_priority", "_effect", "_handle"];
+if (_PPon) then {
+	["DynamicBlur", 400, [3]] spawn {
+		params ["_name", "_priority", "_effect"];
 		while {
 			cl_spawnmenu_blur = ppEffectCreate [_name, _priority];
 			cl_spawnmenu_blur < 0
@@ -59,9 +61,9 @@ sleep 0.7;
 sleep 0.4;
 
 // Delete blurry effect
-if (getNumber(missionConfigFile >> "GeneralConfig" >> "PostProcessing") == 1) then {
-	0 = ["DynamicBlur", 400, [0]] spawn {
-		params ["_name", "_priority", "_effect", "_handle"];
+if (_PPon) then {
+	["DynamicBlur", 400, [0]] spawn {
+		params ["_name", "_priority", "_effect"];
 		while {
 			cl_spawnmenu_blur = ppEffectCreate [_name, _priority];
 			cl_spawnmenu_blur < 0
@@ -100,7 +102,7 @@ cl_spawn_tick = diag_tickTime;
 // Display instructions hint for currently selected perk
 [] spawn {
 	sleep 10.3;
-	_instructions = [cl_classPerk] call client_fnc_getPerkInstructions;
+	private _instructions = [cl_classPerk] call client_fnc_getPerkInstructions;
 	[_instructions select 0, _instructions select 1] spawn client_fnc_hint;
 
 	// Reload mcom interaction

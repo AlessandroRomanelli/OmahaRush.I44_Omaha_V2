@@ -12,30 +12,32 @@ if (isServer && !hasInterface) exitWith {};
 
 if (isNil "cl_killfeed") exitWith {};
 
-_out = "";
+private _out = "";
 {
-	_weapon = if ((_x select 1) == "") then {"KILLED"} else {([_x select 1] call client_fnc_weaponDetails) select 1};
-	_killer = if (((driver vehicle (_x select 0)) getVariable ["side",civilian]) == playerSide) then {
+	private _killerName = (_x select 0) getVariable ["name", "ERROR: No Name"];
+	private _weapon = if ((_x select 1) == "") then {"KILLED"} else {([_x select 1] call client_fnc_weaponDetails) select 1};
+	private _killer = if (((driver vehicle (_x select 0)) getVariable ["side",civilian]) == playerSide) then {
 		if (group (_x select 0) == group player) then {
-			"<t color='#009D05' shadow='2' font='PuristaMedium'>" + name (_x select 0) + "<t/>"
+			"<t color='#009D05' shadow='2' font='PuristaMedium'>" + _killerName + "<t/>"
 		} else {
-			"<t color='#3083F4' shadow='2' font='PuristaMedium'>" + name (_x select 0) + "<t/>"
+			"<t color='#3083F4' shadow='2' font='PuristaMedium'>" + _killerName + "<t/>"
 		};
 	} else {
-		"<t color='#FE251B' shadow='2' font='PuristaMedium'>" + name (_x select 0) + "<t/>"
+		"<t color='#FE251B' shadow='2' font='PuristaMedium'>" + _killerName + "<t/>"
 	};
 
-	_killed = if (((driver vehicle (_x select 2)) getVariable ["side",civilian]) == playerSide) then {
+	private _killedName = (_x select 2) getVariable ["name", "ERROR: No Name"];
+	private _killed = if (((driver vehicle (_x select 2)) getVariable ["side",civilian]) == playerSide) then {
 		if (group (_x select 2) == group player) then {
-			"<t color='#009D05' shadow='2' font='PuristaMedium'>" + name (_x select 2) + "<t/>"
+			"<t color='#009D05' shadow='2' font='PuristaMedium'>" + _killedName + "<t/>"
 		} else {
-			"<t color='#3083F4' shadow='2' font='PuristaMedium'>" + name (_x select 2) + "<t/>"
+			"<t color='#3083F4' shadow='2' font='PuristaMedium'>" + _killedName + "<t/>"
 		};
 	} else {
-		"<t color='#FE251B' shadow='2' font='PuristaMedium'>" + name (_x select 2) + "<t/>"
+		"<t color='#FE251B' shadow='2' font='PuristaMedium'>" + _killedName + "<t/>"
 	};
 
-	_distance = format ["%1m", ceil ((_x select 0) distance (_x select 2))];
+	private _distance = format ["%1m", ceil ((_x select 0) distance (_x select 2))];
 
 	// Add to master string
 	_out = _out + _killer + " <t color='#ffffff' shadow='2'>[" + _weapon + "]<t/> " + _killed + " <t color='#ffffff' shadow='2'>(" + _distance + ")<t/><br/>";

@@ -9,7 +9,7 @@ scriptName "fn_PVUpdateAll";
 --------------------------------------------------------------------*/
 #define __filename "fn_PVUpdateAll.sqf"
 
-_variables = param[0,[],[[]]];
+private _variables = param[0,[],[[]]];
 
 // Broadcast all variables
 {

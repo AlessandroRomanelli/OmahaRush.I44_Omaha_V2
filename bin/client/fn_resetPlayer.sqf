@@ -17,7 +17,7 @@ if (missionNamespace getVariable ["cl_resetPlayerRunning", false]) exitWith {};
 cl_resetPlayerRunning = true;
 
 // Start a countdown until the next match starts
-_time = "LobbyTime" call bis_fnc_getParamValue;
+private _time = paramsArray#9;
 
 // Enable global voice
 0 enableChannel [true, true];
@@ -27,17 +27,18 @@ _time = "LobbyTime" call bis_fnc_getParamValue;
 
 // Lets fill the scoreboard
 if (true) then {
-	_allInfoAttackers = [];
-	_allInfoDefenders = [];
-	_nAttacker = 0;
-	_nDefender = 0;
+	private _allInfoAttackers = [];
+	private _allInfoDefenders = [];
+	private _nAttacker = 0;
+	private _nDefender = 0;
 
 	// Fill data from objects
 	{
+		private _name = _x getVariable ["name", "ERROR: No Name"];
 		if ((_x getVariable "gameSide") == "defenders") then {
-			_allInfoDefenders pushBack [_x getVariable ["points", 0], _x getVariable ["kills", 0], _x getVariable ["deaths", 0], name _x];
+			_allInfoDefenders pushBack [_x getVariable ["points", 0], _x getVariable ["kills", 0], _x getVariable ["deaths", 0], _name];
 		} else {
-			_allInfoAttackers pushBack [_x getVariable ["points", 0], _x getVariable ["kills", 0], _x getVariable ["deaths", 0], name _x];
+			_allInfoAttackers pushBack [_x getVariable ["points", 0], _x getVariable ["kills", 0], _x getVariable ["deaths", 0], _name];
 		};
 	} forEach AllPlayers;
 
@@ -46,10 +47,10 @@ if (true) then {
 	_allInfoDefenders sort false;
 
 	// Get controls
-	_listAttackers = ((uiNamespace getVariable ["rr_timer", displayNull]) displayCtrl 2);
-	_listDefenders = ((uiNamespace getVariable ["rr_timer", displayNull]) displayCtrl 1);
-	_listAttackers lnbAddRow ["#","","K","D","SCORE",""];
-	_listDefenders lnbAddRow ["#","","K","D","SCORE",""];
+	private _listAttackers = ((uiNamespace getVariable ["rr_timer", displayNull]) displayCtrl 2);
+	private _listDefenders = ((uiNamespace getVariable ["rr_timer", displayNull]) displayCtrl 1);
+	_listAttackers lnbAddRow ["","NAME","K","D","SCORE",""];
+	_listDefenders lnbAddRow ["","NAME","K","D","SCORE",""];
 
 	// Fill scoreboards
 	{
@@ -64,7 +65,7 @@ if (true) then {
 
 
 // If we have OnTenRestart enabled, WARN THE PLAYER
-if ((sv_gameCycle >= (("RotationsPerMatch" call bis_fnc_getParamValue) - 1)) && sv_dedicatedEnvironment) then {
+if ((sv_gameCycle >= ((paramsArray#11) - 1)) && sv_dedicatedEnvironment) then {
 	((uiNamespace getVariable ["rr_timer", displayNull]) displayCtrl 0) ctrlSetStructuredText parseText "<t size='2' color='#FE4629' shadow='2' align='center'>THE SERVER IS CHANGING MAP</t>";
 	sleep 30;
 } else {
@@ -90,7 +91,7 @@ player switchCamera "INTERNAL";
 [] spawn client_fnc_resetVariables;
 
 // Do not allow spawning within the first 30 seconds
-_fallBackTime = "FallBackSeconds" call bis_fnc_getParamValue;
+private _fallBackTime = [] call client_fnc_getFallbackTime;
 cl_blockSpawnUntil = diag_tickTime + _fallBackTime;
 cl_blockSpawnForSide = "attackers";
 [] spawn client_fnc_displaySpawnRestriction;
@@ -100,12 +101,12 @@ cl_blockSpawnForSide = "attackers";
 [] spawn client_fnc_spawn;
 
 // Restart match timer
-_roundTime = ceil (("RoundTime" call bis_fnc_getParamValue) * 60);
+private _roundTime = ceil (paramsArray#3 * 60);
 [_roundTime + _fallBackTime, _fallBackTime] call client_fnc_initMatchTimer;
 
 // Give us points for playing :)
 [] spawn {
-	_fallBackTime = "FallBackSeconds" call bis_fnc_getParamValue;
+	private _fallBackTime = [] call client_fnc_getFallbackTime;
 	sleep 3;
 	// Message about preparation phase
 	[format ["DEFENDERS HAVE %1 SECONDS TO PREPARE", _fallBackTime]] spawn client_fnc_displayObjectiveMessage;

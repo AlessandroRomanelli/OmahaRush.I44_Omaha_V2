@@ -10,23 +10,28 @@ scriptName "fn_initClass";
 #define __filename "fn_initClass.sqf"
 if (isServer && !hasInterface) exitWith {};
 
-_class = cl_equipClassnames select 2;
+private _class = cl_equipClassnames select 2;
 
 // Just a missionnamespace var for faster access
-cl_class = _class;
+if (_class != "") then {
+	cl_class = _class;
+} else {
+	cl_class = profileNamespace getVariable ["rr_class_preferred", "medic"];
+};
 
 // Broadcast class to all clients
 player setVariable ["class", cl_class, true];
 
 // Spawn beacon code
 rc_spawnBeacon = {
+	private ["_beacon"];
 	if (isNull (player getVariable ["assault_beacon_obj", objNull]) || (diag_tickTime - ((player getVariable ["assault_beacon_obj",objNull]) getVariable ["deployment_tick", 0])) > 180) then {
 		if (({!isNull (_x getVariable ["assault_beacon_obj", objNull])} count (units group player)) < 1) then {
-			_safeSpawnDistance = getNumber(missionConfigFile >> "MapSettings" >> "safeSpawnDistance");
+			private _safeSpawnDistance = getNumber(missionConfigFile >> "MapSettings" >> "safeSpawnDistance");
 			if (player distance sv_cur_obj < _safeSpawnDistance || (player distance (getMarkerPos cl_enemySpawnMarker)) < _safeSpawnDistance) then {
 				["Your rally point may not be placed here"] spawn client_fnc_displayError;
 			} else {
-				_existingBeacon = (player getVariable ["assault_beacon_obj",objNull]);
+				private _existingBeacon = (player getVariable ["assault_beacon_obj",objNull]);
 
 				// Delete existing beacon
 				if (!isNull _existingBeacon) then {
@@ -34,7 +39,7 @@ rc_spawnBeacon = {
 				};
 
 				// Create beacon :>
-				_pos = player modelToWorld [0,0,0];
+				private _pos = player modelToWorld [0,0,0];
 				_beacon = [] call {
 					if (player getVariable ["gameSide", "defenders"] == "defenders") then {
 						createVehicle ["LIB_GerRadio", position player, [], 0, "CAN_COLLIDE"];
@@ -77,13 +82,11 @@ rc_spawnBeacon = {
 (findDisplay 46) displayRemoveEventHandler ["KeyDown",player getVariable ["assault_beacon_keyhandler_id", -1]];
 if (true) then {
 	// Add action to deploy a spawn beacon
-	_id = (findDisplay 46) displayAddEventHandler ["KeyDown",{
-		_keyCode = _this select 1;
-		_h = false;
+	private _id = (findDisplay 46) displayAddEventHandler ["KeyDown",{
+		private _keyCode = _this select 1;
+		private _h = false;
 
 		if (_keyCode == 35 && (alive player)) then {
-			_myClass = player getVariable ["class",""];
-
 			if ((cursorObject isKindOf "LIB_SovRadio" || cursorObject isKindOf "LIB_GerRadio") && player distance cursorObject < 2) then {
 
 				// Our teams beacon
@@ -101,16 +104,14 @@ if (true) then {
 					// not on our team, destroy it!
 					deleteVehicle cursorObject;
 					// Points!
-					["<t size='1.3' color='#FFFFFF'>RALLY POINT DESTROYED</t>", 15] spawn client_fnc_pointfeed_add;
-					[15] spawn client_fnc_addPoints;
+					["<t size='1.3' color='#FFFFFF'>RALLY POINT DESTROYED</t>", 50] spawn client_fnc_pointfeed_add;
+					[50] spawn client_fnc_addPoints;
 				};
 			} else {
 				// check if were assault and we have the spawnbeacon perk, then place beacon
-				if (cl_class == "assault") then {
-					if (cl_classPerk == "spawnbeacon") then {
-						if (vehicle player == player) then {
-							[] spawn rc_spawnBeacon;
-						};
+				if (cl_classPerk == "spawnbeacon") then {
+					if (isNull (objectParent player)) then {
+						[] spawn rc_spawnBeacon;
 					};
 				};
 			};

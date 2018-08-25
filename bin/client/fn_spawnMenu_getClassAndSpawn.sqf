@@ -11,6 +11,6 @@ scriptName "fn_spawnMenu_getClassAndSpawn";
 if (isServer && !hasInterface) exitWith {};
 
 disableSerialization;
-_requestedClass = ((findDisplay 5000) displayCtrl 300) lbData (lbCurSel ((findDisplay 5000) displayCtrl 300));
+private _requestedClass = ((findDisplay 5000) displayCtrl 300) lbData (lbCurSel ((findDisplay 5000) displayCtrl 300));
 
 [_requestedClass] spawn client_fnc_spawnPlayer;

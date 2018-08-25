@@ -10,12 +10,12 @@ scriptName "fn_initHoldActions";
 #define __filename "fn_initHoldActions.sqf"
 if (isServer && !hasInterface) exitWith {};
 
-{player removeAction _x; [player, _x] call BIS_fnc_holdActionRemove} forEach cl_actionIDs;
+{[player, _x] call BIS_fnc_holdActionRemove} forEach cl_actionIDs;
 
 
 mg_conditionShowOnMyself = {
-	_currentAmmo = 0;
-	_reserveAmmo = 0;
+	private _currentAmmo = 0;
+	private _reserveAmmo = 0;
 
 	{
 		if ((_x select 0) == (currentMagazine player) AND (_x select 2)) then
@@ -30,7 +30,7 @@ mg_conditionShowOnMyself = {
 
 	((_currentAmmo + _reserveAmmo) <= 10) && !(player getVariable ["ammo_restored",false])
 };
-_mg_code = {
+private _mg_code = {
 	[player] remoteExec ["client_fnc_restoreAmmo", cl_lastActionTarget];
 
 	// Pointsssss
@@ -43,19 +43,21 @@ _mg_code = {
 	cl_lastActionTarget setVariable ["ammo_restored",true];
 
 	[cl_lastActionTarget] spawn {
-		if ((_this select 0) == player) then {
+		private _lastActionTarget = param[0, objNull, [objNull]];
+		if (_lastActionTarget isEqualTo player) then {
 			sleep 60;
 		} else {
 			sleep 13;
 		};
 
 		// allow us to restore ammo again
-		(_this select 0) setVariable ["ammo_restored",false];
+		_lastActionTarget setVariable ["ammo_restored",false];
 	};
 };
 
 diag_log "Setting up handlers... 1";
 
+private ["_id"];
 // Ammunition for myself
 _id = [
 /* 0 object */							player,
@@ -84,9 +86,9 @@ _id = [
 /* 1 action title */					"Replenish Ammunition",
 /* 2 idle icon */						"pictures\support.paa",
 /* 3 progress icon */					"pictures\support.paa",
-/* 4 condition to show */				"cl_classPerk == 'ammo' && {cursorObject distance _this < 3} && {alive cursorObject} && {!(cursorObject getVariable ['ammo_restored',false])} && {(side cursorObject) == playerSide} && {cursorObject isKindOf 'Man'}",
-/* 5 condition for action */			"!(cursorObject getVariable ['ammo_restored',false])",
-/* 6 code executed on start */			{cl_lastActionTarget = cursorObject;},
+/* 4 condition to show */				"cl_classPerk == 'ammo' && {cursorTarget distance _this < 3} && {alive cursorTarget} && {!(cursorTarget getVariable ['ammo_restored',false])} && {(side cursorTarget) == playerSide} && {cursorTarget isKindOf 'Man'}",
+/* 5 condition for action */			"!(cursorTarget getVariable ['ammo_restored',false])",
+/* 6 code executed on start */			{cl_lastActionTarget = cursorTarget;},
 /* 7 code executed per tick */			{},
 /* 8 code executed on completion */		_mg_code,
 /* 9 code executed on interruption */	{},
@@ -101,20 +103,20 @@ cl_actionIDs pushBack _id;
 diag_log "Setting up handlers... 3";
 
 // Planting and defusing objectives
-_cond = "";
-_text = "";
-_completion = {};
-_interruption = {};
-_duration = 4;
+private _cond = "";
+private _text = "";
+private _completion = {};
+private _interruption = {};
+private _duration = 4;
 if ((player getVariable "gameSide") == "defenders") then {
 	_text = "Disarm Explosives";
-	_cond = "(cursorObject distance _this) < 4 && ((cursorObject getVariable ['status',-1] == 1) || (cursorObject getVariable ['status', -1] == 0 && (_this isEqualTo player))) && (cursorObject == sv_cur_obj)";
-	_completion = {if (cursorObject distance player < 4) then {[] spawn client_fnc_disarmMCOM;};};
+	_cond = "(cursorTarget distance _this) < 4 && (cursorTarget == sv_cur_obj) && {(cursorTarget getVariable ['status',-1] == 1) || (cursorTarget getVariable ['status', -1] == 0 && (_this isEqualTo player))}";
+	_completion = {if (cursorTarget distance player < 4) then {[] spawn client_fnc_disarmMCOM;};};
 	_interruption = {sv_cur_obj setVariable ["status", 1, true]};
 } else {
 	_text = "Plant Explosives";
-	_cond = "(cursorObject distance _this) < 4 && {(cursorObject getVariable ['status',-1] == -1) || (cursorObject getVariable ['status', -1] == 2) || ((cursorObject getVariable ['status', -1] == 0) && (_this isEqualTo player))} && (cursorObject == sv_cur_obj)";
-	_completion = {if (cursorObject distance player < 4) then {[] spawn client_fnc_armMCOM;};};
+	_cond = "(cursorTarget distance _this) < 4 && (cursorTarget == sv_cur_obj) && {(cursorTarget getVariable ['status',-1] == -1) || (cursorTarget getVariable ['status', -1] == 2) || ((cursorTarget getVariable ['status', -1] == 0) && (_this isEqualTo player))}";
+	_completion = {if (cursorTarget distance player < 4) then {[] spawn client_fnc_armMCOM;};};
 	_interruption = {sv_cur_obj setVariable ["status", -1, true]};
 };
 if (cl_classPerk == "saboteur") then {_duration = 0.75};
@@ -129,7 +131,7 @@ _id = [
 /* 3 progress icon */					"\a3\ui_f\data\IGUI\Cfg\simpleTasks\types\upload_ca.paa",
 /* 4 condition to show */				_cond,
 /* 5 condition for action */			"true",
-/* 6 code executed on start */			{[sv_cur_obj, "arm"] remoteExec ["client_fnc_say3D",0]; sv_cur_obj setVariable ["status", 0, true];},
+/* 6 code executed on start */			{playSound3D[MISSION_ROOT + "sounds\arm.ogg", sv_cur_obj]; sv_cur_obj setVariable ["status", 0, true];},
 /* 7 code executed per tick */			{},
 /* 8 code executed on completion */		_completion,
 /* 9 code executed on interruption */	_interruption,
@@ -144,7 +146,7 @@ cl_actionIDs pushBack _id;
 diag_log "Setting up handlers... 5";
 
 // Vehicle ammunition
-_completed = {
+private _completed = {
 	if (player distance cl_lastActionTarget > 5) exitWith {};
 
 	["<t size='1.3' color='#FFFFFF'>AMMUNITION REPLENISHED</t>", 50] spawn client_fnc_pointfeed_add;
@@ -153,25 +155,17 @@ _completed = {
 	// Make sure we cant spam it
 	cl_lastActionTarget setVariable ["ammo_restored",true];
 
-	// Restore ammo depending on type of vehicle
-	/*switch (typeOf cl_lastActionTarget) do
-	{
-		case "B_Heli_Light_01_armed_F":
-		{
-			cl_lastActionTarget setAmmo ["M134_minigun", 2000];
-			//_target addMagazine "120Rnd_CMFlare_Chaff_Magazine";
-		};
-	};*/
-
 	[cl_lastActionTarget] spawn {
 		sleep 120;
-
+		private _lastActionTarget = param[0, objNull, [objNull]];
 		// allow us to restore ammo again
-		(_this select 0) setVariable ["ammo_restored",false];
+		_lastActionTarget setVariable ["ammo_restored",false];
 	};
 };
+
 cl_vehicleAmmoTypes = [] call client_fnc_getAllAmmoVehicles;
-_completedEngineer = {
+
+private _completedEngineer = {
 	if (player distance cl_lastActionTarget > 5) exitWith {};
 	["<t size='1.3' color='#FFFFFF'>VEHICLE REPAIRED</t>", 50] spawn client_fnc_pointfeed_add;
 	[50] spawn client_fnc_addPoints;
@@ -183,9 +177,9 @@ _completedEngineer = {
 
 	[cl_lastActionTarget] spawn {
 		sleep 120;
-
+		private _lastActionTarget = param[0, objNull, [objNull]];
 		// allow us to restore ammo again
-		(_this select 0) setVariable ["repaired",false];
+		_lastActionTarget setVariable ["repaired",false];
 	};
 };
 
@@ -196,9 +190,9 @@ _id = [
 /* 1 action title */					"Replenish Vehicle Ammunition",
 /* 2 idle icon */						"pictures\support.paa",
 /* 3 progress icon */					"pictures\support.paa",
-/* 4 condition to show */				"cl_classPerk == 'ammo' && (cursorObject distance _this) < 3 && alive cursorObject && !(cursorObject getVariable ['ammo_restored',false]) && ((typeOf cursorObject) in cl_vehicleAmmoTypes)",
-/* 5 condition for action */			"!(cursorObject getVariable ['ammo_restored',false])",
-/* 6 code executed on start */			{cl_lastActionTarget = cursorObject;},
+/* 4 condition to show */				"cl_classPerk == 'ammo' && (cursorTarget distance _this) < 3 && alive cursorTarget && !(cursorTarget getVariable ['ammo_restored',false]) && ((typeOf cursorTarget) in cl_vehicleAmmoTypes)",
+/* 5 condition for action */			"!(cursorTarget getVariable ['ammo_restored',false])",
+/* 6 code executed on start */			{cl_lastActionTarget = cursorTarget;},
 /* 7 code executed per tick */			{},
 /* 8 code executed on completion */		_completed,
 /* 9 code executed on interruption */	{},
@@ -218,9 +212,9 @@ _id = [
 	"Repair Vehicle",
 	"pictures\engineer.paa",
 	"pictures\engineer.paa",
-	"cl_classPerk == 'repair' && (cursorObject distance player) < 5 && alive cursorObject && !(cursorObject getVariable ['repaired',false]) && (cursorObject isKindOf 'Air' || cursorObject isKindOf 'LandVehicle' || cursorObject isKindOf 'Ship')",
-	"!(cursorObject getVariable ['repaired',false])",
-	{cl_lastActionTarget = cursorObject;},
+	"cl_class == 'engineer' && (cursorTarget distance player) < 5 && alive cursorTarget && !(cursorTarget getVariable ['repaired',false]) && (cursorTarget isKindOf 'Air' || cursorTarget isKindOf 'LandVehicle' || cursorTarget isKindOf 'Ship')",
+	"!(cursorTarget getVariable ['repaired',false])",
+	{cl_lastActionTarget = cursorTarget;},
 	{},
 	_completedEngineer,
 	{},

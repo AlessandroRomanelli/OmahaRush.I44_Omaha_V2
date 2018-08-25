@@ -11,35 +11,40 @@ scriptName "fn_getNextUnlockableWeapon";
 if (isServer && !hasInterface) exitWith {};
 
 // Get all unlocks
-_unlocks = "true" configClasses (missionConfigFile >> "Unlocks" >> player getVariable "gameSide");
+private _unlocks = "true" configClasses (missionConfigFile >> "Unlocks" >> player getVariable "gameSide");
+
+private _exp = missionNamespace getVariable [format["cl_exp_%1", cl_class], 0];
+private _maxExp = selectMax [cl_exp_assault, cl_exp_medic, cl_exp_engineer, cl_exp_support, cl_exp_recon];
 
 // Lets look for the last item we unlocked
-_lastUnlock = "";
-_highest = 0;
+private _lastUnlock = "";
+private _highest = 0;
 {
-	if (((getNumber(_x >> "exp")) > _highest && (getNumber(_x >> "exp")) < cl_exp)) then {
+	if (((getNumber(_x >> "exp")) > _highest) && ((getNumber(_x >> "exp")) < _exp) && (cl_class in (getArray(_x >> "roles")))) then {
 		_highest = (getNumber(_x >> "exp"));
 		_lastUnlock = configName _x;
 	};
 } forEach _unlocks;
 
 // Lets look for the next item we will unlock
-_nextUnlock = "";
-_lowest = 999999999999999999;
+private _nextUnlock = "";
+private _lowest = 999999999999999999;
 {
-	if (((getNumber(_x >> "exp")) < _lowest && (getNumber(_x >> "exp")) > cl_exp)) then {
-		_lowest = (getNumber(_x >> "exp"));
-		_nextUnlock = configName _x;
+	if (((getNumber(_x >> "exp")) < _lowest) && ((getNumber(_x >> "exp")) > _exp) && (cl_class in (getArray(_x >> "roles")))) then {
+		if !(((getText(_x >> "type")) isEqualTo "secondary") && ((getNumber(_x >> "exp")) < _maxExp)) then {
+			_lowest = (getNumber(_x >> "exp"));
+			_nextUnlock = configName _x;
+		};
 	};
 } forEach _unlocks;
 
 // Now lets check if we found something
-_bottomExp = 0;
+private _bottomExp = 0;
 if (_lastUnlock != "") then {
 	_bottomExp = getNumber(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> _lastUnlock >> "exp");
 };
 
-_topExp = 0;
+private _topExp = 0;
 if (_nextUnlock != "") then {
 	_topExp = getNumber(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> _nextUnlock >> "exp");
 };
@@ -49,7 +54,7 @@ if (_topExp == 0) then {
 };
 
 // MATH SO COMPLICATED!??!
-_expGained = (cl_exp - _bottomExp);
-_totalExpRequired = (_topExp - _bottomExp);
+private _expGained = (_exp - _bottomExp);
+private _totalExpRequired = (_topExp - _bottomExp);
 
 [_expGained, _totalExpRequired, _nextUnlock]

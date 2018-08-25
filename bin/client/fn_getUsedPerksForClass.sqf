@@ -1,18 +1,16 @@
 scriptName "fn_getUsedPerksForClass";
 /*--------------------------------------------------------------------
-	Author: Maverick (ofpectag: MAV)
+	Author: A. Roman
     File: fn_getUsedPerksForClass.sqf
 
-	<Maverick Applications>
-    Written by Maverick Applications (www.maverick-apps.de)
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_getUsedPerksForClass.sqf"
 if (isServer && !hasInterface) exitWith {};
 
-_class = param[0,"",[""]];
+private _class = param[0,"",[""]];
 
-_perkData = [];
+private _perkData = [];
 
 // Get data from profilenamespace
 switch (_class) do
@@ -31,36 +29,23 @@ switch (_class) do
 	};
 	case "engineer":
 	{
-		_perkData = profileNamespace getVariable ["rr_perks_engineer", ["repair",""]];
+		_perkData = profileNamespace getVariable ["rr_perks_engineer", ["perkAT",""]];
+	};
+	case "recon":
+	{
+		_perkData = profileNamespace getVariable ["rr_perks_recon", ["spawnbeacon",""]];
 	};
 };
 
 // Fetch data from config
-_classConfigs = [];
-_squadConfigs = "true" configClasses (missionConfigFile >> "CfgPerks" >> "SquadPerks");
-switch (_class) do
-{
-	case "medic":
-	{
-		_classConfigs = "true" configClasses (missionConfigFile >> "CfgPerks" >> "ClassPerks" >> "Medic");
-	};
-	case "support":
-	{
-		_classConfigs = "true" configClasses (missionConfigFile >> "CfgPerks" >> "ClassPerks" >> "Support");
-	};
-	case "assault":
-	{
-		_classConfigs = "true" configClasses (missionConfigFile >> "CfgPerks" >> "ClassPerks" >> "Assault");
-	};
-	case "engineer":
-	{
-		_classConfigs = "true" configClasses (missionConfigFile >> "CfgPerks" >> "ClassPerks" >> "Engineer");
-	};
-};
+_class = _class splitString "";
+_class set [0, toUpper (_class select 0)];
+_class = _class joinString "";
+private _classConfigs = "true" configClasses (missionConfigFile >> "CfgPerks" >> "ClassPerks" >> _class);
 
 // Validate class perk // Avoid people loading perks into classes where they dont belong to
 if ((_perkData select 0) != "") then {
-	_isValid = false;
+	private _isValid = false;
 	{
 		if ((configName _x) == (_perkData select 0)) then {
 			_isValid = true;

@@ -3,7 +3,6 @@ onLoadMission = "Battlefield brought to ArmA3";
 author = "A. Roman";
 onLoadMissionTime = 0;
 
-
 // Debug
 enableDebugConsole[] = {"76561198039414328"};
 
@@ -39,7 +38,7 @@ onPauseScript[] = {client_fnc_saveStatistics};
 // Disable debriefing
 debriefing = 0;
 
-showHUD[] = {
+/* showHUD[] = {
     1,   // Scripted HUD (same as showHUD command)
     0,  // Vehicle + soldier info
     0,  // Vehicle radar [HIDDEN]
@@ -48,7 +47,7 @@ showHUD[] = {
     1,   // Commanding menu
     0,  // Group Bar
     1    // HUD Weapon Cursors
-};
+}; */
 
 // Wreck remover
 wreckManagerMode = 1;
@@ -68,139 +67,7 @@ class Header
 disableChannels[]={2,6};
 
 // Sounds
-class CfgSounds {
-    sounds[] = {};
-    class kill {
-        name = "kill";
-        sound[] = {"\sounds\kill.ogg", 0.7, 1};
-        titles[] = {};
-    };
-    class introSong {
-        name = "introSong";
-        sound[] = {"\sounds\join.ogg", 3, 1};
-        titles[] = {};
-    };
-    class attackOrder_1 {
-        name = "attackOrder_1";
-        sound[] = {"\sounds\attackOrder_1.ogg", 3, 1};
-        titles[] = {};
-    };
-    class attackOrder_2 {
-        name = "attackOrder_2";
-        sound[] = {"\sounds\attackOrder_2.ogg", 3, 1};
-        titles[] = {};
-    };
-    class attackOrder_3 {
-        name = "attackOrder_3";
-        sound[] = {"\sounds\attackOrder_3.ogg", 3, 1};
-        titles[] = {};
-    };
-    class attackOrder_4 {
-        name = "attackOrder_4";
-        sound[] = {"\sounds\attackOrder_4.ogg", 3, 1};
-        titles[] = {};
-    };
-    class defendOrder_1 {
-        name = "defendOrder_1";
-        sound[] = {"\sounds\defendOrder_1.ogg", 3, 1};
-        titles[] = {};
-    };
-    class defendOrder_2 {
-        name = "defendOrder_2";
-        sound[] = {"\sounds\defendOrder_2.ogg", 3, 1};
-        titles[] = {};
-    };
-    class defendOrder_3 {
-        name = "defendOrder_3";
-        sound[] = {"\sounds\defendOrder_3.ogg", 3, 1};
-        titles[] = {};
-    };
-    class defendOrder_4 {
-        name = "defendOrder_4";
-        sound[] = {"\sounds\defendOrder_4.ogg", 3, 1};
-        titles[] = {};
-    };
-    class levelup {
-        name = "levelup";
-        sound[] = {"\sounds\levelup.ogg", 0.7, 1};
-        titles[] = {};
-    };
-    class ending {
-        name = "ending";
-        sound[] = {"\sounds\ending.ogg", 0.5, 1};
-        titles[] = {};
-    };
-    class endingDef {
-        name = "endingDef";
-        sound[] = {"\sounds\endingDef.ogg", 1, 1};
-        titles[] = {};
-    };
-    class endingAtk {
-        name = "endingAtk";
-        sound[] = {"\sounds\endingAtk.ogg", 1, 1};
-        titles[] = {};
-    };
-    class arm
-    {
-        name = "arm";
-        sound[] = {"\sounds\arm.ogg", 2.0, 1, 50};
-        titles[] = {};
-    };
-    class ribbon_ending
-    {
-        name = "ribbon_ending";
-        sound[] = {"\sounds\ribbon_ending.ogg", 1.0, 1};
-        titles[] = {};
-    };
-    class unlock_epic
-    {
-        name = "ribbon_epic";
-        sound[] = {"\sounds\ribbon_epic.ogg", 1.0, 1};
-        titles[] = {};
-    };
-    class ribbon_ingame
-    {
-        name = "arm";
-        sound[] = {"\sounds\ribbon_ingame.ogg", 1.0, 1};
-        titles[] = {};
-    };
-    class intro
-    {
-        name = "intro";
-        sound[] = {"\sounds\intro.ogg", 1.5, 1};
-        titles[] = {};
-    };
-    class beep
-    {
-        name = "beep";
-        sound[] = {"\sounds\beep.ogg", 4.0, 1, 2000};
-        titles[] = {};
-    };
-    class tug_beep
-    {
-        name = "tug_beep";
-        sound[] = {"\sounds\tug_beep.ogg", 0.2, 1};
-        titles[] = {};
-    };
-    class missile_incoming
-    {
-        name = "missile_incoming";
-        sound[] = {"\sounds\tug_beep.ogg", 1.0, 1};
-        titles[] = {};
-    };
-    class hit_marker
-    {
-        name = "hit_marker";
-        sound[] = {"\sounds\hit.ogg", 1.0, 1};
-        titles[] = {};
-    };
-    class head_shot
-    {
-        name = "head_shot";
-        sound[] = {"\sounds\headshot.ogg", 1.0, 1};
-        titles[] = {};
-    };
-};
+#include "sounds\sounds.h"
 
 // Other hpps
 #include "dialogs\common.h"
@@ -298,11 +165,12 @@ class Params {
   class TicketsRate {
     title = "Tickets per attacker:";
     values[] = {5, 7.5, 10, 12.5, 15};
-    default = 7.5;
+    default = 10;
   };
   class RoundTime {
     title = "How many minutes per objective:";
     values[] = {5,7.5,10,12.5,15,17.5,20};
+    texts[] = {"5m", "7m 30s", "10m", "12m 30s", "15m", "17m 30s", "20m"};
     default = 15;
   };
   class attackers {
@@ -316,6 +184,7 @@ class Params {
   class SpawnSafeTime {
     title = "How many seconds should the spawn protection last:";
     values[] = {0, 3, 5, 10, 15};
+    texts[] = {"0s", "3s", "5s", "10s", "15s"};
     default = 10;
   };
   class OutOfBoundsTime {
@@ -361,5 +230,47 @@ class Params {
     title = "Difference between teams for auto team-balancer:";
     values[] = {1, 2, 3, 4, 5};
     default = 3;
+  };
+  class InfantryFPOnly {
+    title = "Enforcement of 1st Person only for infantry:";
+    values[] = {0, 1};
+    texts[] = {"OFF", "ON"};
+    default = 1;
+  };
+  class VehicleFPOnly {
+    title = "Enforcement of 1st Person only for vehicles:";
+    values[] = {0, 1};
+    texts[] = {"OFF", "ON"};
+    default = 0;
+  };
+  class Cursor3DEnable {
+    title = "Enables the 3D cursor:";
+    values[] = {0, 1};
+    texts[] = {"OFF", "ON"};
+    default = 1;
+  };
+  class ClassLimits {
+    title = "Enable class restrictions: ";
+    values[] = {0, 1};
+    texts[] = {"OFF", "ON"};
+    default = 1;
+  };
+  class ClassLimits_support {
+    title = "Max percentage of players on a side with SUPPORT class: ";
+    values[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    texts[] = {"0%", "10%", "20%", "30%", "40%", "50%", "60%", "70%", "80%", "90%", "100%"};
+    default = 2;
+  };
+  class ClassLimits_engineer {
+    title = "Max percentage of players on a side with ENGINEER class: ";
+    values[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    texts[] = {"0%", "10%", "20%", "30%", "40%", "50%", "60%", "70%", "80%", "90%", "100%"};
+    default = 2;
+  };
+  class ClassLimits_recon {
+    title = "Max players on a side with RECON class: ";
+    values[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    texts[] = {"0%", "10%", "20%", "30%", "40%", "50%", "60%", "70%", "80%", "90%", "100%"};
+    default = 1;
   };
 };

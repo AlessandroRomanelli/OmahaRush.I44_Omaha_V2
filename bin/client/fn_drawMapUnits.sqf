@@ -13,8 +13,8 @@
 	[true] execVM SCRIPTLOCATION;
 __________________________________________________________________*/
 
-if (isDedicated || missionNamespace getVariable ["HGF_unitMarkers_running", false]) exitWith {};
-HGF_unitMarkers_running = true;
+if (isDedicated || missionNamespace getVariable ["unitMarkers_running", false]) exitWith {};
+unitMarkers_running = true;
 
 params [
 	["_showAI", !isMultiplayer, [false]]
@@ -22,7 +22,6 @@ params [
 
 private _fnc_updtMkr = {
 	params ["_marker", "_pos", "_dir", "_type", "_name"];
-
 	_marker setMarkerPosLocal _pos;
 	_marker setMarkerDirLocal _dir;
 	_marker setMarkerTypeLocal _type;
@@ -32,13 +31,14 @@ private _fnc_updtMkr = {
 private _markers = [];
 private _units = [];
 private _sideColor = [blufor, true] call BIS_fnc_sideColor;
-private _teamColor = [independent, true] call BIS_fnc_sideColor;
+private _teamColor = "ColorWhiteStrong";
+private _reviveColor = "ColorRedStrong";
 
 while {true} do {
 	_units = allUnits select {
 		if (isPlayer _x || _showAI) then {
 			if ((side _x) isEqualTo (playerSide)) then {
-				if (_x getVariable ["isAlive", false]) then {
+				if ((_x distance sv_cur_obj) < 500) then {
 					true
 				};
 			};
@@ -53,12 +53,15 @@ while {true} do {
 			if !(_marker in _markers) then {
 				_markers pushBack (createMarkerLocal [_marker, visiblePositionASL _x]);
 				_marker setMarkerAlphaLocal 0.75;
-				_marker setMarkerSizeLocal [0.8, 0.8];
+				_marker setMarkerSizeLocal [0.7, 0.8];
 				if ((group _x) isEqualTo (group player)) then {
 					_marker setMarkerColorLocal _teamColor;
 				} else {
 					_marker setMarkerColorLocal _sideColor;
-				}
+				};
+				if !(alive _x) then {
+					_marker setMarkerColorLocal _reviveColor;
+				};
 			};
 			[
 				[
@@ -70,22 +73,22 @@ while {true} do {
 						"mil_triangle"
 					] select (isNull objectParent _x || {(objectParent _x isKindOf "ParachuteBase")}),
 					[
-						format ["%1: %2 %3", getText (configFile >> "cfgVehicles" >> typeOf vehicle _x >> "displayname"), name _x, format [["+%1",""] select (_veh < 2), _veh -1]],
-						name _x
+						format ["%1: %2 %3", getText (configFile >> "cfgVehicles" >> typeOf vehicle _x >> "displayname"), (_x getVariable ["name", "ERROR: No Name"]), format [["+%1",""] select (_veh < 2), _veh -1]],
+						(_x getVariable ["name", "ERROR: No Name"])
 					] select (isNull objectParent _x || {(objectParent _x isKindOf "ParachuteBase")})
 				],
 				[
 					_marker,
 					(visiblePositionASL _x),
 					0,
-					"Empty",
-					name _x
+					"loc_hospital",
+					(_x getVariable ["name", "ERROR: No Name"])
 				]
 			] select !(alive _x) call _fnc_updtMkr;
 
-			if !(alive _x) then {
+			/* if !(alive _x) then {
 				_units deleteAt _forEachIndex;
-			};
+			}; */
 		} forEach (_units select {!isNull _x});
 	} else {
 		{deleteMarkerLocal _x; true} count _markers;

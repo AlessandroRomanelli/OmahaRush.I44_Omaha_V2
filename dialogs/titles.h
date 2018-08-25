@@ -157,7 +157,9 @@ class rr_timer
 			idcLeft = -1;
 			idcRight = -1;
 			maxHistoryDelay = 1;
-			rowHeight = 0;
+			sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 1.4)";
+      rowHeight = "1.00 *     (pixelH * pixelGridNoUIScale * 1.5)";
+      wholeHeight = "1.00 *     (pixelH * pixelGridNoUIScale * 1.5)";
 			soundSelect[] = {"", 0.1, 1};
 			period = 1;
 		};
@@ -181,7 +183,9 @@ class rr_timer
 			idcLeft = -1;
 			idcRight = -1;
 			maxHistoryDelay = 1;
-			rowHeight = 0;
+			sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 1.4)";
+      rowHeight = "1.00 *     (pixelH * pixelGridNoUIScale * 1.5)";
+      wholeHeight = "1.00 *     (pixelH * pixelGridNoUIScale * 1.5)";
 			soundSelect[] = {"", 0.1, 1};
 			period = 1;
 		};
@@ -204,11 +208,21 @@ class rr_scoreboard
 	{
 		class RscStructuredText_1100: RscStructuredText
 		{
+			text = "";
+			size = "1.00 *     (pixelH * pixelGridNoUIScale * 5)";
+			sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 5)";
 			idc = 0;
 			x = 0.29375 * safezoneW + safezoneX;
 			y = 0.245 * safezoneH + safezoneY;
 			w = 0.4125 * safezoneW;
 			h = 0.088 * safezoneH;
+			colorBackground[] = {0,0,0,0};
+			class Attributes {
+				font = "PuristaMedium";
+				color = "#FFFFFF";
+				align = "center";
+				valign = "middle";
+			};
 		};
 
 		/* SCOREBOARD */
@@ -281,7 +295,9 @@ class rr_scoreboard
 			idcLeft = -1;
 			idcRight = -1;
 			maxHistoryDelay = 1;
-			rowHeight = 0;
+			sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 1.4)";
+      rowHeight = "1.00 *     (pixelH * pixelGridNoUIScale * 1.5)";
+      wholeHeight = "1.00 *     (pixelH * pixelGridNoUIScale * 1.5)";
 			soundSelect[] = {"", 0.1, 1};
 			period = 1;
 		};
@@ -305,7 +321,9 @@ class rr_scoreboard
 			idcLeft = -1;
 			idcRight = -1;
 			maxHistoryDelay = 1;
-			rowHeight = 0;
+			sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 1.4)";
+      rowHeight = "1.00 *     (pixelH * pixelGridNoUIScale * 1.5)";
+      wholeHeight = "1.00 *     (pixelH * pixelGridNoUIScale * 1.5)";
 			soundSelect[] = {"", 0.1, 1};
 			period = 1;
 		};
@@ -347,7 +365,7 @@ class rr_restrictedArea
 		class text: RscStructuredText
 		{
 			idc = 0;
-			text = "<t size='3.5' color='#FFFFFF' shadow='2' align='center' t font='PuristaBold'>TURN BACK</t><br/><t size='2' color='#FFFFFF' shadow='2' align='center'>YOU ARE LEAVING THE BATTLEFIELD</t>"; //--- ToDo: Localize;
+			text = "<t size='3.5' color='#FFFFFF' shadow='2' align='center' font='PuristaBold'>TURN BACK</t><br/><t size='2' color='#FFFFFF' shadow='2' align='center'>YOU ARE LEAVING THE BATTLEFIELD</t>"; //--- ToDo: Localize;
 			x = 0.309219 * safezoneW + safezoneX;
 			y = 0.401 * safezoneH + safezoneY;
 			w = 0.381563 * safezoneW;
@@ -407,7 +425,7 @@ class rr_restrictedAreaSpawn
 			y = 0.357 * safezoneH + safezoneY;
 			w = 0.381563 * safezoneW;
 			h = 0.286 * safezoneH;
-			text = "<br/><t size='2' color='#FFFFFF' shadow='2' align='center' t font='PuristaBold'>ENEMY HQ NEARBY</t><br/><t size='1.3' color='#FFFFFF' shadow='2' align='center'>LEAVE NOW OR YOU WILL BE KILLED</t>";
+			text = "<br/><t size='2' color='#FFFFFF' shadow='2' align='center' font='PuristaBold'>ENEMY HQ NEARBY</t><br/><t size='1.3' color='#FFFFFF' shadow='2' align='center'>LEAVE NOW OR YOU WILL BE KILLED</t>";
 		};
 	};
 };
@@ -921,7 +939,7 @@ class rr_reloadingFlares {
 				w = 0.0711564 * safezoneW;
 				h = 0.055 * safezoneH;
 				//sizeEx = 3.8 * GUI_GRID_H;
-				sizeEx = /*safezoNeW/*/(3*0.04);
+				sizeEx = "(1.75*(pixelH * pixelGridNoUIScale * 2.9))";
 				shadow = 2;
 			};
 			class reserveAmmo: RscText
@@ -933,7 +951,7 @@ class rr_reloadingFlares {
 				w = 0.0515625 * safezoneW;
 				h = 0.033 * safezoneH;
 				//sizeEx = 1.9 * GUI_GRID_H;
-				sizeEx = /*safezoNeW/*/(1.9*0.04);
+				sizeEx = "(0.95*(pixelH * pixelGridNoUIScale * 2.9))";
 				shadow = 2;
 			};
 			class RscText_1002: RscText
@@ -945,7 +963,7 @@ class rr_reloadingFlares {
 				w = 0.0113438 * safezoneW;
 				h = 0.0374 * safezoneH;
 				//sizeEx = 1.5 * GUI_GRID_H;
-				sizeEx = /*safezoNeW/*/(1.5*0.04);
+				sizeEx = "(0.75*(pixelH * pixelGridNoUIScale * 2.9))";
 				shadow = 2;
 			};
 			class firemode: RscStructuredText
@@ -955,7 +973,7 @@ class rr_reloadingFlares {
 				x = 0.93969 * safezoneW + safezoneX;
 				y = 0.934852 * safezoneH + safezoneY;
 				w = 0.0495002 * safezoneW;
-				h = 0.0176 * safezoneH;
+				h = 0.0185 * safezoneH;
 				//sizeEx = 1 * GUI_GRID_H;
 				//sizeEx = /*safezoNeW/*/(1*0.04);
 				shadow = 2;
@@ -965,11 +983,12 @@ class rr_reloadingFlares {
 				idc = 103;
 				text = "+"; //--- ToDo: Localize;
 				x = 0.936218 * safezoneW + safezoneX;
-				y = 0.951 * safezoneH + safezoneY;
-				w = 0.0165001 * safezoneW;
+				y = 0.9525 * safezoneH + safezoneY;
+				w = 0.02 * safezoneW;
 				h = 0.033 * safezoneH;
 				//sizeEx = 3 * GUI_GRID_H;
-				sizeEx = /*safezoNeW/*/(3*0.04);
+				font = "PuristaBold";
+				sizeEx = "(1.5*(pixelH * pixelGridNoUIScale * 2.9))"
 				shadow = 2;
 			};
 			class healthpoints: RscText
@@ -977,11 +996,11 @@ class rr_reloadingFlares {
 				idc = 104;
 				text = "000"; //--- ToDo: Localize;
 				x = 0.952719 * safezoneW + safezoneX;
-				y = 0.951 * safezoneH + safezoneY;
+				y = 0.955 * safezoneH + safezoneY;
 				w = 0.0515625 * safezoneW;
 				h = 0.0352 * safezoneH;
 				//sizeEx = 1.9 * GUI_GRID_H;
-				sizeEx = /*safezoNeW/*/(1.9*0.04);
+				sizeEx = "(0.95*(pixelH * pixelGridNoUIScale * 2.9))";
 				shadow = 2;
 			};
 			class zeroing: RscText
@@ -989,11 +1008,11 @@ class rr_reloadingFlares {
 				idc = 105;
 				text = "Gx01"; //--- ToDo: Localize;
 				x = 0.86714 * safezoneW + safezoneX;
-				y = 0.951 * safezoneH + safezoneY;
+				y = 0.955 * safezoneH + safezoneY;
 				w = 0.0615625 * safezoneW;
 				h = 0.0352 * safezoneH;
 				//sizeEx = 1.9 * GUI_GRID_H;
-				sizeEx = /*safezoNeW/*/(1.9*0.04);
+				sizeEx = "(0.95*(pixelH * pixelGridNoUIScale * 2.9))";
 				shadow = 2;
 			};
 			class typeGranade: RscPicture
@@ -1014,8 +1033,21 @@ class rr_reloadingFlares {
 				w = 0.0154688 * safezoneW;
 				h = 0.055 * safezoneH;
 				/* sizeEx = 2 * GUI_GRID_H; */
-				sizeEx = /*safezoNeW/*/(1.9*0.04);
+				sizeEx = "(0.95*(pixelH * pixelGridNoUIScale * 2.9))";
 				shadow = 2;
+			};
+			class RscText_1100: RscText
+			{
+			  idc = 1100;
+			  text = ""; //--- ToDo: Localize;
+			  x = 0.86575 * safezoneW + safezoneX;
+			  y = 0.8704 * safezoneH + safezoneY;
+			  w = 0.130208 * safezoneW;
+			  h = 0.0224076 * safezoneH;
+			  colorBackground[] = {-1,-1,-1,0};
+				shadow = 2;
+				font = "PuristaBold";
+				align = "right";
 			};
 		};
 	};

@@ -1,40 +1,20 @@
 scriptName "fn_getPerkInstructions";
 /*--------------------------------------------------------------------
-	Author: Maverick (ofpectag: MAV)
+	Author: A. Roman
     File: fn_getPerkInstructions.sqf
 
-	<Maverick Applications>
-    Written by Maverick Applications (www.maverick-apps.de)
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_getPerkInstructions.sqf"
 if (isServer && !hasInterface) exitWith {};
 
-_perkName = param[0,"",[""]];
-_class = param[1,cl_class,[""]];
+private _perkName = param[0,"",[""]];
+private _class = param[1,cl_class,[""]];
 
 if (_perkName == "") exitWith {["",""]};
 
-_ret = ["",""];
+_class = _class splitString "";
+_class set [0, (toUpper (_class select 0))];
+_class = _class joinString "";
 
-switch (_class) do
-{
-	case "medic":
-	{
-		_ret = getArray(missionConfigFile >> "CfgPerks" >> "ClassPerks" >> "Medic" >> _perkName >> "instructions");
-	};
-	case "support":
-	{
-		_ret = getArray(missionConfigFile >> "CfgPerks" >> "ClassPerks" >> "Support" >> _perkName >> "instructions");
-	};
-	case "assault":
-	{
-		_ret = getArray(missionConfigFile >> "CfgPerks" >> "ClassPerks" >> "Assault" >> _perkName >> "instructions");
-	};
-	case "engineer":
-	{
-		_ret = getArray(missionConfigFile >> "CfgPerks" >> "ClassPerks" >> "Engineer" >> _perkName >> "instructions");
-	};
-};
-
-_ret
+getArray(missionConfigFile >> "CfgPerks" >> "ClassPerks" >> _class >> _perkName >> "instructions");

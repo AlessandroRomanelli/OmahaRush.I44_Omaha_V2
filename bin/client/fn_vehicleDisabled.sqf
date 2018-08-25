@@ -1,15 +1,13 @@
 scriptName "fn_vehicleDisabled";
 /*--------------------------------------------------------------------
-	Author: Maverick (ofpectag: MAV)
+	Author: A. Roman
     File: fn_vehicleDisabled.sqf
 
-	<Maverick Applications>
-    Written by Maverick Applications (www.maverick-apps.de)
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_vehicleDisabled.sqf"
 
-_points = _this;
+private _points = _this;
 
 
 if (_points == 500) exitWith {

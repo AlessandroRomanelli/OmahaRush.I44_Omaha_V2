@@ -9,11 +9,11 @@ scriptName "fn_autoTeamBalancer";
 --------------------------------------------------------------------*/
 #define __filename "fn_autoTeamBalancer.sqf"
 
-_getUnitsThatLastJoined = {
-	_side = param[0,sideUnknown,[sideUnknown]];
+private _getUnitsThatLastJoined = {
+	private _side = param[0,sideUnknown,[sideUnknown]];
 
-	_lastJoinTime = 0;
-	_preferredUnit = objNull;
+	private _lastJoinTime = 0;
+	private _preferredUnit = objNull;
 	{
 		if (side _x == _side) then {
 			if ((_x getVariable ["joinServerTime", 0]) > _lastJoinTime) then {
@@ -31,13 +31,14 @@ sv_autoTeamBalancerWarning = false;
 while {sv_gameStatus == 2} do {
 	sleep 60;
 
-	_unitsAttacker = {side _x == independent} count AllPlayers;
-	_unitsDefender = {side _x == WEST} count AllPlayers;
+	private _unitsTeam1 = {(_x getVariable ["side", sideUnknown]) isEqualTo WEST} count allPlayers;
+	private _unitsTeam2 = (count allPlayers) - _unitsTeam1;
 
-	_diff = if (_unitsAttacker <= _unitsDefender) then {_unitsDefender - _unitsAttacker} else {_unitsAttacker - _unitsDefender};
-	_sideWithMoreUnits = if (_unitsAttacker <= _unitsDefender) then {WEST} else {independent};
+	private _diff = abs(_unitsTeam1 - _unitsTeam2);
+	private _maxDiff = paramsArray#14;
+	private _sideWithMoreUnits = if (_unitsTeam1 >= _unitsTeam2) then {WEST} else {independent};
 
-	if (_diff >= ("AutoTeamBalanceAtDifference" call bis_fnc_getParamValue)) then {
+	if (_diff > _maxDiff) then {
 		if (!sv_autoTeamBalancerWarning) then {
 			sv_autoTeamBalancerWarning = true;
 			["Auto team balance will commence in 60 seconds if teams stay unbalanced"] remoteExec ["client_fnc_displayError"];
@@ -45,11 +46,11 @@ while {sv_gameStatus == 2} do {
 		} else {
 			sv_autoTeamBalancerWarning = true;
 
-			_toMove = floor(_diff / 2);
+			private _toMove = floor(_diff / 2);
 			for "_i" from 1 to _toMove step 1 do
 			{
-				_unit = [_sideWithMoreUnits] call _getUnitsThatLastJoined;
-				[format["Player %1 has been kicked due to team balance", name _unit]] call server_fnc_log;
+				private _unit = [_sideWithMoreUnits] call _getUnitsThatLastJoined;
+				[format["Player %1 has been kicked due to team balance", _unit getVariable ["name", "ERROR: No Name"]]] call server_fnc_log;
 
 				if (_sideWithMoreUnits == WEST) then {
 					[independent] remoteExec ["client_fnc_teamBalanceKick", _unit];

@@ -10,19 +10,19 @@ scriptName "fn_db_prepareString";
 #define __filename "fn_db_prepareString.sqf"
 
 // Parameters
-_toDatabase = param[0,false,[false]];
-_string		= param[1,"",[""]];
+private _toDatabase = param[0,false,[false]];
+private _string	= param[1,"",[""]];
 
 // Exceptions
 if (_string == "") then {""};
 if (!isServer) exitWith {};
 
 // Code
-_stringArray = [];
+private _stringArray = [];
 
 if (_toDatabase) then {
 	_stringArray = toArray _string;
-	_newString = [];
+	private _newString = [];
 	{
 		switch (_x) do
 		{

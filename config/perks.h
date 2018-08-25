@@ -3,22 +3,27 @@ class CfgPerks {
 		class sprint {
 			displayName = "Sprint";
 			picture = "";
-			description = "Increases your reload and sprint speed by 5%";
+			description = "Increases your reload and sprint speed by 10%";
 		};
 		class swim {
 			displayName = "Fast Swim";
 			picture = "";
 			description = "Dramatically increases your swimming speed";
 		};
-		class extended_ammo {
+		class ammo {
 			displayName = "Extended Ammunition";
 			picture = "";
-			description = "Deploys you with more ammunition";
+			description = "Deploys you with more ammunition for primary and secondary weapon";
 		};
-		class smoke_grenades {
-			displayName = "Smoke Grenades";
+		class frag {
+			displayName = "Fragmentation Grenade";
 			picture = "";
-			description = "Deploys you with one smoke grenade to create dynamic cover";
+			description = "Deploys you with a frag grenade";
+		};
+		class expl {
+			displayName = "Additional Explosives";
+			picture = "";
+			description = "Deploys you with extra rockets/explosives/grenades";
 		};
 	};
 
@@ -30,11 +35,11 @@ class CfgPerks {
 				description = "Bring back fallen teammates to life again with your combat ready epinephrine injector";
 				instructions[] = {"EPINEPHRINE", "Downed friendly units will be marked on your screen. Get to their body and use your ACTION key (Space) to revive them."};
 			};
-			class spawnbeacon {
-				displayName = "Rally points";
+			class smoke_grenades {
+				displayName = "Smoke Screen";
 				picture = "";
-				description = "Allows you to create spawn points for your squad to deploy at more efficient locations";
-				instructions[] = {"RALLYPOINT", "Press H to deploy your spawn beacon. Only one spawnbeacon is allowed per squad. Squad members will then be able to spawn on it."};
+				description = "Deploys you with two smoke grenades for concealing your friendlies";
+				instructions[] = {"SMOKE SCREEN","Deploys you with two smoke grenades to create dynamic cover and avoid enemy fire or conceal movements."};
 			};
 		};
 		class Support {
@@ -44,9 +49,14 @@ class CfgPerks {
 				description = "Allows you replenish ammunition on yourself, friendly units and vehicles";
 				instructions[] = {"AMMUNITION PACK", "Hold your ACTION key (Space) to replenish other units/vehicles ammunition. If you are out of ammo you may replenish your own."};
 			};
+			class spawnbeacon {
+				displayName = "Rally points";
+				picture = "";
+				description = "Allows you to create spawn points for your squad to deploy at more efficient locations";
+				instructions[] = {"RALLYPOINT", "Press H to deploy your spawn beacon. Only one spawnbeacon is allowed per squad. Squad members will then be able to spawn on it."};
+			};
 		};
 		class Assault {
-
 			class grenadier {
 				displayName = "Grenadier";
 				picture = "";
@@ -61,12 +71,6 @@ class CfgPerks {
 			};
 		};
 		class Engineer {
-			class repair {
-				displayName = "Repair Toolkit";
-				picture = "";
-				description = "Repair any kind of vehicle on the battlefield";
-				instructions[] = {"REPAIR TOOLKIT", "Repair any vehicle on the battlefield by holding your ACTION key (Space) when near friendly vehicles."};
-			};
 			class perkAT {
 				displayName = "Anti-Tank Launcher";
 				picture = "";
@@ -78,6 +82,14 @@ class CfgPerks {
 				picture = "";
 				description = "Allows you to plant explosives and set up deadly ambushes for the enemy team.";
 				instructions[]= {"EXPLOSIVES EXPERT", "Use the explosives to set up ambushes for the enemy team."};
+			};
+		};
+		class Recon {
+			class spawnbeacon {
+				displayName = "Rally points";
+				picture = "";
+				description = "Allows you to create spawn points for your squad to deploy at more efficient locations";
+				instructions[] = {"RALLYPOINT", "Press H to deploy your spawn beacon. Only one spawn beacon is allowed per squad. Squad members will then be able to spawn on it."};
 			};
 		};
 	};

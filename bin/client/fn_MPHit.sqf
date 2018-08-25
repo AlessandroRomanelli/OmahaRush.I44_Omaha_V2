@@ -10,7 +10,7 @@ scriptName "fn_MPHit";
 #define __filename "fn_MPHit.sqf"
 if (isServer && !hasInterface) exitWith {};
 
-_damage = _this;
+private _damage = _this;
 
 // Kill
 if (_damage == -0.03184) exitWith {

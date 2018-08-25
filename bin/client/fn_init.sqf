@@ -1,10 +1,9 @@
 scriptName "fn_init";
 /*--------------------------------------------------------------------
-	Author: Maverick (ofpectag: MAV)
+	Author: Maverick (ofpectag: MAV) & A. Roman
     File: fn_init.sqf
 
-	<Maverick Applications>
-    Written by Maverick Applications (www.maverick-apps.de)
+    Written by both authors
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_init.sqf"
@@ -13,11 +12,11 @@ if (isServer && !hasInterface) exitWith {};
 // Did the init run already?
 if (!isNil "cl_init_ran") exitWith {};
 cl_init_ran = true;
-cl_inSpawnMenu = false;
+cl_init_done = false;
 
 // Skip the briefing screen whenever possible
 if (hasInterface) then {
-    0 = [] spawn {
+    [] spawn {
         waitUntil {
             if (getClientState == "BRIEFING READ") exitWith {true};
             if (!isNull findDisplay 53) exitWith {
@@ -30,11 +29,8 @@ if (hasInterface) then {
     };
 };
 
-
-
-
-/* // Player name
-player setVariable ["name", name player, true]; */
+// Player name
+player setVariable ["name", name player, true];
 
 // Time played to make sure the auto team balancer knows our jointime
 player setVariable ["joinServerTime", serverTime, true];
@@ -52,20 +48,14 @@ enableSaving [false, false];
 if (isNil "sv_serverReady") then {
 	sv_serverReady = false;
 };
+
 waitUntil {sv_serverReady && !isNil "sv_usingDatabase"};
 
-// Get progress from server..
-if (sv_usingDatabase) then {
-	cl_statisticsLoaded = false;
-	[] call client_fnc_loadStatistics;
-	waitUntil {cl_statisticsLoaded};
-} else {
-	cl_total_kills = 0;
-	cl_total_deaths = 0;
-	cl_exp = 100000000;
-	cl_equipConfigurations = [];
-	cl_equipClassnames = ["",""];
-};
+[] call client_fnc_initGlobalVars;
+
+cl_statisticsLoaded = false;
+[] call client_fnc_loadStatistics;
+waitUntil {cl_statisticsLoaded};
 
 // Get initial spawn position to teleport the player to (e.g. in spawn menu)
 cl_safePos = getPos player;
@@ -108,10 +98,10 @@ if (sv_gameCycle % 2 == 0) then {
 ["InitializePlayer", [player]] call BIS_fnc_dynamicGroups;
 
 // If this is the debug mode, just unlock everything
-if (getNumber(missionConfigFile >> "GeneralConfig" >> "debug") == 1) then {
-	//cl_exp = 10000000000;
-};
-
+/* if (getNumber(missionConfigFile >> "GeneralConfig" >> "debug") == 1) then {
+	cl_exp = 10000000000;
+}; */
+private ["_marker1", "_marker2", "_marker3", "_marker4", "_trigger"];
 if (player getVariable "gameSide" == "defenders") then {
 	_marker1 = createMarkerLocal ["mobile_respawn_defenders",[0,0]];
 	_marker1 setMarkerTypeLocal "b_unknown";
@@ -147,18 +137,17 @@ _marker4 setMarkerAlphaLocal 0.4;
 _marker4 setMarkerSizeLocal [0, 0];
 _marker4 setMarkerDirLocal 0;
 
-area_atk setTriggerArea [1, 1, 0, true, -1];
-area_atk setTriggerActivation ["ANYPLAYER", "PRESENT", true];
-area_atk setTriggerStatements ['(player getVariable ["gameSide", "defenders"] == "attackers") && this', "", ""];
+_trigger = createTrigger ["EmptyDetector", [0,0,0], false];
+_trigger setTriggerArea [1, 1, 0, true, -1];
+_trigger setTriggerActivation ["ANYPLAYER", "PRESENT", true];
+_trigger setTriggerStatements ['(player getVariable ["isAlive", false]) && this', "", ""];
 
-area_def setTriggerArea [1, 1, 0, true, -1];
-area_def setTriggerActivation ["ANYPLAYER", "PRESENT", true];
-area_def setTriggerStatements ['(player getVariable ["gameSide", "attackers"] == "defenders") && this', "", ""];
+missionNamespace setVariable ["playArea", _trigger];
 
 
 // Safepos markers (make sure units will not plop up on the battlefield)
-_safeMarker1 = createMarkerLocal ["respawn_defenders", cl_safePos];
-_safeMarker1 = createMarkerLocal ["respawn_attackers", cl_safePos];
+/* private _safeMarker1 = createMarkerLocal ["respawn_defenders", cl_safePos];
+private _safeMarker2 = createMarkerLocal ["respawn_attackers", cl_safePos]; */
 
 // Get time from server IF the match is already going or is about to, if not, it doesnt really matter
 if (sv_gameStatus in [1,2]) then {
@@ -174,6 +163,8 @@ CHBN_adjustBrightness = 0.5;
 // Fuck off?
 player enableStamina false;
 player forceWalk false;
+
+cl_init_done = true;
 
 // Jump to client cycle position via sv_gameStatus
 if (sv_gameStatus == 1) exitWith {

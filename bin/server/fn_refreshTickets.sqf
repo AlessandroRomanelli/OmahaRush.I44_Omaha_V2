@@ -9,14 +9,14 @@ scriptName "fn_refreshTickets";
 --------------------------------------------------------------------*/
 #define __filename "fn_refreshTickets.sqf"
 
-_maxTickets = "MaxTickets" call bis_fnc_getParamValue;
-_minTickets = "MinTickets" call bis_fnc_getParamValue;
+private _maxTickets = paramsArray#0;
+private _minTickets = paramsArray#1;
+private _ticketRate = paramsArray#2;
 
-_attackers = (count allPlayers)/2;
+private _avgPlayersPerSide = (count allPlayers)/2;
 
-_ticketRate = "TicketsRate" call bis_fnc_getParamValue;
 
-_tickets = ceil (_attackers * _ticketRate);
+private _tickets = ceil (_avgPlayersPerSide * _ticketRate);
 
 if (_tickets > _maxTickets) then {
   _tickets = _maxTickets;

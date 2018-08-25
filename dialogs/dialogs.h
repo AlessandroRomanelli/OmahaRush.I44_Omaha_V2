@@ -5,7 +5,7 @@ class rr_spawnmenu {
     fadein=2;
     duration = 999999;
     class controls {
-    	class emtpyButton: RscButtonMenu
+  	/* class emptyButton: RscButtonMenu
 		{
 			idc = 10000;
 			text = ""; //--- ToDo: Localize;
@@ -13,10 +13,10 @@ class rr_spawnmenu {
 			y = 1.1 * safezoneH + safezoneY;
 			w = 1.1 * safezoneW;
 			h = 1.1 * safezoneH;
-		};
+		}; */
 		class RscText_1000: RscText
 		{
-			idc = -1;
+			idc = 207;
 			x = 0.00499997 * safezoneW + safezoneX;
 			y = 0.291 * safezoneH + safezoneY;
 			w = 0.154687 * safezoneW;
@@ -34,7 +34,7 @@ class rr_spawnmenu {
 		};
 		class RscText_1002: RscText
 		{
-			idc = -1;
+			idc = 208;
 			x = 0.00499997 * safezoneW + safezoneX;
 			y = 0.4945 * safezoneH + safezoneY;
 			w = 0.154687 * safezoneW;
@@ -43,7 +43,7 @@ class rr_spawnmenu {
 		};
 		class RscText_1003: RscText
 		{
-			idc = -1;
+			idc = 209;
 			x = 0.00499997 * safezoneW + safezoneX;
 			y = 0.5022 * safezoneH + safezoneY;
 			w = 0.154687 * safezoneW;
@@ -75,14 +75,15 @@ class rr_spawnmenu {
 			y = 0.2954 * safezoneH + safezoneY;
 			w = 0.255718 * safezoneW;
 			h = 0.4026 * safezoneH;
-			sizeEx = 0.04;
-			rowHeight = 0.1;
+      sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 2)";
+      rowHeight = "1.00 *     (pixelH * pixelGridNoUIScale * 5)";
+      wholeHeight = "1.00 *     (pixelH * pixelGridNoUIScale * 5)";
 			colorBackground[] = {0,0,0,0};
 			colorSelect[] = {1, 1, 1, 1};
-		    colorText[] = {1, 1, 1, 0.5};
-		    colorSelect2[] = {1, 1, 1, 1};
-		    colorSelectBackground[] = {0.96,0.65,0.12,0.8};
-		    colorSelectBackground2[] = {0.96,0.65,0.12,0.8};
+	    colorText[] = {1, 1, 1, 0.5};
+	    colorSelect2[] = {1, 1, 1, 1};
+	    colorSelectBackground[] = {0.96,0.65,0.12,0.8};
+	    colorSelectBackground2[] = {0.96,0.65,0.12,0.8};
 		};
 		/*class btnDeploy: RscButtonMenu
 		{
@@ -145,19 +146,19 @@ class rr_spawnmenu {
 			w = 0.149531 * safezoneW;
 			h = 0.101 * safezoneH;
 			animTextureNormal = "#(argb,8,8,3)color(1,1,1,0)";
-		    animTextureDisabled = "#(argb,8,8,3)color(1,1,1,0)";
-		    animTextureOver = "#(argb,8,8,3)color(1,1,1,0)";
-		    animTextureFocused = "#(argb,8,8,3)color(1,1,1,0)";
-		    animTexturePressed = "#(argb,8,8,3)color(1,1,1,0)";
-		    animTextureDefault = "#(argb,8,8,3)color(1,1,1,0)";
-		    colorBackground[] = {0,0,0,0};
-		    colorBackgroundFocused[] = {1,1,1,0};
-		    colorBackground2[] = {0.75,0.75,0.75,0};
-		    color[] = {1,1,1,0};
-		    colorFocused[] = {0,0,0,0};
-		    color2[] = {0,0,0,0};
-		    colorText[] = {1,1,1,0};
-		    colorDisabled[] = {1,1,1,0};
+	    animTextureDisabled = "#(argb,8,8,3)color(1,1,1,0)";
+	    animTextureOver = "#(argb,8,8,3)color(1,1,1,0)";
+	    animTextureFocused = "#(argb,8,8,3)color(1,1,1,0)";
+	    animTexturePressed = "#(argb,8,8,3)color(1,1,1,0)";
+	    animTextureDefault = "#(argb,8,8,3)color(1,1,1,0)";
+	    colorBackground[] = {0,0,0,0};
+	    colorBackgroundFocused[] = {1,1,1,0};
+	    colorBackground2[] = {0.75,0.75,0.75,0};
+	    color[] = {1,1,1,0};
+	    colorFocused[] = {0,0,0,0};
+	    color2[] = {0,0,0,0};
+	    colorText[] = {1,1,1,0};
+	    colorDisabled[] = {1,1,1,0};
 		};
 		class secondaryWeaponSelectionActivator: RscButtonMenu
 		{
@@ -168,21 +169,21 @@ class rr_spawnmenu {
 			w = 0.149531 * safezoneW;
 			h = 0.101 * safezoneH;
 			animTextureNormal = "#(argb,8,8,3)color(1,1,1,0)";
-		    animTextureDisabled = "#(argb,8,8,3)color(1,1,1,0)";
-		    animTextureOver = "#(argb,8,8,3)color(1,1,1,0)";
-		    animTextureFocused = "#(argb,8,8,3)color(1,1,1,0)";
-		    animTexturePressed = "#(argb,8,8,3)color(1,1,1,0)";
-		    animTextureDefault = "#(argb,8,8,3)color(1,1,1,0)";
-		    colorBackground[] = {0,0,0,0};
-		    colorBackgroundFocused[] = {1,1,1,0};
-		    colorBackground2[] = {0.75,0.75,0.75,0};
-		    color[] = {1,1,1,0};
-		    colorFocused[] = {0,0,0,0};
-		    color2[] = {0,0,0,0};
-		    colorText[] = {1,1,1,0};
-		    colorDisabled[] = {1,1,1,0};
+	    animTextureDisabled = "#(argb,8,8,3)color(1,1,1,0)";
+	    animTextureOver = "#(argb,8,8,3)color(1,1,1,0)";
+	    animTextureFocused = "#(argb,8,8,3)color(1,1,1,0)";
+	    animTexturePressed = "#(argb,8,8,3)color(1,1,1,0)";
+	    animTextureDefault = "#(argb,8,8,3)color(1,1,1,0)";
+	    colorBackground[] = {0,0,0,0};
+	    colorBackgroundFocused[] = {1,1,1,0};
+	    colorBackground2[] = {0.75,0.75,0.75,0};
+	    color[] = {1,1,1,0};
+	    colorFocused[] = {0,0,0,0};
+	    color2[] = {0,0,0,0};
+	    colorText[] = {1,1,1,0};
+	    colorDisabled[] = {1,1,1,0};
 		};
-		class attachmentsSelectionBackground: RscText
+		/* class attachmentsSelectionBackground: RscText
 		{
 			idc = 25;
 			w = 0.458921 * safezoneW;
@@ -208,8 +209,8 @@ class rr_spawnmenu {
 		    colorSelect2[] = {1, 1, 1, 1};
 		    colorSelectBackground[] = {0.96,0.65,0.12,0.8};
 		    colorSelectBackground2[] = {0.96,0.65,0.12,0.8};
-		};
-		class a87954654: RscText
+		}; */
+		/* class a87954654: RscText
 		{
 			idc = 27;
 			x = 0.160708 * safezoneW + safezoneX;
@@ -235,8 +236,8 @@ class rr_spawnmenu {
 			w = 0.151598 * safezoneW;
 			h = 0.0329884 * safezoneH;
 			colorBackground[] = {1,1,1,1};
-		};
-		class secondAttachment: RscListbox
+		}; */
+		/* class secondAttachment: RscListbox
 		{
 			idc = 21;
 			x = 0.3154 * safezoneW + safezoneX;
@@ -305,7 +306,7 @@ class rr_spawnmenu {
 			colorText[] = {0,0,0,1};
 			shadow = 0;
 			font = "PuristaMedium";
-		};
+		}; */
 		/* class RscButtonMenu_2401: RscButtonMenu
 		{
 			idc = 13;
@@ -330,7 +331,7 @@ class rr_spawnmenu {
 		/* new ui */
 		class RscText_1000513: RscText
 		{
-			idc = -1;
+			idc = 201;
 			x = 0.314375 * safezoneW + safezoneX;
 			y = 0.951 * safezoneH + safezoneY;
 			w = 0.237187 * safezoneW;
@@ -339,7 +340,7 @@ class rr_spawnmenu {
 		};
 		class RscText_1001573: RscText
 		{
-			idc = -1;
+			idc = 202;
 			x = 0.314375 * safezoneW + safezoneX;
 			y = 0.929 * safezoneH + safezoneY;
 			w = 0.237187 * safezoneW;
@@ -356,11 +357,11 @@ class rr_spawnmenu {
 			h = 0.022 * safezoneH;
 			colorText[] = {0,0,0,1};
 			shadow = 0;
-			sizeEx = 0.04;
-		};
+      sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 1.5)";
+    };
 		class RscText_10032353462: RscText
 		{
-			idc = -1;
+			idc = 203;
 			x = 0.551562 * safezoneW + safezoneX;
 			y = 0.8564 * safezoneH + safezoneY;
 			w = 0.004125 * safezoneW;
@@ -369,7 +370,7 @@ class rr_spawnmenu {
 		};
 		class RscText_100412213: RscText
 		{
-			idc = -1;
+			idc = 204;
 			x = 0.555688 * safezoneW + safezoneX;
 			y = 0.8564 * safezoneH + safezoneY;
 			w = 0.134062 * safezoneW;
@@ -399,7 +400,7 @@ class rr_spawnmenu {
 		/* new right side of the gui */
 		class RscText_10064324: RscText
 		{
-			idc = -1;
+			idc = 205;
 
 			x = 0.835156 * safezoneW + safezoneX;
 			y = 0.291 * safezoneH + safezoneY;
@@ -419,16 +420,30 @@ class rr_spawnmenu {
 			colorText[] = {1,1,1,1};
 			colorBackground[] = {0.96,0.65,0.12,0.8};
 		};
-		class RscText_10057667: RscText
+		class RscText_24056776: RscText
 		{
-			idc = -1;
+			idc = 104;
+			text = "WEAPONS SELECTION";
+      x = 0.00499997 * safezoneW + safezoneX;
+      y = 0.247 * safezoneH + safezoneY;
+      w = 0.154687 * safezoneW;
+			h = 0.044 * safezoneH;
+      color[] = {1,1,1,1};
+			colorText[] = {1,1,1,1};
+			colorBackground[] = {0.84,0.57,0.1,0.8};
+      size = "1.00 *     (pixelH * pixelGridNoUIScale * 1)";
+      /* sizeEx = 0.04; */
+		};
+		/* class RscText_10057667: RscText
+		{
+			idc = 206;
 
 			x = 0.835156 * safezoneW + safezoneX;
 			y = 0.577 * safezoneH + safezoneY;
 			w = 0.0309375 * safezoneW;
 			h = 0.055 * safezoneH;
 			colorBackground[] = {0.12,0.14,0.16,0.8};
-		};
+		}; */
 		/*class RscPicture_12006776: RscPicture
 		{
 			idc = -1;
@@ -551,9 +566,9 @@ class rr_spawnmenu {
 			y = 0.291 * safezoneH + safezoneY;
 			w = 0.159844 * safezoneW;
 			h = 0.253 * safezoneH;
-			sizeEx = 0.04;
-			rowHeight = 0.06;
-			wholeHeight = 0.06;
+      sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 1.75)";
+      rowHeight = "1.00 *     (pixelH * pixelGridNoUIScale * 2.5)";
+      wholeHeight = "1.00 *     (pixelH * pixelGridNoUIScale * 2.5)";
 			colorBackground[] = {0,0,0,0};
 			colorSelect[] = {1, 1, 1, 1};
 		    colorText[] = {1, 1, 1, 0.5};
@@ -588,7 +603,7 @@ class rr_spawnmenu {
 			colorBackground[] = {0.96,0.65,0.12,0.8};
 			font = "PuristaBold";
 			sizeEx = 0.08;
-			size = 0.06;
+      size = "1.00 *     (pixelH * pixelGridNoUIScale * 2.5)";
 		};
 		class classeslistbox: RscListbox
 		{
@@ -597,9 +612,9 @@ class rr_spawnmenu {
 			y = 0.577 * safezoneH + safezoneY;
 			w = 0.159844 * safezoneW;
 			h = 0.099 * safezoneH;
-			sizeEx = 0.04;
-			rowHeight = 0.04;
-			wholeHeight = 0.04;
+      sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 1.6)";
+      rowHeight = "1.00 *     (pixelH * pixelGridNoUIScale * 1.6)";
+      wholeHeight = "1.00 *     (pixelH * pixelGridNoUIScale * 1.6)";
 			colorBackground[] = {0.12,0.14,0.16,0.8};
 			colorSelect[] = {1, 1, 1, 1};
 		    colorText[] = {1, 1, 1, 0.5};
@@ -626,6 +641,51 @@ class rr_spawnmenu {
     	w = 0.150573 * safezoneW;
     	h = 0.022926 * safezoneH;
     	colorBackground[] = {-1,-1,-1,0};
+    };
+    class RscText_1200: RscText
+    {
+      idc = 1200;
+      x = 0.402031 * safezoneW + safezoneX;
+      y = 0.082 * safezoneH + safezoneY;
+      w = 0.190781 * safezoneW;
+      h = 0.066 * safezoneH;
+      colorBackground[] = {0.12,0.14,0.16,0.8};
+    };
+    class RscPicture_1201: RscPicture
+    {
+      idc = 1201;
+      text = "";
+      x = 0.407187 * safezoneW + safezoneX;
+      y = 0.093 * safezoneH + safezoneY;
+      w = 0.0257812 * safezoneW;
+      h = 0.044 * safezoneH;
+    };
+    class RscPicture_1202: RscPicture
+    {
+      idc = 1202;
+      text = "";
+      x = 0.45875 * safezoneW + safezoneX;
+      y = 0.093 * safezoneH + safezoneY;
+      w = 0.0257812 * safezoneW;
+      h = 0.044 * safezoneH;
+    };
+    class RscPicture_1203: RscPicture
+    {
+      idc = 1203;
+      text = "";
+      x = 0.510312 * safezoneW + safezoneX;
+      y = 0.093 * safezoneH + safezoneY;
+      w = 0.0257812 * safezoneW;
+      h = 0.044 * safezoneH;
+    };
+    class RscPicture_1204: RscPicture
+    {
+      idc = 1204;
+      text = "";
+      x = 0.561875 * safezoneW + safezoneX;
+      y = 0.093 * safezoneH + safezoneY;
+      w = 0.0257812 * safezoneW;
+      h = 0.044 * safezoneH;
     };
   };
 };
@@ -737,8 +797,9 @@ class rr_class_customization {
 			y = 0.357 * safezoneH + safezoneY;
 			w = 0.20625 * safezoneW;
 			h = 0.308 * safezoneH;
-			sizeEx = 0.05;
-			rowHeight = 0.1;
+      sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 2)";
+      rowHeight = "1.00 *     (pixelH * pixelGridNoUIScale * 3.5)";
+      wholeHeight = "1.00 *     (pixelH * pixelGridNoUIScale * 3.5)";
 			shadow = 2;
 			colorBackground[] = {0,0,0,0};
 			colorSelect[] = {1, 1, 1, 1};
@@ -754,8 +815,9 @@ class rr_class_customization {
 			y = 0.357 * safezoneH + safezoneY;
 			w = 0.20625 * safezoneW;
 			h = 0.308 * safezoneH;
-			sizeEx = 0.05;
-			rowHeight = 0.1;
+      sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 2)";
+      rowHeight = "1.00 *     (pixelH * pixelGridNoUIScale * 3.5)";
+      wholeHeight = "1.00 *     (pixelH * pixelGridNoUIScale * 3.5)";
 			shadow = 2;
 			colorBackground[] = {0,0,0,0};
 			colorSelect[] = {1, 1, 1, 1};

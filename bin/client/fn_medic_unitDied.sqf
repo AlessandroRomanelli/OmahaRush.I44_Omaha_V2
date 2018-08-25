@@ -10,9 +10,9 @@ scriptName "fn_medic_unitDied";
 #define __filename "fn_medic_unitDied.sqf"
 if (isServer && !hasInterface) exitWith {};
 
-_unit = param[0,objNull,[objNull]];
-_killer = param[1,objNull,[objNull]];
-_assistsInfo = param[2,[],[[]]];
+private _unit = param[0,objNull,[objNull]];
+private _killer = param[1,objNull,[objNull]];
+private _assistsInfo = param[2,[],[[]]];
 
 // Make sure this doesnt get run before the init
 if (isNil "cl_equipClassnames") exitWith {};
@@ -29,10 +29,10 @@ if ((_unit getVariable ["side",civilian]) != playerSide) exitWith {};
 // Are we a medic and do we have the defi perk?
 if (cl_equipClassnames select 2 != "medic") exitWith {};
 
-_time = if (cl_classPerk == "defibrillator") then {0.5} else {1.5};
+private _time = if (cl_classPerk == "defibrillator") then {0.5} else {1.5};
 
 // Revive icon! Yay!
-_actionID = [
+private _actionID = [
 	_unit,
 	"Revive",
 	"\a3\ui_f\data\IGUI\Cfg\holdactions\holdAction_revive_ca.paa",

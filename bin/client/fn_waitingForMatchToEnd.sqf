@@ -15,7 +15,7 @@ if (isServer && !hasInterface) exitWith {};
 60001 cutRsc ["rr_timer", "PLAIN"];
 
 // Wait display text
-((uiNamespace getVariable ["rr_timer", displayNull]) displayCtrl 0) ctrlSetStructuredText parseText format "<t size='2' color='#FFFFFF' shadow='2' align='center'>Waiting for match to end</t>";
+((uiNamespace getVariable ["rr_timer", displayNull]) displayCtrl 0) ctrlSetStructuredText (parseText "<t size='2' color='#FFFFFF' shadow='2' align='center'>Waiting for match to end</t>");
 
 // Wait...
 waitUntil {!(sv_gameStatus in [3,4])};

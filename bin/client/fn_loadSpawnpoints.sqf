@@ -11,7 +11,7 @@ scriptName "fn_loadSpawnpoints";
 if (isServer && !hasInterface) exitWith {};
 
 disableSerialization;
-_d = findDisplay 5000;
+private _d = findDisplay 5000;
 
 // Clear listbox of any spawnpoints
 lbClear (_d displayCtrl 9);
@@ -29,12 +29,12 @@ if (player getVariable "gameSide" == "defenders") then {
 (_d displayCtrl 9) lbSetData [(lbSize (_d displayCtrl 9)) - 1, "HQ"];
 
 // Load squad members
-_index = -1;
+private _index = -1;
 {
 	_index = _index + 1;
 
 	if ((isPlayer _x && _x distance sv_cur_obj < 1500 && alive _x) || (_x == player) || (!isNull (_x getVariable ["assault_beacon_obj", objNUll]))) then {
-		_add = false;
+		private _add = false;
 
 		if (alive _x) then {
 			if (_x != player) then {
@@ -48,7 +48,7 @@ _index = -1;
 			};
 		};
 
-		_beacon = _x getVariable ["assault_beacon_obj", objNull];
+		private _beacon = _x getVariable ["assault_beacon_obj", objNull];
 		if (!isNull _beacon) then {
 			_add = true;
 		};
@@ -56,17 +56,17 @@ _index = -1;
 		if (_add) then {
 			if (!isNull _beacon) then {
 				// Spawn beacon
-				(_d displayCtrl 9) lbAdd (name _x + "'s Beacon");
+				(_d displayCtrl 9) lbAdd ((_x getVariable ["name", "ERROR: No Name"]) + "'s Beacon");
 				(_d displayCtrl 9) lbSetData [(lbSize (_d displayCtrl 9)) - 1, "beacon"];
 				(_d displayCtrl 9) lbSetValue [(lbSize (_d displayCtrl 9)) - 1, _index];
 			} else {
 				// Player
 				if (_x getVariable ["inCombat", false]) then {
-					(_d displayCtrl 9) lbAdd (name _x + " (IN COMBAT)");
+					(_d displayCtrl 9) lbAdd ((_x getVariable ["name", "ERROR: No Name"]) + " (IN COMBAT)");
 					(_d displayCtrl 9) lbSetData [(lbSize (_d displayCtrl 9)) - 1, "inCombat"];
 					(_d displayCtrl 9) lbSetValue [(lbSize (_d displayCtrl 9)) - 1, _index];
 				} else {
-					(_d displayCtrl 9) lbAdd (name _x);
+					(_d displayCtrl 9) lbAdd (_x getVariable ["name", "ERROR: No Name"]);
 					(_d displayCtrl 9) lbSetValue [(lbSize (_d displayCtrl 9)) - 1, _index];
 					(_d displayCtrl 9) lbSetData [(lbSize (_d displayCtrl 9)) - 1, ""];
 				};
@@ -83,7 +83,7 @@ if (lbCurSel (_d displayCtrl 9) == -1) then {
 };
 
 // Get configs of vehicles we can spawn at (PERSISTENT ONES)
-_configs = [];
+private _configs = [];
 if (player getVariable "gameSide" == "defenders") then {
 	_configs append ("true" configClasses (missionConfigFile >> "MapSettings" >> "PersistentVehicles" >> "Defender"));
 	_configs append ("true" configClasses (missionConfigFile >> "MapSettings" >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Vehicles" >> "Defender"));
@@ -93,16 +93,16 @@ if (player getVariable "gameSide" == "defenders") then {
 };
 
 {
-	_pos = getArray(_x >> "positionATL");
-	_class = getText(_x >> "classname");
-	_displayName = getText(_x >> "displayName");
-	_objects = nearestObjects [_pos, [_class], 20];
-	_config = _x;
+	private _pos = getArray(_x >> "positionATL");
+	private _class = getText(_x >> "classname");
+	private _displayName = getText(_x >> "displayName");
+	private _objects = nearestObjects [_pos, [_class], 20];
+	private _config = _x;
 	if (count _objects > 0) then {
 		// Check whether this array of found vehicles actually containers our vehicle
-		_OK = false;
+		private _OK = false;
 		{
-			if ((_x getVariable ["id", ""]) == (configName _config)) then {
+			if ((_x getVariable ["id", ""]) == (configName _config)) exitWith {
 				_OK = true;
 			};
 		} forEach _objects;
