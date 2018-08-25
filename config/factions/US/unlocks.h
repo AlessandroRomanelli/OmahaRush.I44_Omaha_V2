@@ -1,34 +1,26 @@
 faction = "US";
 
-class LIB_M1903A3_Springfield {
-  ammo = "LIB_5Rnd_762x63";
+class LIB_M1_Garand {
+  ammo = "LIB_8Rnd_762x63";
   exp = 0;
   type = "primary";
   roles[] = {"assault", "medic"};
   class attachments {};
 };
 
-class LIB_DELISLE {
-  ammo = "LIB_7Rnd_45ACP";
-  exp = 4000;
-  type = "primary";
-  roles[] = {"assault"};
-  class attachments {};
-};
-
 class LIB_Colt_M1911 {
   ammo = "LIB_7Rnd_45ACP";
-  exp = 6000;
+  exp = 5000;
   type = "secondary";
   roles[] = {"assault", "medic", "engineer", "support"};
   class attachments {};
 };
 
-class LIB_M1_Garand {
-  ammo = "LIB_8Rnd_762x63";
-  exp = 8000;
+class LIB_DELISLE {
+  ammo = "LIB_7Rnd_45ACP";
+  exp = 7500;
   type = "primary";
-  roles[] = {"assault", "medic"};
+  roles[] = {"assault"};
   class attachments {};
 };
 
@@ -58,7 +50,7 @@ class LIB_M1918A2_BAR {
 
 class LIB_M1919A4 {
   ammo = "LIB_50Rnd_762x63";
-  exp = 6000;
+  exp = 7500;
   type = "primary";
   roles[] = {"support"};
   class attachments {};
@@ -82,7 +74,7 @@ class LIB_M3_GreaseGun {
 
 class LIB_M1A1_Thompson {
   ammo = "LIB_30Rnd_45ACP";
-  exp = 6000;
+  exp = 7500;
   type = "primary";
   roles[] = {"engineer"};
   class attachments {};
@@ -96,9 +88,17 @@ class LIB_M1928_Thompson {
   class attachments {};
 };
 
-class LIB_M1903A4_Springfield {
+class LIB_M1903A3_Springfield {
   ammo = "LIB_5Rnd_762x63";
   exp = 0;
+  type = "primary";
+  roles[] = {"recon"};
+  class attachments {};
+};
+
+class LIB_M1903A4_Springfield {
+  ammo = "LIB_5Rnd_762x63";
+  exp = 7500;
   type = "primary";
   roles[] = {"recon"};
   class attachments {};
