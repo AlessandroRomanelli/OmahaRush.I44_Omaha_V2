@@ -11,7 +11,9 @@ scriptName "fn_spawn";
 if (isServer && !hasInterface) exitWith {};
 
 player setVariable ["wasHS", false];
-player setVariable ["unitDmg", 0];
+
+// Set player to safe location
+player setPos cl_safePos;
 
 // Not too fast
 if (diag_tickTime - (missionNamespace getVariable ["cl_spawnmenu_lastStartTick", 0]) < 1) exitWith {};
@@ -52,9 +54,6 @@ if (sv_gameCycle >= ((paramsArray#11) - 1)) then {
 	15 cutRsc ["rr_topRightWarning", "PLAIN"];
 	((uiNamespace getVariable ["rr_topRightWarning", displayNull]) displayCtrl 0) ctrlSetStructuredText parseText "<t size='1.2' color='#FE4629' shadow='2' align='right'>LAST ROUND BEFORE MAP CHANGE</t>"
 };
-
-// Set player to safe location
-player setPos cl_safePos;
 
 cl_inSpawnMenu = true;
 

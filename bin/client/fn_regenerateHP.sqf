@@ -19,7 +19,6 @@ player setVariable ["inCombat",nil,true];
 // Regenerate HP
 while {damage player > 0} do {
 	player setDamage ((damage player) - 0.01);
-	player setVariable ["unitDmg", damage player];
 	sleep 0.2;
 };
 

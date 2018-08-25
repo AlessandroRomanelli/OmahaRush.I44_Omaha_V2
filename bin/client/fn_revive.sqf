@@ -66,7 +66,6 @@ player setUnitLoadout (player getVariable ["wwr_unit_loadout",[]]);
 300 cutRsc ["default","PLAIN"];
 cl_gui_thread = [] spawn client_fnc_startIngameGUI;
 
-player setVariable ["unitDmg", 0];
 player setVariable ["isAlive", true];
 player setVariable ["wasHS", false];
 
