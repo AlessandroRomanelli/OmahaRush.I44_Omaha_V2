@@ -16,7 +16,10 @@ private _before = +cl_equipConfigurations;
 
 // Add exp
 cl_points = cl_points + _toAdd; // Round based exp
-cl_exp = cl_exp + _toAdd;
+private _class = player getVariable ["class", "assault"];
+private _exp = missionNamespace getVariable [format["cl_exp_%1", _class], 0];
+missionNamespace setVariable [format["cl_exp_%1", _class], _exp + _toAdd];
+/* cl_exp = cl_exp + _toAdd; */
 
 // Lets share our stats with the others
 player setVariable ["points",cl_points,true];
