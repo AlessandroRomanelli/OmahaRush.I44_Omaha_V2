@@ -29,7 +29,7 @@ sv_db_connected = false;
 ["Groups initialized"] spawn server_fnc_log;
 
 // Initialize Database Connection
-if (("extDB3" callExtension "9:VERSION") != "") then {
+/* if (("extDB3" callExtension "9:VERSION") != "") then {
 	["Attempting to connect to database"] spawn server_fnc_log;
 	[] spawn server_fnc_db_connect;
 	waitUntil {sv_db_connected};
@@ -38,7 +38,9 @@ if (("extDB3" callExtension "9:VERSION") != "") then {
 	sv_usingDatabase = true;
 } else {
 	sv_usingDatabase = false;
-};
+}; */
+
+sv_usingDatabase = false;
 
 [format ["Connected to database: %1", sv_usingDatabase]] spawn server_fnc_log;
 
