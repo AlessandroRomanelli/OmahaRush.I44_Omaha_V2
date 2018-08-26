@@ -22,7 +22,7 @@ with missionNamespace do {
 		private _string = "";
 		// Begin assembling the record array
 		_newRecord pushBack _serverKey;
-		_newRecord pushBack [cl_total_kills, cl_total_deaths, [cl_exp_assault ,cl_exp_medic ,cl_exp_engineer ,cl_exp_support ,cl_exp_recon], cl_equipConfigurations, cl_equipClassnames];
+		_newRecord pushBack [cl_total_kills, cl_total_deaths, [cl_exp_assault, cl_exp_medic, cl_exp_engineer, cl_exp_support, cl_exp_recon], cl_equipConfigurations, cl_equipClassnames];
 		// Stringify and concatenate stats
 		{_string = _string + (toLower (str _x))} forEach (_newRecord select 1);
 		// Encrypt stats

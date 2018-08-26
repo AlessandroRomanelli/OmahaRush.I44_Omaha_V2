@@ -268,7 +268,6 @@ player addEventHandler ["HandleDamage", {
 				if (_unit getVariable ["isAlive", true] && {_damage > 0} && {_damage < 1}) then {
 					_damage remoteExec ["client_fnc_MPHit", _shooter];
 				};
-				[str _damage] remoteExec ["hint", player_defend_1];
 			} else {
 				_damage = _unit getHit _hitSelection;
 			};

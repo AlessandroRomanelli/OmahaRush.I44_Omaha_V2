@@ -30,10 +30,6 @@ private _countClassPlayers = {
 	[count _sameClassPlayers, _maxClassPlayers, _playerOfClass];
 };
 
-private _supportData = ["support"] call _countClassPlayers;
-private _engineerData = ["engineer"] call _countClassPlayers;
-private _reconData = ["recon"] call _countClassPlayers;
-
 if (!_isRefreshing) then {
 	_l ctrlRemoveAllEventHandlers "LBSelChanged";
 	// Allow listbox selection changes to update our "customize class" button (some classes are not customizeable atm so theres no reason for people to be able to click it)
@@ -101,78 +97,26 @@ if (!_isRefreshing) then {
 
 	lbClear _l;
 
-	if !(_classRestrictionEnabled) then {
+	// Add default classes
+	// Assault
+	_l lbAdd "Assault";
+	_l lbSetData [(lbSize _l) - 1, "assault"];
 
-		// Add default classes
-		// Assault
-		_l lbAdd "Assault";
-		_l lbSetData [(lbSize _l) - 1, "assault"];
+	// Medic
+	_l lbAdd "Medic";
+	_l lbSetData [(lbSize _l) - 1, "medic"];
 
-		// Medic
-		_l lbAdd "Medic";
-		_l lbSetData [(lbSize _l) - 1, "medic"];
+	// Support
+	_l lbAdd "Support";
+	_l lbSetData [(lbSize _l) - 1, "support"];
 
-		// Support
-		_l lbAdd "Support";
-		_l lbSetData [(lbSize _l) - 1, "support"];
+	// Engineer
+	_l lbAdd "Engineer";
+	_l lbSetData [(lbSize _l) - 1, "engineer"];
 
-		// Engineer
-		_l lbAdd "Engineer";
-		_l lbSetData [(lbSize _l) - 1, "engineer"];
-
-		// Recon
-		_l lbAdd "Recon";
-		_l lbSetData [(lbSize _l) - 1, "recon"];
-	} else {
-		// Add default classes
-		// Assault
-		_l lbAdd "Assault";
-		_l lbSetData [(lbSize _l) - 1, "assault"];
-
-		// Medic
-		_l lbAdd "Medic";
-		_l lbSetData [(lbSize _l) - 1, "medic"];
-
-		// Support
-		if (_supportData select 1 isEqualTo -1) then {
-			_l lbAdd "Support";
-		} else {
-			_l lbAdd (format ["Support (%1/%2)", _supportData select 0, _supportData select 1]);
-			if ((_supportData select 0) >= (_supportData select 1) && !(_supportData select 2)) then {
-				_l lbSetColor [(lbSize _l) - 1, [1,0,0,1]];
-			} else {
-				_l lbSetColor [(lbSize _l) - 1, [1, 1, 1, 0.5]];
-			};
-		};
-		_l lbSetData [(lbSize _l) - 1, "support"];
-
-
-		// Engineer
-		if (_engineerData select 1 isEqualTo -1) then {
-			_l lbAdd "Engineer";
-		} else {
-			_l lbAdd (format ["Engineer (%1/%2)", _engineerData select 0, _engineerData select 1]);
-			if ((_engineerData select 0) >= (_engineerData select 1) && !(_engineerData select 2)) then {
-				_l lbSetColor [(lbSize _l) - 1, [1,0,0,1]];
-			} else {
-				_l lbSetColor [(lbSize _l) - 1, [1, 1, 1, 0.5]];
-			};
-		};
-		_l lbSetData [(lbSize _l) - 1, "engineer"];
-
-		// Recon
-		if (_reconData select 1 isEqualTo -1) then {
-			_l lbAdd "Recon";
-		} else {
-			_l lbAdd (format ["Recon (%1/%2)", _reconData select 0, _reconData select 1]);
-			if ((_reconData select 0) >= (_reconData select 1) && !(_reconData select 2)) then {
-				_l lbSetColor [(lbSize _l) - 1, [1,0,0,1]];
-			} else {
-				_l lbSetColor [(lbSize _l) - 1, [1, 1, 1, 0.5]];
-			};
-		};
-		_l lbSetData [(lbSize _l) - 1, "recon"];
-	};
+	// Recon
+	_l lbAdd "Recon";
+	_l lbSetData [(lbSize _l) - 1, "recon"];
 
 	// Get preferred class index from profileNamespace
 	private _i = profileNamespace getVariable ["rr_class_preferredIndex", 0];
@@ -180,6 +124,10 @@ if (!_isRefreshing) then {
 	// Select listbox item
 	_l lbSetCurSel _i;
 } else {
+	private _supportData = ["support"] call _countClassPlayers;
+	private _engineerData = ["engineer"] call _countClassPlayers;
+	private _reconData = ["recon"] call _countClassPlayers;
+
 	if (_classRestrictionEnabled) then {
 		if !(_supportData select 1 isEqualTo -1) then {
 			_l lbSetText [(lbSize _l) - 3, format ["Support (%1/%2)", _supportData select 0, _supportData select 1]];

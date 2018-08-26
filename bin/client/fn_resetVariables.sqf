@@ -292,7 +292,7 @@ if (isNil "rr_iconrenderer_executed") then {
 				30 cutRsc ["rr_restrictedArea", "PLAIN"];
 				private _display = uiNamespace getVariable ["rr_restrictedArea", displayNull];
 				private _fallBackTime = [] call client_fnc_getFallbackTime;
-				private _outOfBoundsTimeout = if (player getVariable ["isFallingBack", false]) then [_fallBackTime, {paramsArray#7}];
+				private _outOfBoundsTimeout = if (player getVariable ["isFallingBack", false]) then [{_fallBackTime}, {paramsArray#7}];
 				if (diag_tickTime - (player getVariable "entryTime") < _outOfBoundsTimeout) then {
 					if (!_isPlayerAttacking && player getVariable "isFallingBack") then {
 						(_display displayCtrl 0) ctrlSetStructuredText parseText "<t size='3.5' color='#FFFFFF' shadow='2' align='center' font='PuristaBold'>FALL BACK</t><br/><t size='2' color='#FFFFFF' shadow='2' align='center'>YOU ARE BEYOND OUR LAST DEFENCE</t>";
