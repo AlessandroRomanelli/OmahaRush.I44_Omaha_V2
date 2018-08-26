@@ -88,11 +88,19 @@ private _assignVariables = {
   private _record = param[0, [], []];
   cl_total_kills = _record select 0;
   cl_total_deaths = _record select 1;
-  cl_exp_assault = (_record select 2) select 0;
-  cl_exp_medic = (_record select 2) select 1;
-  cl_exp_engineer = (_record select 2) select 2;
-  cl_exp_support = (_record select 2) select 3;
-  cl_exp_recon = (_record select 2) select 4;
+  if (count (_record select 2) != 0) then {
+    cl_exp_assault = (_record select 2) select 0;
+    cl_exp_medic = (_record select 2) select 1;
+    cl_exp_engineer = (_record select 2) select 2;
+    cl_exp_support = (_record select 2) select 3;
+    cl_exp_recon = (_record select 2) select 4;
+  } else {
+    cl_exp_assault = 0;
+    cl_exp_medic = 0;
+    cl_exp_engineer =0;
+    cl_exp_support = 0;
+    cl_exp_recon = 0;
+  };
   cl_equipConfigurations = _record select 3;
   cl_equipClassnames = _record select 4;
   cl_statisticsLoaded = true;

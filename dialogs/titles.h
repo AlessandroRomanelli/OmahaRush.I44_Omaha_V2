@@ -988,7 +988,7 @@ class rr_reloadingFlares {
 				h = 0.033 * safezoneH;
 				//sizeEx = 3 * GUI_GRID_H;
 				font = "PuristaBold";
-				sizeEx = "(1.5*(pixelH * pixelGridNoUIScale * 2.9))"
+				sizeEx = "(1.5*(pixelH * pixelGridNoUIScale * 2.9))";
 				shadow = 2;
 			};
 			class healthpoints: RscText

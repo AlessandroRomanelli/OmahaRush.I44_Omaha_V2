@@ -137,6 +137,10 @@ _marker4 setMarkerAlphaLocal 0.4;
 _marker4 setMarkerSizeLocal [0, 0];
 _marker4 setMarkerDirLocal 0;
 
+createMarkerLocal ["respawn_guerrila", [50,0]];
+createMarkerLocal ["respawn_west", [0,50]];
+createMarkerLocal ["respawn_east", [50,50]];
+
 _trigger = createTrigger ["EmptyDetector", [0,0,0], false];
 _trigger setTriggerArea [1, 1, 0, true, -1];
 _trigger setTriggerActivation ["ANYPLAYER", "PRESENT", true];

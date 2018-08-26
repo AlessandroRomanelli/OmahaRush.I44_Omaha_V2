@@ -24,6 +24,8 @@ if (!(_adminRevive) && {!isNull _savior && _pos distance (getPosWorld _savior) >
 	_pos set [1, (_pos select 1)+cos(_dir)*_rdist];
 };
 
+if (cl_inSpawnMenu) exitWith {};
+
 // Make sure the spawn menu script gets cancelled
 cl_revived = true;
 
@@ -37,7 +39,7 @@ player playActionNow "PlayerProne";
 
 // Message
 if (!isNull _savior) then {
-	[format ["You have been revived by %1", _savior getVariable ["name", "ERROR: No Name"]]] spawn client_fnc_displayInfo;
+	[format ["You have been revived by<br/>%1", _savior getVariable ["name", "ERROR: No Name"]]] spawn client_fnc_displayInfo;
 } else {
 	["You have been revived"] spawn client_fnc_displayInfo;
 };

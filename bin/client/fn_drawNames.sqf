@@ -30,7 +30,7 @@ private _id = addMissionEventHandler ["Draw3D", {
         0,
         0,
         0,
-        name _x,
+        _x getVariable ["name", "ERROR: No Name"],
         2,
         0.03,
         'PuristaMedium'

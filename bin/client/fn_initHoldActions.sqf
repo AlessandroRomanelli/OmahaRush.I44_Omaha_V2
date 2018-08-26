@@ -31,7 +31,9 @@ mg_conditionShowOnMyself = {
 	((_currentAmmo + _reserveAmmo) <= 10) && !(player getVariable ["ammo_restored",false])
 };
 private _mg_code = {
-	[player] remoteExec ["client_fnc_restoreAmmo", cl_lastActionTarget];
+	if (!isNull cl_lastActionTarget) then {
+		[player] remoteExec ["client_fnc_restoreAmmo", cl_lastActionTarget];
+	};
 
 	// Pointsssss
 	if (cl_lastActionTarget != player) then {

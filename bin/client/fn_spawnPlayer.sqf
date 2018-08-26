@@ -30,10 +30,14 @@ if (_isClassRestricted) exitWith {};
 
 cl_class = _class;
 private _perkData = [cl_class] call client_fnc_getUsedPerksForClass;
+if ((count _perkData) isEqualTo 0) then {
+	["NO CLASS PERK SELECTED, PLEASE RESELECT ONE AND TRY AGAIN"] spawn client_fnc_displayError;
+};
+
 cl_classPerk = _perkData select 0;
 cl_squadPerk = _perkData select 1;
-
 [] call client_fnc_setSquadPerks;
+
 cl_squadPerks = [] call client_fnc_getSquadPerks;
 
 // Set class

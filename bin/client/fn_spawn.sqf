@@ -10,14 +10,18 @@ scriptName "fn_spawn";
 #define __filename "fn_spawn.sqf"
 if (isServer && !hasInterface) exitWith {};
 
-player setVariable ["wasHS", false];
-
-// Set player to safe location
-player setPos cl_safePos;
 
 // Not too fast
 if (diag_tickTime - (missionNamespace getVariable ["cl_spawnmenu_lastStartTick", 0]) < 1) exitWith {};
 cl_spawnmenu_lastStartTick = diag_tickTime;
+
+cl_inSpawnMenu = true;
+
+// Set player to safe location
+player setPos cl_safePos;
+
+player setVariable ["wasHS", false];
+
 
 // Strip player
 removeUniform player;
@@ -55,7 +59,6 @@ if (sv_gameCycle >= ((paramsArray#11) - 1)) then {
 	((uiNamespace getVariable ["rr_topRightWarning", displayNull]) displayCtrl 0) ctrlSetStructuredText parseText "<t size='1.2' color='#FE4629' shadow='2' align='right'>LAST ROUND BEFORE MAP CHANGE</t>"
 };
 
-cl_inSpawnMenu = true;
 
 //Keeping the role updated
 if (sv_gameCycle % 2 == 0) then {
@@ -391,7 +394,7 @@ disableSerialization;
 if (isNil "TEMPWARNING") then {
 	// TEMPRARY WARNING TODO
 	createDialog "rr_info_box";
-	((findDisplay 10000) displayCtrl 0) ctrlSetStructuredText parseText "<t size='1' color='#FFFFFF' shadow='2' align='left'><t font='PuristaBold'>No.4 WW2 Rush Version</t><br/>0.70.0<br/><br/><t font='PuristaBold'>Changelog</t><br/><a href='https://github.com/AlessandroRomanelli/OmahaRush.I44_Omaha_V2/blob/master/ChangeLog.md'>Learn more</a><br/><br/><t font='PuristaBold'>Official Website</t><br/><a href='http://www.no4commando.com'>Open</a></t>";
+	((findDisplay 10000) displayCtrl 0) ctrlSetStructuredText parseText "<t size='1' color='#FFFFFF' shadow='2' align='left'><t font='PuristaBold'>WWRush Version</t><br/>0.70.0<br/><br/><t font='PuristaBold'>Changelog</t><br/><a href='https://github.com/AlessandroRomanelli/OmahaRush.I44_Omaha_V2/blob/master/ChangeLog.md'>Learn more</a><br/><br/><t font='PuristaBold'>Official Website</t><br/><a href='http://www.no4commando.com'>Open</a></t>";
 	playSound "introSong";
 	TEMPWARNING = true;
 };

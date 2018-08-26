@@ -8,7 +8,6 @@ scriptName "fn_getSectionCenter";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_getSectionCenter.sqf"
-if (isServer && !hasInterface) exitWith {};
 
 private _pos1 = param[0,[],[[]]];
 private _pos2 = param[1,[],[[]]];

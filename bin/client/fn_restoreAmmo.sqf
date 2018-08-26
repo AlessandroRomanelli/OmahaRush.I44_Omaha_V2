@@ -40,10 +40,9 @@ if (_secondary != "") then {
 };
 
 if (cl_classPerk == "grenadier") then {
-	private _currentWeapon = _primary select 0;
 	private _cfgRifleGrenade = (missionConfigFile >> "Soldiers" >> _side >> "Grenade" >> "RifleGrenade");
 	private _rifles = getArray(_cfgRifleGrenade >> "rifles");
-	if (_currentWeapon in _rifles) then {
+	if (_primary in _rifles) then {
 		player addItem (getText(_cfgRifleGrenade >> "rifleGrenade"));
 	};
 	private _grenade = getText(missionConfigFile >> "Soldiers" >> _side >> "Grenade" >> "weapon");

@@ -244,7 +244,7 @@ player addEventHandler ["HandleDamage", {
 		_shooter = _instigator;
 	};
 	//If critical damage to the head kill the victim and reward the shooter with HS bonus
-	if !((side _shooter) isEqualTo (side _unit)) then {
+	if !((_shooter getVariable ["side", sideUnknown]) isEqualTo (_unit getVariable ["side", sideUnknown])) then {
 		if ((_hitSelection in ["head", "face_hub"]) && {_damage >= 0.2} && {_unit getVariable ["isAlive", true]}) then {
 			if (!(_unit getVariable ["wasHS", false])) then {
 				[_unit, true] remoteExec ["client_fnc_kill",_shooter];
@@ -297,7 +297,13 @@ player addEventHandler ["GetInMan", {
 
 		private _sendVehicleKill = {
 			params ["_vehicle", "_killer"];
-			{[_x, false] remoteExec ["client_fnc_kill", _killer];} forEach crew _vehicle;
+			if (!isNull _killer) then {
+				{
+					if (!isNull _x && alive _x) then {
+						[_x, false] remoteExec ["client_fnc_kill", _killer];
+					};
+				} forEach (crew _vehicle);
+			};
 			private _halfTrucks = ["LIB_US_M3_Halftrack", "LIB_SdKfz251", "LIB_SdKfz251_FFV", "LIB_M8_Greyhound", "LIB_SdKfz234_2"];
 			if (_vehicle isKindOf "Tank" && !((typeOf _vehicle) in _halfTrucks)) exitWith {
 				500 remoteExec ["client_fnc_vehicleDisabled", _killer];
@@ -356,7 +362,9 @@ player addEventHandler ["GetInMan", {
 		if (!isNull _shooter) then {
 			_source = _shooter;
 		};
-    0.1 remoteExec ["client_fnc_MPHit", _source];
+		if (!isNull _source) then {
+			0.1 remoteExec ["client_fnc_MPHit", _source];
+		};
 		if (_vehicle getVariable ["disabled", false]) exitWith {};
 		if (count (crew _vehicle) > 0) then {
 			_unit = crew _vehicle select 0;
