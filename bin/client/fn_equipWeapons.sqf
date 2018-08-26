@@ -33,10 +33,10 @@ private _sideLoadout = [] call client_fnc_getCurrentSideLoadout;
 
 // If the player is a medic equip him with medic gear to distinguish from non medics
 if (cl_class isEqualTo "medic") then {
-	private _medic_uniforms = (getArray(missionConfigFile >> "Soldiers" >> _side >> _sideLoadout >> "medics" >> "uniforms"));
-	private _medic_vests = (getArray(missionConfigFile >> "Soldiers" >> _side >> _sideLoadout >> "medics" >> "vests"));
-	private _medic_headgears = (getArray(missionConfigFile >> "Soldiers" >> _side >> _sideLoadout >> "medics" >> "headgears"));
-	private _medic_backpacks = (getArray(missionConfigFile >> "Soldiers" >> _side >> _sideLoadout >> "medics" >> "backpacks"));
+	private _medic_uniforms = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "medics" >> "uniforms"));
+	private _medic_vests = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "medics" >> "vests"));
+	private _medic_headgears = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "medics" >> "headgears"));
+	private _medic_backpacks = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "medics" >> "backpacks"));
 
 	private _currentLoadout = getUnitLoadout player;
 	private _newLoadout = +_currentLoadout;
@@ -121,7 +121,7 @@ if (_primary != "") then {
 		if ("ammo" in cl_squadPerks) then {
 			player addMagazines [_primaryAmmo, 6];
 		} else {
-			player addMagazines [_primaryAmmo, 3];
+			player addMagazines [_primaryAmmo, 4];
 		};
 	};
 	// Give weapon
