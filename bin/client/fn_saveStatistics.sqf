@@ -29,6 +29,7 @@ with missionNamespace do {
 			};
 		} forEach ["cl_total_kills", "cl_total_deaths", "cl_exp_assault", "cl_exp_medic", "cl_exp_engineer", "cl_exp_support", "cl_exp_recon", "cl_equipConfigurations", "cl_equipClassnames"];
 		if (_validData) then {
+			diag_log "DEBUG: Player statistics successfully validated";
 			_newRecord pushBack [cl_total_kills, cl_total_deaths, [cl_exp_assault, cl_exp_medic, cl_exp_engineer, cl_exp_support, cl_exp_recon], cl_equipConfigurations, cl_equipClassnames];
 		} else {
 			diag_log "DEBUG: (ERROR) One of the player statistics was not set, resetting to previous value";
@@ -36,7 +37,7 @@ with missionNamespace do {
 			_newRecord pushBack (_record select 1);
 		};
 		// Stringify and concatenate stats
-		{_string = _string + (toLower (str _x))} forEach (_newRecord select 1);
+		_string = str (_newRecord select 1);
 		// Encrypt stats
 		_string = [1, "rc4", _string, _serverKey] call client_fnc_encryptData;
 		// Push the hash in the record
