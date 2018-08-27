@@ -9,7 +9,7 @@ scriptName "fn_saveStatistics";
 #define __filename "fn_saveStatistics.sqf"
 
 if (isServer && !hasInterface) exitWith {};
-saveProfileNamespace;
+/* saveProfileNamespace; */
 
 
 // SAVE!!
@@ -22,7 +22,19 @@ with missionNamespace do {
 		private _string = "";
 		// Begin assembling the record array
 		_newRecord pushBack _serverKey;
-		_newRecord pushBack [cl_total_kills, cl_total_deaths, [cl_exp_assault, cl_exp_medic, cl_exp_engineer, cl_exp_support, cl_exp_recon], cl_equipConfigurations, cl_equipClassnames];
+		private _validData = true;
+		{
+			if (isNil _x) then {
+				_validData = false;
+			};
+		} forEach ["cl_total_kills", "cl_total_deaths", "cl_exp_assault", "cl_exp_medic", "cl_exp_engineer", "cl_exp_support", "cl_exp_recon", "cl_equipConfigurations", "cl_equipClassnames"];
+		if (_validData) then {
+			_newRecord pushBack [cl_total_kills, cl_total_deaths, [cl_exp_assault, cl_exp_medic, cl_exp_engineer, cl_exp_support, cl_exp_recon], cl_equipConfigurations, cl_equipClassnames];
+		} else {
+			diag_log "DEBUG: (ERROR) One of the player statistics was not set, resetting to previous value";
+			private _record = profileNamespace getVariable ["wwr_records", []];
+			_newRecord pushBack (_record select 1);
+		};
 		// Stringify and concatenate stats
 		{_string = _string + (toLower (str _x))} forEach (_newRecord select 1);
 		// Encrypt stats
