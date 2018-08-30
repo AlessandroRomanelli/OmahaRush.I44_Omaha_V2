@@ -37,9 +37,8 @@ if (!_isRefreshing) then {
 		private _classSelected = (_this select 0) lbData (_this select 1);
 		private _weaponAllowedClasses = getArray(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> (cl_equipClassNames select 0) >> "roles");
 		if !(_classSelected in _weaponAllowedClasses) then {
-			private _faction = getText(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> "faction");
-			private _weapon = profileNamespace getVariable [format["rr_prefPWeapon_%1_%2", _classSelected, _faction], ""];
-			(_d displayCtrl 3) lbSetCurSel (profileNamespace getVariable [format["rr_prefPWeaponIdx_%1_%2", _classSelected, _faction], 0]);
+			private _weapon = profileNamespace getVariable [format["rr_prefPWeapon_%1_%2", _classSelected, cl_faction], ""];
+			(_d displayCtrl 3) lbSetCurSel (profileNamespace getVariable [format["rr_prefPWeaponIdx_%1_%2", _classSelected, cl_faction], 0]);
 			cl_equipClassnames set [0, _weapon];
 		};
 

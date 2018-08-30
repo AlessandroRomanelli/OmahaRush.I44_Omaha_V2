@@ -29,23 +29,23 @@ cl_soundLevel = 1;
 			// Bring up ui for timer
 			60001 cutRsc ["rr_scoreboard", "PLAIN"];
 
+			private _d = (uiNamespace getVariable ["rr_scoreboard", displayNull]);
+
 			private _allInfoAttackers = [];
 			private _allInfoDefenders = [];
-			private _nAttacker = 0;
-			private _nDefender = 0;
 
 			// Fill data from objects
 			_h = true;
 			{
 				private _name = (_x getVariable ["name", "ERROR: No Name"]);
-				private _classInitial = [_x getVariable ["class", "medic"]] call {
+				private _classInitial = [_x getVariable ["class", ""]] call {
 					private _class = param [0, "", [""]];
 					if (_class isEqualTo "medic") exitWith {"M"};
 					if (_class isEqualTo "assault") exitWith {"A"};
 					if (_class isEqualTo "engineer") exitWith {"E"};
 					if (_class isEqualTo "support") exitWith {"S"};
 					if (_class isEqualTo "recon") exitWith {"R"};
-					"X";
+					"";
 				};
 				if ((_x getVariable "gameSide") == "defenders") then {
 					_allInfoDefenders pushBack [_x getVariable ["points", 0], _x getVariable ["kills", 0], _x getVariable ["deaths", 0], _name, _classInitial];
@@ -57,24 +57,28 @@ cl_soundLevel = 1;
 			// Sort data
 			_allInfoAttackers sort false;
 			_allInfoDefenders sort false;
+
+			private _data = if ((player getVariable ["gameSide", ""]) isEqualTo "attackers") then {
+				[" ATTACKERS (%1)", " DEFENDERS (%1)", _allInfoAttackers, _allInfoDefenders]
+			} else {
+				[" DEFENDERS (%1)", "ATTACKERS (%1)", _allInfoDefenders, _allInfoAttackers]
+			};
 			// Get controls
-			private _title = ((uiNamespace getVariable ["rr_scoreboard", displayNull]) displayCtrl 0);
-			_title ctrlSetStructuredText (parseText "<t shadow='2'>SCOREBOARD</t>");
-			private _listAttackers = ((uiNamespace getVariable ["rr_scoreboard", displayNull]) displayCtrl 2);
-			private _listDefenders = ((uiNamespace getVariable ["rr_scoreboard", displayNull]) displayCtrl 1);
-			_listDefenders lnbAddRow ["","NAME","K","D","SCORE",""];
-			_listAttackers lnbAddRow ["","NAME","K","D","SCORE",""];
+			(_d displayCtrl 0) ctrlSetStructuredText (parseText "<t shadow='2'>SCOREBOARD</t>");
+			(_d displayCtrl 1001) ctrlSetStructuredText (parseText (format[_data select 0, {(_x getVariable ["gameSide", ""]) isEqualTo (player getVariable ["gameSide", ""])} count allPlayers]));
+			(_d displayCtrl 1002) ctrlSetStructuredText (parseText (format[_data select 1, {!((_x getVariable ["gameSide", ""]) isEqualTo (player getVariable ["gameSide", ""]))} count allPlayers]));
+			private _listFriendlies = (_d displayCtrl 1);
+			private _listEnemies = (_d displayCtrl 2);
+			{_x lnbAddRow ["","NAME","K","D","SCORE",""]} forEach [_listFriendlies, _listEnemies];
 
 			// Fill scoreboards
 			{
-			_nDefender = _nDefender + 1;
 			/* _listDefenders lnbAddRow [str _nDefender, (_x select 3), str (_x select 1), str (_x select 2), str (_x select 0)]; */
-			_listDefenders lnbAddRow [(_x select 4), (_x select 3), str (_x select 1), str (_x select 2), str (_x select 0)];
-			} forEach _allInfoDefenders;
+			_listFriendlies lnbAddRow [(_x select 4), (_x select 3), str (_x select 1), str (_x select 2), str (_x select 0)];
+			} forEach (_data select 2);
 			{
-				_nAttacker = _nAttacker + 1;
-				_listAttackers lnbAddRow [(_x select 4), (_x select 3), str (_x select 1), str (_x select 2), str (_x select 0)];
-			} forEach _allInfoAttackers;
+				_listEnemies lnbAddRow [(_x select 4), (_x select 3), str (_x select 1), str (_x select 2), str (_x select 0)];
+			} forEach (_data select 3);
 		};
 	};
 

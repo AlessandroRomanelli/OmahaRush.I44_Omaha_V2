@@ -21,8 +21,8 @@ private _listboxClassPerks = _d displayCtrl 0;
 private _listboxSquadPerks = _d displayCtrl 1;
 /* private _confirmButton = _d displayCtrl 50; */
 
-_listboxClassPerks lbAdd "No perk";
-_listboxClassPerks lbSetData [(lbSize _listboxClassPerks) - 1, ""];
+/* _listboxClassPerks lbAdd "No perk";
+_listboxClassPerks lbSetData [(lbSize _listboxClassPerks) - 1, ""]; */
 _listboxSquadPerks lbAdd "No perk";
 _listboxSquadPerks lbSetData [(lbSize _listboxSquadPerks) - 1, ""];
 
@@ -66,7 +66,9 @@ if ((lbCurSel _listboxClassPerks) == -1 && (lbSize _listboxClassPerks) > 0) then
 	_listboxSquadPerks lbSetData [(lbSize _listboxSquadPerks) - 1, configName _x];
 	_listboxSquadPerks lbSetTooltip [(lbSize _listboxSquadPerks) - 1, getText(_x >> "description")];
 	if (_picture != "") then {_listboxSquadPerks lbSetPicture [(lbSize _listboxSquadPerks) - 1, _picture]};
-
+	if ((configName _x) in (cl_squadPerks - [cl_squadPerk])) then {
+		_listboxSquadPerks lbSetColor [(lbSize _listboxSquadPerks) -1, [0.96,0.65,0.12,0.8]];
+	};
 	// If this is our active perk, select this entry
 	if (configName _x == (_perkNames select 1)) then {
 		_listboxSquadPerks lbSetCurSel ((lbSize _listboxSquadPerks) - 1);

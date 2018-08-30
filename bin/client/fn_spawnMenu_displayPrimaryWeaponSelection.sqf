@@ -71,8 +71,7 @@ private _primaryWeapons = [];
 	};
 } forEach _primaryWeapons;
 
-private _faction = getText(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> "faction");
-(_d displayCtrl 3) lbSetCurSel (profileNamespace getVariable [format["rr_prefPWeaponIdx_%1_%2", cl_class, _faction], 0]);
+(_d displayCtrl 3) lbSetCurSel (profileNamespace getVariable [format["rr_prefPWeaponIdx_%1_%2", cl_class, cl_faction], 0]);
 
 // Give control
 (_d displayCtrl 3) ctrlAddEventHandler ["LBSelChanged", {
@@ -80,9 +79,8 @@ private _faction = getText(missionConfigFile >> "Unlocks" >> player getVariable 
 	_d = findDisplay 5000;
 	private _idx = lbCurSel (_d displayCtrl 3);
 	cl_equipClassnames set [0, (_d displayCtrl 3) lbData _idx];
-	_faction = getText(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> "faction");
-	profileNamespace setVariable [format["rr_prefPWeaponIdx_%1_%2", cl_class, _faction], _idx];
-	profileNamespace setVariable [format["rr_prefPWeapon_%1_%2", cl_class, _faction], (cl_equipClassNames select 0)];
+	profileNamespace setVariable [format["rr_prefPWeaponIdx_%1_%2", cl_class, cl_faction], _idx];
+	profileNamespace setVariable [format["rr_prefPWeapon_%1_%2", cl_class, cl_faction], (cl_equipClassNames select 0)];
 	// Populate the structured texts
 	[] spawn client_fnc_populateSpawnMenu;
 }];

@@ -18,11 +18,11 @@ mg_conditionShowOnMyself = {
 	private _reserveAmmo = 0;
 
 	{
-		if ((_x select 0) == (currentMagazine player) AND (_x select 2)) then
+		if ((_x select 0) == (currentMagazine player) && (_x select 2)) then
 		{
 			_currentAmmo = (_x select 1);
 		};
-		if ((_x select 0) == (currentMagazine player) AND !(_x select 2)) then
+		if ((_x select 0) == (currentMagazine player) && !(_x select 2)) then
 		{
 			_reserveAmmo = _reserveAmmo + (_x select 1);
 		};
@@ -59,14 +59,13 @@ private _mg_code = {
 
 diag_log "Setting up handlers... 1";
 
-private ["_id"];
 // Ammunition for myself
-_id = [
+private _id = [
 /* 0 object */							player,
 /* 1 action title */					"Replenish Own Ammunition",
 /* 2 idle icon */						"pictures\support.paa",
 /* 3 progress icon */					"pictures\support.paa",
-/* 4 condition to show */				"cl_classPerk == 'ammo' && [] call mg_conditionShowOnMyself",
+/* 4 condition to show */				"(cl_classPerk == 'ammo' || ((typeOf cursorTarget) isEqualTo 'LIB_AmmoCrates_NoInteractive_Large')) && [] call mg_conditionShowOnMyself ",
 /* 5 condition for action */			"true",
 /* 6 code executed on start */			{cl_lastActionTarget = player;},
 /* 7 code executed per tick */			{},
@@ -83,7 +82,7 @@ cl_actionIDs pushBack _id;
 diag_log "Setting up handlers... 2";
 
 // Ammunition for others
-_id = [
+private _id = [
 /* 0 object */							player,
 /* 1 action title */					"Replenish Ammunition",
 /* 2 idle icon */						"pictures\support.paa",
@@ -126,7 +125,7 @@ if (cl_classPerk == "saboteur") then {_duration = 0.75};
 diag_log "Setting up handlers... 4";
 
 // Add action to current objective
-_id = [
+private _id = [
 /* 0 object */							player,
 /* 1 action title */					_text,
 /* 2 idle icon */						"\a3\ui_f\data\IGUI\Cfg\simpleTasks\types\upload_ca.paa",
@@ -187,7 +186,7 @@ private _completedEngineer = {
 
 diag_log "Setting up handlers... 6";
 
-_id = [
+private _id = [
 /* 0 object */							player,
 /* 1 action title */					"Replenish Vehicle Ammunition",
 /* 2 idle icon */						"pictures\support.paa",
@@ -209,7 +208,7 @@ cl_actionIDs pushBack _id;
 diag_log "Setting up handlers... 7";
 
 // Engineer repair option
-_id = [
+private _id = [
 	player,
 	"Repair Vehicle",
 	"pictures\engineer.paa",

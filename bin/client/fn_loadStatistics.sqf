@@ -15,7 +15,7 @@ private _serverKey = getText(missionConfigFile >> "GeneralConfig" >> "serverKey"
 // Create a new entry in the player record
 private _createNewRecord = {
   // Default data [Key, [Stats], Hash]
-  private _data = [_serverKey, [0,0,[0,0,0,0,0],[],["","",""]]];
+  private _data = [_serverKey, [0,0,[["GER",0,0,0,0,0],["US",0,0,0,0,0],["SOV",0,0,0,0,0]],[],["","",""]]];
   private _string = str (_data select 1);
   // Encrypt stats
   _string = [1, "rc4", _string, _serverKey] call client_fnc_encryptData;
@@ -91,14 +91,18 @@ private _searchPlayerRecords = {
 // Assigns the selected record to the player's global variables
 private _assignVariables = {
   private _record = param[0, [], []];
+  cl_currentRecord = _record;
   cl_total_kills = _record select 0;
   cl_total_deaths = _record select 1;
-  if (count (_record select 2) != 0) then {
-    cl_exp_assault = (_record select 2) select 0;
-    cl_exp_medic = (_record select 2) select 1;
-    cl_exp_engineer = (_record select 2) select 2;
-    cl_exp_support = (_record select 2) select 3;
-    cl_exp_recon = (_record select 2) select 4;
+  cl_faction = getText(missionConfigFile >> "Unlocks" >> player getVariable ["gameSide", "defenders"] >> "faction");
+  private _globalXPs = _record select 2;
+  private _factionIdx = _globalXPs findIf {(_x select 0) isEqualTo cl_faction};
+  if !(_factionIdx isEqualTo -1) then {
+    cl_exp_assault = ((_globalXPs) select _factionIdx) select 1;
+    cl_exp_medic = ((_globalXPs) select _factionIdx) select 2;
+    cl_exp_engineer = ((_globalXPs) select _factionIdx) select 3;
+    cl_exp_support = ((_globalXPs) select _factionIdx) select 4;
+    cl_exp_recon = ((_globalXPs) select _factionIdx) select 5;
   } else {
     cl_exp_assault = 0;
     cl_exp_medic = 0;
@@ -139,7 +143,7 @@ private _removeOldRecord = {
   // Check if we are resetting
   private _toBeReset = !(profileNamespace getVariable ["wwr_toBeReset", ""] isEqualTo "v070");
   if (_toBeReset) then {
-    profileNamespace setVariable ["wwr_toBeReset", "v070"];
+    profileNamespace setVariable ["wwr_toBeReset", "v075"];
     [] call _removeOldRecord;
   };
 

@@ -53,6 +53,23 @@ waitUntil {sv_serverReady && !isNil "sv_usingDatabase"};
 
 [] call client_fnc_initGlobalVars;
 
+// Used for determining if a player is on our side since side _x returns civilian if someone is dead
+player setVariable ["side", playerSide, true];
+
+if (sv_gameCycle % 2 == 0) then {
+  if (playerSide == WEST) then {
+    player setVariable ["gameSide", "defenders", true];
+  } else {
+    player setVariable ["gameSide", "attackers", true];
+  };
+} else {
+  if (playerSide == WEST) then {
+    player setVariable ["gameSide", "attackers", true];
+  } else {
+    player setVariable ["gameSide", "defenders", true];
+  };
+};
+
 cl_statisticsLoaded = false;
 [] call client_fnc_loadStatistics;
 waitUntil {cl_statisticsLoaded};
@@ -76,23 +93,6 @@ cl_viewDistance = viewDistance;
 
 // Give onEachFrame data
 [] spawn client_fnc_onEachFramePreparation;
-
-// Used for determining if a player is on our side since side _x returns civilian if someone is dead
-player setVariable ["side", playerSide, true];
-
-if (sv_gameCycle % 2 == 0) then {
-  if (playerSide == WEST) then {
-    player setVariable ["gameSide", "defenders", true];
-  } else {
-    player setVariable ["gameSide", "attackers", true];
-  };
-} else {
-  if (playerSide == WEST) then {
-    player setVariable ["gameSide", "attackers", true];
-  } else {
-    player setVariable ["gameSide", "defenders", true];
-  };
-};
 
 // Init group client
 ["InitializePlayer", [player]] call BIS_fnc_dynamicGroups;

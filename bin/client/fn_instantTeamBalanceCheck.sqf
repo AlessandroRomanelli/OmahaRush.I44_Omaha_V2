@@ -18,8 +18,8 @@ if (serverTime < 300) exitWith {};
 
 // Run side checks
 private _unitsTeam1 = {(_x getVariable ["side", sideUnknown]) isEqualTo WEST} count allPlayers;
-private _unitsTeam2 = (count allPlayers) - _unitsTeam1;
-diag_log format["DEBUG: TeamBalanceCheck.. TeamBLUE: %1, TeamRED: %2, Total: %3", _unitsTeam1, _unitsTeam2, count allPlayers];
+private _unitsTeam2 = {(_x getVariable ["side", sideUnknown]) isEqualTo independent} count allPlayers;
+diag_log format["DEBUG: TeamBalanceCheck.. TeamBLUE: %1, TeamRED: %2", _unitsTeam1, _unitsTeam2];
 
 private _diff = abs(_unitsTeam1 - _unitsTeam2);
 private _sideWithMoreUnits = if (_unitsTeam2 <= _unitsTeam1) then {WEST} else {independent};

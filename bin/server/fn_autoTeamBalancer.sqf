@@ -32,7 +32,7 @@ while {sv_gameStatus == 2} do {
 	sleep 60;
 
 	private _unitsTeam1 = {(_x getVariable ["side", sideUnknown]) isEqualTo WEST} count allPlayers;
-	private _unitsTeam2 = (count allPlayers) - _unitsTeam1;
+	private _unitsTeam2 = {(_x getVariable ["side", sideUnknown]) isEqualTo independent} count allPlayers;;
 
 	private _diff = abs(_unitsTeam1 - _unitsTeam2);
 	private _maxDiff = paramsArray#14;
