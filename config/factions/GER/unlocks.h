@@ -1,10 +1,10 @@
 faction = "GER";
 
-class LIB_G3340 {
-  ammo = "LIB_5Rnd_792x57";
+class LIB_G41 {
+  ammo = "LIB_10Rnd_792x57_clip";
   exp = 0;
   type = "primary";
-  roles[] = {"medic"};
+  roles[] = {"assault", "medic"};
   class attachments {};
 };
 
@@ -16,14 +16,6 @@ class LIB_K98 {
   class attachments {};
 };
 
-class LIB_K98_Late {
-  ammo = "LIB_5Rnd_792x57";
-  exp = 3000;
-  type = "primary";
-  roles[] = {"assault", "medic"};
-  class attachments {};
-};
-
 class LIB_P38 {
   ammo = "LIB_8Rnd_9x19";
   exp = 5000;
@@ -32,17 +24,25 @@ class LIB_P38 {
   class attachments {};
 };
 
-class LIB_G41 {
-  ammo = "LIB_10Rnd_792x57_clip";
+class LIB_G3340 {
+  ammo = "LIB_5Rnd_792x57";
   exp = 7500;
   type = "primary";
-  roles[] = {"medic"};
+  roles[] = {"assault","medic"};
+  class attachments {};
+};
+
+class LIB_K98_Late {
+  ammo = "LIB_5Rnd_792x57";
+  exp = 10000;
+  type = "primary";
+  roles[] = {"assault", "medic"};
   class attachments {};
 };
 
 class LIB_G43 {
   ammo = "LIB_10Rnd_792x57";
-  exp = 7500;
+  exp = 12500;
   type = "primary";
   roles[] = {"assault"};
   class attachments {};
@@ -106,7 +106,7 @@ class LIB_MP44 {
 
 class LIB_K98ZF39 {
   ammo = "LIB_5Rnd_792x57";
-  exp = 7500;
+  exp = 10000;
   type = "primary";
   roles[] = {"recon"};
   class attachments {};

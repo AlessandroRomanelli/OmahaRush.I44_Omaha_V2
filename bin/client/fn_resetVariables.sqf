@@ -146,7 +146,20 @@ if (isNil "rr_iconrenderer_executed") then {
 
 		private _pos = sv_cur_obj getVariable "positionAGL";
 
-		private _alpha = 1 - ((((player getRelDir _pos) - 180)/180)^30);
+		private _alpha = [_pos] call {
+			private _pos = param [0, [], [[]]];
+			private _relDir = player getRelDir _pos;
+			if (_relDir < 10) exitWith {
+				0.25 + (3*_relDir/40)
+			};
+			if (_relDir > 10 && _relDir < 350) exitWith {
+				1
+			};
+			if (_relDir > 350) exitWith {
+				1 - (3/40*_relDir) + 26.25
+			};
+		};
+		/* private _alpha = 1 - ((((player getRelDir _pos) - 180)/180)^30); */
 
 		if ((sv_cur_obj getVariable ["status", -1]) isEqualTo 1) then {
 			_alpha = 2/3 + (1/3*cos(100*diag_tickTime*pi));
@@ -166,6 +179,15 @@ if (isNil "rr_iconrenderer_executed") then {
 				drawIcon3D [MISSION_ROOT+"pictures\objective_attacker.paa",[1,1,1,_alpha],_pos,1.5,1.5,0,format["Attack (%1m)", round(player distance sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
 			};
 		};
+
+		private _ammoBoxes = (getPos player) nearObjects ["LIB_AmmoCrates_NoInteractive_Large", 7];
+		{
+			private _pos = getPosASL _x;
+			_pos set [2, (_pos select 2) + 0.5];
+			private _distance = player distance _x;
+			private _alpha = if (_distance < 5) then {1} else {1-(1/2*_distance)+2.5};
+			drawIcon3D [MISSION_ROOT+"pictures\support.paa", [1,1,1,_alpha], ASLtoAGL _pos, 1.5, 1.5, 0, format["Rearm (%1m)", round _distance], 2, 0.04, "PuristaLight", "center", true];
+		} forEach _ammoBoxes;
 
 		// Squad icons
 		{

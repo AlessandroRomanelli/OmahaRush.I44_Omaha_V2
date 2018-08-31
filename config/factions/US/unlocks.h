@@ -20,7 +20,7 @@ class LIB_DELISLE {
   ammo = "LIB_7Rnd_45ACP";
   exp = 7500;
   type = "primary";
-  roles[] = {"assault"};
+  roles[] = {"assault", "medic"};
   class attachments {};
 };
 
