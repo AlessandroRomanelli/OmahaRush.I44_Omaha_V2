@@ -25,7 +25,8 @@ cl_onEachFrame_squad_beacons = [];
 cl_onEachFrame_team_members = [];
 cl_onEachFrame_team_reviveable = [];
 
-while {true} do {
+removeMissionEventHandler ["EachFrame", cl_onEachFramePreparationID];
+cl_onEachFramePreparationID = addMissionEventHandler["EachFrame", {
 	// Temp vars
 	private _squad_members = [];
 	private _squad_beacons = [];
@@ -82,9 +83,9 @@ while {true} do {
 	// Medics
 	if (cl_class == "medic") then {
 		{
-			if (alive player && _x distance player < 25) then {
+			if (alive player && _x distance player < 35) then {
 				if (_x getVariable ["side", sideUnknown] == playerSide) then {
-					_toBeRevived pushBack [_x, format["%1pictures\revive.paa",MISSION_ROOT]];
+					_toBeRevived pushBack _x;
 				};
 			};
 		} forEach AllDeadMen;
@@ -95,4 +96,4 @@ while {true} do {
 	cl_onEachFrame_squad_beacons = _squad_beacons;
 	cl_onEachFrame_team_members = _team_members;
 	cl_onEachFrame_team_reviveable = _toBeRevived;
-};
+}];

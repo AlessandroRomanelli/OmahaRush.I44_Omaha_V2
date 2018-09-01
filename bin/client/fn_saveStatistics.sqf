@@ -9,99 +9,47 @@ scriptName "fn_saveStatistics";
 #define __filename "fn_saveStatistics.sqf"
 
 if (isServer && !hasInterface) exitWith {};
-/* saveProfileNamespace; */
-
 
 // SAVE!!
 with missionNamespace do {
-	// If server is not using a database
-	/* if (!sv_usingDatabase) exitWith { */
-		private ["_newRecord", "_serverKey", "_records", "_string", "_record", "_factionXPidx", "_validData", "_stats"];
-		_newRecord = [];
-		_serverKey = getText(missionConfigFile >> "GeneralConfig" >> "serverKey");
-		_records = profileNamespace getVariable ["wwr_records", []];
-		_string = "";
-
-		// Fetch the currently loaded record
-		_record = cl_currentRecord;
-		_factionXPidx = (_record select 2) findIf {(_x select 0) isEqualTo cl_faction};
-		_validData = true;
-		{
-			if (isNil _x) then {
-				_validData = false;
-			};
-		} forEach ["cl_total_kills", "cl_total_deaths", "cl_exp_assault", "cl_exp_medic", "cl_exp_engineer", "cl_exp_support", "cl_exp_recon", "cl_equipConfigurations", "cl_equipClassnames"];
-		if (_validData) then {
-			(_record select 2) set [_factionXPidx, [cl_faction, cl_exp_assault, cl_exp_medic, cl_exp_engineer, cl_exp_support, cl_exp_recon]];
-			_stats = [cl_total_kills, cl_total_deaths, (_record select 2), cl_equipConfigurations, cl_equipClassnames];
+	private ["_newRecord", "_serverKey", "_records", "_string", "_record", "_factionXPidx", "_validData", "_stats"];
+	_newRecord = [];
+	_serverKey = getText(missionConfigFile >> "GeneralConfig" >> "serverKey");
+	_records = profileNamespace getVariable ["wwr_records", []];
+	_string = "";
+	// Fetch the currently loaded record
+	_record = cl_currentRecord;
+	_factionXPidx = (_record select 2) findIf {(_x select 0) isEqualTo cl_faction};
+	_validData = true;
+	{
+		if (isNil _x) then {
+			_validData = false;
 		};
+	} forEach ["cl_total_kills", "cl_total_deaths", "cl_exp_assault", "cl_exp_medic", "cl_exp_engineer", "cl_exp_support", "cl_exp_recon", "cl_equipConfigurations", "cl_equipClassnames"];
+	if (_validData) then {
+		(_record select 2) set [_factionXPidx, [cl_faction, cl_exp_assault, cl_exp_medic, cl_exp_engineer, cl_exp_support, cl_exp_recon]];
+		_stats = [cl_total_kills, cl_total_deaths, (_record select 2), cl_equipConfigurations, cl_equipClassnames];
+	};
 
-		_newRecord pushBack _serverKey;
-		_newRecord pushBack _stats;
-		_string = str (_newRecord select 1);
-		_string = [1, "rc4", _string, _serverKey] call client_fnc_encryptData;
-		_newRecord pushBack _string;
+	_newRecord pushBack _serverKey;
+	_newRecord pushBack _stats;
+	_string = str (_newRecord select 1);
+	_string = [1, "rc4", _string, _serverKey] call client_fnc_encryptData;
+	_newRecord pushBack _string;
 
-		private _oldRecordIdx = _records findIf {(_x select 0) isEqualTo _serverKey};
-		if !(_oldRecordIdx isEqualTo -1) then {
-			// Overwrite it
-			_records set [_oldRecordIdx, _newRecord];
+	private _oldRecordIdx = _records findIf {(_x select 0) isEqualTo _serverKey};
+	if !(_oldRecordIdx isEqualTo -1) then {
+		// Overwrite it
+		_records set [_oldRecordIdx, _newRecord];
+	} else {
+		if ((count _records) isEqualTo 0) then {
+			_records = [_newRecord];
 		} else {
-			if ((count _records) isEqualTo 0) then {
-				_records = [_newRecord];
-			} else {
-				_records pushBack _newRecord;
-			};
+			_records pushBack _newRecord;
 		};
-		profileNamespace setVariable ["wwr_records", _records];
-		diag_log format["Saved entry for key: %1, with the following content: %2", _serverKey, _newRecord];
-		diag_log format["New records entry is: %1", _records];
-		/* // Begin assembling the record array
-		_newRecord pushBack _serverKey;
-		private _validData = true;
-		{
-			if (isNil _x) then {
-				_validData = false;
-			};
-		} forEach ["cl_total_kills", "cl_total_deaths", "cl_exp_assault", "cl_exp_medic", "cl_exp_engineer", "cl_exp_support", "cl_exp_recon", "cl_equipConfigurations", "cl_equipClassnames"];
-		if (_validData) then {
-			diag_log "DEBUG: Player statistics successfully validated";
-			_newRecord pushBack [cl_total_kills, cl_total_deaths, [cl_exp_assault, cl_exp_medic, cl_exp_engineer, cl_exp_support, cl_exp_recon], cl_equipConfigurations, cl_equipClassnames];
-		} else {
-			diag_log "DEBUG: (ERROR) One of the player statistics was not set, resetting to previous value";
-			private _record = _records select (_records findIf {(_x select 0) isEqualTo _serverKey});
-			_newRecord pushBack (_record select 1);
-		};
-		// Stringify and concatenate stats
-		_string = str (_newRecord select 1);
-		// Encrypt stats
-		_string = [1, "rc4", _string, _serverKey] call client_fnc_encryptData;
-		// Push the hash in the record
-		_newRecord pushBack _string;
-		// Get the index of the old record with the current serverKey
-		private _oldRecordIdx = _records findIf {(_x select 0) isEqualTo _serverKey};
-		// If the record exists
-		if !(_oldRecordIdx isEqualTo -1) then {
-			// Overwrite it
-			_records set [_oldRecordIdx, _newRecord];
-		} else {
-			if ((count _records) isEqualTo 0) then {
-				_records = [_newRecord];
-			} else {
-				_records pushBack _newRecord;
-			};
-		};
-		profileNamespace setVariable ["wwr_records", _records];
-		diag_log format["Saved entry for key: %1, with the following content: %2", _serverKey, _newRecord];
-		diag_log format["New records entry is: %1", _records]; */
-		saveProfileNamespace;
-	/* }; */
-
-	/* [player, [
-		cl_total_kills,
-		cl_total_deaths,
-		cl_equipConfigurations,
-		cl_equipClassnames,
-		cl_exp
-	]] remoteExec ["server_fnc_db_setPlayer", 2]; */
+	};
+	profileNamespace setVariable ["wwr_records", _records];
+	diag_log format["Saved entry for key: %1, with the following content: %2", _serverKey, _newRecord];
+	diag_log format["New records entry is: %1", _records];
+	saveProfileNamespace;
 };

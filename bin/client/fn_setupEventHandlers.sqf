@@ -27,8 +27,11 @@ player removeAllEventHandlers "HandleDamage";
 cl_groupSize = -1;
 cl_playAreaPos = [0,0,0];
 cl_obj_status = -1;
-addMissionEventHandler["EachFrame", {
-		private _data = count (units group player);
+cl_playerSwimming = !(isTouchingGround player) && (surfaceIsWater (getPosATL player));
+removeMissionEventHandler["EachFrame", cl_eventObserverID];
+cl_eventObserverID = addMissionEventHandler["EachFrame", {
+		private ["_data"];
+		_data = count (units group player);
 		if !(_data isEqualTo cl_groupSize) then {
 			[missionNamespace, "groupPlayerChanged"] call BIS_fnc_callScriptedEventHandler;
 			cl_groupSize = _data;
@@ -50,15 +53,33 @@ addMissionEventHandler["EachFrame", {
 			[missionNamespace, "objStatusChanged"] call BIS_fnc_callScriptedEventHandler;
 			cl_obj_status = _data;
 		};
+
+		_data = !(isTouchingGround player) && (surfaceIsWater (getPosATL player));
+		if !(_data isEqualTo cl_playerSwimming) then {
+			[missionNamespace, "playerSwimChanged"] call BIS_fnc_callScriptedEventHandler;
+			cl_playerSwimming = _data;
+		};
 }];
 
 // If the group size changes (either we left or some other people joined) update the perks
 [missionNamespace, "groupPlayerChanged", {
-		[] spawn client_fnc_getSquadPerks;
+	[] spawn client_fnc_getSquadPerks;
 }] call bis_fnc_addScriptedEventHandler;
 
 [missionNamespace, "playAreaChanged", {
-		["playArea"] spawn client_fnc_updateLine;
+	["playArea"] spawn client_fnc_updateLine;
+}] call bis_fnc_addScriptedEventHandler;
+
+[missionNamespace, "playerSwimChanged", {
+	if (("swim" in cl_squadPerks) && {player getVariable ["isAlive", false]} && {isNull (objectParent player)} && {!(isTouchingGround player)} && {(surfaceIsWater (getPosATL player))}) then {
+		player setAnimSpeedCoef 3;
+	} else {
+		if ("sprint" in cl_squadPerks) then {
+			player setAnimSpeedCoef 1.3;
+		} else {
+			player setAnimSpeedCoef 1.15;
+		};
+	};
 }] call bis_fnc_addScriptedEventHandler;
 
 [missionNamespace, "objStatusChanged", {
@@ -253,18 +274,10 @@ player addEventHandler ["HandleDamage", {
 				_unit setVariable ["isAlive", false];
 			};
 		} else {
-			private _mgs = 			  ["LIB_MG34", "LIB_MG42", "LIB_FG42G", "LIB_DP28", "LIB_DT", "LIB_M1918A2_BAR", "LIB_M1919A4", "LIB_M1919A6"];
-			private _bolts = 		  ["LIB_G3340", "LIB_K98_Late", "LIB_M1903A3_Springfield", "LIB_M1903A4_Springfield", "LIB_DELISLE", "LIB_K98", "LIB_K98ZF39", "LIB_M9130", "LIB_M38", "LIB_M44"];
-			private _smgs = 			["LIB_M1A1_Thompson", "LIB_M1928A1_Thompson", "LIB_M1928_Thompson", "LIB_MP38", "LIB_MP40", "LIB_M3_GreaseGun", "LIB_PPSh41_m", "LIB_MP44"];
-			private _semiAutos =  ["LIB_G43", "LIB_M1A1_Carbine", "LIB_M1_Carbine", "LIB_M1_Garand", "LIB_G41", "LIB_SVT_40"];
-			private _pistols =	  ["LIB_P38", "LIB_M1895", "LIB_TT33", "LIB_M1896", "LIB_Colt_M1911"];
+			private _shooterSide = _shooter getVariable ["gameSide", ""];
+			private _damageMultiplier = getNumber(missionConfigFile >> "Unlocks" >> _shooterSide >> (currentWeapon _shooter) >> "damageMultiplier");
 			if (_hitSelection isEqualTo "") then {
-				if (currentWeapon _shooter in _mgs) then {_damage = _damage/25};
-				if (currentWeapon _shooter in _bolts) then {_damage = _damage/0.5};
-				if (currentWeapon _shooter in _smgs) then {_damage =  _damage/5};
-				if (currentWeapon _shooter in _semiAutos) then {_damage = _damage/1.8};
-				if (currentWeapon _shooter in _pistols) then {_damage = _damage/2.5};
-				_damage = (damage _unit) + _damage;
+				_damage = (damage _unit) + (_damage * _damageMultiplier);
 				if (_unit getVariable ["isAlive", true] && {_damage > 0} && {_damage < 1}) then {
 					_damage remoteExec ["client_fnc_MPHit", _shooter];
 				};

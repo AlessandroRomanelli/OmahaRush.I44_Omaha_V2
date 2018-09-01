@@ -132,88 +132,81 @@ private _removeOldRecord = {
   true;
 };
 
-/* if (sv_usingDatabase) then {
-  // Fetch data from MySQL database
-  [player] remoteExec ["server_fnc_db_getPlayer",2];
-} else { */
-  // Fetch data from profileNamespace
-  private ["_record"];
+private ["_record"];
 
-  diag_log "DEBUG: 1) Checking if data must be reset";
-  // Check if we are resetting
-  private _toBeReset = !(profileNamespace getVariable ["wwr_toBeReset", ""] isEqualTo "v070");
-  if (_toBeReset) then {
-    profileNamespace setVariable ["wwr_toBeReset", "v075"];
-    [] call _removeOldRecord;
-  };
+diag_log "DEBUG: 1) Checking if data must be reset";
+// Check if we are resetting
+private _toBeReset = !(profileNamespace getVariable ["wwr_toBeReset", ""] isEqualTo "v075");
+if (_toBeReset) then {
+  profileNamespace setVariable ["wwr_toBeReset", "v075"];
+  [] call _removeOldRecord;
+};
 
-  // Search for an already existing record with the serverKey in use
-  private _records = profileNamespace getVariable ["wwr_records", []];
-  private _backups = profileNamespace getVariable ["wwr_records_backups", []];
+// Search for an already existing record with the serverKey in use
+private _records = profileNamespace getVariable ["wwr_records", []];
+private _backups = profileNamespace getVariable ["wwr_records_backups", []];
 
-  diag_log "DEBUG: 2) Looking for a record";
-  _record = [_records] call _searchPlayerRecords;
+diag_log "DEBUG: 2) Looking for a record";
+_record = [_records] call _searchPlayerRecords;
 
-  // If we haven't found anything
+// If we haven't found anything
+if ((count _record) isEqualTo 0) then {
+  diag_log "DEBUG: 3) Record not found, looking for backup";
+  // Search in the backups
+  _record = [_backups] call _searchPlayerRecords;
   if ((count _record) isEqualTo 0) then {
-    diag_log "DEBUG: 3) Record not found, looking for backup";
-    // Search in the backups
-    _record = [_backups] call _searchPlayerRecords;
-    if ((count _record) isEqualTo 0) then {
-      diag_log "DEBUG: 4) Backup not found, creating new entry";
-      // Create a fresh record instead
-      _record = [] call _createNewRecord;
-    };
+    diag_log "DEBUG: 4) Backup not found, creating new entry";
+    // Create a fresh record instead
+    _record = [] call _createNewRecord;
   };
+};
 
-  private _stats = [_record select 2] call _decodeHash;
-  diag_log format["DEBUG: 5) Decoding the hash from the given record and comparing to the one stored in the record. Decoded: %1, Stats: %2", _stats, _record select 1];
-  /* diag_log format["DEBUG: 6) Comparing compiled hash: %1 and stored hash: %2", _hash, _storedHash]; */
+private _stats = [_record select 2] call _decodeHash;
+diag_log format["DEBUG: 5) Decoding the hash from the given record and comparing to the one stored in the record. Decoded: %1, Stats: %2", _stats, _record select 1];
 
-  // Check if the two hashes match
-  if (_stats isEqualTo (str (_record select 1))) then {
-    // Load the variables
-    [_record select 1] spawn _assignVariables;
-    // Push the loaded record into the backups array
-    private _backup = +_record;
-    [_backup, "wwr_records_backups", _serverKey] call _updateEntry;
-    diag_log "DEBUG: 7) Key accepted: variables assigned, backup updated with current record";
-  } else {
-    diag_log "DEBUG: 8) Key denied: fallback to backed up data";
-    // Search backups array for a record
-    _record = [_backups] call _searchPlayerRecords;
-    // If we have found a record
-    if !(count _record isEqualTo 0) then {
-      diag_log "DEBUG: 9) We have found a backup";
-      // Check if this record was valid
-      private _stats = [_record select 2] call _decodeHash;
-      if (_stats isEqualTo (str (_record select 1))) then {
-        // Assign it to our variables and save it as our current record
-        [_record select 1] spawn _assignVariables;
-        diag_log "DEBUG: 10) Fallback accepted: variables assigned";
-      } else {
-        diag_log "DEBUG: 11) Fallback refused: resetting data";
-        // Remove entry if it existed
-        [] call _removeOldRecord;
-        // Create new entry
-        _record = [] call _createNewRecord;
-        // Assign it to players vars
-        [_record select 1] spawn _assignVariables;
-      }
+// Check if the two hashes match
+if (_stats isEqualTo (str (_record select 1))) then {
+  // Load the variables
+  [_record select 1] spawn _assignVariables;
+  // Push the loaded record into the backups array
+  private _backup = +_record;
+  [_backup, "wwr_records_backups", _serverKey] call _updateEntry;
+  diag_log "DEBUG: 7) Key accepted: variables assigned, backup updated with current record";
+} else {
+  diag_log "DEBUG: 8) Key denied: fallback to backed up data";
+  // Search backups array for a record
+  _record = [_backups] call _searchPlayerRecords;
+  // If we have found a record
+  if !(count _record isEqualTo 0) then {
+    diag_log "DEBUG: 9) We have found a backup";
+    // Check if this record was valid
+    private _stats = [_record select 2] call _decodeHash;
+    if (_stats isEqualTo (str (_record select 1))) then {
+      // Assign it to our variables and save it as our current record
+      [_record select 1] spawn _assignVariables;
+      diag_log "DEBUG: 10) Fallback accepted: variables assigned";
     } else {
-      diag_log "DEBUG: 12) No backup found: resetting player";
+      diag_log "DEBUG: 11) Fallback refused: resetting data";
       // Remove entry if it existed
       [] call _removeOldRecord;
       // Create new entry
       _record = [] call _createNewRecord;
       // Assign it to players vars
       [_record select 1] spawn _assignVariables;
-    };
-
-    [_record, "wwr_records", _serverKey] call _updateEntry;
-    private _backup = +_record;
-    [_backup, "wwr_records_backups", _serverKey] call _updateEntry;
+    }
+  } else {
+    diag_log "DEBUG: 12) No backup found: resetting player";
+    // Remove entry if it existed
+    [] call _removeOldRecord;
+    // Create new entry
+    _record = [] call _createNewRecord;
+    // Assign it to players vars
+    [_record select 1] spawn _assignVariables;
   };
-  diag_log format["DEBUG: Records array: %1", profileNamespace getVariable ["wwr_records", []], _serverKey];
-  diag_log format["DEBUG: Backups array: %1", profileNamespace getVariable ["wwr_records_backups", []], _serverKey];
-/* }; */
+
+  [_record, "wwr_records", _serverKey] call _updateEntry;
+  private _backup = +_record;
+  [_backup, "wwr_records_backups", _serverKey] call _updateEntry;
+};
+diag_log format["DEBUG: Records array: %1", profileNamespace getVariable ["wwr_records", []], _serverKey];
+diag_log format["DEBUG: Backups array: %1", profileNamespace getVariable ["wwr_records_backups", []], _serverKey];

@@ -97,20 +97,20 @@ class rr_timer
 			h = 0.462 * safezoneH;
 			colorBackground[] = {0,0,0,0.8};
 		};
-		class RscText_1001: RscText
+		class RscStructuredText_1001: RscStructuredText
 		{
-			idc = -1;
-			text = " DEFENDERS"; //--- ToDo: Localize;
+			idc = 1001;
+			text = ""; //--- ToDo: Localize;
 			x = 0.247344 * safezoneW + safezoneX;
 			y = 0.346 * safezoneH + safezoneY;
 			w = 0.249562 * safezoneW;
 			h = 0.022 * safezoneH;
 			colorBackground[] = {0.18,0.51,0.95};
 		};
-		class RscText_1002: RscText
+		class RscStructuredText_1002: RscStructuredText
 		{
-			idc = -1;
-			text = " ATTACKERS"; //--- ToDo: Localize;
+			idc = 1002;
+			text = ""; //--- ToDo: Localize;
 			x = 0.497938 * safezoneW + safezoneX;
 			y = 0.346 * safezoneH + safezoneY;
 			w = 0.249562 * safezoneW;
