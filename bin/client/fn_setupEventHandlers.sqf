@@ -256,7 +256,15 @@ player addEventHandler ["Killed", {
 	};
 }];*/
 
-
+// Assign current weapon to player when firing (to avoid PUT and THROW)
+player addEventHandler ["Fired", {
+  params ["_unit", "_weapon", "_muzzle", "_mode", "_ammo", "_magazine", "_projectile", "_gunner"];
+  private _lastWepon = _unit getVariable ["lastWeaponFired", ""];
+  if !(_weapon isEqualTo _lastWepon) then
+  {
+    _unit setVariable ["lastWeaponFired", _weapon,true];
+  };
+}];
 
 // Handledamage
 player addEventHandler ["HandleDamage", {
@@ -275,7 +283,11 @@ player addEventHandler ["HandleDamage", {
 			};
 		} else {
 			private _shooterSide = _shooter getVariable ["gameSide", ""];
-			private _damageMultiplier = getNumber(missionConfigFile >> "Unlocks" >> _shooterSide >> (currentWeapon _shooter) >> "damageMultiplier");
+			private _shooterWeapon = _shooter getVariable ["lastWeaponFired", ""];
+			if (_shooterWeapon isEqualTo "") then {
+				_shooterWeapon = currentWeapon _shooter;
+			};
+			private _damageMultiplier = getNumber(missionConfigFile >> "Unlocks" >> _shooterSide >> _shooterWeapon >> "damageMultiplier");
 			if (_hitSelection isEqualTo "") then {
 				_damage = (damage _unit) + (_damage * _damageMultiplier);
 				if (_unit getVariable ["isAlive", true] && {_damage > 0} && {_damage < 1}) then {

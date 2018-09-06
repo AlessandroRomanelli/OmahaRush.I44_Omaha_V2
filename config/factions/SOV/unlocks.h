@@ -6,6 +6,7 @@ class LIB_M38 {
   exp = 0;
   type = "primary";
   roles[] = {"recon"};
+  damageMultiplier = 1;
   class attachments {};
 };
 
@@ -14,6 +15,7 @@ class LIB_M9130 {
   exp = 0;
   type = "primary";
   roles[] = {"assault", "medic"};
+  damageMultiplier = 1;
   class attachments {};
 };
 
@@ -22,6 +24,7 @@ class LIB_M1895 {
   exp = 3000;
   type = "secondary";
   roles[] = {"assault", "medic", "engineer", "support"};
+  damageMultiplier = 0.5;
   class attachments {};
 };
 
@@ -30,6 +33,7 @@ class LIB_SVT_40 {
   exp = 7500;
   type = "primary";
   roles[] = {"assault", "medic"};
+  damageMultiplier = 0.3;
   class attachments {};
 };
 
@@ -38,6 +42,7 @@ class LIB_TT33 {
   exp = 10000;
   type = "secondary";
   roles[] = {"assault", "medic", "engineer", "support"};
+  damageMultiplier = 0.5;
   class attachments {};
 };
 
@@ -46,6 +51,7 @@ class LIB_DP28 {
   exp = 0;
   type = "primary";
   roles[] = {"support"};
+  damageMultiplier = 0.04;
   class attachments {};
 };
 
@@ -54,6 +60,7 @@ class LIB_DT {
   exp = 12500;
   type = "primary";
   roles[] = {"support"};
+  damageMultiplier = 0.06;
   class attachments {};
 };
 
@@ -62,6 +69,7 @@ class LIB_PPSh41_m {
   exp = 0;
   type = "primary";
   roles[] = {"engineer"};
+  damageMultiplier = 0.4;
   class attachments {};
 };
 
@@ -70,5 +78,6 @@ class LIB_M9130PU {
   exp = 7500;
   type = "primary";
   roles[] = {"recon"};
+  damageMultiplier = 1;
   class attachments {};
 };
