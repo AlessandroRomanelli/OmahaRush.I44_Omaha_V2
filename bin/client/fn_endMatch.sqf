@@ -24,11 +24,9 @@ while {dialog} do {
 };
 
 // Play sound!
-if (_winners == "attackers") then {
-	playSound "endingAtk";
-} else {
-	playSound "endingDef";
-};
+private _faction = getText(missionConfigFile >> "Unlocks" >> _winners >> "faction");
+
+playSound (format ["ending%1", _faction]);
 
 // Get mcoms
 private _mcoms = [];

@@ -60,14 +60,19 @@ class CfgSounds {
         sound[] = {"\sounds\ending.ogg", 0.5, 1};
         titles[] = {};
     };
-    class endingDef {
-        name = "endingDef";
-        sound[] = {"\sounds\endingDef.ogg", 1, 1};
+    class endingSOV {
+        name = "endingSOV";
+        sound[] = {"\sounds\endingSOV.ogg", 1, 1};
         titles[] = {};
     };
-    class endingAtk {
-        name = "endingAtk";
-        sound[] = {"\sounds\endingAtk.ogg", 1, 1};
+    class endingUS {
+        name = "endingUS";
+        sound[] = {"\sounds\endingUS.ogg", 1, 1};
+        titles[] = {};
+    };
+    class endingGER {
+        name = "endingGER";
+        sound[] = {"\sounds\endingGER.ogg", 1, 1};
         titles[] = {};
     };
     class arm
