@@ -10,46 +10,127 @@ class CfgSounds {
         sound[] = {"\sounds\join.ogg", 3, 1};
         titles[] = {};
     };
-    class attackOrder_1 {
-        name = "attackOrder_1";
-        sound[] = {"\sounds\attackOrder_1.ogg", 3, 1};
+    class attackersOrderUS_1 {
+        name = "attackersOrderUS_1";
+        sound[] = {"\sounds\orders\US\attackers_1.ogg", 3, 1};
         titles[] = {};
     };
-    class attackOrder_2 {
-        name = "attackOrder_2";
-        sound[] = {"\sounds\attackOrder_2.ogg", 3, 1};
+    class attackersOrderUS_2 {
+        name = "attackersOrderUS_2";
+        sound[] = {"\sounds\orders\US\attackers_2.ogg", 3, 1};
         titles[] = {};
     };
-    class attackOrder_3 {
-        name = "attackOrder_3";
-        sound[] = {"\sounds\attackOrder_3.ogg", 3, 1};
+    class attackersOrderUS_3 {
+        name = "attackersOrderUS_3";
+        sound[] = {"\sounds\orders\US\attackers_3.ogg", 3, 1};
         titles[] = {};
     };
-    class attackOrder_4 {
-        name = "attackOrder_4";
-        sound[] = {"\sounds\attackOrder_4.ogg", 3, 1};
+    class attackersOrderUS_4 {
+        name = "attackersOrderUS_4";
+        sound[] = {"\sounds\orders\US\attackers_4.ogg", 3, 1};
         titles[] = {};
     };
-    class defendOrder_1 {
-        name = "defendOrder_1";
-        sound[] = {"\sounds\defendOrder_1.ogg", 3, 1};
+    class defendersOrderUS_1 {
+        name = "defendersOrderUS_1";
+        sound[] = {"\sounds\orders\US\defenders_1.ogg", 3, 1};
         titles[] = {};
     };
-    class defendOrder_2 {
-        name = "defendOrder_2";
-        sound[] = {"\sounds\defendOrder_2.ogg", 3, 1};
+    class defendersOrderUS_2 {
+        name = "defendersOrderUS_2";
+        sound[] = {"\sounds\orders\US\defenders_2.ogg", 3, 1};
         titles[] = {};
     };
-    class defendOrder_3 {
-        name = "defendOrder_3";
-        sound[] = {"\sounds\defendOrder_3.ogg", 3, 1};
+    class defendersOrderUS_3 {
+        name = "defendersOrderUS_3";
+        sound[] = {"\sounds\orders\US\defenders_3.ogg", 3, 1};
         titles[] = {};
     };
-    class defendOrder_4 {
-        name = "defendOrder_4";
-        sound[] = {"\sounds\defendOrder_4.ogg", 3, 1};
+    class defendersOrderUS_4 {
+        name = "defendersOrderUS_4";
+        sound[] = {"\sounds\orders\US\defenders_4.ogg", 3, 1};
         titles[] = {};
     };
+    class attackersOrderGER_1 {
+        name = "attackersOrderGER_1";
+        sound[] = {"\sounds\orders\GER\attackers_1.ogg", 3, 1};
+        titles[] = {};
+    };
+    class attackersOrderGER_2 {
+        name = "attackersOrderGER_2";
+        sound[] = {"\sounds\orders\GER\attackers_2.ogg", 3, 1};
+        titles[] = {};
+    };
+    class attackersOrderGER_3 {
+        name = "attackersOrderGER_3";
+        sound[] = {"\sounds\orders\GER\attackers_3.ogg", 3, 1};
+        titles[] = {};
+    };
+    class attackersOrderGER_4 {
+        name = "attackersOrderGER_4";
+        sound[] = {"\sounds\orders\GER\attackers_4.ogg", 3, 1};
+        titles[] = {};
+    };
+    class defendersOrderGER_1 {
+        name = "defendersOrderGER_1";
+        sound[] = {"\sounds\orders\GER\defenders_1.ogg", 3, 1};
+        titles[] = {};
+    };
+    class defendersOrderGER_2 {
+        name = "defendersOrderGER_2";
+        sound[] = {"\sounds\orders\GER\defenders_2.ogg", 3, 1};
+        titles[] = {};
+    };
+    class defendersOrderGER_3 {
+        name = "defendersOrderGER_3";
+        sound[] = {"\sounds\orders\GER\defenders_3.ogg", 3, 1};
+        titles[] = {};
+    };
+    class defendersOrderGER_4 {
+        name = "defendersOrderGER_4";
+        sound[] = {"\sounds\orders\GER\defenders_4.ogg", 3, 1};
+        titles[] = {};
+    };
+    class attackersOrderSOV_1 {
+        name = "attackersOrderSOV_1";
+        sound[] = {"\sounds\orders\SOV\attackers_1.ogg", 3, 1};
+        titles[] = {};
+    };
+    class attackersOrderSOV_2 {
+        name = "attackersOrderSOV_2";
+        sound[] = {"\sounds\orders\SOV\attackers_2.ogg", 3, 1};
+        titles[] = {};
+    };
+    class attackersOrderSOV_3 {
+        name = "attackersOrderSOV_3";
+        sound[] = {"\sounds\orders\SOV\attackers_3.ogg", 3, 1};
+        titles[] = {};
+    };
+    class attackersOrderSOV_4 {
+        name = "attackersOrderSOV_4";
+        sound[] = {"\sounds\orders\SOV\attackers_4.ogg", 3, 1};
+        titles[] = {};
+    };
+    class defendersOrderSOV_1 {
+        name = "defendersOrderSOV_1";
+        sound[] = {"\sounds\orders\SOV\defenders_1.ogg", 3, 1};
+        titles[] = {};
+    };
+    class defendersOrderSOV_2 {
+        name = "defendersOrderSOV_2";
+        sound[] = {"\sounds\orders\SOV\defenders_2.ogg", 3, 1};
+        titles[] = {};
+    };
+    class defendersOrderSOV_3 {
+        name = "defendersOrderSOV_3";
+        sound[] = {"\sounds\orders\SOV\defenders_3.ogg", 3, 1};
+        titles[] = {};
+    };
+    class defendersOrderSOV_4 {
+        name = "defendersOrderSOV_4";
+        sound[] = {"\sounds\orders\SOV\defenders_4.ogg", 3, 1};
+        titles[] = {};
+    };
+
     class levelup {
         name = "levelup";
         sound[] = {"\sounds\levelup.ogg", 0.7, 1};

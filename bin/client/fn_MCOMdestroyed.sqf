@@ -77,13 +77,16 @@ if (param[0,false,[false]]) then {
 
 	sleep (_fallBackTime-3);
 	if (_isPlayerAttacking) then {
-		playSound format["attackOrder_%1", floor random 4+1];
 		["NEW OBJECTIVE HAS BEEN ASSIGNED, PUSH!"] spawn client_fnc_displayObjectiveMessage;
 	} else {
-		playSound format["defendOrder_%1", floor random 4+1];
 		["NEW OBJECTIVE HAS BEEN ASSIGNED, DEFEND!"] spawn client_fnc_displayObjectiveMessage;
 		player setVariable ["isFallingBack", false];
 	};
+
+	private _side = player getVariable ["gameSide", "defenders"];
+	private _faction = getText(missionConfigFile >> "Unlocks" >> _side >> "faction");
+	private _idx = floor (random 5);
+	playSound format["%1Order%2_%3", _side, _faction, _idx];
 
 	[] spawn _animate;
 
