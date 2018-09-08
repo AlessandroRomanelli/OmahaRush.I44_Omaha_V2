@@ -79,8 +79,11 @@ if (isServer) then {
 			[true] remoteExec ["client_fnc_MCOMdestroyed", 0];
 		};
 
+		private _pos = getPosATL sv_cur_obj;
 		// Explosion
-		"HelicopterExploBig" createVehicle getPosATL sv_cur_obj;
+		createVehicle ["HelicopterExploBig", _pos, [], 0, "CAN_COLLIDE"];
+		createVehicle ["test_EmptyObjectForFireBig", _pos, [], 0, "CAN_COLLIDE"];
+
 
 		private _killZone = sv_cur_obj nearEntities ["Man", 25];
 		{
