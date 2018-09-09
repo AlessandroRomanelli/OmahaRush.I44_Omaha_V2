@@ -85,7 +85,7 @@ if (param[0,false,[false]]) then {
 
 	private _side = player getVariable ["gameSide", "defenders"];
 	private _faction = getText(missionConfigFile >> "Unlocks" >> _side >> "faction");
-	private _idx = floor (random 5);
+	private _idx = (floor (random 4))+1;
 	playSound format["%1Order%2_%3", _side, _faction, _idx];
 
 	[] spawn _animate;

@@ -28,7 +28,8 @@ mg_conditionShowOnMyself = {
 		};
 	} forEach (magazinesAmmoFull player);
 
-	((_currentAmmo + _reserveAmmo) <= 10) && !(player getVariable ["ammo_restored",false])
+	private _condition = if (cl_class in ["medic", "assault", "recon"]) then {((_currentAmmo + _reserveAmmo) <= 10)} else {((_currentAmmo + _reserveAmmo) <= 50)};
+	_condition && !(player getVariable ["ammo_restored",false])
 };
 private _mg_code = {
 	if (!isNull cl_lastActionTarget) then {

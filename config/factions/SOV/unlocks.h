@@ -1,6 +1,15 @@
 faction = "SOV";
 
 
+class LIB_SVT_40 {
+  ammo = "LIB_10Rnd_762x54";
+  exp = 0;
+  type = "primary";
+  roles[] = {"assault", "medic"};
+  damageMultiplier = 0.3;
+  class attachments {};
+};
+
 class LIB_M38 {
   ammo = "LIB_5Rnd_762x54";
   exp = 0;
@@ -25,15 +34,6 @@ class LIB_M1895 {
   type = "secondary";
   roles[] = {"assault", "medic", "engineer", "support"};
   damageMultiplier = 0.5;
-  class attachments {};
-};
-
-class LIB_SVT_40 {
-  ammo = "LIB_10Rnd_762x54";
-  exp = 7500;
-  type = "primary";
-  roles[] = {"assault", "medic"};
-  damageMultiplier = 0.3;
   class attachments {};
 };
 

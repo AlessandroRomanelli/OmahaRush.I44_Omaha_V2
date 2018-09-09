@@ -29,8 +29,8 @@ class Plane_CAS: Plane {
 };
 
 class H_Tank: Vehicle {
-  displayName = "IS-2";
-  className = "LIB_JS2_43";
+  displayName = "T-34-85";
+  className = "LIB_T34_85";
   respawnTime = 300;
   populationReq = 40;
 };

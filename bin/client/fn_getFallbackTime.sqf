@@ -19,7 +19,7 @@ diag_log format["DEBUG: Looking for the earlier stage: %1", _oldStage];
 if (_oldStage isEqualTo "") exitWith {paramsArray#8};
 
 // 4m/s speed of a player whilst sprinting
-private _playerSpeed = 5;
+private _playerSpeed = 6;
 
 _oldStage = ""+_oldStage;
 private _oldSpawnPos = getArray(missionConfigFile >> "MapSettings" >> "Stages" >> _oldStage >> "Spawns" >> "defenders");
