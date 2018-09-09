@@ -24,6 +24,8 @@ class GeneralConfig {
 	mapsPool[] = {
 		"WW2Rush.I44_Merderet_V3",
 		"WW2Rush.I44_Omaha_V2",
+		"WW2Rush.MCN_Neaville_Winter",
+		"WW2Rush.StaszowWinter",
 		"WW2Rush.SWU_Aachen_Outskirts"
 	};
 };
