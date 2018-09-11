@@ -17,6 +17,7 @@ private _stageTime = ceil (paramsArray#3 * 60);
 
 sv_matchTime =  _stageTime + _additionalTime;
 sv_fallBack_timeLeft = _additionalTime + diag_tickTime;
+sv_currentTime = 0;
 
 if (_matchStart) then {
 	[_additionalTime] spawn {
@@ -29,11 +30,19 @@ if (_matchStart) then {
 //[sv_matchTime] remoteExec ["client_fnc_matchTimer"];
 
 private _time = sv_matchTime;
+private _tempTime = _time;
 while {_time > 0 && sv_gameStatus == 2} do {
 	sleep 1;
 	private _status = sv_cur_obj getVariable ["status", -1];
 	if !(_status == 0 || _status == 1) then {
 		_time = _time - 1;
+	} else {
+		if (_tempTime != _time) then {
+			_tempTime = _time;
+			cl_matchTime = _time;
+			sv_cur_obj setVariable ["status", _status, true];
+			publicVariable "cl_matchTime";
+		};
 	};
 	// Only decrease the time if the current mcom is NOT done
 	if (sv_cur_obj getVariable ["status", -1] != 3) then {

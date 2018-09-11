@@ -13,6 +13,7 @@ if (isServer && !hasInterface) exitWith {};
 // Remove all handlers
 player removeAllEventHandlers "Take";
 player removeAllEventHandlers "InventoryOpened";
+player removeAllEventHandlers "Fired";
 player removeAllEventHandlers "Hit";
 player removeAllEventHandlers "HitPart";
 player removeAllEventHandlers "Killed";
@@ -244,18 +245,6 @@ player addEventHandler ["Killed", {
 	};
 }];
 
-// Respawn
-/*player addEventHandler ["Respawn", {
-	["Player respawned"] spawn server_fnc_log;
-	[format["sv_gameStatus %1 cl_revived %2", sv_gameStatus, cl_revived]] spawn server_fnc_log;
-	if (sv_gameStatus == 2 && !cl_revived) then {
-		[] spawn client_fnc_spawn;
-
-		player enableStamina false;
-		player forceWalk false;
-	};
-}];*/
-
 // Assign current weapon to player when firing (to avoid PUT and THROW)
 player addEventHandler ["Fired", {
   params ["_unit", "_weapon", "_muzzle", "_mode", "_ammo", "_magazine", "_projectile", "_gunner"];
@@ -269,40 +258,59 @@ player addEventHandler ["Fired", {
 // Handledamage
 player addEventHandler ["HandleDamage", {
 	params ["_unit", "_hitSelection", "_damage", "_shooter", "_projectile", "_hitIndex", "_instigator", "_hitPoint"];
+	// Instigator is defined? If yes, it's more accurate than shooter
 	if (!isNull _instigator) then {
 		_shooter = _instigator;
 	};
-	//If critical damage to the head kill the victim and reward the shooter with HS bonus
-	if !((_shooter getVariable ["side", sideUnknown]) isEqualTo (_unit getVariable ["side", sideUnknown])) then {
-		if ((_hitSelection in ["head", "face_hub"]) && {_damage >= 0.2} && {_unit getVariable ["isAlive", true]}) then {
+	// If the shooter is still unknown, highly reduce damage
+	if (isNull _shooter) exitWith {_damage/10};
+	private _shooterSide = _shooter getVariable ["side", sideUnknown];
+	private _unitSide = _unit getVariable ["side", sideUnknown];
+	// Is the shooter on the opposite side of the victim and is the victim alive?
+	if ((_shooterSide != _unitSide) && _unit getVariable ["isAlive", true]) then {
+		//If critical damage to the head kill the victim and reward the shooter with HS bonus
+		if ((_hitSelection in ["head", "face_hub"]) && {_damage >= 0.5}) then {
+			// Has the HS kill already been awarded?
 			if (!(_unit getVariable ["wasHS", false])) then {
+				// Give the HS bonus
 				[_unit, true] remoteExec ["client_fnc_kill",_shooter];
+				// Definitely kill the victim
 				_unit setDamage 1;
 				_unit setVariable ["wasHS", true];
 				_unit setVariable ["isAlive", false];
 			};
 		} else {
-			private _shooterSide = _shooter getVariable ["gameSide", ""];
+			// Get the last weapon the shooter fired
 			private _shooterWeapon = _shooter getVariable ["lastWeaponFired", ""];
+			// Was it not defined? Get the current one, we might be lucky
 			if (_shooterWeapon isEqualTo "") then {
 				_shooterWeapon = currentWeapon _shooter;
 			};
-			private _damageMultiplier = getNumber(missionConfigFile >> "Unlocks" >> _shooterSide >> _shooterWeapon >> "damageMultiplier");
+			// Is it not a listed weapon?
+			private _isWeaponListed = isClass(missionConfigFile >> "Unlocks" >> _shooterSide >> _shooterWeapon);
+			// If it is listed, get the multiplier, else don't do anything and use 1
+			private _damageMultiplier = if (_isWeaponListed) then {getNumber(missionConfigFile >> "Unlocks" >> _shooterSide >> _shooterWeapon >> "damageMultiplier")} else {1};
+			// Handle only the global hit part
 			if (_hitSelection isEqualTo "") then {
+				// Set the damage we are dealing according to the weapon that got us
 				_damage = (damage _unit) + (_damage * _damageMultiplier);
-				if (_unit getVariable ["isAlive", true] && {_damage > 0} && {_damage < 1}) then {
+				// If the damage is non fatal
+				if (_damage > 0 && _damage < 1) then {
+					// Display hit marker
 					_damage remoteExec ["client_fnc_MPHit", _shooter];
 				};
 			} else {
+				// Don't damage the part if it's not the global hit part
 				_damage = _unit getHit _hitSelection;
 			};
 		};
 	};
 
-	if (((side (gunner vehicle _shooter) == side _unit) || {side (driver vehicle _shooter) == side _unit}) && {_shooter != _unit}) then {
-	 _damage = damage _unit;
+	// If instead the shooter is on the same side as the victim (friendly fire) and it's not suicide
+	if (((_shooterSide == _unitSide) && {_shooter != _unit})) then {
+		// Disable damage
+		_damage = damage _unit;
 	};
-
  _damage
 }];
 

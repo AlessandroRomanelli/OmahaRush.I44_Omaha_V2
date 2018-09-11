@@ -11,13 +11,14 @@ scriptName "fn_matchTimer";
 
 private _stageTime = param[0,0,[0]];
 /* cl_intendedTime = diag_tickTime + _stageTime; */
+cl_matchTime = _stageTime;
 
-cl_matchTimer_thread = [_stageTime] spawn {
-	private _time = param[0, 0, [0]];
+cl_matchTimer_thread = [] spawn {
+	private ["_time"];
 	while {sv_gameStatus == 2} do {
 		private _status = sv_cur_obj getVariable ["status", -1];
 		if !(_status == 0 || _status == 1) then {
-			_time = _time - 1;
+			_time = cl_matchTime - 1;
 		};
 		sleep 1;
 

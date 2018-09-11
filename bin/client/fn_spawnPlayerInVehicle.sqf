@@ -12,17 +12,16 @@ if (isServer && !hasInterface) exitWith {};
 
 private _configName = param[0,"",[""]];
 
-private _side = if (player getVariable "gameSide" == "defenders") then {"Defender"} else {"Attacker"};
+private _side = ["Attacker", "Defender"] select (player getVariable "gameSide" == "defenders");
 private _config = (missionConfigFile >> "MapSettings" >> "PersistentVehicles" >> _side >> _configName);
 
 // If the config is null its most likely a stage vehicle
 if (isNull _config) then {
-	if (player getVariable "gameSide" == "defenders") then {
-		_config = (missionConfigFile >> "MapSettings" >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Vehicles" >> "Defender" >> _configName);
-	} else {
-		_config = (missionConfigFile >> "MapSettings" >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Vehicles" >> "Attacker" >> _configName);
-	};
+	_config = (missionConfigFile >> "MapSettings" >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Vehicles" >> _side >> _configName);
 };
+
+// Equip
+[] spawn client_fnc_equipAll;
 
 private _pos = getArray(_config >> "positionATL");
 private _class = getText(_config >> "classname");
@@ -32,7 +31,7 @@ if (count _objects < 1) exitWith {["Vehicle unavailable"] spawn client_fnc_displ
 private _vehicle = _objects select 0;
 
 // Put player into vehicle
-private _vehicleNoSpace = !([player, _vehicle] call client_fnc_moveUnitIntoVehicle);
+private _vehicleNoSpace = !([_vehicle] call client_fnc_moveUnitIntoVehicle);
 
 // Was the vehicle full?
 if (_vehicleNoSpace) exitWith {
@@ -41,9 +40,6 @@ if (_vehicleNoSpace) exitWith {
 
 // Close spawn dialog
 closeDialog 0;
-
-// Equip
-[] spawn client_fnc_equipAll;
 
 // Move camera down to player, then delete it
 cl_spawnmenu_cam camPreparePos (getPosATL _vehicle);
@@ -90,15 +86,6 @@ if (getNumber(missionConfigFile >> "GeneralConfig" >> "PostProcessing") == 1) th
 
 // Unmute sound
 0.3 fadeSound 1;
-
-// HELICOPTER ONLY: MAKE SURE WE HAVE FLARES
-/*if (_vehicle isKindOf "B_Heli_Light_01_armed_F") then {
-	while {!("CMFlareLauncher" in (weapons _vehicle))} do {
-		_vehicle addWeaponGlobal "CMFlareLauncher";
-		_vehicle addWeapon "CMFlareLauncher";
-		_vehicle addMagazines ["120Rnd_CMFlare_Chaff_Magazine", 1];
-	};
-};*/
 
 // General success script
 [] spawn cl_spawn_succ;

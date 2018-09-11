@@ -26,7 +26,7 @@ private _vehicleNoSpace = false;
 // Put player into vehicle
 if (_inVehicle) then {
 	private _vehicle = vehicle _unit;
-  _vehicleNoSpace = !([player, _vehicle] call client_fnc_moveUnitIntoVehicle);
+  _vehicleNoSpace = !([_vehicle] call client_fnc_moveUnitIntoVehicle);
 };
 
 // Was the vehicle full?
@@ -40,7 +40,7 @@ closeDialog 0;
 private _spawnPos = _unit modelToWorld [0,-1,0];
 
 // Beacon?
-if (_unit isKindOf "Land_Laptop_device_F") then {
+if (_unit isKindOf "LIB_GerRadio" || _unit isKindOf "LIB_SovRadio") then {
 	_spawnPos = _unit modelToWorld [0,0,0];
 };
 

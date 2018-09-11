@@ -9,10 +9,10 @@ scriptName "fn_moveUnitIntoVehicle";
 --------------------------------------------------------------------*/
 #define __filename "fn_moveUnitIntoVehicle.sqf"
 
-params [["_unit", objNull, [objNull]], ["_vehicle", objNull, [objNull]]];
+params [["_vehicle", objNull, [objNull]]];
 
 // wow
-if (isNull _unit || isNull _vehicle) exitWith {false};
+if (isNull _vehicle) exitWith {false};
 
 if (_vehicle isKindOf "Air") then {
 	_vehicle enableSimulation true;
@@ -21,38 +21,15 @@ if (_vehicle isKindOf "Air") then {
 	private _velocity = [(sin _dir)*55, (cos _dir)*55, 0];
 	_vehicle setVelocity _velocity;
 	private _side = ["Attacker", "Defender"] select ((player getVariable ["gameSide", "defenders"]) isEqualTo "defenders");
-	private _configs = "true" configClasses (missionConfigFile >> "MapSettings" >> "PersistentVehicles" >> _side);
-	_configs = _configs select {(getText(_x >> "className")) isEqualTo (typeOf _vehicle)};
-	if (count _configs != 0) then {
-		private _fuelTime = getNumber(_configs select 0 >> "fuelTime");
-		[format["YOU HAVE %1 SECONDS WORTH OF FUEL, BE QUICK!", _fuelTime]] spawn client_fnc_displayInfo;
-	};
+	private _config = missionConfigFile >> "MapSettings" >> "PersistentVehicles" >> _side >> str _vehicle;
+	private _fuelTime = getNumber(_config >> "fuelTime");
+	[format["YOU HAVE %1 SECONDS WORTH OF FUEL, BE QUICK!", _fuelTime]] spawn client_fnc_displayInfo;
 };
 
-// try i guess
-private _ret = false;
-
-if (!_ret) then {
-	_unit moveInDriver _vehicle;
-	sleep 0.1;
-	if (vehicle _unit != _unit) then {_ret = true};
-};
-if (!_ret) then {
-	_unit moveInGunner _vehicle;
-	sleep 0.1;
-	if (vehicle _unit != _unit) then {_ret = true};
-};
-if (!_ret) then {
-	_unit moveInCommander _vehicle;
-	sleep 0.1;
-	if (vehicle _unit != _unit) then {_ret = true};
-};
-if (!_ret) then {
-	_unit moveInCargo _vehicle;
-	sleep 0.1;
-	if (vehicle _unit != _unit) then {_ret = true};
-};
-
+private ["_return"];
+player moveInAny _vehicle;
 _vehicle enableSimulation true;
 
-_ret
+if (vehicle player != _vehicle) then { _return = false } else { _return = true; };
+
+_return

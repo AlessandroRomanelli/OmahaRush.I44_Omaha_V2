@@ -5,7 +5,7 @@ class LIB_M1_Garand {
   exp = 0;
   type = "primary";
   roles[] = {"assault", "medic"};
-  damageMultiplier = 0.5;
+  damageMultiplier = 0.25;
   class attachments {};
 };
 
@@ -23,7 +23,7 @@ class LIB_DELISLE {
   exp = 7500;
   type = "primary";
   roles[] = {"assault", "medic"};
-  damageMultiplier = 0.3;
+  damageMultiplier = 1;
   class attachments {};
 };
 
@@ -32,7 +32,7 @@ class LIB_M1_Carbine {
   exp = 12500;
   type = "primary";
   roles[] = {"medic"};
-  damageMultiplier = 0.35;
+  damageMultiplier = 0.2;
   class attachments {};
 };
 
@@ -41,7 +41,7 @@ class LIB_M1A1_Carbine {
   exp = 12500;
   type = "primary";
   roles[] = {"assault"};
-  damageMultiplier = 0.35;
+  damageMultiplier = 0.2;
   class attachments {};
 };
 
@@ -73,7 +73,7 @@ class LIB_M1919A6 {
 };
 
 class LIB_M3_GreaseGun {
-  ammo = "LIB_30Rnd_45ACP";
+  ammo = "LIB_30Rnd_M3_GreaseGun_45ACP";
   exp = 0;
   type = "primary";
   roles[] = {"engineer"};
