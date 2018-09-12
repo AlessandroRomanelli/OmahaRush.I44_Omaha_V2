@@ -16,8 +16,8 @@ private _additionalTime = param[1,0,[0]];
 private _stageTime = ceil (paramsArray#3 * 60);
 
 sv_matchTime =  _stageTime + _additionalTime;
+sv_matchEndTime =  sv_matchTime + serverTime;
 sv_fallBack_timeLeft = _additionalTime + diag_tickTime;
-sv_currentTime = 0;
 
 if (_matchStart) then {
 	[_additionalTime] spawn {
@@ -29,21 +29,24 @@ if (_matchStart) then {
 // Start timer on all clients
 //[sv_matchTime] remoteExec ["client_fnc_matchTimer"];
 
+private _delay = 0;
 private _time = sv_matchTime;
-private _tempTime = _time;
 while {_time > 0 && sv_gameStatus == 2} do {
 	sleep 1;
 	private _status = sv_cur_obj getVariable ["status", -1];
-	if !(_status == 0 || _status == 1) then {
-		_time = _time - 1;
-	} else {
-		if (_tempTime != _time) then {
-			_tempTime = _time;
-			cl_matchTime = _time;
+	if (_status == 0 || _status == 1) then {
+		sv_startTicking = nil;
+		_delay = _delay + 1;
+		if (serverTime % 3 == 0) then {
 			sv_cur_obj setVariable ["status", _status, true];
-			publicVariable "cl_matchTime";
+		};
+	} else {
+		sv_stopTicking = nil;
+		if (serverTime % 5 == 0) then {
+			sv_cur_obj setVariable ["status", _status, true];
 		};
 	};
+	_time = sv_matchEndTime - serverTime + _delay;
 	// Only decrease the time if the current mcom is NOT done
 	if (sv_cur_obj getVariable ["status", -1] != 3) then {
 		sv_matchTime = _time;

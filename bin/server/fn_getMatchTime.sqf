@@ -12,4 +12,4 @@ scriptName "fn_getMatchTime";
 waitUntil {sv_gameStatus == 2};
 private _returnTo = param[0, objNull, [objNull]];
 // Match time // Time in seconds until spawning is allowed
-[sv_matchTime, (sv_fallBack_timeLeft - diag_tickTime)] remoteExec ["client_fnc_initMatchTimer", _returnTo];
+[sv_matchEndTime, (sv_fallBack_timeLeft - diag_tickTime)] remoteExec ["client_fnc_initMatchTimer", _returnTo];
