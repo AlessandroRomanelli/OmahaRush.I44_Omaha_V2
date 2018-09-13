@@ -155,8 +155,14 @@ private _safeMarker2 = createMarkerLocal ["respawn_attackers", cl_safePos]; */
 
 // Get time from server IF the match is already going or is about to, if not, it doesnt really matter
 if (sv_gameStatus in [1,2]) then {
-	cl_matchTime = 0;
-	[player] remoteExec ["server_fnc_getMatchTime", 2];
+  // Set fallback time to null
+  sv_fallBack_timeLeft = nil;
+  // Query server to answer this client with fallback time
+  if (player getVariable ["gameSide", "attackers"] == "attackers") then {
+    [clientOwner] remoteExec ["server_fnc_getBlockedSpawn", 2];
+    // Spawn the block function
+    [] spawn client_fnc_initBlockSpawn;
+  };
 };
 
 CHBN_adjustBrightness = 0.5;

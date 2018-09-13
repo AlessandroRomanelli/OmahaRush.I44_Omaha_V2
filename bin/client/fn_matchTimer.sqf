@@ -9,6 +9,9 @@ scriptName "fn_matchTimer";
 --------------------------------------------------------------------*/
 #define __filename "fn_matchTimer.sqf"
 
+// Make obsolete
+if (true) exitWith {};
+
 private _stageTime = param[0,0,[0]];
 /* cl_intendedTime = diag_tickTime + _stageTime; */
 cl_matchEndTime = _stageTime;

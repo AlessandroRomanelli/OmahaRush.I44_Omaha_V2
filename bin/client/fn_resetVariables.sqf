@@ -138,7 +138,7 @@ if (isNil "rr_iconrenderer_executed") then {
 
 		private _d = uiNamespace getVariable ["rr_objective_gui", displayNull];
 		(_d displayCtrl 1) ctrlSetStructuredText parseText format ["<t size='1' color='#FFFFFF' shadow='2' font='PuristaMedium' align='left'>%1</t>", sv_tickets];
-		(_d displayCtrl 4) ctrlSetStructuredText parseText format ["<t size='1' color='#FFFFFF' shadow='2' font='PuristaMedium' align='right'>%1</t>", [cl_matchTime, "MM:SS"] call bis_fnc_secondsToString];
+		(_d displayCtrl 4) ctrlSetStructuredText parseText format ["<t size='1' color='#FFFFFF' shadow='2' font='PuristaMedium' align='right'>%1</t>", [sv_matchTime, "MM:SS"] call bis_fnc_secondsToString];
 		(_d displayCtrl 2) progressSetPosition (sv_tickets / sv_tickets_total);
 
 		// MERGE OF INGAME GUI

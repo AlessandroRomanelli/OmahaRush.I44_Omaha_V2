@@ -1,10 +1,8 @@
 scriptName "fn_matchTimer";
 /*--------------------------------------------------------------------
-	Author: Maverick (ofpectag: MAV)
+	Author: A. Roman
     File: fn_matchTimer.sqf
 
-	<Maverick Applications>
-    Written by Maverick Applications (www.maverick-apps.de)
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_matchTimer.sqf"
@@ -17,7 +15,7 @@ private _stageTime = ceil (paramsArray#3 * 60);
 
 sv_matchTime =  _stageTime + _additionalTime;
 sv_matchEndTime =  sv_matchTime + serverTime;
-sv_fallBack_timeLeft = _additionalTime + diag_tickTime;
+sv_fallBack_timeLeft = _additionalTime + serverTime;
 
 if (_matchStart) then {
 	[_additionalTime] spawn {
@@ -29,27 +27,39 @@ if (_matchStart) then {
 // Start timer on all clients
 //[sv_matchTime] remoteExec ["client_fnc_matchTimer"];
 
+// Initial delay
 private _delay = 0;
+// Current match time
 private _time = sv_matchTime;
+// How many seconds between objective status update
+private _refreshRate = 10;
+// While there's time left and the game is ongoing
 while {_time > 0 && sv_gameStatus == 2} do {
+	// Tick each second
 	sleep 1;
+	// Get objective status on the server (super partes)
 	private _status = sv_cur_obj getVariable ["status", -1];
+	// If the bomb is armed or being armed
 	if (_status == 0 || _status == 1) then {
-		sv_startTicking = nil;
+		// Increase the delay by one second
 		_delay = _delay + 1;
-		if (serverTime % 3 == 0) then {
-			sv_cur_obj setVariable ["status", _status, true];
-		};
+		// Refresh the bomb status each 3 seconds to keep sync with server
+		_refreshRate = 3;
+	// If the bomb is idle
 	} else {
-		sv_stopTicking = nil;
-		if (serverTime % 5 == 0) then {
-			sv_cur_obj setVariable ["status", _status, true];
-		};
+		// Refresh each 5 seconds
+		_refreshRate = 6;
 	};
+	// Refresh status of objective for all clinets
+	if ((serverTime % _refreshRate) == 0) then {
+		sv_cur_obj setVariable ["status", _status, true];
+	};
+	// Current time is given by the intended endMatch time, summed with the delay, minus the serverTime
 	_time = sv_matchEndTime - serverTime + _delay;
-	// Only decrease the time if the current mcom is NOT done
+	// Broadcast the matchTime only if NOT done
 	if (sv_cur_obj getVariable ["status", -1] != 3) then {
 		sv_matchTime = _time;
+		publicVariable "sv_matchTime";
 	};
 };
 
@@ -58,8 +68,4 @@ sleep 1;
 // Only if the time actually got to 0, end the match for the defenders
 if (sv_matchTime <= 0) exitWith {
 	[] spawn server_fnc_endRound;
-
-	// Overwrite time values on all clients
-	cl_matchTime = 0;
-	[["cl_matchTime"]] spawn server_fnc_updateVars;
 };
