@@ -14,8 +14,8 @@ private _additionalTime = param[1,0,[0]];
 private _stageTime = ceil (paramsArray#3 * 60);
 
 sv_matchTime =  _stageTime + _additionalTime;
-sv_matchEndTime =  sv_matchTime + serverTime;
-sv_fallBack_timeLeft = _additionalTime + serverTime;
+sv_matchEndTime =  sv_matchTime + diag_tickTime;
+sv_fallBack_timeLeft = _additionalTime + diag_tickTime;
 
 if (_matchStart) then {
 	[_additionalTime] spawn {
@@ -51,11 +51,11 @@ while {_time > 0 && sv_gameStatus == 2} do {
 		_refreshRate = 6;
 	};
 	// Refresh status of objective for all clinets
-	if ((serverTime % _refreshRate) == 0) then {
+	if ((diag_tickTime % _refreshRate) == 0) then {
 		sv_cur_obj setVariable ["status", _status, true];
 	};
 	// Current time is given by the intended endMatch time, summed with the delay, minus the serverTime
-	_time = sv_matchEndTime - serverTime + _delay;
+	_time = sv_matchEndTime - diag_tickTime + _delay;
 	// Broadcast the matchTime only if NOT done
 	if (sv_cur_obj getVariable ["status", -1] != 3) then {
 		sv_matchTime = _time;
