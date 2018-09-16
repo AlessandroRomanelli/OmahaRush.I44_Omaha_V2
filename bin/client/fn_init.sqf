@@ -159,9 +159,7 @@ if (sv_gameStatus in [1,2]) then {
   sv_fallBack_timeLeft = nil;
   // Query server to answer this client with fallback time
   if (player getVariable ["gameSide", "attackers"] == "attackers") then {
-    [clientOwner] remoteExec ["server_fnc_getBlockedSpawn", 2];
-    // Spawn the block function
-    [] spawn client_fnc_initBlockSpawn;
+    [player] remoteExec ["server_fnc_getBlockedSpawn", 2];
   };
 };
 

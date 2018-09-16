@@ -7,14 +7,11 @@ scriptName "fn_initBlockSpawn";
 --------------------------------------------------------------------*/
 #define __filename "fn_initBlockSpawn.sqf"
 
-// Wait for the server ti reply to our previous query
-waitUntil{!isNil sv_fallBack_timeLeft};
-
 // Get the time left for spawn block
-_spawningProhibitedFor = sv_fallBack_timeLeft - serverTime;
+private _spawningProhibitedFor = param [0, 0, [0]];
 // If the prohibitedTime is greater than 0, make sure we also cant spawn
 if (_spawningProhibitedFor > 0) then {
-	cl_blockSpawnUntil = sv_fallBack_timeLeft;
+	cl_blockSpawnUntil = _spawningProhibitedFor + diag_tickTime;
 	cl_blockSpawnForSide = "attackers";
 	[] spawn client_fnc_displaySpawnRestriction;
 };
