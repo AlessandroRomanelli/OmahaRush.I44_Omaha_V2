@@ -104,6 +104,7 @@ class Maverick_Functions_Client {
 		class checkClassRestriction {};
 		class encryptData {};
 		class getFallbackTime {};
+		class spotTarget {};
 		// Pointfeed
 		class pointfeed_add {};
 
