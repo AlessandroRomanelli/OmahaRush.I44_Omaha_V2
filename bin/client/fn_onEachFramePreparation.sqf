@@ -71,9 +71,8 @@ cl_onEachFramePreparationID = addMissionEventHandler["EachFrame", {
 					};
 				};
 			} else {
-				if (_x getVariable ["isSpotted", false]) then {
-					_spottedTargets pushBack [_x, diag_tickTime];
-					_x setVariable ["isSpotted", false, false];
+				if (_x getVariable ["isSpotted", 0] != 0) then {
+					_spottedTargets pushBack [_x, _x getVariable "isSpotted"];
 				};
 			};
 		};

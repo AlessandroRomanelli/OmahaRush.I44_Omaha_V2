@@ -131,9 +131,10 @@ if (isNil "rr_iconrenderer_executed") then {
 			private _unit = _x select 0;
 			private _time = _x select 1;
 			private _pos = getPosATLVisual _unit;
-			_pos set [2, (_pos select 2) + 1.85];
-			if (diag_tickTime - _time > 10) then {
-				cl_onEachFrame_spotted_enemies deleteAt _forEachIndex;
+			_pos set [2, (_pos select 2) + 1];
+			if (serverTime - _time > 10) then {
+				systemChat format ["Expired 3D spot for unit: %1 because %2s passed since spotting.", name _unit, serverTime - _time];
+				_unit setVariable ["isSpotted", nil];
 			} else {
 				private _alpha = if (player distance _unit < 50) then {0.75} else {0.25};
 				drawIcon3D[MISSION_ROOT+"pictures\enemy.paa", [1,1,1,_alpha], _pos, 0.5, 0.5, 0, "", 2, 0.03, "PuristaMedium", "center", false];
