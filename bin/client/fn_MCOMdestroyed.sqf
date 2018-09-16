@@ -14,13 +14,6 @@ if (isServer && !hasInterface) exitWith {};
 // Warning
 ["THE OBJECTIVE HAS BEEN DESTROYED"] spawn client_fnc_displayObjectiveMessage;
 
-// Update the last-mcom-destroyed time
-//cl_blockSpawnUntil = diag_tickTime + (getNumber(missionConfigFile >> "GeneralConfig" >> "FallBackSeconds"));
-//cl_blockSpawnForSide = "attackers";
-//[] spawn client_fnc_displaySpawnRestriction;
-
-private _fallBackTime = [] call client_fnc_getFallbackTime;
-
 // Clean our spawnbeacons
 private _beacon = player getVariable ["assault_beacon_obj", objNull];
 if (!isNull _beacon) then {
@@ -48,12 +41,19 @@ private _animate = {
 	_c ctrlCommit 0.25;
 };
 
+private _fallBackTime = [] call client_fnc_getFallbackTime;
+
 // Param is TRUE if the just destroyed mcom was NOT the last one
 if (param[0,false,[false]]) then {
 	// If this objective was NOT the last one, reset the time!
 	private _roundTime = ceil (paramsArray#3 * 60);
 
-	[_roundTime + _fallBackTime, _fallBackTime] call client_fnc_initMatchTimer;
+	sv_fallBack_timeLeft = nil;
+	if (player getVariable ["gameSide", "attackers"] == "attackers") then {
+		[clientOwner] remoteExec ["server_fnc_getBlockedSpawn", 2];
+		// Spawn the block function
+		[] spawn client_fnc_initBlockSpawn;
+	};
 
 	// Update markers
 	[] spawn client_fnc_updateMarkers;

@@ -20,9 +20,7 @@ private _planter = param[0,objNull,[objNull]];
 ["EXPLOSIVES ARMED","The objective has been armed. Attackers will not lose tickets while it is."] spawn client_fnc_hint;
 
 // Start sound loop if we are the server
-private _wasServer = false;
 if (isServer) then {
-	_wasServer = true;
 
 	if (!isNil "sv_mcom_thread") then {
 		terminate sv_mcom_thread;

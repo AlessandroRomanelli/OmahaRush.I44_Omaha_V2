@@ -85,7 +85,7 @@ class Maverick_Functions_Client {
 		class vehicleDisabled {};
 		class displayKeyBindingHint {};
 		class restrictedArea {};
-		class initMatchTimer {};
+		class initBlockSpawn {};
 		class validatePointsEarned {};
 		class updateSpawnMenuCam {};
 		class revealFriendlyUnits {};
@@ -134,7 +134,7 @@ class Maverick_Functions_Server {
 		class refreshTickets {};
 		class endRound {};
 		class matchTimer {};
-		class getMatchTime {};
+		class getBlockedSpawn {};
 		class persistentVehicleManager {};
 		class stageVehicleManager {};
 		class importantObjects {};

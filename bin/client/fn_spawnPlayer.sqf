@@ -10,9 +10,13 @@ scriptName "fn_spawnPlayer";
 #define __filename "fn_spawnPlayer.sqf"
 if (isServer && !hasInterface) exitWith {};
 
+if (isNil "cl_blockSpawnUntil") then {
+	cl_blockSpawnUntil = diag_tickTime;
+};
+
 // Check if spawning is currently allowed and if we are the side thats not allowed to spawn
-if ((missionNamespace getVariable ["cl_blockSpawnUntil", diag_tickTime]) - diag_tickTime > 0 && ((missionNamespace getVariable "cl_blockSpawnForSide") == (player getVariable "gameSide"))) exitWith {
-	[format ["SPAWNING ALLOWED IN %1", [(missionNamespace getVariable ["cl_blockSpawnUntil", diag_tickTime]) - diag_tickTime, "MM:SS"] call bis_fnc_secondsToString]] spawn client_fnc_displayError;
+if (cl_blockSpawnUntil - diag_tickTime > 0) exitWith {
+	[format ["SPAWNING ALLOWED IN %1", [cl_blockSpawnUntil - diag_tickTime, "MM:SS"] call bis_fnc_secondsToString]] spawn client_fnc_displayError;
 };
 
 if (cl_equipClassnames select 0 == "") exitWith {
