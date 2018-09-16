@@ -8,6 +8,6 @@ scriptName "fn_getBlockedSpawn";
 #define __filename "fn_getBlockedSpawn.sqf"
 
 waitUntil {sv_gameStatus == 2};
-private _id = param[0, 0, [0]];
+private _client = param [0, objNull, [objNull]];
 // Publish variable to given clientID
-_id publicVariableClient "sv_fallBack_timeLeft";
+[sv_fallBack_timeLeft - diag_tickTime] remoteExec ["client_fnc_initBlockSpawn", _client];
