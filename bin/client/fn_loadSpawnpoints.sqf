@@ -36,15 +36,9 @@ private _index = -1;
 	if ((isPlayer _x && _x distance sv_cur_obj < 1500 && alive _x) || (_x == player) || (!isNull (_x getVariable ["assault_beacon_obj", objNUll]))) then {
 		private _add = false;
 
-		if (alive _x) then {
-			if (_x != player) then {
-				if ((leader group player) == player) then {
-					_add = true;
-				} else {
-					if (_x == (leader group player)) then {
-						_add = true;
-					};
-				};
+		if (alive _x && {_x != player}) then {
+			if (((leader group player) == player) || (_x == (leader group player))) then {
+				_add = true;
 			};
 		};
 
@@ -61,14 +55,18 @@ private _index = -1;
 				(_d displayCtrl 9) lbSetValue [(lbSize (_d displayCtrl 9)) - 1, _index];
 			} else {
 				// Player
-				if (_x getVariable ["inCombat", false]) then {
+				private _unit = _x;
+				// Find enemies within 20m radius
+				private _nearbyEnemies = {(_unit getVariable "gameSide") != (_x getVariable "gameSide")} count (_x nearEntities ["Man", 25]);
+				// If the unit was hit or is nearby enemies
+				if (_x getVariable ["inCombat", false] || {_nearbyEnemies > 0}) then {
 					(_d displayCtrl 9) lbAdd ((_x getVariable ["name", "ERROR: No Name"]) + " (IN COMBAT)");
 					(_d displayCtrl 9) lbSetValue [(lbSize (_d displayCtrl 9)) - 1, _index];
 					(_d displayCtrl 9) lbSetData [(lbSize (_d displayCtrl 9)) - 1, "inCombat"];
 				} else {
 					(_d displayCtrl 9) lbAdd (_x getVariable ["name", "ERROR: No Name"]);
 					(_d displayCtrl 9) lbSetValue [(lbSize (_d displayCtrl 9)) - 1, _index];
-					(_d displayCtrl 9) lbSetData [(lbSize (_d displayCtrl 9)) - 1, ""];
+					(_d displayCtrl 9) lbSetData [(lbSize (_d displayCtrl 9)) - 1, netID _unit];
 				};
 			};
 

@@ -26,5 +26,5 @@ if (cl_beacon_used >= 5) then {
 	};
 
 	// Message
-	["RALLY POINT", "Your rally point has been used 5 times and despawned. You may place a new one now."] spawn client_fnc_hint;
+	["RALLY POINT", "You used your rally point 5 times and it despawned. You may place a new one now."] spawn client_fnc_hint;
 };
