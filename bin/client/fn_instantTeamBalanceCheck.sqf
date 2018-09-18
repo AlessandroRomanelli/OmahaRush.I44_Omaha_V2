@@ -16,17 +16,20 @@ if (_enableATB != 1) exitWith {};
 // Check if server has been online for 300 seconds already
 if (serverTime < 300) exitWith {};
 
-// Run side checks
-private _unitsTeam1 = {(_x getVariable ["side", sideUnknown]) isEqualTo WEST} count allPlayers;
-private _unitsTeam2 = {(_x getVariable ["side", sideUnknown]) isEqualTo independent} count allPlayers;
-diag_log format["DEBUG: TeamBalanceCheck.. TeamBLUE: %1, TeamRED: %2", _unitsTeam1, _unitsTeam2];
+private _attackersSide = [WEST, independent] select (sv_gameCycle % 2 == 0);
+private _defendersSide = [WEST, independent] select (sv_gameCycle % 2 != 0);
 
-private _diff = abs(_unitsTeam1 - _unitsTeam2);
-private _sideWithMoreUnits = if (_unitsTeam2 <= _unitsTeam1) then {WEST} else {independent};
+// Run side checks
+private _attackersTeam = {(_x getVariable ["gameSide", "attackers"]) isEqualTo "attackers"} count allPlayers;
+private _defendersTeam = {(_x getVariable ["gameSide", "defenders"]) isEqualTo "defenders"} count allPlayers;
+diag_log format["DEBUG: TeamBalanceCheck.. Attackers' count: %1, Defenders' count: %2", _attackersTeam, _defendersTeam];
+
+private _diff = _attackersTeam - _defendersTeam;
+private _sideWithMoreUnits = if (_attackersTeam >= _defendersTeam) then {_attackersSide} else {_defendersSide};
 
 private _maxDiff = paramsArray#14;
 private _ending = ["teamFullWEST", "teamFullindependent"] select (playerSide isEqualTo WEST);
 
-if ((playerSide isEqualTo _sideWithMoreUnits) && (_diff > _maxDiff)) then {
+if ((playerSide isEqualTo _sideWithMoreUnits) && (_diff < 0 || _diff > _maxDiff)) then {
 	endMission _ending;
 };

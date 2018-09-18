@@ -11,7 +11,6 @@ scriptName "fn_autoTeamBalancer";
 
 private _getUnitsThatLastJoined = {
 	private _side = param[0,sideUnknown,[sideUnknown]];
-
 	private _lastJoinTime = 0;
 	private _preferredUnit = objNull;
 	{
@@ -22,7 +21,6 @@ private _getUnitsThatLastJoined = {
 			};
 		};
 	} forEach AllPlayers;
-
 	_preferredUnit;
 };
 
@@ -31,14 +29,17 @@ sv_autoTeamBalancerWarning = false;
 while {sv_gameStatus == 2} do {
 	sleep 60;
 
-	private _unitsTeam1 = {(_x getVariable ["side", sideUnknown]) isEqualTo WEST} count allPlayers;
-	private _unitsTeam2 = {(_x getVariable ["side", sideUnknown]) isEqualTo independent} count allPlayers;;
+	private _attackersSide = [WEST, independent] select (sv_gameCycle % 2 == 0);
+	private _defendersSide = [WEST, independent] select (sv_gameCycle % 2 != 0);
+	// Run side checks
+	private _attackersTeam = {(_x getVariable ["gameSide", "attackers"]) isEqualTo "attackers"} count allPlayers;
+	private _defendersTeam = {(_x getVariable ["gameSide", "defenders"]) isEqualTo "defenders"} count allPlayers;
 
-	private _diff = abs(_unitsTeam1 - _unitsTeam2);
+	private _diff = _attackersTeam - _defendersTeam;
 	private _maxDiff = paramsArray#14;
-	private _sideWithMoreUnits = if (_unitsTeam1 >= _unitsTeam2) then {WEST} else {independent};
+	private _sideWithMoreUnits = if (_attackersTeam >= _defendersTeam) then {_attackersSide} else {_defendersSide};
 
-	if (_diff > _maxDiff) then {
+	if (_diff < 0 || _diff > _maxDiff) then {
 		if (!sv_autoTeamBalancerWarning) then {
 			sv_autoTeamBalancerWarning = true;
 			["Auto team balance will commence in 60 seconds if teams stay unbalanced"] remoteExec ["client_fnc_displayError"];
@@ -52,10 +53,10 @@ while {sv_gameStatus == 2} do {
 				private _unit = [_sideWithMoreUnits] call _getUnitsThatLastJoined;
 				[format["Player %1 has been kicked due to team balance", _unit getVariable ["name", "ERROR: No Name"]]] call server_fnc_log;
 
-				if (_sideWithMoreUnits == WEST) then {
-					[independent] remoteExec ["client_fnc_teamBalanceKick", _unit];
+				if (_sideWithMoreUnits == _attackersSide) then {
+					[_defendersSide] remoteExec ["client_fnc_teamBalanceKick", _unit];
 				} else {
-					[WEST] remoteExec ["client_fnc_teamBalanceKick", _unit];
+					[_attackersSide] remoteExec ["client_fnc_teamBalanceKick", _unit];
 				};
 
 				// Make sure this unit will be gone until next evaluation
