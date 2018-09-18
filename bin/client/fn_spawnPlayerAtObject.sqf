@@ -16,8 +16,11 @@ private _sendPoints = param[1,true,[true]];
 private _inVehicle = param[2,false,[false]];
 
 // CHECKS TO DO BEFORE SPAWNING
+
+private _nearbyEnemies = {player getVariable ["gameSide", ""] != _x getVariable ["gameSide", ""]} count (_unit nearEntities ["Man", 25]) > 0;
+
 // Invalid spawnpoint check (spawnpoint is not within the playable area)
-if ((!alive _unit) || (_unit distance sv_cur_obj) > 5000) exitWith {
+if ((!alive _unit) || (_unit distance sv_cur_obj) > 5000 || _nearbyEnemies) exitWith {
 	// The spawnpoint is unavailable, do not spawn the player here
 	["Spawnpoint unavailable"] spawn client_fnc_displayError;
 };
