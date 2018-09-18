@@ -38,9 +38,9 @@ private _index = -1;
 	if ((isPlayer _x && {_x distance sv_cur_obj < 1500} && {alive _x}) || {_x == player} || {!isNull (_x getVariable ["assault_beacon_obj", objNUll])}) then {
 		private _add = false;
 
-		// If unit is alive AND is not the player AND (is attacking OR group leader) AND (is defending and player is leader)
+		// If unit is alive AND is not the player AND (player NOT defending OR the unit is the leader OR player is the leader)
 		// If the player is attacking, he can spawn on any group member, whereas if he's defending, he can only spawn on the leader
-		if (alive _x && {_x != player} && {!_playerIsDefending || (_x == (leader group player))}) then {
+		if (alive _x && {_x != player} && {!_playerIsDefending || (_x == (leader group player)) || ((leader group player) == player)}) then {
 			_add = true;
 		};
 /*
@@ -49,10 +49,11 @@ private _index = -1;
 				if (_x == (leader group player)) then {
 					_add = true;
 				};
-			} else {
 				if ((leader group player) == player) then {
-					_add = true;
+				_add = true;
 				};
+			} else {
+				_add = true;
 			};
 		}; */
 
