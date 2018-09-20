@@ -16,8 +16,10 @@ private _d = findDisplay 5000;
 // Clear listbox of any spawnpoints
 lbClear (_d displayCtrl 9);
 
+private _playerIsDefending = (player getVariable ["gameSide", "defenders"]) isEqualTo "defenders";
+
 // Load HQ spawnpoint
-if (player getVariable "gameSide" == "defenders") then {
+if (_playerIsDefending) then {
 	(_d displayCtrl 9) lbAdd "Defender HQ";
 } else {
 	(_d displayCtrl 9) lbAdd "Attacker HQ";
@@ -33,20 +35,27 @@ private _index = -1;
 {
 	_index = _index + 1;
 
-	if ((isPlayer _x && _x distance sv_cur_obj < 1500 && alive _x) || (_x == player) || (!isNull (_x getVariable ["assault_beacon_obj", objNUll]))) then {
+	if ((isPlayer _x && {_x distance sv_cur_obj < 1500} && {alive _x}) || {_x == player} || {!isNull (_x getVariable ["assault_beacon_obj", objNUll])}) then {
 		private _add = false;
 
-		if (alive _x) then {
-			if (_x != player) then {
-				if ((leader group player) == player) then {
-					_add = true;
-				} else {
-					if (_x == (leader group player)) then {
-						_add = true;
-					};
-				};
-			};
+		// If unit is alive AND is not the player AND (player NOT defending OR the unit is the leader OR player is the leader)
+		// If the player is attacking, he can spawn on any group member, whereas if he's defending, he can only spawn on the leader
+		if (alive _x && {_x != player} && {!_playerIsDefending || (_x == (leader group player)) || ((leader group player) == player)}) then {
+			_add = true;
 		};
+/*
+		if (alive _x && {_x != player}) then {
+			if (_playerIsDefending) then {
+				if (_x == (leader group player)) then {
+					_add = true;
+				};
+				if ((leader group player) == player) then {
+				_add = true;
+				};
+			} else {
+				_add = true;
+			};
+		}; */
 
 		private _beacon = _x getVariable ["assault_beacon_obj", objNull];
 		if (!isNull _beacon) then {
@@ -59,20 +68,25 @@ private _index = -1;
 				(_d displayCtrl 9) lbAdd ((_x getVariable ["name", "ERROR: No Name"]) + "'s Beacon");
 				(_d displayCtrl 9) lbSetData [(lbSize (_d displayCtrl 9)) - 1, "beacon"];
 				(_d displayCtrl 9) lbSetValue [(lbSize (_d displayCtrl 9)) - 1, _index];
+				(_d displayCtrl 9) lbSetPicture [(lbSize (_d displayCtrl 9)) - 1, "pictures\squad.paa"];
 			} else {
 				// Player
-				if (_x getVariable ["inCombat", false]) then {
+				private _unit = _x;
+				// Find enemies within 20m radius
+				private _nearbyEnemies = {(_unit getVariable "gameSide") != (_x getVariable "gameSide")} count (_x nearEntities ["Man", 25]);
+				// If the unit was hit or is nearby enemies
+				if (_x getVariable ["inCombat", false] || {_nearbyEnemies > 0}) then {
 					(_d displayCtrl 9) lbAdd ((_x getVariable ["name", "ERROR: No Name"]) + " (IN COMBAT)");
 					(_d displayCtrl 9) lbSetValue [(lbSize (_d displayCtrl 9)) - 1, _index];
 					(_d displayCtrl 9) lbSetData [(lbSize (_d displayCtrl 9)) - 1, "inCombat"];
+					(_d displayCtrl 9) lbSetPicture [(lbSize (_d displayCtrl 9)) - 1, "pictures\enemies.paa"];
 				} else {
 					(_d displayCtrl 9) lbAdd (_x getVariable ["name", "ERROR: No Name"]);
 					(_d displayCtrl 9) lbSetValue [(lbSize (_d displayCtrl 9)) - 1, _index];
-					(_d displayCtrl 9) lbSetData [(lbSize (_d displayCtrl 9)) - 1, ""];
+					(_d displayCtrl 9) lbSetData [(lbSize (_d displayCtrl 9)) - 1, netID _unit];
+					(_d displayCtrl 9) lbSetPicture [(lbSize (_d displayCtrl 9)) - 1, "pictures\squad.paa"];
 				};
 			};
-
-			(_d displayCtrl 9) lbSetPicture [(lbSize (_d displayCtrl 9)) - 1, "pictures\squad.paa"];
 		};
 	};
 } forEach (units group player);
@@ -84,13 +98,10 @@ if (lbCurSel (_d displayCtrl 9) == -1) then {
 
 // Get configs of vehicles we can spawn at (PERSISTENT ONES)
 private _configs = [];
-if (player getVariable "gameSide" == "defenders") then {
-	_configs append ("true" configClasses (missionConfigFile >> "MapSettings" >> "PersistentVehicles" >> "Defender"));
-	_configs append ("true" configClasses (missionConfigFile >> "MapSettings" >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Vehicles" >> "Defender"));
-} else {
-	_configs append ("true" configClasses (missionConfigFile >> "MapSettings" >> "PersistentVehicles" >> "Attacker"));
-	_configs append ("true" configClasses (missionConfigFile >> "MapSettings" >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Vehicles" >> "Attacker"));
-};
+private _side = ["Attacker", "Defender"] select (_playerIsDefending);
+_configs append ("true" configClasses (missionConfigFile >> "MapSettings" >> "PersistentVehicles" >> _side));
+_configs append ("true" configClasses (missionConfigFile >> "MapSettings" >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Vehicles" >> _side));
+
 
 {
 	private _pos = getArray(_x >> "positionATL");
@@ -100,13 +111,7 @@ if (player getVariable "gameSide" == "defenders") then {
 	private _config = _x;
 	if (count _objects > 0) then {
 		// Check whether this array of found vehicles actually containers our vehicle
-		private _OK = false;
-		{
-			if ((_x getVariable ["id", ""]) == (configName _config)) exitWith {
-				_OK = true;
-			};
-		} forEach _objects;
-
+		private _OK = (_objects findIf {_x getVariable ["id", ""] isEqualTo (configName _config)}) != -1;
 		if (_OK) then {
 			(_d displayCtrl 9) lbAdd _displayName;
 			(_d displayCtrl 9) lbSetData [(lbSize (_d displayCtrl 9)) - 1, configName _x];

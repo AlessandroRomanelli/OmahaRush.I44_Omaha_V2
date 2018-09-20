@@ -24,6 +24,7 @@ cl_onEachFrame_squad_members = [];
 cl_onEachFrame_squad_beacons = [];
 cl_onEachFrame_team_members = [];
 cl_onEachFrame_team_reviveable = [];
+cl_onEachFrame_spotted_enemies = [];
 
 removeMissionEventHandler ["EachFrame", cl_onEachFramePreparationID];
 cl_onEachFramePreparationID = addMissionEventHandler["EachFrame", {
@@ -32,6 +33,7 @@ cl_onEachFramePreparationID = addMissionEventHandler["EachFrame", {
 	private _squad_beacons = [];
 	private _team_members = [];
 	private _toBeRevived = [];
+	private _spottedTargets = [];
 
 	// Fill with data
 	{
@@ -68,6 +70,10 @@ cl_onEachFramePreparationID = addMissionEventHandler["EachFrame", {
 						};
 					};
 				};
+			} else {
+				if (_x getVariable ["isSpotted", 0] != 0) then {
+					_spottedTargets pushBack [_x, _x getVariable "isSpotted"];
+				};
 			};
 		};
 	} forEach AllUnits;
@@ -83,7 +89,7 @@ cl_onEachFramePreparationID = addMissionEventHandler["EachFrame", {
 	// Medics
 	if (cl_class == "medic") then {
 		{
-			if (alive player && _x distance player < 35) then {
+			if (alive player && {_x distance player < 50} && {isPlayer _x}) then {
 				if (_x getVariable ["side", sideUnknown] == playerSide) then {
 					_toBeRevived pushBack _x;
 				};
@@ -96,4 +102,5 @@ cl_onEachFramePreparationID = addMissionEventHandler["EachFrame", {
 	cl_onEachFrame_squad_beacons = _squad_beacons;
 	cl_onEachFrame_team_members = _team_members;
 	cl_onEachFrame_team_reviveable = _toBeRevived;
+	cl_onEachFrame_spotted_enemies = _spottedTargets;
 }];

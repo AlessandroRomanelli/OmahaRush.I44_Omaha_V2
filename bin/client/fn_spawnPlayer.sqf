@@ -136,7 +136,10 @@ switch (_value) do
 		};
 
 		// Get unit to spawn at
-		private _unit = (units group player) select _value;
+		private _unit = objectFromNetID _data;
+		if (isNull _unit) then {
+			_unit = (units group player) select _value;
+		};
 		private _beacon = _unit getVariable ["assault_beacon_obj", objNull];
 
 		if (_data == "beacon") then {

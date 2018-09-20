@@ -13,14 +13,20 @@ cl_scoreboardHidden = true;
 
 cl_soundLevel = 1;
 (findDisplay 46) displayAddEventHandler ["KeyUp", {
-	if ((_this select 1) == 15 && (sv_gameStatus in [1,2])) then {
+	private _DIKcode = _this select 1;
+	if (_DIKcode == 15 && (sv_gameStatus in [1,2])) then {
 		cl_scoreboardHidden = true;
 		60001 cutRsc ["default", "PLAIN"];
 	};
 }];
 
+cl_lastKeyPressed = diag_tickTime;
+cl_spamCount = 0;
+cl_allowActions = true;
+
 (findDisplay 46) displayAddEventHandler ["KeyDown", {
-	if ((_this select 1) == 15 && (sv_gameStatus in [1,2])) then {
+	private _DIKcode = _this select 1;
+	if (_DIKcode == 15 && (sv_gameStatus in [1,2])) then {
 		// Lets fill the scoreboard
 		if !(cl_scoreboardHidden) exitWith {};
 		if (cl_scoreboardHidden) then {
@@ -83,7 +89,7 @@ cl_soundLevel = 1;
 	};
 
 	// Earplugs
-	if ((_this select 1) == 21) then {
+	if (_DIKcode == 21) then {
 		_h = true;
 		switch (cl_soundLevel) do
 		{
@@ -109,7 +115,7 @@ cl_soundLevel = 1;
 	};
 
 	// Space bar to deploy parachute
-	if ((_this select 1) == 57) then {
+	if (_DIKcode == 57) then {
 		if ((isNull (objectParent player)) && {((getPos player) select 2) > 30} && {!(isTouchingGround (vehicle player))} && {player getVariable ["hasChute", true]}) then {
 			_h = true;
 			private _posPlayer = position player;
@@ -137,10 +143,28 @@ cl_soundLevel = 1;
 	};
 
 	// F1 - OBJECTS DUMP
-	if ((_this select 1) == 59) then {
+	if (_DIKcode == 59) then {
 		_h = true;
 		[] spawn client_fnc_dumpObjects;
 	};
 
+	if (_DIKcode == 20 && cl_allowActions) then {
+		_h = true;
+		if (diag_tickTime - cl_lastKeyPressed < 3) then {
+			cl_spamCount = cl_spamCount + 1;
+		} else {
+			cl_spamCount = 0;
+		};
+		if (cl_spamCount > 5) then {
+			[] spawn {
+				cl_allowActions = false;
+				sleep 5;
+				cl_allowActions = true;
+			}
+		} else {
+			[] spawn client_fnc_spotTarget;
+		};
+	};
+	cl_lastKeyPressed = diag_tickTime;
 	_h
 }];

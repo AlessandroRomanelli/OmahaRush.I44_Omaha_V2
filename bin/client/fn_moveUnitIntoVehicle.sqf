@@ -30,6 +30,8 @@ private ["_return"];
 player moveInAny _vehicle;
 _vehicle enableSimulation true;
 
-if (vehicle player != _vehicle) then { _return = false } else { _return = true; };
+waitUntil{!isNull (objectParent player)};
+
+_return = if (vehicle player == _vehicle) then {true} else {true};
 
 _return
