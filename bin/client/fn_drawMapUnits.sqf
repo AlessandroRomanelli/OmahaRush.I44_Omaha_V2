@@ -54,7 +54,7 @@ private _units = [];
 
 while {true} do {
 	_units = allUnits select {
-		if ((isPlayer _x || _showAI) && {(_x distance sv_cur_obj) < 500} && {((side _x) isEqualTo (side player)) || ((_x getVariable ["isSpotted", 0]) > 0)}) then {
+		if ((isPlayer _x || _showAI) && {(_x distance sv_cur_obj) < 500}) then {
 			true
 		};
 	};
@@ -94,9 +94,10 @@ while {true} do {
 					};
 				};
 			} else {
-				_icon = "mil_circle";
-				_size = [0.5, 0.5];
-				if (_x getVariable ["isSpotted", 0] isEqualTo 0) then {
+				if (_x getVariable ["isSpotted", 0] > 0) then {
+					_icon = "mil_circle";
+					_size = [0.5, 0.5];
+				} else {
 					deleteMarkerLocal _marker;
 				};
 			};
