@@ -61,11 +61,9 @@ while {_time >= 0 && sv_gameStatus == 2} do {
 		sv_matchTime = _time;
 		publicVariable "sv_matchTime";
 	};
-};
-
-sleep 1;
-
-// Only if the time actually got to 0, end the match for the defenders
-if (sv_matchTime < 0) exitWith {
-	[] spawn server_fnc_endRound;
+	if (_time < 0) then {
+		sleep 1;
+		// Only if the time actually got to 0, end the match for the defenders
+		[] spawn server_fnc_endRound;
+	};
 };
