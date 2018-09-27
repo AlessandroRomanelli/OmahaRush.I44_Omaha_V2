@@ -34,7 +34,7 @@ private _time = sv_matchTime;
 // How many seconds between objective status update
 private _refreshRate = 10;
 // While there's time left and the game is ongoing
-while {_time > 0 && sv_gameStatus == 2} do {
+while {_time >= 0 && sv_gameStatus == 2} do {
 	// Tick each second
 	sleep 1;
 	// Get objective status on the server (super partes)
@@ -48,16 +48,16 @@ while {_time > 0 && sv_gameStatus == 2} do {
 	// If the bomb is idle
 	} else {
 		// Refresh each 5 seconds
-		_refreshRate = 6;
+		_refreshRate = 5;
 	};
 	// Refresh status of objective for all clinets
-	if ((diag_tickTime % _refreshRate) == 0) then {
+	if (((floor diag_tickTime) % _refreshRate) == 0) then {
 		sv_cur_obj setVariable ["status", _status, true];
 	};
 	// Current time is given by the intended endMatch time, summed with the delay, minus the serverTime
 	_time = sv_matchEndTime - diag_tickTime + _delay;
 	// Broadcast the matchTime only if NOT done
-	if (sv_cur_obj getVariable ["status", -1] != 3) then {
+	if ((sv_cur_obj getVariable ["status", -1] != 3) && _time >= 0) then {
 		sv_matchTime = _time;
 		publicVariable "sv_matchTime";
 	};
@@ -66,6 +66,6 @@ while {_time > 0 && sv_gameStatus == 2} do {
 sleep 1;
 
 // Only if the time actually got to 0, end the match for the defenders
-if (sv_matchTime <= 0) exitWith {
+if (sv_matchTime < 0) exitWith {
 	[] spawn server_fnc_endRound;
 };
