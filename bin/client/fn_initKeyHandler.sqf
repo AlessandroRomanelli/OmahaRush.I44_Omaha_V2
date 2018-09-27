@@ -1,11 +1,11 @@
 scriptName "fn_initKeyHandler";
 /*--------------------------------------------------------------------
-	Author: Maverick (ofpectag: MAV)
+	Author: Maverick & A. Roman
     File: fn_initKeyHandler.sqf
 
 	<Maverick Applications>
     Written by Maverick Applications (www.maverick-apps.de)
-    You're not allowed to use this file without permission from the author!
+    You're not allowed to use this file without permission from the authors!
 --------------------------------------------------------------------*/
 #define __filename "fn_initKeyHandler.sqf"
 private _h = false;
@@ -148,6 +148,7 @@ cl_allowActions = true;
 		[] spawn client_fnc_dumpObjects;
 	};
 
+	// T - SPOTTING TARGETS
 	if (_DIKcode == 20 && cl_allowActions) then {
 		_h = true;
 		if (diag_tickTime - cl_lastKeyPressed < 3) then {
@@ -156,11 +157,14 @@ cl_allowActions = true;
 			cl_spamCount = 0;
 		};
 		if (cl_spamCount > 5) then {
-			[] spawn {
-				cl_allowActions = false;
-				sleep 5;
-				cl_allowActions = true;
-			}
+			if (isNil "cl_disableKeyThread") then {
+				cl_disableKeyThread = [] spawn {
+					cl_allowActions = false;
+					sleep 5;
+					cl_allowActions = true;
+					cl_disableKeyThread = nil;
+				};
+			};
 		} else {
 			[] spawn client_fnc_spotTarget;
 		};

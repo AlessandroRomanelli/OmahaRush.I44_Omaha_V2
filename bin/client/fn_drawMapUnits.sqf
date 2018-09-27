@@ -96,6 +96,9 @@ while {true} do {
 			} else {
 				_icon = "mil_circle";
 				_size = [0.5, 0.5];
+				if (_x getVariable ["isSpotted", 0] isEqualTo 0) then {
+					deleteMarkerLocal _marker;
+				};
 			};
 			[_marker, _pos, _dir, _icon, _name, _size] spawn _fnc_updtMkr;
 		} forEach (_units select {!isNull _x});
