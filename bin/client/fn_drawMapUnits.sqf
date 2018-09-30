@@ -21,12 +21,13 @@ params [
 ];
 
 private _fnc_updtMkr = {
-	params ["_marker", "_pos", "_dir", "_type", "_name", "_size"];
+	params ["_marker", "_pos", "_dir", "_type", "_name", "_size", "_alpha"];
 	_marker setMarkerSizeLocal _size;
 	_marker setMarkerPosLocal _pos;
 	_marker setMarkerDirLocal _dir;
 	_marker setMarkerTypeLocal _type;
 	_marker setMarkerTextLocal _name;
+	_marker setMarkerAlphaLocal _alpha
 };
 
 private _fnc_getMarkerColor = {
@@ -69,6 +70,7 @@ while {true} do {
 			private _veh = {isPlayer _x || _showAI} count (crew vehicle _x);
 			private _color = [_x] call _fnc_getMarkerColor;
 			private _size = [];
+			private _alpha = 1;
 
 			if !(_marker in _markers) then {
 				_markers pushBack (createMarkerLocal [_marker, visiblePositionASL _x]);
@@ -96,12 +98,17 @@ while {true} do {
 			} else {
 				if (_x getVariable ["isSpotted", 0] > 0) then {
 					_icon = "mil_circle";
-					_size = [0.5, 0.5];
+					_size = [0.4, 0.4];
+					_alpha = (10 + (_x getVariable ["isSpotted", 0]) - serverTime)/10;
+					if (_alpha < 0) then {
+						_alpha = 0;
+					};
+					_name = "";
 				} else {
-					deleteMarkerLocal _marker;
+					_icon = "Empty";
 				};
 			};
-			[_marker, _pos, _dir, _icon, _name, _size] spawn _fnc_updtMkr;
+			[_marker, _pos, _dir, _icon, _name, _size, _alpha] spawn _fnc_updtMkr;
 		} forEach (_units select {!isNull _x});
 	} else {
 		{deleteMarkerLocal _x; true} count _markers;
