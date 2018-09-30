@@ -13,7 +13,7 @@ class Vehicle {
 
 class Plane: Vehicle {
   respawnTime = 300;
-  populationReq = 30;
+  populationReq = 10;
   fuelTime = 90;
 };
 
@@ -31,28 +31,28 @@ class H_Tank: Vehicle {
   displayName = "M4A3 Sherman Firefly";
   className = "LIB_M4A4_FIREFLY";
   respawnTime = 300;
-  populationReq = 40;
+  populationReq = 20;
 };
 
 class L_Tank: Vehicle {
   displayName = "M3A3 Stuart";
   className = "LIB_M3A3_Stuart";
   respawnTime = 180;
-  populationReq = 30;
+  populationReq = 14;
 };
 
 class APC: Vehicle {
   displayName = "M8 Greyhound";
   className = "LIB_M8_Greyhound";
   respawnTime = 120;
-  populationReq = 20;
+  populationReq = 10;
 };
 
 class Car_HMG: Vehicle {
   displayName = "M3 Scout Car";
   className = "LIB_US_Scout_M3_FFV";
   respawnTime = 60;
-  populationReq = 10;
+  populationReq = 6;
 };
 
 class Truck: Vehicle {

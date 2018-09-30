@@ -13,7 +13,7 @@ class Vehicle {
 
 class Plane: Vehicle {
   respawnTime = 300;
-  populationReq = 30;
+  populationReq = 10;
   fuelTime = 90;
 };
 
@@ -31,28 +31,28 @@ class H_Tank: Vehicle {
   displayName = "PzKpfW V Ausf. A 'Panther'";
   className = "LIB_PzKpfwV";
   respawnTime = 300;
-  populationReq = 40;
+  populationReq = 20;
 };
 
 class L_Tank: Vehicle {
   displayName = "Sd.Kfz 234/2 Puma";
   className = "LIB_SdKfz234_2";
   respawnTime = 180;
-  populationReq = 30;
+  populationReq = 14;
 };
 
 class APC: Vehicle {
   displayName = "Sd.Kfz 222";
   className = "LIB_SdKfz222_gelbbraun";
   respawnTime = 120;
-  populationReq = 20;
+  populationReq = 10;
 };
 
 class Car_HMG: Vehicle {
   displayName = "Sd.Kfz 251";
   className = "LIB_SdKfz251_FFV";
   respawnTime = 60;
-  populationReq = 10;
+  populationReq = 6;
 };
 
 class Truck: Vehicle {
