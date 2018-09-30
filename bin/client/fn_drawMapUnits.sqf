@@ -69,13 +69,11 @@ while {true} do {
 			private _name = _x getVariable ["name", "ERROR: No Name"];
 			private _veh = {isPlayer _x || _showAI} count (crew vehicle _x);
 			private _color = [_x] call _fnc_getMarkerColor;
-			private _size = [];
-			private _alpha = 1;
+			private _size = [1,1];
+			private _alpha = 0.8;
 
 			if !(_marker in _markers) then {
 				_markers pushBack (createMarkerLocal [_marker, visiblePositionASL _x]);
-				_marker setMarkerAlphaLocal 0.75;
-				_marker setMarkerSizeLocal [1,1];
 				_marker setMarkerColorLocal _color;
 			};
 

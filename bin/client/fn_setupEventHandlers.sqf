@@ -264,8 +264,8 @@ player addEventHandler ["HandleDamage", {
 	};
 	// If the shooter is still unknown, highly reduce damage
 	if (isNull _shooter) exitWith {_damage/10};
-	private _shooterSide = _shooter getVariable ["side", sideUnknown];
-	private _unitSide = _unit getVariable ["side", sideUnknown];
+	private _shooterSide = _shooter getVariable ["gameSide", "attackers"];
+	private _unitSide = _unit getVariable ["gameSide", "defenders"];
 	// Is the shooter on the opposite side of the victim and is the victim alive?
 	if ((_shooterSide != _unitSide) && _unit getVariable ["isAlive", true]) then {
 		//If critical damage to the head kill the victim and reward the shooter with HS bonus

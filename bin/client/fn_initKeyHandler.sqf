@@ -23,7 +23,6 @@ cl_soundLevel = 1;
 cl_lastKeyPressed = diag_tickTime;
 cl_spamCount = 0;
 cl_allowActions = true;
-
 (findDisplay 46) displayAddEventHandler ["KeyDown", {
 	private _DIKcode = _this select 1;
 	if (_DIKcode == 15 && (sv_gameStatus in [1,2])) then {
@@ -148,10 +147,14 @@ cl_allowActions = true;
 		[] spawn client_fnc_dumpObjects;
 	};
 
+
 	// T - SPOTTING TARGETS
-	if (_DIKcode == 20 && cl_allowActions) then {
+	if (_DIKcode == 20) then {
+		if (!cl_allowActions) exitWith {
+			systemChat format ["SPAM PREVENTION - Keys blocked for %1s", round (cl_lastKeyPressed + 5 - diag_tickTime)];
+		};
 		_h = true;
-		if (diag_tickTime - cl_lastKeyPressed < 3) then {
+		if (diag_tickTime - cl_lastKeyPressed < 1.5) then {
 			cl_spamCount = cl_spamCount + 1;
 		} else {
 			cl_spamCount = 0;
@@ -168,7 +171,7 @@ cl_allowActions = true;
 		} else {
 			[] spawn client_fnc_spotTarget;
 		};
+		cl_lastKeyPressed = diag_tickTime;
 	};
-	cl_lastKeyPressed = diag_tickTime;
 	_h
 }];
