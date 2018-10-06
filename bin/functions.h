@@ -105,6 +105,7 @@ class Maverick_Functions_Client {
 		class encryptData {};
 		class getFallbackTime {};
 		class spotTarget {};
+		class moveWithinVehicle {};
 		// Pointfeed
 		class pointfeed_add {};
 

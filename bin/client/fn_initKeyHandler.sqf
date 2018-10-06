@@ -142,10 +142,18 @@ cl_allowActions = true;
 	};
 
 	// F1 - OBJECTS DUMP
-	if (_DIKcode == 59) then {
+	if (_DIKcode == 59 && (_this select 2) && (_this select 3)) then {
 		_h = true;
 		[] spawn client_fnc_dumpObjects;
 	};
+
+	// F1 to F10 - SEAT SWITCH
+	if (_DIKcode > 58 && _DIKcode < 69) then {
+		if (!isNull (objectParent player)) then {
+			[_DIKcode] spawn client_fnc_moveWithinVehicle;
+		};
+	};
+
 
 
 	// T - SPOTTING TARGETS
