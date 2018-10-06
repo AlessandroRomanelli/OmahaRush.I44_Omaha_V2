@@ -14,8 +14,6 @@ params [["_DIKcode", 0, [0]]];
 
 if (_DIKcode < 59 || _DIKcode > 68) exitWith {};
 
-systemChat format ["Invoked moveWithinVehicle with key: %1", _DIKcode];
-
 private _fnc_indexToRole = {
   params [["_index", 0, [0]], ["_vehicle", objNull, [objNull]]];
   if (_vehicle isEqualTo objNull) exitWith {""};
@@ -52,6 +50,6 @@ if (_role == "") exitWith {};
     if (_role == "Turret") exitWith {
       player action ["moveToTurret", _vehicle, _index];
     };
-    player action [format ["moveTo%1", _role]];
+    player action [format ["moveTo%1", _role], _vehicle];
   }
 } forEach _slotsOfRole;
