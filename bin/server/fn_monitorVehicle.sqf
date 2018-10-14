@@ -16,21 +16,6 @@ waitUntil {{alive _x} count (crew _vehicle) > 0 || (!alive _vehicle)};
 
 if (_vehicle isKindOf "Air") then {
 	_vehicle enableSimulationGlobal true;
-	[_vehicle] spawn {
-		private _vehicle = param[0, objNull, [objNull]];
-		private _side = ["Attacker", "Defender"] select ((player getVariable ["gameSide", "defenders"]) isEqualTo "defenders");
-		private _configs = "true" configClasses (missionConfigFile >> "MapSettings" >> "PersistentVehicles" >> _side);
-		_configs = _configs select {(getText(_x >> "className")) isEqualTo (typeOf _vehicle)};
-		if (count _configs != 0) then {
-			private _fuelTime = getNumber((_configs select 0) >> "fuelTime");
-			private _time = _fuelTime;
-			while {_time >= 0} do {
-				_vehicle setFuel (_time/_fuelTime);
-				sleep 1;
-				_time = _time - 1;
-			};
-		};
-	};
 };
 
 // Now wait until all units have left the vehicle

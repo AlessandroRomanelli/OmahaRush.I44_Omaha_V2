@@ -119,8 +119,7 @@ cl_allowActions = true;
 			_h = true;
 			private _posPlayer = position player;
 			private _dirPlayer = getDir player;
-			private _velPlayer = velocity player;
-			{_velPlayer set [_forEachIndex, _x/5]} forEach _velPlayer;
+			private _velPlayer = (velocity player) vectorMultiply 0.1;
 			private _para = "NonSteerable_Parachute_F" createVehicle _posPlayer;
 			player moveInDriver _para;
 			_para setPos _posPlayer;
@@ -132,6 +131,13 @@ cl_allowActions = true;
 			if ((typeOf (vehicle player)) isEqualTo "NonSteerable_Parachute_F") then {
 				private _para = vehicle player;
 				moveOut player;
+				if (((getPos player) select 2) < 6) then {
+					player allowDamage false;
+					[] spawn {
+						waitUntil{isTouchingGround player};
+						player allowDamage true;
+					};
+				};
 				[_para] spawn {
 					private _para = param[0, objNull, [objNull]];
 					sleep 5;
