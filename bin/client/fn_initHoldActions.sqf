@@ -112,14 +112,14 @@ private _interruption = {};
 private _duration = 4;
 if ((player getVariable "gameSide") == "defenders") then {
 	_text = "Disarm Explosives";
-	_cond = "(sv_cur_obj distance _this) < 4 && (cursorTarget == sv_cur_obj) && {(cursorTarget getVariable ['status',-1] == 1) || (cursorTarget getVariable ['status', -1] == 0 && (_this isEqualTo player))}";
-	_completion = {if (sv_cur_obj distance player < 4) then {[] spawn client_fnc_disarmMCOM;};};
-	_interruption = {sv_cur_obj setVariable ["status", 1, true]};
+	_cond = "(cursorTarget distance _this) < 5 && (cursorTarget == sv_cur_obj) && {(cursorTarget getVariable ['status',-1] == 1) || (cursorTarget getVariable ['status', -1] == 0 && (_this isEqualTo player))}";
+	_completion = {if (cursorTarget distance player < 5) then {[] spawn client_fnc_disarmMCOM;};};
+	_interruption = {cursorTarget setVariable ["status", 1, true]};
 } else {
 	_text = "Plant Explosives";
-	_cond = "(sv_cur_obj distance _this) < 4 && (cursorTarget == sv_cur_obj) && {(cursorTarget getVariable ['status',-1] == -1) || (cursorTarget getVariable ['status', -1] == 2) || ((cursorTarget getVariable ['status', -1] == 0) && (_this isEqualTo player))}";
-	_completion = {if (sv_cur_obj distance player < 4) then {[] spawn client_fnc_armMCOM;};};
-	_interruption = {sv_cur_obj setVariable ["status", -1, true]};
+	_cond = "(cursorTarget distance _this) < 5 && (cursorTarget == sv_cur_obj) && {(cursorTarget getVariable ['status',-1] == -1) || (cursorTarget getVariable ['status', -1] == 2) || ((cursorTarget getVariable ['status', -1] == 0) && (_this isEqualTo player))}";
+	_completion = {if (cursorTarget distance player < 5) then {[] spawn client_fnc_armMCOM;};};
+	_interruption = {cursorTarget setVariable ["status", -1, true]};
 };
 if (cl_classPerk == "saboteur") then {_duration = 1};
 
