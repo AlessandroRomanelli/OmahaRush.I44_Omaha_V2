@@ -216,4 +216,10 @@ class CfgSounds {
         sound[] = {"\sounds\headshot.ogg", 1.0, 1};
         titles[] = {};
     };
+    class rearmed_support
+    {
+        name = "rearmed_support";
+        sound[] = {"\sounds\reload.ogg", 1.0, 1};
+        titles[] = {};
+    };
 };

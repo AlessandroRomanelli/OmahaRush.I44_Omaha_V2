@@ -48,11 +48,8 @@ if (param[0,false,[false]]) then {
 	// If this objective was NOT the last one, reset the time!
 	private _roundTime = ceil (paramsArray#3 * 60);
 
-	sv_fallBack_timeLeft = nil;
 	if (player getVariable ["gameSide", "attackers"] == "attackers") then {
-		[clientOwner] remoteExec ["server_fnc_getBlockedSpawn", 2];
-		// Spawn the block function
-		[] spawn client_fnc_initBlockSpawn;
+		[player] remoteExec ["server_fnc_getBlockedSpawn", 2];
 	};
 
 	// Update markers

@@ -132,11 +132,8 @@ cl_blockSpawnForSide = "attackers";
 // Restart match timer
 private _roundTime = ceil (paramsArray#3 * 60);
 
-sv_fallBack_timeLeft = nil;
 if (player getVariable ["gameSide", "attackers"] == "attackers") then {
-	[clientOwner] remoteExec ["server_fnc_getBlockedSpawn", 2];
-	// Spawn the block function
-	[] spawn client_fnc_initBlockSpawn;
+	[player] remoteExec ["server_fnc_getBlockedSpawn", 2];
 };
 
 // Give us points for playing :)

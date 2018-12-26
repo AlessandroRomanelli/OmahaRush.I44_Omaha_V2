@@ -6,7 +6,7 @@ class ExplosiveCharge {
 };
 
 class Grenade {
-  weapon = "LIB_shg24";
+  weapon = "LIB_Shg24";
   class RifleGrenade {
     rifles[] = {"LIB_K98", "LIB_K98_Late"};
     attachment = "LIB_ACC_GW_SB_Empty";
