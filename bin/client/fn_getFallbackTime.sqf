@@ -14,7 +14,7 @@ private _oldStage = [] call {
   if ((str sv_cur_obj) isEqualTo (str sv_stage3_obj)) exitWith {"Stage2"};
   if ((str sv_cur_obj) isEqualTo (str sv_stage4_obj)) exitWith {"Stage3"};
 };
-diag_log format["DEBUG: Looking for the earlier stage: %1", _oldStage];
+
 // If it's the first objective, return the defined fallback time
 if (_oldStage isEqualTo "") exitWith {paramsArray#8};
 

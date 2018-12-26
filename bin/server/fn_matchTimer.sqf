@@ -16,6 +16,7 @@ private _stageTime = ceil (paramsArray#3 * 60);
 sv_matchTime =  _stageTime + _additionalTime;
 sv_matchEndTime =  sv_matchTime + diag_tickTime;
 sv_fallBack_timeLeft = _additionalTime + diag_tickTime;
+diag_log format ["sv_fallBack_timeLeft: %1", sv_fallBack_timeLeft];
 
 if (_matchStart) then {
 	[_additionalTime] spawn {

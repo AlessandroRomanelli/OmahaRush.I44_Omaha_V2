@@ -17,7 +17,8 @@ private _allObjects = [];
 		 {_x isKindOf "LandVehicle"} || {_x isKindOf "Air"} ||
 		 {_x isKindOf "WeaponHolder"} || {_x isKindOf "LIB_GerRadio"} ||
 		 {_x isKindOf "LIB_Static_opelblitz_radio"} || {_x isKindOf "LIB_SovRadio"} ||
-		 {_x isKindOf "LIB_Static_zis6_radar"} || {_x isKindOf "test_EmptyObjectForFireBig"}) then {
+		 {_x isKindOf "LIB_Static_zis6_radar"} || {_x isKindOf "test_EmptyObjectForFireBig"} ||
+		 {_x isKindOf "Land_Antenna"}) then {
 		 _allObjects pushBack _x
 	 }
  } forEach allMissionObjects "";
