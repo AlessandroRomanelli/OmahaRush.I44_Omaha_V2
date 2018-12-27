@@ -1,4 +1,4 @@
-faction = "US";
+faction = "UK";
 marker = "LIB_Faction_US_ARMY";
 
 class Vehicle {
@@ -56,8 +56,8 @@ class Car_HMG: Vehicle {
 };
 
 class Truck: Vehicle {
-  displayName = "GMC Truck";
-  className = "LIB_US_GMC_Open";
+  displayName = "Austin K5";
+  className = "LIB_AustinK5_Tent";
   respawnTime = 30;
 };
 

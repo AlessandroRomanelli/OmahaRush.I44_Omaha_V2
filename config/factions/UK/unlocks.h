@@ -1,16 +1,16 @@
-faction = "US";
+faction = "UK";
 
-class LIB_M1_Garand {
-  ammo = "LIB_8Rnd_762x63";
+class LIB_LeeEnfield_No1 {
+  ammo = "LIB_10Rnd_770x56";
   exp = 0;
   type = "primary";
-  roles[] = {"assault", "medic"};
-  damageMultiplier = 0.25;
+  roles[] = {"assault", "medic", "recon"};
+  damageMultiplier = 1;
   class attachments {};
 };
 
-class LIB_Colt_M1911 {
-  ammo = "LIB_7Rnd_45ACP";
+class LIB_Webley_mk6 {
+  ammo = "LIB_6Rnd_455";
   exp = 5000;
   type = "secondary";
   roles[] = {"assault", "medic", "engineer", "support"};
@@ -18,11 +18,11 @@ class LIB_Colt_M1911 {
   class attachments {};
 };
 
-class LIB_DELISLE {
+class LIB_LeeEnfield_No4 {
   ammo = "LIB_7Rnd_45ACP";
   exp = 7500;
   type = "primary";
-  roles[] = {"assault", "medic"};
+  roles[] = {"assault", "medic", "recon"};
   damageMultiplier = 1;
   class attachments {};
 };
@@ -45,8 +45,8 @@ class LIB_M1A1_Carbine {
   class attachments {};
 };
 
-class LIB_M1918A2_BAR {
-  ammo = "LIB_20Rnd_762x63";
+class LIB_Bren_Mk2 {
+  ammo = "LIB_30Rnd_770x56";
   exp = 0;
   type = "primary";
   roles[] = {"support"};
@@ -72,8 +72,8 @@ class LIB_M1919A6 {
   class attachments {};
 };
 
-class LIB_M3_GreaseGun {
-  ammo = "LIB_30Rnd_M3_GreaseGun_45ACP";
+class LIB_Sten_Mk2 {
+  ammo = "LIB_32Rnd_9x19_Sten";
   exp = 0;
   type = "primary";
   roles[] = {"engineer"};
@@ -81,9 +81,18 @@ class LIB_M3_GreaseGun {
   class attachments {};
 };
 
+class LIB_Sten_Mk5 {
+  ammo = "LIB_32Rnd_9x19_Sten";
+  exp = 10000;
+  type = "primary";
+  roles[] = {"engineer"};
+  damageMultiplier = 0.3;
+  class attachments {};
+};
+
 class LIB_M1A1_Thompson {
   ammo = "LIB_30Rnd_45ACP";
-  exp = 7500;
+  exp = 10000;
   type = "primary";
   roles[] = {"engineer"};
   damageMultiplier = 0.3;
@@ -99,18 +108,9 @@ class LIB_M1928_Thompson {
   class attachments {};
 };
 
-class LIB_M1903A3_Springfield {
-  ammo = "LIB_5Rnd_762x63";
-  exp = 0;
-  type = "primary";
-  roles[] = {"recon"};
-  damageMultiplier = 1;
-  class attachments {};
-};
-
-class LIB_M1903A4_Springfield {
-  ammo = "LIB_5Rnd_762x63";
-  exp = 7500;
+class LIB_LeeEnfield_No4_Scoped {
+  ammo = "LIB_7Rnd_45ACP";
+  exp = 10000;
   type = "primary";
   roles[] = {"recon"};
   damageMultiplier = 1;
