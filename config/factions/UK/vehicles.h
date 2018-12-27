@@ -1,5 +1,5 @@
 faction = "UK";
-marker = "LIB_Faction_US_ARMY";
+marker = "flag_UK";
 
 class Vehicle {
   displayName = "";
