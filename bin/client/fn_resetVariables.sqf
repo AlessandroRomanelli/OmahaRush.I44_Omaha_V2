@@ -52,26 +52,26 @@ if (isNil "rr_iconrenderer_executed") then {
 	cl_onEachFrameIconRenderedID = addMissionEventHandler["EachFrame", {
 	// onEachFrame {
 		// Objectives
-		if (count (sv_cur_obj getVariable ["positionAGL", []]) == 0) then {
-			private _pos = ASLToAGL (getPosASL sv_cur_obj);
-			_pos set [2, (_pos select 2) + 0.5];
+		private _pos = sv_cur_obj getVariable ["positionAGL", []];
+		if (count _pos == 0) then {
+		 	_pos = sv_cur_obj modelToWorldVisual [0,0,0.5];
 			sv_cur_obj setVariable ["positionAGL", _pos];
 		};
 
-		private _pos = sv_cur_obj getVariable "positionAGL";
-
 		private _alpha = [_pos] call {
 			private _pos = param [0, [], [[]]];
+			if (count _pos == 0) exitWith {1};
 			private _relDir = player getRelDir _pos;
 			if (_relDir < 10) exitWith {
 				0.25 + (3*_relDir/40)
 			};
-			if (_relDir > 10 && _relDir < 350) exitWith {
+			if (_relDir >= 10 && _relDir <= 350) exitWith {
 				1
 			};
 			if (_relDir > 350) exitWith {
 				1 - (3/40*_relDir) + 26.25
 			};
+			1
 		};
 
 		if ((sv_cur_obj getVariable ["status", -1]) isEqualTo 1) then {
@@ -142,7 +142,7 @@ if (isNil "rr_iconrenderer_executed") then {
 					if (_alpha < 0 || ([player, "VIEW", _unit] checkVisibility [eyePos player, eyePos _unit] < 0.2)) then {
 						_alpha = 0;
 					};
-					drawIcon3D[MISSION_ROOT+"pictures\enemy.paa", [1,1,1,_alpha], _pos, 0.3, 0.3, 0, "", 2, 0.03, "PuristaMedium", "center", false];
+					drawIcon3D [MISSION_ROOT+"pictures\enemy.paa", [1,1,1,_alpha], _pos, 0.3, 0.3, 0, "", 2, 0.03, "PuristaMedium", "center", false];
 				};
 			};
 		} forEach cl_onEachFrame_spotted_enemies;
@@ -152,7 +152,7 @@ if (isNil "rr_iconrenderer_executed") then {
 			{
 				_pos = getPosATLVisual _x;
 				_pos set [2, (_pos select 2) + 0.1];
-				drawIcon3D[MISSION_ROOT+"pictures\revive.paa", [1,1,1,0.8], _pos, 1.5, 1.5, 0, "", 2, 0.035, "PuristaMedium", "center", false];
+				drawIcon3D [MISSION_ROOT+"pictures\revive.paa", [1,1,1,0.8], _pos, 1.5, 1.5, 0, "", 2, 0.035, "PuristaMedium", "center", false];
 			} forEach cl_onEachFrame_team_reviveable;
 		};
 
@@ -244,10 +244,20 @@ if (isNil "rr_iconrenderer_executed") then {
 
 		if (player getVariable ["isAlive", false]) then {
 			private _isPlayerAttacking = player getVariable ["gameSide", "attackers"] == "attackers";
-			if !(((vehicle player) inArea playArea) || ((vehicle player) isKindOf "Air") || ((player getVariable ["isFallingBack", false]) && (((getPosATL player) distance2D (getMarkerPos "mobile_respawn_defenders")) < 300))) then {
+			if !(
+					((vehicle player) inArea playArea) ||
+					((vehicle player) isKindOf "Air") ||
+					(
+						(player getVariable ["isFallingBack", false]) &&
+						(((getPosATL player) distance2D (getMarkerPos "mobile_respawn_defenders")) < 300)
+					)) then {
 				30 cutRsc ["rr_restrictedArea", "PLAIN"];
 				private _display = uiNamespace getVariable ["rr_restrictedArea", displayNull];
-				private _fallBackTime = [] call client_fnc_getFallbackTime;
+				private _fallBackTime = player getVariable ["fallBackTime", nil];
+				if (isNil "_fallBackTime") then {
+					_fallBackTime = [] call client_fnc_getFallbackTime;
+					player setVariable ["fallBackTime", _fallBackTime];
+				};
 				private _outOfBoundsTimeout = if (player getVariable ["isFallingBack", false]) then [{_fallBackTime}, {paramsArray#7}];
 				if (diag_tickTime - (player getVariable "entryTime") < _outOfBoundsTimeout) then {
 					if (!_isPlayerAttacking && player getVariable "isFallingBack") then {

@@ -43,6 +43,7 @@ player allowDamage false;
 cl_assistsInfo = [];
 
 // Delete layers that may be still there
+60000 cutRsc ["default", "PLAIN"];
 60001 cutRsc ["default", "PLAIN"];
 
 400 cutRsc ["rr_objective_gui","PLAIN"];

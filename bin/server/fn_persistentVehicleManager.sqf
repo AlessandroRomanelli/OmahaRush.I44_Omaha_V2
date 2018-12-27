@@ -65,17 +65,14 @@ sv_tryRespawn = {
 
 private _sv_spawnVehicle = {
 	private _config = param[0,configNull,[configNull]];
-	/* private _initialSpawn = param[1,false,[false]]; */
+	private _initialSpawn = param[1,false,[false]];
 	private _arrayToEdit = param[2,[],[[]]];
-	//diag_log "_0";
 
 	// Vehicle is not being handled yet, handle it now
 	sv_persistentVehiclesAwaitingRespawn pushBack (configName _config);
 
 	// Wait the respawn time
-	private _sleepTime = getNumber(_config >> "respawnTime");
-	/* diag_log format["DEBUG: Call will wait for %1 seconds before proceeding", _sleepTime]; */
-	/* if (!_initialSpawn) then {_sleepTime = getNumber(_config >> "respawnTime")}; */
+	private _sleepTime = if (_initialSpawn) then {paramsArray#8} else {getNumber(_config >> "respawnTime")};
 	sleep _sleepTime;
 
 	//diag_log "_1";

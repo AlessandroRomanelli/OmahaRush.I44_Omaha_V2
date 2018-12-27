@@ -9,7 +9,6 @@ scriptName "fn_setupEventHandlers";
 #define __filename "fn_setupEventHandlers.sqf"
 if (isServer && !hasInterface) exitWith {};
 
-
 // Remove all handlers
 player removeAllEventHandlers "Take";
 player removeAllEventHandlers "InventoryOpened";
@@ -320,34 +319,23 @@ player addEventHandler ["GetInMan", {
 	private _vehicle = param[2, objNull, [objNull]];
 	_vehicle allowDamage true;
 
-	if ((count (crew _vehicle) > 0) && {_vehicle getVariable ["last_man", objNull] != objNull}) then {
-		_vehicle setVariable ["last_man", objNull, true];
+	_vehicle enableSimulation true;
+
+	if (_vehicle isKindOf "Air") then {
+		private _fuelTime = getNumber(missionConfigFile >> "Vehicles" >> "Plane" >> "fuelTime");
+		[format["YOU HAVE %1 SECONDS WORTH OF FUEL, BE QUICK!", _fuelTime]] spawn client_fnc_displayInfo;
+		_vehicle setVectorUp [0,0,1];
+		private _velocity = (vectorDir _vehicle) vectorMultiply 50;
+		_vehicle setVelocity _velocity;
 	};
+
+	/* if ((count (crew _vehicle) > 0) && {_vehicle getVariable ["last_man", objNull] != objNull}) then {
+		_vehicle setVariable ["last_man", objNull, true];
+	}; */
 
 	_vehicle removeAllEventHandlers "Killed";
 	_vehicle addEventHandler ["Killed", {
 		params ["_vehicle", "_killer", "_instigator"];
-
-		private _sendVehicleKill = {
-			params ["_vehicle", "_killer"];
-			if (!isNull _killer) then {
-				{
-					if (!isNull _x && alive _x) then {
-						[_x, false] remoteExec ["client_fnc_kill", _killer];
-					};
-				} forEach (crew _vehicle);
-			};
-			private _halfTrucks = ["LIB_US_M3_Halftrack", "LIB_SdKfz251", "LIB_SdKfz251_FFV", "LIB_M8_Greyhound", "LIB_SdKfz234_2"];
-			if (_vehicle isKindOf "Tank" && !((typeOf _vehicle) in _halfTrucks)) exitWith {
-				500 remoteExec ["client_fnc_vehicleDisabled", _killer];
-			};
-			if ((typeOf _vehicle) in _halfTrucks) exitWith {
-				300 remoteExec ["client_fnc_vehicleDisabled", _killer];
-			};
-			if (_vehicle isKindOf "Car") exitWith {
-				150 remoteExec ["client_fnc_vehicleDisabled", _killer];
-			};
-		};
 
 		if (!isNull _instigator) then {
 			_killer = _instigator;
@@ -359,17 +347,31 @@ player addEventHandler ["GetInMan", {
 
 		if (isNull _killer) exitWith {};
 
-		if (count (crew _vehicle) > 0) exitWith {
-			_unit = (crew _vehicle) select 0;
-			if ((player isEqualto _unit) && (_unit getVariable ["gameSide", "attackers"] != _killer getVariable ["gameSide", "defenders"])) then {
-				[_vehicle, _killer] spawn _sendVehicleKill;
+		if ((local _vehicle) && {player getVariable ["side", sideUnknown] != _killer getVariable ["side", sideUnknown]}) exitWith {
+			{
+				if (!isNull _x && {_x getVariable ["isAlive", true]}) then {
+					[_x, false] remoteExec ["client_fnc_kill", _killer];
+				};
+			} forEach (crew _vehicle);
+			private _vehType = typeOf _vehicle;
+			private _planes = ["LIB_US_P39_2", "LIB_P47", "LIB_P39", "LIB_Pe2", "LIB_FW190F8", "LIB_Ju87"];
+			private _htanks = ["LIB_PzKpfwV", "LIB_T34_85", "LIB_M4A4_FIREFLY"];
+			private _ltanks = ["LIB_SdKfz234_2", "LIB_T34_76", "LIB_M3A3_Stuart"];
+			private _apc = ["LIB_SdKfz222_camo","LIB_Zis5v_61K","LIB_M8_Greyhound"];
+			private _halfTrucks = ["LIB_US_M3_Halftrack", "LIB_SdKfz251_FFV", "LIB_Scout_M3_FFV", "LIB_US_Scout_M3_FFV"];
+			if (_vehType in _planes) exitWith {
+				[400, true, "AIRPLANE"] remoteExec ["client_fnc_vehicleDisabled", _killer];
 			};
-		};
-		private _lastMan = _vehicle getVariable ["last_man", objNull];
-		if (player isEqualto _lastMan) exitWith {
-			if (_lastMan getVariable ["gameSide", "attackers"] != _killer getVariable ["gameSide", "defenders"]) then {
-				[_vehicle, _killer] spawn _sendVehicleKill;
+			if (_vehType in _htanks) exitWith {
+				[500, true, "MEDIUM TANK"] remoteExec ["client_fnc_vehicleDisabled", _killer];
 			};
+			if (_vehType in _ltanks) exitWith {
+				[300, true, "LIGHT TANK"] remoteExec ["client_fnc_vehicleDisabled", _killer];
+			};
+			if (_vehType in _apc || _vehType in _halfTrucks) exitWith {
+				[200, true, "ARMORED CAR"] remoteExec ["client_fnc_vehicleDisabled", _killer];
+			};
+			[100, true, "VEHICLE"] remoteExec ["client_fnc_vehicleDisabled", _killer];
 		};
  }];
 
@@ -378,13 +380,8 @@ player addEventHandler ["GetInMan", {
 	_vehicle addEventHandler ["HandleDamage", {
 		params ["_vehicle", "_hitSelection", "_damage", "_shooter", "_projectile"];
   	private _rockets = ["LIB_60mm_M6", "LIB_R_88mm_RPzB"];
-		if (_vehicle isKindOf "Tank" && {_projectile in _rockets}) then {
+		if (_projectile in _rockets) then {
 			_damage = damage _vehicle + (_damage*2);
-		};
-		if ((_vehicle isKindOf "Car" || {(typeOf _vehicle) in ["LIB_US_M3_Halftrack", "LIB_SdKfz251", "LIB_SdKfz251_FFV"]}) && {_projectile in _rockets}) then {
-			if (_projectile in _rockets) then {
-				_damage = 1;
-			};
 		};
 		_damage
 	}];
@@ -395,24 +392,23 @@ player addEventHandler ["GetInMan", {
 		if (!isNull _shooter) then {
 			_source = _shooter;
 		};
-		if (!isNull _source) then {
+		if ((!isNull _source) && (_damage > 0.1) && {_source != player}) then {
 			0.1 remoteExec ["client_fnc_MPHit", _source];
 		};
+
 		if (_vehicle getVariable ["disabled", false]) exitWith {};
-		if (count (crew _vehicle) > 0) then {
-			_unit = crew _vehicle select 0;
-			if ((player isEqualTo _unit) && {(_unit getVariable ["gameSide", "attackers"]) != (_source getVariable ["gameSide", "defenders"])} && {!(canMove _vehicle)}) then {
-				_vehicle setVariable ["disabled", true, true];
-				if (_vehicle isKindOf "Tank") exitWith {
-					200 remoteExec ["client_fnc_vehicleDisabled", _source];
-				};
-				if (_vehicle isKindOf "Car") exitWith {
-					100 remoteExec ["client_fnc_vehicleDisabled", _source];
-				};
+
+		if (local _vehicle && {(player getVariable ["side", sideUnknown]) != (_source getVariable ["side", sideUnknown])} && {!(canMove _vehicle)}) then {
+			_vehicle setVariable ["disabled", true, true];
+			if (_vehicle isKindOf "Tank") then {
+				200 remoteExec ["client_fnc_vehicleDisabled", _source];
 			};
-		};
-		if (isPlayer _source && {_damage > 0.01}) then {
-			_vehicle setVariable ["last_hit_source", _source];
+			if (_vehicle isKindOf "Car") then {
+				100 remoteExec ["client_fnc_vehicleDisabled", _source];
+			};
+			if (isPlayer _source && {_damage > 0.01}) then {
+				_vehicle setVariable ["last_hit_source", _source, true];
+			};
 		};
 	}];
 
@@ -426,18 +422,15 @@ player addEventHandler ["GetInMan", {
 		} else {
 			[_vehicle] spawn {
 				private _vehicle = param[0, objNull, [objNull]];
-				private _side = ["Attacker", "Defender"] select ((player getVariable ["gameSide", "defenders"]) isEqualTo "defenders");
-				private _configs = "true" configClasses (missionConfigFile >> "MapSettings" >> "PersistentVehicles" >> _side);
-				_configs = _configs select {(getText(_x >> "className")) isEqualTo (typeOf _vehicle)};
-				if (count _configs != 0) then {
-					private _fuelTime = getNumber(_configs select 0 >> "fuelTime");
-					sleep (_fuelTime - 10);
-					private _timeLeft = 10;
-					while {_timeLeft > 0 && ((vehicle player) isEqualTo _vehicle)} do {
-						[format["YOU'LL RUN OUT OF FUEL IN %1 SECONDS<br /><t size='1.25'>PREPARE TO BAIL OUT!</t>", _timeLeft]] spawn client_fnc_displayError;
-						sleep 1;
-						_timeLeft = _timeLeft - 1;
-					};
+				private _fuelTime = getNumber(missionConfigFile >> "Vehicles" >> "Plane" >> "fuelTime");
+				sleep (_fuelTime - 10);
+				private _timeLeft = diag_tickTime + 10;
+				while {_timeLeft > diag_tickTime && ((vehicle player) isEqualTo _vehicle)} do {
+					[format["YOU'LL RUN OUT OF FUEL IN %1 SECONDS<br /><t size='1.25'>PREPARE TO BAIL OUT!</t>", round (_timeLeft - diag_tickTime)]] spawn client_fnc_displayError;
+					sleep 1;
+				};
+				if ((vehicle player) isEqualTo _vehicle) then {
+					_vehicle setFuel 0;
 				};
 			};
 		};
@@ -451,8 +444,7 @@ player addEventHandler ["GetOutMan", {
 	};
 	private _pos = getPos player;
 	if ((_vehicle isKindOf "Air") && (_pos select 2 > 5)) then {
-		private _velPlayer = velocity player;
-		{_velPlayer set [_forEachIndex, _x/5]} forEach _velPlayer;
+		private _velPlayer = (velocity player) vectorMultiply 0.1;
 		player setVelocity _velPlayer;
 		if (player getVariable ["hasChute", true]) then {
 			["PRESS <t size='1.5'>[SPACE BAR]</t> TO OPEN YOUR PARACHUTE!"] spawn client_fnc_displayInfo;

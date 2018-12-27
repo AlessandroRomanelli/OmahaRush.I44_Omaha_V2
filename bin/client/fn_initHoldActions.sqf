@@ -31,6 +31,7 @@ mg_conditionShowOnMyself = {
 	private _condition = if (cl_class in ["medic", "assault", "recon"]) then {((_currentAmmo + _reserveAmmo) <= 10)} else {((_currentAmmo + _reserveAmmo) <= 50)};
 	_condition && !(player getVariable ["ammo_restored",false])
 };
+
 private _mg_code = {
 	if (!isNull cl_lastActionTarget) then {
 		[player] remoteExec ["client_fnc_restoreAmmo", cl_lastActionTarget];
@@ -66,7 +67,7 @@ private _id = [
 /* 1 action title */					"Replenish Own Ammunition",
 /* 2 idle icon */						"pictures\support.paa",
 /* 3 progress icon */					"pictures\support.paa",
-/* 4 condition to show */				"(cl_classPerk == 'ammo' || ((typeOf cursorTarget) isEqualTo 'LIB_AmmoCrates_NoInteractive_Large')) && [] call mg_conditionShowOnMyself ",
+/* 4 condition to show */				"cl_classPerk == 'ammo' && [] call mg_conditionShowOnMyself ",
 /* 5 condition for action */			"true",
 /* 6 code executed on start */			{cl_lastActionTarget = player;},
 /* 7 code executed per tick */			{},
@@ -79,6 +80,7 @@ private _id = [
 /* 14 show unconscious */				false
 ] call BIS_fnc_holdActionAdd;
 cl_actionIDs pushBack _id;
+
 
 diag_log "Setting up handlers... 2";
 
@@ -112,16 +114,16 @@ private _interruption = {};
 private _duration = 4;
 if ((player getVariable "gameSide") == "defenders") then {
 	_text = "Disarm Explosives";
-	_cond = "(cursorTarget distance _this) < 4 && (cursorTarget == sv_cur_obj) && {(cursorTarget getVariable ['status',-1] == 1) || (cursorTarget getVariable ['status', -1] == 0 && (_this isEqualTo player))}";
-	_completion = {if (cursorTarget distance player < 4) then {[] spawn client_fnc_disarmMCOM;};};
-	_interruption = {sv_cur_obj setVariable ["status", 1, true]};
+	_cond = "(cursorTarget distance _this) < 5 && (cursorTarget == sv_cur_obj) && {(cursorTarget getVariable ['status',-1] == 1) || (cursorTarget getVariable ['status', -1] == 0 && (_this isEqualTo player))}";
+	_completion = {if (cursorTarget distance player < 5) then {[] spawn client_fnc_disarmMCOM;};};
+	_interruption = {cursorTarget setVariable ["status", 1, true]};
 } else {
 	_text = "Plant Explosives";
-	_cond = "(cursorTarget distance _this) < 4 && (cursorTarget == sv_cur_obj) && {(cursorTarget getVariable ['status',-1] == -1) || (cursorTarget getVariable ['status', -1] == 2) || ((cursorTarget getVariable ['status', -1] == 0) && (_this isEqualTo player))}";
-	_completion = {if (cursorTarget distance player < 4) then {[] spawn client_fnc_armMCOM;};};
-	_interruption = {sv_cur_obj setVariable ["status", -1, true]};
+	_cond = "(cursorTarget distance _this) < 5 && (cursorTarget == sv_cur_obj) && {(cursorTarget getVariable ['status',-1] == -1) || (cursorTarget getVariable ['status', -1] == 2) || ((cursorTarget getVariable ['status', -1] == 0) && (_this isEqualTo player))}";
+	_completion = {if (cursorTarget distance player < 5) then {[] spawn client_fnc_armMCOM;};};
+	_interruption = {cursorTarget setVariable ["status", -1, true]};
 };
-if (cl_classPerk == "saboteur") then {_duration = 0.75};
+if (cl_classPerk == "saboteur") then {_duration = 1};
 
 diag_log "Setting up handlers... 4";
 
@@ -229,3 +231,25 @@ private _id = [
 cl_actionIDs pushBack _id;
 
 diag_log "Setting up handlers... 8";
+
+// Rearm at ammo crate
+private _id = [
+/* 0 object */							player,
+/* 1 action title */					"Rearm at Ammobox",
+/* 2 idle icon */						"pictures\support.paa",
+/* 3 progress icon */					"pictures\support.paa",
+/* 4 condition to show */				"(typeOf cursorTarget) isEqualTo 'LIB_AmmoCrates_NoInteractive_Large' && (cursorTarget distance player) < 5",
+/* 5 condition for action */			"true",
+/* 6 code executed on start */			{},
+/* 7 code executed per tick */			{},
+/* 8 code executed on completion */		client_fnc_restoreAmmo,
+/* 9 code executed on interruption */	{},
+/* 10 arguments */						[],
+/* 11 action duration */				0.5,
+/* 12 priority */						500,
+/* 13 remove on completion */			false,
+/* 14 show unconscious */				false
+] call BIS_fnc_holdActionAdd;
+cl_actionIDs pushBack _id;
+
+diag_log "Setting up handlers... 9";
