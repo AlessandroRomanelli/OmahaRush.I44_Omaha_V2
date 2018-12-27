@@ -104,50 +104,51 @@ private _id = [
 ] call BIS_fnc_holdActionAdd;
 cl_actionIDs pushBack _id;
 
-diag_log "Setting up handlers... 3";
+for "_i" from 1 to 4  do {
+	private _objective = missionNamespace getVariable [format ["sv_stage%1_obj", _i], objNull];
 
-// Planting and defusing objectives
-private _cond = "";
-private _text = "";
-private _completion = {};
-private _interruption = {};
-private _duration = 4;
-if ((player getVariable "gameSide") == "defenders") then {
-	_text = "Disarm Explosives";
-	_cond = "(cursorTarget distance _this) < 5 && (cursorTarget == sv_cur_obj) && {(cursorTarget getVariable ['status',-1] == 1) || (cursorTarget getVariable ['status', -1] == 0 && (_this isEqualTo player))}";
-	_completion = {if (cursorTarget distance player < 5) then {[] spawn client_fnc_disarmMCOM;};};
-	_interruption = {cursorTarget setVariable ["status", 1, true]};
-} else {
-	_text = "Plant Explosives";
-	_cond = "(cursorTarget distance _this) < 5 && (cursorTarget == sv_cur_obj) && {(cursorTarget getVariable ['status',-1] == -1) || (cursorTarget getVariable ['status', -1] == 2) || ((cursorTarget getVariable ['status', -1] == 0) && (_this isEqualTo player))}";
-	_completion = {if (cursorTarget distance player < 5) then {[] spawn client_fnc_armMCOM;};};
-	_interruption = {cursorTarget setVariable ["status", -1, true]};
+	// Planting and defusing objectives
+	private _icon = MISSION_ROOT+"pictures\";
+	private _cond = "";
+	private _text = "";
+	private _completion = {};
+	private _interruption = {};
+	private _duration = if (cl_classPerk == "saboteur") then {1} else {4};
+	if ((player getVariable "gameSide") == "defenders") then {
+		_icon = _icon + "bombDefuse.paa";
+		_text = "Disarm Explosives";
+		_cond = "_target isEqualTo sv_cur_obj && {(_this distance _target) < 3} && {(_target getVariable ['status',-1] == 1) || (_target getVariable ['status', -1] == 0 && (_this isEqualTo player))}";
+		_completion = {if (sv_cur_obj distance player < 5) then {[] spawn client_fnc_disarmMCOM;};};
+		_interruption = {sv_cur_obj setVariable ["status", 1, true]};
+	} else {
+		_icon = _icon + "bombPlant.paa";
+		_text = "Plant Explosives";
+		_cond = "_target isEqualTo sv_cur_obj && {(_this distance _target) < 3} && {(_target getVariable ['status',-1] == -1) || (_target getVariable ['status', -1] == 2) || ((_target getVariable ['status', -1] == 0) && (_this isEqualTo player))}";
+		_completion = {if (sv_cur_obj distance player < 5) then {[] spawn client_fnc_armMCOM;};};
+		_interruption = {sv_cur_obj setVariable ["status", -1, true]};
+	};
+
+	// Add action to objectives
+	private _id = [
+	/* 0 object */							_objective,
+	/* 1 action title */					_text,
+	/* 2 idle icon */						_icon,
+	/* 3 progress icon */					_icon,
+	/* 4 condition to show */				_cond,
+	/* 5 condition for action */			"_caller distance _target < 3",
+	/* 6 code executed on start */			{playSound3D[MISSION_ROOT + "sounds\arm.ogg", sv_cur_obj]; sv_cur_obj setVariable ["status", 0, true];},
+	/* 7 code executed per tick */			{},
+	/* 8 code executed on completion */		_completion,
+	/* 9 code executed on interruption */	_interruption,
+	/* 10 arguments */						[],
+	/* 11 action duration */				_duration,
+	/* 12 priority */						10000,
+	/* 13 remove on completion */			false,
+	/* 14 show unconscious */				false
+	] call bis_fnc_holdActionAdd;
+	cl_actionIDs pushBack _id;
 };
-if (cl_classPerk == "saboteur") then {_duration = 1};
 
-diag_log "Setting up handlers... 4";
-
-// Add action to current objective
-private _id = [
-/* 0 object */							player,
-/* 1 action title */					_text,
-/* 2 idle icon */						"\a3\ui_f\data\IGUI\Cfg\simpleTasks\types\upload_ca.paa",
-/* 3 progress icon */					"\a3\ui_f\data\IGUI\Cfg\simpleTasks\types\upload_ca.paa",
-/* 4 condition to show */				_cond,
-/* 5 condition for action */			"true",
-/* 6 code executed on start */			{playSound3D[MISSION_ROOT + "sounds\arm.ogg", sv_cur_obj]; sv_cur_obj setVariable ["status", 0, true];},
-/* 7 code executed per tick */			{},
-/* 8 code executed on completion */		_completion,
-/* 9 code executed on interruption */	_interruption,
-/* 10 arguments */						[],
-/* 11 action duration */				_duration,
-/* 12 priority */						10000,
-/* 13 remove on completion */			false,
-/* 14 show unconscious */				false
-] call bis_fnc_holdActionAdd;
-cl_actionIDs pushBack _id;
-
-diag_log "Setting up handlers... 5";
 
 // Vehicle ammunition
 private _completed = {

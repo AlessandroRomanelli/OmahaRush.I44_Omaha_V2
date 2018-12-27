@@ -134,6 +134,4 @@ if (player getVariable "gameSide" == "defenders") then {
 	sleep 10.3;
 	private _instructions = [cl_classPerk] call client_fnc_getPerkInstructions;
 	[_instructions select 0, _instructions select 1] spawn client_fnc_hint;
-	// Reload mcom interaction
-	[] spawn client_fnc_objectiveActionUpdate;
 };

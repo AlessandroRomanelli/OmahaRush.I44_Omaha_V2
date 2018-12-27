@@ -33,7 +33,6 @@ class Maverick_Functions_Client {
 		class killed {};
 		class equipAll {};
 		class regenerateHP {};
-		class objectiveActionUpdate {};
 		class MCOMarmed {};
 		class armMCOM {};
 		class disarmMCOM {};
