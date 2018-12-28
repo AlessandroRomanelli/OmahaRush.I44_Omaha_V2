@@ -117,14 +117,14 @@ for "_i" from 1 to 4  do {
 	if ((player getVariable "gameSide") == "defenders") then {
 		_icon = _icon + "bombDefuse.paa";
 		_text = "Disarm Explosives";
-		_cond = "_target isEqualTo sv_cur_obj && {(_this distance _target) < 3} && {(_target getVariable ['status',-1] == 1) || (_target getVariable ['status', -1] == 0 && (_this isEqualTo player))}";
-		_completion = {if (sv_cur_obj distance player < 5) then {[] spawn client_fnc_disarmMCOM;};};
+		_cond = "_target isEqualTo sv_cur_obj && {(_this distance2D _target) < ceil(([_target] call client_fnc_getObjectiveDistance) + 2)} && {(_target getVariable ['status',-1] == 1) || (_target getVariable ['status', -1] == 0 && (_this isEqualTo player))}";
+		_completion = {if (sv_cur_obj distance2D player < ceil(([_target] call client_fnc_getObjectiveDistance) + 2)) then {[] spawn client_fnc_disarmMCOM;};};
 		_interruption = {sv_cur_obj setVariable ["status", 1, true]};
 	} else {
 		_icon = _icon + "bombPlant.paa";
 		_text = "Plant Explosives";
-		_cond = "_target isEqualTo sv_cur_obj && {(_this distance _target) < 3} && {(_target getVariable ['status',-1] == -1) || (_target getVariable ['status', -1] == 2) || ((_target getVariable ['status', -1] == 0) && (_this isEqualTo player))}";
-		_completion = {if (sv_cur_obj distance player < 5) then {[] spawn client_fnc_armMCOM;};};
+		_cond = "_target isEqualTo sv_cur_obj && {(_this distance2D _target) < ceil(([_target] call client_fnc_getObjectiveDistance) + 2)} && {(_target getVariable ['status',-1] == -1) || (_target getVariable ['status', -1] == 2) || ((_target getVariable ['status', -1] == 0) && (_this isEqualTo player))}";
+		_completion = {if (sv_cur_obj distance2D player < ceil(([_target] call client_fnc_getObjectiveDistance) + 2)) then {[] spawn client_fnc_armMCOM;};};
 		_interruption = {sv_cur_obj setVariable ["status", -1, true]};
 	};
 
@@ -135,7 +135,7 @@ for "_i" from 1 to 4  do {
 	/* 2 idle icon */						_icon,
 	/* 3 progress icon */					_icon,
 	/* 4 condition to show */				_cond,
-	/* 5 condition for action */			"_caller distance _target < 3",
+	/* 5 condition for action */			"_caller distance2D _target < ceil(([_target] call client_fnc_getObjectiveDistance) + 2)",
 	/* 6 code executed on start */			{playSound3D[MISSION_ROOT + "sounds\arm.ogg", sv_cur_obj]; sv_cur_obj setVariable ["status", 0, true];},
 	/* 7 code executed per tick */			{},
 	/* 8 code executed on completion */		_completion,
