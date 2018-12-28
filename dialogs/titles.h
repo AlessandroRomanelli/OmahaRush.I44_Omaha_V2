@@ -1049,46 +1049,159 @@ class rr_reloadingFlares {
 				font = "PuristaBold";
 				align = "right";
 			};
+
+			class teammate_1: RscStructuredText
+			{
+				idc = 2100;
+				text = ""; //--- ToDo: Localize;
+				x = 0.861382 * safezoneW + safezoneX;
+				y = 0.838541 * safezoneH + safezoneY;
+				w = 0.114584 * safezoneW;
+				h = 0.0282118 * safezoneH;
+				colorBackground[] = {-1,-1,-1, 0};
+				sizeEx = "(0.95*(pixelH * pixelGridNoUIScale * 2.9))";
+			};
+			class teammate_2: RscStructuredText
+			{
+				idc = 2101;
+				text = ""; //--- ToDo: Localize;
+				x = 0.861382 * safezoneW + safezoneX;
+				y = 0.800926 * safezoneH + safezoneY;
+				w = 0.114584 * safezoneW;
+				h = 0.0282118 * safezoneH;
+				colorBackground[] = {-1,-1,-1,0};
+				sizeEx = "(0.95*(pixelH * pixelGridNoUIScale * 2.9))";
+			};
+			class teammate_3: RscStructuredText
+			{
+				idc = 2102;
+				text = ""; //--- ToDo: Localize;
+				x = 0.861382 * safezoneW + safezoneX;
+				y = 0.76331 * safezoneH + safezoneY;
+				w = 0.114584 * safezoneW;
+				h = 0.0282118 * safezoneH;
+				colorBackground[] = {-1,-1,-1,0};
+				sizeEx = "(0.95*(pixelH * pixelGridNoUIScale * 2.9))";
+			};
+			class teammate_4: RscStructuredText
+			{
+				idc = 2103;
+				text = ""; //--- ToDo: Localize;
+				x = 0.861382 * safezoneW + safezoneX;
+				y = 0.725694 * safezoneH + safezoneY;
+				w = 0.114584 * safezoneW;
+				h = 0.0282118 * safezoneH;
+				colorBackground[] = {-1,-1,-1,0};
+				sizeEx = "(0.95*(pixelH * pixelGridNoUIScale * 2.9))";
+			};
+			class teammate_5: RscStructuredText
+			{
+				idc = 2104;
+				text = ""; //--- ToDo: Localize;
+				x = 0.861382 * safezoneW + safezoneX;
+				y = 0.688079 * safezoneH + safezoneY;
+				w = 0.114584 * safezoneW;
+				h = 0.0282118 * safezoneH;
+				colorBackground[] = {-1,-1,-1,0};
+				sizeEx = "(0.95*(pixelH * pixelGridNoUIScale * 2.9))";
+			};
+			class teammate_1_perk: RscPicture
+			{
+				idc = 2200;
+				text = "pictures\assault.paa";
+				x = 0.971294 * safezoneW + safezoneX;
+				y = 0.828009 * safezoneH + safezoneY;
+				w = 0.0264426 * safezoneW;
+				h = 0.0470196 * safezoneH;
+				colorText[] = {0.66, 1, 0.66, 1};
+			};
+			class teammate_2_perk: RscPicture
+			{
+				idc = 2201;
+				text = "pictures\assault.paa";
+				x = 0.971559 * safezoneW + safezoneX;
+				y = 0.791522 * safezoneH + safezoneY;
+				w = 0.0264426 * safezoneW;
+				h = 0.0470196 * safezoneH;
+				colorText[] = {0.66, 1, 0.66, 1};
+			};
+			class teammate_3_perk: RscPicture
+			{
+				idc = 2202;
+				text = "pictures\assault.paa";
+				x = 0.971559 * safezoneW + safezoneX;
+				y = 0.753906 * safezoneH + safezoneY;
+				w = 0.0264426 * safezoneW;
+				h = 0.0470196 * safezoneH;
+				colorText[] = {0.66, 1, 0.66, 1};
+			};
+			class teammate_4_perk: RscPicture
+			{
+				idc = 2203;
+				text = "pictures\assault.paa";
+				x = 0.971559 * safezoneW + safezoneX;
+				y = 0.71629 * safezoneH + safezoneY;
+				w = 0.0264426 * safezoneW;
+				h = 0.0470196 * safezoneH;
+				colorText[] = {0.66, 1, 0.66, 1};
+			};
+			class teammate_5_perk: RscPicture
+			{
+				idc = 2204;
+				text = "pictures\assault.paa";
+				x = 0.971559 * safezoneW + safezoneX;
+				y = 0.678675 * safezoneH + safezoneY;
+				w = 0.0264426 * safezoneW;
+				h = 0.0470196 * safezoneH;
+				colorText[] = {0.66, 1, 0.66, 1};
+			};
+			class teammate_1_lead: RscPicture
+			{
+				idc = 2300;
+				text = "pictures\star.paa";
+				x = 0.856974 * safezoneW + safezoneX;
+				y = 0.829137 * safezoneH + safezoneY;
+				w = 0.0264426 * safezoneW;
+				h = 0.0470196 * safezoneH;
+			};
+			class teammate_2_lead: RscPicture
+			{
+				idc = 2301;
+				text = "pictures\star.paa";
+				x = 0.856974 * safezoneW + safezoneX;
+				y = 0.791522 * safezoneH + safezoneY;
+				w = 0.0264426 * safezoneW;
+				h = 0.0470196 * safezoneH;
+			};
+			class teammate_3_lead: RscPicture
+			{
+				idc = 2302;
+				text = "pictures\star.paa";
+				x = 0.856974 * safezoneW + safezoneX;
+				y = 0.753906 * safezoneH + safezoneY;
+				w = 0.0264426 * safezoneW;
+				h = 0.0470196 * safezoneH;
+			};
+			class teammate_4_lead: RscPicture
+			{
+				idc = 2303;
+				text = "pictures\star.paa";
+				x = 0.856974 * safezoneW + safezoneX;
+				y = 0.71629 * safezoneH + safezoneY;
+				w = 0.0264426 * safezoneW;
+				h = 0.0470196 * safezoneH;
+			};
+			class teammate_5_lead: RscPicture
+			{
+				idc = 2304;
+				text = "pictures\star.paa";
+				x = 0.856974 * safezoneW + safezoneX;
+				y = 0.678675 * safezoneH + safezoneY;
+				w = 0.0264426 * safezoneW;
+				h = 0.0470196 * safezoneH;
+			};
 		};
 	};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	// HIT DIRECTION INDICATORS
 	class cu

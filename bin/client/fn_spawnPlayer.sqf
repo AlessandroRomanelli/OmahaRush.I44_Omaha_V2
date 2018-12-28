@@ -52,9 +52,6 @@ private _value = (_d displayCtrl 9) lbValue (lbCurSel (_d displayCtrl 9));
 
 // Successfull spawn inline function (stupid design) | Will be called from the child scripts if the spawn was successfull
 cl_spawn_succ = {
-	// Object action update
-	[] spawn client_fnc_objectiveActionUpdate;
-
 	if (isNil "cl_adsDisplay") then {
 		cl_adsDisplay = [] spawn client_fnc_displayAds;
 	};
