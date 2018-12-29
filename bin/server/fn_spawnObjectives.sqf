@@ -24,6 +24,7 @@ for "_i" from 1 to 4 do {
 	_obj setDir _dir;
 	_obj setPosATL _posATL;
 	_obj setVehicleLock "LOCKED";
+	_obj enableSimulation false;
 
 	missionNamespace setVariable [format["sv_stage%1_obj", _i], _obj];
 	private _objective = missionNamespace getVariable (format["sv_stage%1_obj", _i]);
