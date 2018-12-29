@@ -9,7 +9,6 @@ class client_fnc_restoreAmmo 				{allowedTargets = 1;};
 class client_fnc_spawnBeaconSoundLoop 		{allowedTargets = 1;};
 class client_fnc_beaconEventHandler		 	{allowedTargets = 1;};
 class client_fnc_MCOMdestroyed 				{allowedTargets = 1;};
-class client_fnc_objectiveActionUpdate		{allowedTargets = 1;};
 class client_fnc_revive 					{allowedTargets = 1;};
 class client_fnc_say3D 						{allowedTargets = 0;};
 class client_fnc_MPHit 						{allowedTargets = 0;};

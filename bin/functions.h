@@ -105,6 +105,7 @@ class Maverick_Functions_Client {
 		class getFallbackTime {};
 		class spotTarget {};
 		class moveWithinVehicle {};
+		class getObjectiveDistance {};
 		// Pointfeed
 		class pointfeed_add {};
 

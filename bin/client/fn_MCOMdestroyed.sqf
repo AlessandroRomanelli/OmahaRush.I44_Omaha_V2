@@ -92,6 +92,3 @@ if (param[0,false,[false]]) then {
 		[playArea] spawn client_fnc_updateRestrictions;
 	};
 };
-
-// Reload mcom interaction
-[] spawn client_fnc_objectiveActionUpdate;
