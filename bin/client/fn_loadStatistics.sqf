@@ -15,7 +15,7 @@ private _serverKey = getText(missionConfigFile >> "GeneralConfig" >> "serverKey"
 // Create a new entry in the player record
 private _createNewRecord = {
   // Default data [Key, [Stats], Hash]
-  private _data = [_serverKey, [0,0,[["GER",0,0,0,0,0],["US",0,0,0,0,0],["SOV",0,0,0,0,0]],[],["","",""]]];
+  private _data = [_serverKey, [0,0,[["GER",0,0,0,0,0],["US",0,0,0,0,0],["SOV",0,0,0,0,0],["UK",0,0,0,0,0]],[],["","",""]]];
   private _string = str (_data select 1);
   // Encrypt stats
   _string = [1, "rc4", _string, _serverKey] call client_fnc_encryptData;
