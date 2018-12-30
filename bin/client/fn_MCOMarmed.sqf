@@ -78,10 +78,12 @@ if (isServer) then {
 		};
 
 		private _pos = getPosATL sv_cur_obj;
+		sv_cur_obj enableSimulation true;
+		sv_cur_obj allowDamage true;
 		// Explosion
 		createVehicle ["HelicopterExploBig", _pos, [], 0, "CAN_COLLIDE"];
 		createVehicle ["test_EmptyObjectForFireBig", _pos, [], 0, "CAN_COLLIDE"];
-
+		sv_cur_obj setDamage 1;
 
 		private _killZone = sv_cur_obj nearEntities ["Man", 25];
 		{
@@ -111,7 +113,7 @@ if (isServer) then {
 			};
 			// Start the timer again with additional time counting in the fallback phase
 			private _fallBackTime = [] call client_fnc_getFallbackTime;
-			[false, _fallBackTime] spawn server_fnc_matchTimer;
+			sv_matchTimer_thread = [false, _fallBackTime] spawn server_fnc_matchTimer;
 
 			// refresh tickets
 			[] call server_fnc_refreshTickets;
