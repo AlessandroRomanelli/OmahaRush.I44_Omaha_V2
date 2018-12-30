@@ -130,6 +130,46 @@ class CfgSounds {
         sound[] = {"\sounds\orders\SOV\defenders_4.ogg", 3, 1};
         titles[] = {};
     };
+    class attackersOrderUK_1 {
+        name = "attackersOrderUK_1";
+        sound[] = {"\sounds\orders\UK\attackers_1.ogg", 3, 1};
+        titles[] = {};
+    };
+    class attackersOrderUK_2 {
+        name = "attackersOrderUK_2";
+        sound[] = {"\sounds\orders\UK\attackers_2.ogg", 3, 1};
+        titles[] = {};
+    };
+    class attackersOrderUK_3 {
+        name = "attackersOrderUK_3";
+        sound[] = {"\sounds\orders\UK\attackers_3.ogg", 3, 1};
+        titles[] = {};
+    };
+    class attackersOrderUK_4 {
+        name = "attackersOrderUK_4";
+        sound[] = {"\sounds\orders\UK\attackers_4.ogg", 3, 1};
+        titles[] = {};
+    };
+    class defendersOrderUK_1 {
+        name = "defendersOrderUK_1";
+        sound[] = {"\sounds\orders\UK\defenders_1.ogg", 3, 1};
+        titles[] = {};
+    };
+    class defendersOrderUK_2 {
+        name = "defendersOrderUK_2";
+        sound[] = {"\sounds\orders\UK\defenders_2.ogg", 3, 1};
+        titles[] = {};
+    };
+    class defendersOrderUK_3 {
+        name = "defendersOrderUK_3";
+        sound[] = {"\sounds\orders\UK\defenders_3.ogg", 3, 1};
+        titles[] = {};
+    };
+    class defendersOrderUK_4 {
+        name = "defendersOrderUK_4";
+        sound[] = {"\sounds\orders\UK\defenders_4.ogg", 3, 1};
+        titles[] = {};
+    };
 
     class levelup {
         name = "levelup";
@@ -154,6 +194,11 @@ class CfgSounds {
     class endingGER {
         name = "endingGER";
         sound[] = {"\sounds\endingGER.ogg", 1, 1};
+        titles[] = {};
+    };
+    class endingUK {
+        name = "endingUK";
+        sound[] = {"\sounds\endingUK.ogg", 1, 1};
         titles[] = {};
     };
     class arm
