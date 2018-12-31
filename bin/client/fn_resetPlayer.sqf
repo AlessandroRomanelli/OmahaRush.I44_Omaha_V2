@@ -119,13 +119,6 @@ waitUntil {cl_statisticsLoaded};
 // Reset everything
 [] spawn client_fnc_resetVariables;
 
-// Do not allow spawning within the first 30 seconds
-private _fallBackTime = [] call client_fnc_getFallbackTime;
-cl_blockSpawnUntil = diag_tickTime + _fallBackTime;
-cl_blockSpawnForSide = "attackers";
-[] spawn client_fnc_displaySpawnRestriction;
-
-
 // Restart!
 [] spawn client_fnc_spawn;
 

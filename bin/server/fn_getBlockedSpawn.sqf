@@ -7,9 +7,7 @@ scriptName "fn_getBlockedSpawn";
 --------------------------------------------------------------------*/
 #define __filename "fn_getBlockedSpawn.sqf"
 
-diag_log format["%1 was called", __filename];
 waitUntil {sv_gameStatus == 2 && {!isNil "sv_fallBack_timeLeft"}};
-diag_log format["%1 proceeded after sv_fallBack_timeLeft was different than null", __filename];
 private _client = param [0, objNull, [objNull]];
 // Publish variable to given clientID
 waitUntil {!isNil "sv_fallBack_timeLeft"};

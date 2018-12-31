@@ -13,6 +13,5 @@ diag_log format["DEBUG: Spawning prohibited for: %1 seconds more", _spawningProh
 // If the prohibitedTime is greater than 0, make sure we also cant spawn
 if (_spawningProhibitedFor > 0) then {
 	cl_blockSpawnUntil = _spawningProhibitedFor + diag_tickTime;
-	cl_blockSpawnForSide = "attackers";
 	[] spawn client_fnc_displaySpawnRestriction;
 };
