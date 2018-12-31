@@ -125,10 +125,6 @@ waitUntil {cl_statisticsLoaded};
 // Restart match timer
 private _roundTime = ceil (paramsArray#3 * 60);
 
-if (player getVariable ["gameSide", "attackers"] == "attackers") then {
-	[player] remoteExec ["server_fnc_getBlockedSpawn", 2];
-};
-
 // Give us points for playing :)
 [] spawn {
 	private _fallBackTime = [] call client_fnc_getFallbackTime;

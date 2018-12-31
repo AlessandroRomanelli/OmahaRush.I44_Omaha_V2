@@ -76,6 +76,10 @@ if (sv_gameCycle % 2 == 0) then {
 	};
 };
 
+if (player getVariable ["gameSide", "attackers"] == "attackers") then {
+	[] spawn client_fnc_blockSpawn;
+};
+
 private ["_marker1", "_marker2"];
 if (player getVariable "gameSide" == "defenders") then {
 	_marker1 = createMarkerLocal ["mobile_respawn_defenders",[0,0]];

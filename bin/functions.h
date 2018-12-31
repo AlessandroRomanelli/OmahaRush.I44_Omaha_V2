@@ -76,7 +76,7 @@ class Maverick_Functions_Client {
 		class initPerks {};
 		class cleanUp {};
 		class initHoldActions {};
-		class teamBalanceKick;
+		class teamBalanceKick {};
 		class remoteExecution {};
 		class dumpObjects {};
 		class instantTeamBalanceCheck {};
@@ -84,7 +84,7 @@ class Maverick_Functions_Client {
 		class vehicleDisabled {};
 		class displayKeyBindingHint {};
 		class restrictedArea {};
-		class initBlockSpawn {};
+		class blockSpawn {};
 		class validatePointsEarned {};
 		class updateSpawnMenuCam {};
 		class revealFriendlyUnits {};
@@ -136,7 +136,6 @@ class Maverick_Functions_Server {
 		class refreshTickets {};
 		class endRound {};
 		class matchTimer {};
-		class getBlockedSpawn {};
 		class persistentVehicleManager {};
 		class stageVehicleManager {};
 		class importantObjects {};

@@ -14,9 +14,8 @@ private _additionalTime = param[1,0,[0]];
 private _stageTime = ceil (paramsArray#3 * 60);
 
 sv_matchTime =  _stageTime + _additionalTime;
-sv_matchEndTime =  sv_matchTime + diag_tickTime;
-sv_fallBack_timeLeft = _additionalTime + diag_tickTime;
-diag_log format ["sv_fallBack_timeLeft: %1", sv_fallBack_timeLeft];
+sv_matchEndTime =  sv_matchTime + (ceil diag_tickTime);
+sv_fallBack_timeLeft = _additionalTime;
 
 if (_matchStart) then {
 	[_additionalTime] spawn {
@@ -24,9 +23,6 @@ if (_matchStart) then {
 		[] call server_fnc_refreshTickets;
 	};
 };
-
-// Start timer on all clients
-//[sv_matchTime] remoteExec ["client_fnc_matchTimer"];
 
 // Initial delay
 private _delay = 0;
@@ -38,6 +34,10 @@ private _refreshRate = 10;
 while {_time >= 0 && sv_gameStatus == 2} do {
 	// Tick each second
 	sleep 1;
+	if (sv_fallBack_timeLeft >= 0) then {
+		sv_fallBack_timeLeft = sv_fallBack_timeLeft - 1;
+		publicVariable "sv_fallBack_timeLeft";
+	};
 	// Get objective status on the server (super partes)
 	private _status = sv_cur_obj getVariable ["status", -1];
 	// If the bomb is armed or being armed
@@ -56,13 +56,13 @@ while {_time >= 0 && sv_gameStatus == 2} do {
 		sv_cur_obj setVariable ["status", _status, true];
 	};
 	// Current time is given by the intended endMatch time, summed with the delay, minus the serverTime
-	_time = sv_matchEndTime - diag_tickTime + _delay;
+	_time = sv_matchEndTime - (ceil diag_tickTime) + _delay;
 	// Broadcast the matchTime only if NOT done
 	if ((sv_cur_obj getVariable ["status", -1] != 3) && _time >= 0) then {
 		sv_matchTime = _time;
 		publicVariable "sv_matchTime";
 	};
-	if (_time < 0) then {
+	if (_time < 0) exitWith {
 		sv_matchTime = 0;
 		sleep 1;
 		// Only if the time actually got to 0, end the match for the defenders

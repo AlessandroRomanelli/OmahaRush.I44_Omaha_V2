@@ -49,7 +49,7 @@ if (param[0,false,[false]]) then {
 	private _roundTime = ceil (paramsArray#3 * 60);
 
 	if (player getVariable ["gameSide", "attackers"] == "attackers") then {
-		[player] remoteExec ["server_fnc_getBlockedSpawn", 2];
+		[] spawn client_fnc_blockSpawn;
 	};
 
 	// Update markers

@@ -28,7 +28,7 @@ if (_mapWeather == 0) then {
 [] spawn server_fnc_scriptMonitoring;
 
 // Initial start, make sure units requesting time will also not be able to spawn for a certain amount of seconds
-sv_fallBack_timeLeft = diag_tickTime + _fallBackTime;
+/* sv_fallBack_timeLeft = diag_tickTime + _fallBackTime; */
 
 // Server engine loop
 while {true} do {

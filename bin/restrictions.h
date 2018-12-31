@@ -18,7 +18,6 @@ class client_fnc_administrationKill 		{allowedTargets = 1;};
 class client_fnc_beaconSpawn		 		{allowedTargets = 1;};
 class client_fnc_squadSpawn			 		{allowedTargets = 1;};
 class client_fnc_vehicleDisabled			{allowedTargets = 0;};
-class server_fnc_getBlockedSpawn 				{allowedTargets = 2;};
 class server_fnc_endRound 					{allowedTargets = 2;};
 class server_fnc_db_getPlayer 				{allowedTargets = 2;};
 class server_fnc_db_setPlayer 				{allowedTargets = 2;};

@@ -153,14 +153,6 @@ missionNamespace setVariable ["playArea", _trigger];
 /* private _safeMarker1 = createMarkerLocal ["respawn_defenders", cl_safePos];
 private _safeMarker2 = createMarkerLocal ["respawn_attackers", cl_safePos]; */
 
-// Get time from server IF the match is already going or is about to, if not, it doesnt really matter
-if (sv_gameStatus in [1,2]) then {
-  // Query server to answer this client with fallback time
-  if (player getVariable ["gameSide", "attackers"] == "attackers") then {
-    [player] remoteExec ["server_fnc_getBlockedSpawn", 2];
-  };
-};
-
 CHBN_adjustBrightness = 0.5;
 
 // Keyhandler
