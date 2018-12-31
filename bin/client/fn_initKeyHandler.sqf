@@ -15,7 +15,6 @@ cl_soundLevel = 1;
 (findDisplay 46) displayAddEventHandler ["KeyUp", {
 	private _DIKcode = _this select 1;
 	if (_DIKcode == 15 && (sv_gameStatus in [1,2])) then {
-		cl_scoreboardHidden = true;
 		60001 cutRsc ["default", "PLAIN"];
 	};
 }];
@@ -26,10 +25,10 @@ cl_allowActions = true;
 (findDisplay 46) displayAddEventHandler ["KeyDown", {
 	private _DIKcode = _this select 1;
 	if (_DIKcode == 15 && (sv_gameStatus in [1,2])) then {
+		cl_scoreboardHidden = (uiNamespace getVariable ["rr_scoreboard", displayNull]) isEqualTo displayNull;
 		// Lets fill the scoreboard
 		if !(cl_scoreboardHidden) exitWith {};
 		if (cl_scoreboardHidden) then {
-			cl_scoreboardHidden = false;
 			disableSerialization;
 			// Bring up ui for timer
 			60001 cutRsc ["rr_scoreboard", "PLAIN"];
