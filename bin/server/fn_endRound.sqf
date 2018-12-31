@@ -19,8 +19,10 @@ sv_gameStatus = 3;
 // Disable team balancer
 if (!isNil "sv_autoTeamBalancer_thread") then {terminate sv_autoTeamBalancer_thread};
 
+private _mcomsLeft = !((sv_stage4_obj getVariable ["status", -1]) isEqualTo 3);
+
 // Send event to clients
-if (sv_tickets <= 0 || sv_matchTime <= 0) then {
+if (sv_tickets <= 0 || sv_matchTime <= 0 || _mcomsLeft) then {
 	["defenders"] remoteExec ["client_fnc_endMatch",0];
 } else {
 	["attackers"] remoteExec ["client_fnc_endMatch",0];
