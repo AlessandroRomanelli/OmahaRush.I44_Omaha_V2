@@ -115,25 +115,6 @@ removeVest player;
 removeHeadgear player;
 removeBackpack player;
 
-/* private _side = player getVariable "gameSide";
-private _sideLoadout = [] call client_fnc_getCurrentSideLoadout;
-
-private _uniforms = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "uniforms"));
-private _goggles = (getText(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "goggles"));
-private _vests		 = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "vests"));
-private _headgears = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "headgears"));
-private _backpacks = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "backpacks"));
-
-if (count _uniforms > 0) then {player forceAddUniform (selectRandom _uniforms);};
-if (_goggles != "") then {player addGoggles _goggles;};
-if (count _headgears > 0) then {player addHeadgear (selectRandom _headgears);};
-if (count _vests > 0) then {player addVest (selectRandom _vests);};
-if (count _backpacks > 0) then {player addBackpack (selectRandom _backpacks);}; */
-
-// Shared items
-/*player addItem "ItemGPS";
-player assignItem "ItemGPS";*/
-
 // Markers
 [playArea] spawn client_fnc_updateRestrictions;
 
@@ -151,13 +132,13 @@ private _pos = getArray(missionConfigFile >> "MapSettings" >> "Stages" >> _stage
 
 // Determine point between current pos and target pos
 private _targetPos = [_pos, getPos sv_cur_obj] call client_fnc_getSectionCenter;
-
+private _height = (sqrt(_pos distance2D sv_cur_obj) + 5)*10;
 // Set cam pos height
-_pos set[2, 400];
+_pos set[2, _height];
 
 // Display all buildings
-setObjectViewDistance 500;
-setViewDistance 1000;
+setObjectViewDistance 1000;
+setViewDistance 1250;
 
 // DUMMY WEAPON SO THE PLAYER DOESNT PLAY THE ANIMATION WHEN HE SPAWNS
 removeAllWeapons player;
