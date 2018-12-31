@@ -25,7 +25,7 @@ cl_allowActions = true;
 (findDisplay 46) displayAddEventHandler ["KeyDown", {
 	private _DIKcode = _this select 1;
 	if (_DIKcode == 15 && (sv_gameStatus in [1,2])) then {
-		cl_scoreboardHidden = (uiNamespace getVariable ["rr_scoreboard", displayNull]) isEqualTo displayNull;
+		cl_scoreboardHidden = isNull (uiNamespace getVariable ["rr_scoreboard", displayNull]);
 		// Lets fill the scoreboard
 		if !(cl_scoreboardHidden) exitWith {};
 		if (cl_scoreboardHidden) then {
