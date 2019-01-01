@@ -88,7 +88,6 @@ if (isServer) then {
 		private _killZone = sv_cur_obj nearEntities ["Man", 25];
 		{
 			if ((_x distance sv_cur_obj < 10) || {_x distance sv_cur_obj < 25 && {([sv_cur_obj, "VIEW"] checkVisibility [eyePos sv_cur_obj, eyePos _x]) > 0.1}}) then {
-				player setDamage 1;
 				["You were killed by the blast of the explosion"] remoteExec ["client_fnc_administrationKill", _x];
 			};
 		} forEach _killZone;
