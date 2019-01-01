@@ -188,8 +188,10 @@ if (_created) then {
 // Create spawn dialog
 createDialog "rr_spawnmenu";
 
+private _menuDisplay = (findDisplay 5000);
+
 // Disable ESC
-(findDisplay 5000) displayAddEventHandler ["KeyDown",{
+_menuDisplay displayAddEventHandler ["KeyDown",{
 	private _handled = false;
 	if ((_this select 1) == 1) then {
 		_handled = true; // Block ESC
@@ -216,8 +218,6 @@ if (getNumber(missionConfigFile >> "GeneralConfig" >> "PostProcessing") == 1) th
 // Populate the structured texts
 [] spawn client_fnc_populateSpawnMenu;
 
-private _menuDisplay = (findDisplay 5000);
-
 scaleCtrl = {
 	params [["_ctrl", controlNull, [controlNull]],["_factor", 0, [0]], ["_time", 0, [0]]];
 	private _ctrlPos = ctrlPosition _ctrl;
@@ -243,11 +243,11 @@ animateCtrl = {
 	_ctrl ctrlSetPosition _ctrlPos;
 	_ctrl ctrlCommit 0;
 	cl_objectiveSpawnAnimation = nil;
-	[findDisplay 5000] spawn updateObjectiveProgress;
+	[] spawn updateObjectiveProgress;
 };
 
 updateObjectiveProgress = {
-	params[["_display", displayNull, [displayNull]]];
+	private _display = findDisplay 5000;
 	for "_i" from 1 to 4 do {
 		private _idc = 1200 + _i;
 		private _ctrlObj = _display displayCtrl _idc;
@@ -276,12 +276,14 @@ updateObjectiveProgress = {
 {
 	(_menuDisplay displayCtrl _x) ctrlEnable true;
 	(_menuDisplay displayCtrl _x) ctrlAddEventHandler["MouseEnter", {
-		((findDisplay 5000) displayCtrl 1200) ctrlSetFade 0;
-		((findDisplay 5000) displayCtrl 1200) ctrlCommit 0.25;
+		private _display = findDisplay 5000;
+		(_display displayCtrl 1200) ctrlSetFade 0;
+		(_display displayCtrl 1200) ctrlCommit 0.25;
 	}];
 	(_menuDisplay displayCtrl _x) ctrlAddEventHandler["MouseExit", {
-		((findDisplay 5000) displayCtrl 1200) ctrlSetFade 1;
-		((findDisplay 5000) displayCtrl 1200) ctrlCommit 0.5;
+		private _display = findDisplay 5000;
+		(_display displayCtrl 1200) ctrlSetFade 1;
+		(_display displayCtrl 1200) ctrlCommit 0.5;
 	}];
 } forEach [1201,1202,1203,1204];
 
@@ -306,23 +308,25 @@ disableSerialization;
 	(_menuDisplay displayCtrl _x) ctrlRemoveAllEventHandlers "MouseEnter";
 	(_menuDisplay displayCtrl _x) ctrlRemoveAllEventHandlers "MouseExit";
 	(_menuDisplay displayCtrl _x) ctrlAddEventHandler ["MouseEnter", {
-		if ((_this select 0) isEqualTo ((findDisplay 5000) displayCtrl 15)) then {
+		private _display = findDisplay 5000;
+		if ((_this select 0) isEqualTo (_display displayCtrl 15)) then {
 			if (cl_spawnmenu_currentWeaponSelectionState != 1) then {
-				((findDisplay 5000) displayCtrl 207) ctrlSetBackgroundColor [0.725,0.588,0.356,0.8];
+				(_display displayCtrl 207) ctrlSetBackgroundColor [0.725,0.588,0.356,0.8];
 			};
 		} else {
 			private _secondaryWeapons = cl_equipConfigurations select {(getText(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> _x >> "type")) == "secondary"};
 			if (cl_spawnmenu_currentWeaponSelectionState != 2 && {count _secondaryWeapons != 0}) then {
-				((findDisplay 5000) displayCtrl 209) ctrlSetBackgroundColor [0.725,0.588,0.356,0.8];
+				(_display displayCtrl 209) ctrlSetBackgroundColor [0.725,0.588,0.356,0.8];
 			};
 		};
 	}];
 	(_menuDisplay displayCtrl _x) ctrlAddEventHandler ["MouseExit", {
+		private _display = findDisplay 5000;
 		if (cl_spawnmenu_currentWeaponSelectionState != 1) then {
-			((findDisplay 5000) displayCtrl 207) ctrlSetBackgroundColor [0.12,0.14,0.16,0.8];
+			(_display displayCtrl 207) ctrlSetBackgroundColor [0.12,0.14,0.16,0.8];
 		};
 		if (cl_spawnmenu_currentWeaponSelectionState != 2) then {
-			((findDisplay 5000) displayCtrl 209) ctrlSetBackgroundColor [0.12,0.14,0.16,0.8];
+			(_display displayCtrl 209) ctrlSetBackgroundColor [0.12,0.14,0.16,0.8];
 		};
 	}];
 } forEach [15,16];
@@ -375,6 +379,24 @@ disableSerialization;
 		[true] spawn client_fnc_spawnMenu_loadClasses;
 	};
 };
+
+// No selection made? Select 0
+private _spawnCtrl = _menuDisplay displayCtrl 8;
+private _vehiclesCtrl = _menuDisplay displayCtrl 9;
+if (lbCurSel _spawnCtrl == -1) then {
+	_spawnCtrl lbSetCurSel 0;
+	_vehiclesCtrl lbSetCurSel -1;
+};
+
+_spawnCtrl ctrlAddEventHandler ["MouseButtonClick", {
+	private _spawnDisplay = findDisplay 5000;
+	(_spawnDisplay displayCtrl 9) lbSetCurSel -1;
+}];
+
+_vehiclesCtrl ctrlAddEventHandler ["MouseButtonClick", {
+	private _spawnDisplay = findDisplay 5000;
+	(_spawnDisplay displayCtrl 8) lbSetCurSel -1;
+}];
 
 // First start warning TEMP
 if (isNil "TEMPWARNING") then {

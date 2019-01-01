@@ -48,7 +48,13 @@ cl_squadPerks = [] call client_fnc_getSquadPerks;
 cl_equipClassnames set [2, _class];
 
 // Get value from listbox
-private _value = (_d displayCtrl 9) lbValue (lbCurSel (_d displayCtrl 9));
+private _spawnCtrl = _d displayCtrl 8;
+private _vehiclesCtrl = _d displayCtrl 9;
+private _value = if !((lbCurSel _spawnCtrl) isEqualTo -1) then {
+	_spawnCtrl lbValue (lbCurSel _spawnCtrl);
+} else {
+	_vehiclesCtrl lbValue (lbCurSel _vehiclesCtrl);
+};
 
 // Successfull spawn inline function (stupid design) | Will be called from the child scripts if the spawn was successfull
 cl_spawn_succ = {

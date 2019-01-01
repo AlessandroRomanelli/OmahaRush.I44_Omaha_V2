@@ -5,15 +5,6 @@ class rr_spawnmenu {
     fadein=2;
     duration = 999999;
     class controls {
-  	/* class emptyButton: RscButtonMenu
-		{
-			idc = 10000;
-			text = ""; //--- ToDo: Localize;
-			x = 1.1 * safezoneW + safezoneX;
-			y = 1.1 * safezoneH + safezoneY;
-			w = 1.1 * safezoneW;
-			h = 1.1 * safezoneH;
-		}; */
 		class RscText_1000: RscText
 		{
 			idc = 207;
@@ -85,17 +76,6 @@ class rr_spawnmenu {
 	    colorSelectBackground[] = {0.96,0.65,0.12,0.8};
 	    colorSelectBackground2[] = {0.96,0.65,0.12,0.8};
 		};
-		/*class btnDeploy: RscButtonMenu
-		{
-			idc = 4;
-			text = "DEPLOY"; //--- ToDo: Localize;
-			x = 0.835156 * safezoneW + safezoneX;
-			y = 0.7046 * safezoneH + safezoneY;
-			w = 0.159842 * safezoneW;
-			h = 0.022 * safezoneH;
-			colorBackground[] = {0.96,0.65,0.12,0.8};
-			sizeEx = 0.04;
-		};*/
 		class textPrimary: RscStructuredText
 		{
 			idc = 5;
@@ -128,15 +108,6 @@ class rr_spawnmenu {
 			w = 0.149531 * safezoneW;
 			h = 0.0572 * safezoneH;
 		}; */
-		/*class RscText_1006: RscText
-		{
-			idc = -1;
-			x = 0.835156 * safezoneW + safezoneX;
-			y = 0.291 * safezoneH + safezoneY;
-			w = 0.159844 * safezoneW;
-			h = 0.4114 * safezoneH;
-			colorBackground[] = {0.12,0.14,0.16,0.8};
-		};*/
 		class primaryWeaponSelectionActivator: RscButtonMenu
 		{
 			idc = 15;
@@ -183,150 +154,6 @@ class rr_spawnmenu {
 	    colorText[] = {1,1,1,0};
 	    colorDisabled[] = {1,1,1,0};
 		};
-		/* class attachmentsSelectionBackground: RscText
-		{
-			idc = 25;
-			w = 0.458921 * safezoneW;
-			colorBackground[] = {0.12,0.14,0.16,0.8};
-			x = 0.16072 * safezoneW + safezoneX;
-			y = 0.291 * safezoneH + safezoneY;
-			h = 0.4114 * safezoneH;
-		};
-
-		class firstAttachment: RscListbox
-		{
-			idc = 20;
-			x = 0.161739 * safezoneW + safezoneX;
-			y = 0.326261 * safezoneH + safezoneY;
-			w = 0.149536 * safezoneW;
-			h = 0.371669 * safezoneH;
-			sizeEx = 0.04;
-			rowHeight = 0.1;
-			shadow = 2;
-			colorBackground[] = {0,0,0,0};
-			colorSelect[] = {1, 1, 1, 1};
-		    colorText[] = {1, 1, 1, 0.5};
-		    colorSelect2[] = {1, 1, 1, 1};
-		    colorSelectBackground[] = {0.96,0.65,0.12,0.8};
-		    colorSelectBackground2[] = {0.96,0.65,0.12,0.8};
-		}; */
-		/* class a87954654: RscText
-		{
-			idc = 27;
-			x = 0.160708 * safezoneW + safezoneX;
-			y = 0.291074 * safezoneH + safezoneY;
-			w = 0.154691 * safezoneW;
-			h = 0.0329884 * safezoneH;
-			colorBackground[] = {1,1,1,1};
-		};
-		class a2341234231: RscText
-		{
-			idc = 28;
-			x = 0.314369 * safezoneW + safezoneX;
-			y = 0.291074 * safezoneH + safezoneY;
-			w = 0.15366 * safezoneW;
-			h = 0.0329884 * safezoneH;
-			colorBackground[] = {1,1,1,1};
-		};
-		class a34267545: RscText
-		{
-			idc = 29;
-			x = 0.46803 * safezoneW + safezoneX;
-			y = 0.291074 * safezoneH + safezoneY;
-			w = 0.151598 * safezoneW;
-			h = 0.0329884 * safezoneH;
-			colorBackground[] = {1,1,1,1};
-		}; */
-		/* class secondAttachment: RscListbox
-		{
-			idc = 21;
-			x = 0.3154 * safezoneW + safezoneX;
-			y = 0.326261 * safezoneH + safezoneY;
-			w = 0.151599 * safezoneW;
-			h = 0.371669 * safezoneH;
-			sizeEx = 0.04;
-			rowHeight = 0.1;
-			shadow = 2;
-			colorBackground[] = {0,0,0,0};
-			colorSelect[] = {1, 1, 1, 1};
-		    colorText[] = {1, 1, 1, 0.5};
-		    colorSelect2[] = {1, 1, 1, 1};
-		    colorSelectBackground[] = {0.96,0.65,0.12,0.8};
-		    colorSelectBackground2[] = {0.96,0.65,0.12,0.8};
-		};
-		class thirdAttachment: RscListbox
-		{
-			idc = 22;
-			x = 0.470093 * safezoneW + safezoneX;
-			y = 0.326261 * safezoneH + safezoneY;
-			w = 0.148505 * safezoneW;
-			h = 0.371669 * safezoneH;
-			sizeEx = 0.04;
-			rowHeight = 0.1;
-			shadow = 2;
-			colorBackground[] = {0,0,0,0};
-			colorSelect[] = {1, 1, 1, 1};
-		    colorText[] = {1, 1, 1, 0.5};
-		    colorSelect2[] = {1, 1, 1, 1};
-		    colorSelectBackground[] = {0.96,0.65,0.12,0.8};
-		    colorSelectBackground2[] = {0.96,0.65,0.12,0.8};
-		};
-		class RscText_1011: RscText
-		{
-			idc = 23;
-			text = "SIGHT"; //--- ToDo: Localize;
-			x = 0.166895 * safezoneW + safezoneX;
-			y = 0.297672 * safezoneH + safezoneY;
-			w = 0.061877 * safezoneW;
-			h = 0.0219922 * safezoneH;
-			colorText[] = {0,0,0,1};
-			shadow = 0;
-			font = "PuristaMedium";
-		};
-		class RscText_1012: RscText
-		{
-			idc = 24;
-			text = "MUZZLE"; //--- ToDo: Localize;
-			x = 0.319525 * safezoneW + safezoneX;
-			y = 0.297672 * safezoneH + safezoneY;
-			w = 0.163974 * safezoneW;
-			h = 0.0219922 * safezoneH;
-			colorText[] = {0,0,0,1};
-			shadow = 0;
-			font = "PuristaMedium";
-		};
-		class RscText_1013: RscText
-		{
-			idc = 26;
-			text = "SIDE ATTACHMENT"; //--- ToDo: Localize;
-			x = 0.474218 * safezoneW + safezoneX;
-			y = 0.297672 * safezoneH + safezoneY;
-			w = 0.134067 * safezoneW;
-			h = 0.0219922 * safezoneH;
-			colorText[] = {0,0,0,1};
-			shadow = 0;
-			font = "PuristaMedium";
-		}; */
-		/* class RscButtonMenu_2401: RscButtonMenu
-		{
-			idc = 13;
-			text = "CUSTOMIZE"; //--- ToDo: Localize;
-			x = 0.0978125 * safezoneW + safezoneX;
-			y = 0.61 * safezoneH + safezoneY;
-			w = 0.061875 * safezoneW;
-			h = 0.0242 * safezoneH;
-			colorBackground[] = {0.96,0.65,0.12,0.8};
-		};
-		class RscButtonMenu_2400: RscButtonMenu
-		{
-			idc = 12;
-			text = "CUSTOMIZE"; //--- ToDo: Localize;
-			x = 0.0978121 * safezoneW + safezoneX;
-			y = 0.3988 * safezoneH + safezoneY;
-			w = 0.061875 * safezoneW;
-			h = 0.0242 * safezoneH;
-			colorBackground[] = {0.96,0.65,0.12,0.8};
-		}; */
 
 		/* new ui */
 		class RscText_1000513: RscText
@@ -397,29 +224,20 @@ class rr_spawnmenu {
 			h = 0.121 * safezoneH;
 		};
 
-		/* new right side of the gui */
-		class RscText_10064324: RscText
-		{
-			idc = 205;
-
-			x = 0.835156 * safezoneW + safezoneX;
-			y = 0.291 * safezoneH + safezoneY;
-			w = 0.159844 * safezoneW;
-			h = 0.253 * safezoneH;
-			colorBackground[] = {0.12,0.14,0.16,0.8};
-		};
-		class RscButtonMenu_24056776: RscButtonMenu
-		{
-			idc = 100;
-
-			text = "OPEN GROUP MANAGEMENT"; //--- ToDo: Localize;
-			x = 0.835156 * safezoneW + safezoneX;
-			y = 0.5462 * safezoneH + safezoneY;
-			w = 0.159844 * safezoneW;
-			h = 0.022 * safezoneH;
-			colorText[] = {1,1,1,1};
-			colorBackground[] = {0.96,0.65,0.12,0.8};
-		};
+    class GroupsButton: RscButtonMenu
+    {
+    	idc = 100;
+      size = "1.00 *		 (pixelH * pixelGridNoUIScale * 2.5)";
+      font = "PuristaBold";
+    	text = "VIEW GROUPS"; //--- ToDo: Localize;
+      x = 0.835115 * safezoneW + safezoneX;
+    	y = 0.170863 * safezoneH + safezoneY;
+      w = 0.159844 * safezoneW;
+    	h = 0.044 * safezoneH;
+      color[] = {0,0,0,1};
+      colorText[] = {0,0,0,1};
+    	colorBackground[] = {0.96,0.65,0.12,0.8};
+    };
 		class RscText_24056776: RscText
 		{
 			idc = 104;
@@ -434,194 +252,61 @@ class rr_spawnmenu {
       size = "1.00 *     (pixelH * pixelGridNoUIScale * 1)";
       /* sizeEx = 0.04; */
 		};
-		/* class RscText_10057667: RscText
-		{
-			idc = 206;
+    class customizeClassButton: RscButtonMenu
+    {
+    	idc = 301;
+    	style = "0x02 + 0x0c";
 
-			x = 0.835156 * safezoneW + safezoneX;
-			y = 0.577 * safezoneH + safezoneY;
-			w = 0.0309375 * safezoneW;
-			h = 0.055 * safezoneH;
-			colorBackground[] = {0.12,0.14,0.16,0.8};
-		}; */
-		/*class RscPicture_12006776: RscPicture
-		{
-			idc = -1;
-			text = "pictures\assault.paa";
-			x = 0.835156 * safezoneW + safezoneX;
-			y = 0.577 * safezoneH + safezoneY;
-			w = 0.0309375 * safezoneW;
-			h = 0.055 * safezoneH;
-		};
-		class RscText_10066776: RscText
-		{
-			idc = -1;
+    	text = "CUSTOMIZE CLASS ABILITIES"; //--- ToDo: Localize;
+    	x = 0.835115 * safezoneW + safezoneX;
+    	y = 0.664757 * safezoneH + safezoneY;
+    	w = 0.159844 * safezoneW;
+    	h = 0.0219999 * safezoneH;
+    	colorText[] = {1,1,1,1};
+    	colorBackground[] = {0.12,0.14,0.16,0.8};
+    };
+    class deploybutton: RscButtonMenu
+    {
+    	idc = 302;
+    	color[] = {0,0,0,1};
+    	font = "PuristaBold";
+    	size = "1.00 *		 (pixelH * pixelGridNoUIScale * 2.5)";
+    	text = "DEPLOY"; //--- ToDo: Localize;
+      x = 0.835115 * safezoneW + safezoneX;
+    	y = 0.69184 * safezoneH + safezoneY;
+    	w = 0.159844 * safezoneW;
+    	h = 0.044 * safezoneH;
+    	colorText[] = {0,0,0,1};
+    	colorBackground[] = {0.96,0.65,0.12,0.8};
+    };
+    class ClassHeader: RscText
+    {
+      idc = -1;
 
-			x = 0.835156 * safezoneW + safezoneX;
-			y = 0.632 * safezoneH + safezoneY;
-			w = 0.0309375 * safezoneW;
-			h = 0.055 * safezoneH;
-			colorBackground[] = {0.12,0.14,0.16,0.8};
-		};
-		class RscText_100976763: RscText
-		{
-			idc = -1;
-
-			x = 0.835156 * safezoneW + safezoneX;
-			y = 0.688 * safezoneH + safezoneY;
-			w = 0.0309375 * safezoneW;
-			h = 0.055 * safezoneH;
-			colorBackground[] = {0.12,0.14,0.16,0.8};
-		};
-		class RscText_10097676: RscText
-		{
-			idc = -1;
-
-			x = 0.835156 * safezoneW + safezoneX;
-			y = 0.7435 * safezoneH + safezoneY;
-			w = 0.0309375 * safezoneW;
-			h = 0.055 * safezoneH;
-			colorBackground[] = {0.12,0.14,0.16,0.8};
-		};
-		class RscPicture_1201667: RscPicture
-		{
-			idc = 1201;
-			text = "pictures\support.paa";
-			x = 0.835156 * safezoneW + safezoneX;
-			y = 0.632 * safezoneH + safezoneY;
-			w = 0.0309375 * safezoneW;
-			h = 0.055 * safezoneH;
-		};
-		class RscPicture_12022323: RscPicture
-		{
-			idc = 1202;
-			text = "pictures\assault.paa";
-			x = 0.835156 * safezoneW + safezoneX;
-			y = 0.688 * safezoneH + safezoneY;
-			w = 0.0309375 * safezoneW;
-			h = 0.055 * safezoneH;
-		};
-		class RscPicture_120223235: RscPicture
-		{
-			idc = 1203;
-			text = "pictures\engineer.paa";
-			x = 0.835156 * safezoneW + safezoneX;
-			y = 0.7435 * safezoneH + safezoneY;
-			w = 0.0309375 * safezoneW;
-			h = 0.055 * safezoneH;
-		};
-		class btnDeployMedic: RscButtonMenu
-		{
-			idc = 201;
-
-			text = "MEDIC"; //--- ToDo: Localize;
-			x = 0.866094 * safezoneW + safezoneX;
-			y = 0.577 * safezoneH + safezoneY;
-			w = 0.128906 * safezoneW;
-			h = 0.055 * safezoneH;
-			colorText[] = {1,1,1,1};
-			colorBackground[] = {0.12,0.14,0.16,0.8};
-		};
-		class btnDeploySupport: RscButtonMenu
-		{
-			idc = 202;
-
-			text = "MACHINE GUNNER"; //--- ToDo: Localize;
-			x = 0.866094 * safezoneW + safezoneX;
-			y = 0.632 * safezoneH + safezoneY;
-			w = 0.128906 * safezoneW;
-			h = 0.055 * safezoneH;
-			colorText[] = {1,1,1,1};
-			//colorBackground[] = {0.96,0.65,0.12,0.8};
-			colorBackground[] = {0.12,0.14,0.16,0.8};
-		};
-		class btnDeployRcon: RscButtonMenu
-		{
-			idc = 203;
-
-			text = "RECON"; //--- ToDo: Localize;
-			x = 0.866094 * safezoneW + safezoneX;
-			y = 0.688 * safezoneH + safezoneY;
-			w = 0.128906 * safezoneW;
-			h = 0.055 * safezoneH;
-			colorText[] = {1,1,1,1};
-			colorBackground[] = {0.12,0.14,0.16,0.8};
-		};
-		class btnDeployEngineer: RscButtonMenu
-		{
-			idc = 204;
-
-			text = "ENGINEER"; //--- ToDo: Localize;
-			x = 0.866094 * safezoneW + safezoneX;
-			y = 0.7435 * safezoneH + safezoneY;
-			w = 0.128906 * safezoneW;
-			h = 0.055 * safezoneH;
-			colorText[] = {1,1,1,1};
-			colorBackground[] = {0.12,0.14,0.16,0.8};
-		};*/
-		class Spawnpoints: RscListbox
-		{
-			idc = 9;
-			x = 0.835156 * safezoneW + safezoneX;
-			y = 0.291 * safezoneH + safezoneY;
-			w = 0.159844 * safezoneW;
-			h = 0.253 * safezoneH;
-      sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 1.75)";
-      rowHeight = "1.00 *     (pixelH * pixelGridNoUIScale * 2.5)";
-      wholeHeight = "1.00 *     (pixelH * pixelGridNoUIScale * 2.5)";
-			colorBackground[] = {0,0,0,0};
-			colorSelect[] = {1, 1, 1, 1};
-		    colorText[] = {1, 1, 1, 0.5};
-		    colorSelect2[] = {1, 1, 1, 1};
-		    colorSelectBackground[] = {0.96,0.65,0.12,0.8};
-		    colorSelectBackground2[] = {0.96,0.65,0.12,0.8};
-		};
-
-		class RscButtonMenu_2402: RscButtonMenu
-		{
-			idc = 301;
-			style = "0x02 + 0x0c";
-			text = "CUSTOMIZE CLASS ABILITIES"; //--- ToDo: Localize;
-			x = 0.835156 * safezoneW + safezoneX;
-			y = 0.676 * safezoneH + safezoneY;
-			w = 0.159844 * safezoneW;
-			h = 0.022 * safezoneH;
-			colorText[] = {1,1,1,1};
-			colorBackground[] = {0.12,0.14,0.16,0.8};
-		};
-		class deploybutton: RscButtonMenu
-		{
-			idc = 302;
-
-			text = "DEPLOY"; //--- ToDo: Localize;
-			x = 0.835156 * safezoneW + safezoneX;
-			y = 0.7068 * safezoneH + safezoneY;
-			w = 0.159844 * safezoneW;
-			h = 0.044 * safezoneH;
-			color[] = {0,0,0,1};
-			colorText[] = {0,0,0,1};
-			colorBackground[] = {0.96,0.65,0.12,0.8};
-			font = "PuristaBold";
-			sizeEx = 0.08;
-      size = "1.00 *     (pixelH * pixelGridNoUIScale * 2.5)";
-		};
-		class classeslistbox: RscListbox
-		{
-			idc = 300;
-			x = 0.835156 * safezoneW + safezoneX;
-			y = 0.577 * safezoneH + safezoneY;
-			w = 0.159844 * safezoneW;
-			h = 0.099 * safezoneH;
-      sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 1.6)";
-      rowHeight = "1.00 *     (pixelH * pixelGridNoUIScale * 1.6)";
-      wholeHeight = "1.00 *     (pixelH * pixelGridNoUIScale * 1.6)";
-			colorBackground[] = {0.12,0.14,0.16,0.8};
-			colorSelect[] = {1, 1, 1, 1};
-		    colorText[] = {1, 1, 1, 0.5};
-		    colorSelect2[] = {1, 1, 1, 1};
-		    colorSelectBackground[] = {0.96,0.65,0.12,0.8};
-		    colorSelectBackground2[] = {0.96,0.65,0.12,0.8};
-		};
+      text = "CLASSES"; //--- ToDo: Localize;
+      x = 0.834939 * safezoneW + safezoneX;
+    	y = 0.54702 * safezoneH + safezoneY;
+    	w = 0.158655 * safezoneW;
+    	h = 0.0188079 * safezoneH;
+      colorBackground[] = {0.96,0.65,0.12,0.8};
+    };
+    class Classes: RscListBox
+    {
+    	idc = 300;
+    	sizeEx = "1.00 *		 (pixelH * pixelGridNoUIScale * 1.6)";
+    	rowHeight = "1.00 *		 (pixelH * pixelGridNoUIScale * 1.6)";
+    	wholeHeight = "1.00 *		 (pixelH * pixelGridNoUIScale * 1.6)";
+    	x = 0.834939 * safezoneW + safezoneX;
+    	y = 0.565828 * safezoneH + safezoneY;
+    	w = 0.159844 * safezoneW;
+    	h = 0.099 * safezoneH;
+      colorBackground[] = {0.12,0.14,0.16,0.8};
+      colorSelect[] = {1, 1, 1, 1};
+      colorText[] = {1, 1, 1, 0.5};
+      colorSelect2[] = {1, 1, 1, 1};
+      colorSelectBackground[] = {0.96,0.65,0.12,0.8};
+      colorSelectBackground2[] = {0.96,0.65,0.12,0.8};
+    };
     class RscStructuredText_1105: RscStructuredText
     {
     	idc = 2001;
@@ -686,6 +371,62 @@ class rr_spawnmenu {
       y = 0.093 * safezoneH + safezoneY;
       w = 0.0257812 * safezoneW;
       h = 0.044 * safezoneH;
+    };
+    class SpawnHeader: RscText
+    {
+    	idc = -1;
+
+    	text = "SPAWN POINTS"; //--- ToDo: Localize;
+      x = 0.834939 * safezoneW + safezoneX;
+    	y = 0.246094 * safezoneH + safezoneY;
+    	w = 0.158655 * safezoneW;
+    	h = 0.0188079 * safezoneH;
+    	colorBackground[] = {0.96,0.65,0.12,0.8};
+    };
+    class VehiclesHeader: RscText
+    {
+    	idc = -1;
+
+    	text = "VEHICLES"; //--- ToDo: Localize;
+      x = 0.834939 * safezoneW + safezoneX;
+    	y = 0.396557 * safezoneH + safezoneY;
+    	w = 0.158655 * safezoneW;
+    	h = 0.0188079 * safezoneH;
+    	colorBackground[] = {0.96,0.65,0.12,0.8};
+    };
+    class Spawnpoints: RscListBox
+    {
+    	idc = 8;
+      x = 0.834939 * safezoneW + safezoneX;
+    	y = 0.264902 * safezoneH + safezoneY;
+    	w = 0.158655 * safezoneW;
+    	h = 0.131655 * safezoneH;
+      sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 1.75)";
+      rowHeight = "0.60 *     (pixelH * pixelGridNoUIScale * 2.5)";
+      wholeHeight = "0.60 *     (pixelH * pixelGridNoUIScale * 2.5)";
+      colorBackground[] = {0.12,0.14,0.16,0.8};
+      colorSelect[] = {1, 1, 1, 1};
+      colorText[] = {1, 1, 1, 0.5};
+      colorSelect2[] = {1, 1, 1, 1};
+      colorSelectBackground[] = {0.96,0.65,0.12,0.8};
+      colorSelectBackground2[] = {0.96,0.65,0.12,0.8};
+    };
+    class Vehicles: RscListBox
+    {
+    	idc = 9;
+      x = 0.834939 * safezoneW + safezoneX;
+    	y = 0.415365 * safezoneH + safezoneY;
+    	w = 0.158655 * safezoneW;
+    	h = 0.131655 * safezoneH;
+      sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 1.75)";
+      rowHeight = "0.60 *     (pixelH * pixelGridNoUIScale * 2.5)";
+      wholeHeight = "0.60 *     (pixelH * pixelGridNoUIScale * 2.5)";
+      colorBackground[] = {0.12,0.14,0.16,0.8};
+      colorSelect[] = {1, 1, 1, 1};
+      colorText[] = {1, 1, 1, 0.5};
+      colorSelect2[] = {1, 1, 1, 1};
+      colorSelectBackground[] = {0.96,0.65,0.12,0.8};
+      colorSelectBackground2[] = {0.96,0.65,0.12,0.8};
     };
   };
 };

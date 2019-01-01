@@ -14,21 +14,24 @@ disableSerialization;
 private _d = findDisplay 5000;
 
 // Clear listbox of any spawnpoints
-lbClear (_d displayCtrl 9);
+private _spawnCtrl = _d displayCtrl 8;
+private _vehiclesCtrl = _d displayCtrl 9;
+lbClear _spawnCtrl;
+lbClear _vehiclesCtrl;
 
 private _playerIsDefending = (player getVariable ["gameSide", "defenders"]) isEqualTo "defenders";
 
 // Load HQ spawnpoint
 if (_playerIsDefending) then {
-	(_d displayCtrl 9) lbAdd "Defender HQ";
+	_spawnCtrl lbAdd "Defender HQ";
 } else {
-	(_d displayCtrl 9) lbAdd "Attacker HQ";
+	_spawnCtrl lbAdd "Attacker HQ";
 };
 
 // HQ Icon
-(_d displayCtrl 9) lbSetPicture [(lbSize (_d displayCtrl 9)) - 1, "pictures\teammate.paa"];
-(_d displayCtrl 9) lbSetValue [(lbSize (_d displayCtrl 9)) - 1, -1];
-(_d displayCtrl 9) lbSetData [(lbSize (_d displayCtrl 9)) - 1, "HQ"];
+_spawnCtrl lbSetPicture [(lbSize _spawnCtrl) - 1, "pictures\teammate.paa"];
+_spawnCtrl lbSetValue [(lbSize _spawnCtrl) - 1, -1];
+_spawnCtrl lbSetData [(lbSize _spawnCtrl) - 1, "HQ"];
 
 // Load squad members
 private _index = -1;
@@ -65,10 +68,10 @@ private _index = -1;
 		if (_add) then {
 			if (!isNull _beacon) then {
 				// Spawn beacon
-				(_d displayCtrl 9) lbAdd ((_x getVariable ["name", "ERROR: No Name"]) + "'s Beacon");
-				(_d displayCtrl 9) lbSetData [(lbSize (_d displayCtrl 9)) - 1, "beacon"];
-				(_d displayCtrl 9) lbSetValue [(lbSize (_d displayCtrl 9)) - 1, _index];
-				(_d displayCtrl 9) lbSetPicture [(lbSize (_d displayCtrl 9)) - 1, "pictures\squad.paa"];
+				_spawnCtrl lbAdd ((_x getVariable ["name", "ERROR: No Name"]) + "'s Beacon");
+				_spawnCtrl lbSetData [(lbSize _spawnCtrl) - 1, "beacon"];
+				_spawnCtrl lbSetValue [(lbSize _spawnCtrl) - 1, _index];
+				_spawnCtrl lbSetPicture [(lbSize _spawnCtrl) - 1, "pictures\squad.paa"];
 			} else {
 				// Player
 				private _unit = _x;
@@ -76,25 +79,21 @@ private _index = -1;
 				private _nearbyEnemies = {(_unit getVariable "gameSide") != (_x getVariable "gameSide")} count (_x nearEntities ["Man", 25]);
 				// If the unit was hit or is nearby enemies
 				if (_x getVariable ["inCombat", false] || {_nearbyEnemies > 0}) then {
-					(_d displayCtrl 9) lbAdd ((_x getVariable ["name", "ERROR: No Name"]) + " (IN COMBAT)");
-					(_d displayCtrl 9) lbSetValue [(lbSize (_d displayCtrl 9)) - 1, _index];
-					(_d displayCtrl 9) lbSetData [(lbSize (_d displayCtrl 9)) - 1, "inCombat"];
-					(_d displayCtrl 9) lbSetPicture [(lbSize (_d displayCtrl 9)) - 1, "pictures\enemy.paa"];
+					_spawnCtrl lbAdd ((_x getVariable ["name", "ERROR: No Name"]) + " (IN COMBAT)");
+					_spawnCtrl lbSetValue [(lbSize _spawnCtrl) - 1, _index];
+					_spawnCtrl lbSetData [(lbSize _spawnCtrl) - 1, "inCombat"];
+					_spawnCtrl lbSetPicture [(lbSize _spawnCtrl) - 1, "pictures\enemy.paa"];
 				} else {
-					(_d displayCtrl 9) lbAdd (_x getVariable ["name", "ERROR: No Name"]);
-					(_d displayCtrl 9) lbSetValue [(lbSize (_d displayCtrl 9)) - 1, _index];
-					(_d displayCtrl 9) lbSetData [(lbSize (_d displayCtrl 9)) - 1, netID _unit];
-					(_d displayCtrl 9) lbSetPicture [(lbSize (_d displayCtrl 9)) - 1, "pictures\squad.paa"];
+					_spawnCtrl lbAdd (_x getVariable ["name", "ERROR: No Name"]);
+					_spawnCtrl lbSetValue [(lbSize _spawnCtrl) - 1, _index];
+					_spawnCtrl lbSetData [(lbSize _spawnCtrl) - 1, netID _unit];
+					_spawnCtrl lbSetPicture [(lbSize _spawnCtrl) - 1, "pictures\squad.paa"];
 				};
 			};
 		};
 	};
 } forEach (units group player);
 
-// No selection made? Select 0
-if (lbCurSel (_d displayCtrl 9) == -1) then {
-	(_d displayCtrl 9) lbSetCurSel 0;
-};
 
 // Get configs of vehicles we can spawn at (PERSISTENT ONES)
 private _configs = [];
@@ -113,10 +112,10 @@ _configs append ("true" configClasses (missionConfigFile >> "MapSettings" >> "St
 		// Check whether this array of found vehicles actually containers our vehicle
 		private _OK = (_objects findIf {_x getVariable ["id", ""] isEqualTo (configName _config)}) != -1;
 		if (_OK) then {
-			(_d displayCtrl 9) lbAdd _displayName;
-			(_d displayCtrl 9) lbSetData [(lbSize (_d displayCtrl 9)) - 1, configName _x];
-			(_d displayCtrl 9) lbSetValue [(lbSize (_d displayCtrl 9)) - 1, -2];
-			(_d displayCtrl 9) lbSetPicture [(lbSize (_d displayCtrl 9)) - 1, "pictures\teammate.paa"];
+			_vehiclesCtrl lbAdd _displayName;
+			_vehiclesCtrl lbSetData [(lbSize _vehiclesCtrl) - 1, configName _x];
+			_vehiclesCtrl lbSetValue [(lbSize _vehiclesCtrl) - 1, -2];
+			_vehiclesCtrl lbSetPicture [(lbSize _vehiclesCtrl) - 1, "pictures\teammate.paa"];
 		};
 	};
 } forEach _configs;
