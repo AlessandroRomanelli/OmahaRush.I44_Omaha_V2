@@ -54,6 +54,7 @@ private _sv_stage_tryRespawn = {
 private _sv_stage_spawnVehicle = {
 	params [["_config", configNull,[configNull]], ["_initialSpawn", false,[false]]];
 
+	private _className = configName _config;
 	private _currentPlayers = count allPlayers;
 	private _popReq = getNumber(_config >> "populationReq");
 
@@ -94,12 +95,14 @@ private _sv_stage_spawnVehicle = {
 	clearBackpackCargoGlobal _vehicle;
 
 	// Broadcast to players
-	[_vehicle] remoteExec ["client_fnc_vehicleSpawned"];
+	/* [_vehicle] remoteExec ["client_fnc_vehicleSpawned"]; */
 
 	// Run init script
 	private _script = getText(_config >> "script");
 	private _compiled = compile _script;
 	[_vehicle] call _compiled;
+
+	missionNamespace setVariable [_className, _vehicle, true];
 
 	// Pushback into array that holds all vehicles
 	sv_stageVehicles pushBack _vehicle;

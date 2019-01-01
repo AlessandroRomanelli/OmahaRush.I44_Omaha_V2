@@ -12,23 +12,27 @@ if (isServer && !hasInterface) exitWith {};
 
 private _configName = param[0,"",[""]];
 
-private _side = ["Attacker", "Defender"] select (player getVariable "gameSide" == "defenders");
-private _config = (missionConfigFile >> "MapSettings" >> "PersistentVehicles" >> _side >> _configName);
+/* private _side = ["Attacker", "Defender"] select (player getVariable "gameSide" == "defenders"); */
+/* private _config = (missionConfigFile >> "MapSettings" >> "PersistentVehicles" >> _side >> _configName);
 
 // If the config is null its most likely a stage vehicle
 if (isNull _config) then {
 	_config = (missionConfigFile >> "MapSettings" >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Vehicles" >> _side >> _configName);
-};
+}; */
 
 // Equip
 [] spawn client_fnc_equipAll;
 
-private _pos = getArray(_config >> "positionATL");
+/* private _pos = getArray(_config >> "positionATL");
 private _class = getText(_config >> "classname");
 private _objects = nearestObjects [_pos, [_class], 5];
 if (count _objects < 1) exitWith {["Vehicle unavailable"] spawn client_fnc_displayError;};
 
-private _vehicle = _objects select 0;
+private _vehicle = _objects select 0; */
+
+private _vehicle = missionNamespace getVariable [_configName, objNull];
+
+if (isNull _vehicle) exitWith {["Vehicle unavailable"] spawn client_fnc_displayError;};
 
 // Put player into vehicle
 private _vehicleNoSpace = !([_vehicle] call client_fnc_moveUnitIntoVehicle);
