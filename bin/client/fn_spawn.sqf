@@ -379,20 +379,21 @@ disableSerialization;
 		[true] spawn client_fnc_spawnMenu_loadClasses;
 	};
 };
-
 // No selection made? Select 0
-private _spawnCtrl = _menuDisplay displayCtrl 8;
-private _vehiclesCtrl = _menuDisplay displayCtrl 9;
-if (lbCurSel _spawnCtrl == -1) then {
+[] spawn {
+	private _display = findDisplay 5000;
+	private _spawnCtrl = _display displayCtrl 8;
+	waitUntil {(lbSize _spawnCtrl) > 0};
 	_spawnCtrl lbSetCurSel 0;
-	_vehiclesCtrl lbSetCurSel -1;
 };
 
+private _spawnCtrl = _menuDisplay displayCtrl 8;
 _spawnCtrl ctrlAddEventHandler ["MouseButtonClick", {
 	private _spawnDisplay = findDisplay 5000;
 	(_spawnDisplay displayCtrl 9) lbSetCurSel -1;
 }];
 
+private _vehiclesCtrl = _menuDisplay displayCtrl 9;
 _vehiclesCtrl ctrlAddEventHandler ["MouseButtonClick", {
 	private _spawnDisplay = findDisplay 5000;
 	(_spawnDisplay displayCtrl 8) lbSetCurSel -1;

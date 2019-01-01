@@ -50,6 +50,52 @@ if (isNil "rr_iconrenderer_executed") then {
 	removeMissionEventHandler["EachFrame", cl_onEachFrameIconRenderedID];
 	cl_onEachFrameIconRenderedID = addMissionEventHandler["EachFrame", {
 	// onEachFrame {
+		private _side = player getVariable ["gameSide", "defenders"];
+		private _HQPos = getArray(missionConfigFile >> "MapSettings" >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Spawns" >> _side);
+		// Spawn cam
+		if (cl_inSpawnMenu) then {
+			private _d = findDisplay 5000;
+			private _ctrl = if ((lbCurSel (_d displayCtrl 8)) isEqualTo -1) then { _d displayCtrl 9 } else { _d displayCtrl 8 };
+			private _value = _ctrl lbValue (lbCurSel _ctrl);
+			private _data = _ctrl lbData (lbCurSel _ctrl);
+			[] call {
+				if (_data isEqualTo "") exitWith {};
+				if (_value isEqualTo -1) exitWith {
+					private _progress = diag_tickTime % 1;
+					drawIcon3D [MISSION_ROOT+"pictures\mark.paa", [0.66,1,0.66,0.5-(0.5*_progress)], _HQPos, 2+(1*_progress), 2+(1*_progress), 0, "", 0, 0.05, "PuristaMedium"];
+					drawIcon3D [MISSION_ROOT+"pictures\mark.paa", [1,1,1,1], _HQPos, 1.5, 1.5, 0, "HQ", 0, 0.05, "PuristaMedium"];
+					drawLine3D [_HQPos, getPos sv_cur_obj, [1,1,1,1]];
+				};
+				drawIcon3D [MISSION_ROOT+"pictures\mark.paa", [1,1,1,0.25], _HQPos, 1.5, 1.5, 0, "HQ", 0, 0.05, "PuristaMedium"];
+				if (_value isEqualTo -2) exitWith {
+					private _progress = diag_tickTime % 1;
+					private _vehicle = missionNamespace getVariable [_data, objNull];
+					if (isNull _vehicle) exitWith {};
+					private _pos = _vehicle modelToWorldVisual [0,0,1];
+					private _vehicleName = getText(configFile >> "CfgVehicles" >> typeOf _vehicle >> "displayName");
+					private _crew = crew _vehicle;
+					private _driverName = if (count _crew > 0) then {(_crew select 0) getVariable ["name", "ERROR: No Name"]} else {""};
+					private _title = [] call {
+						if (count _crew isEqualTo 0) exitWith {
+							_vehicleName
+						};
+						if (count _crew isEqualTo 1) exitWith {
+							format["%1:%2", _vehicleName, _driverName];
+						};
+						if (count _crew > 1) exitWith {
+							format["%1:%2+%3", _vehicle, _driverName, (count _crew)-1];
+						};
+						_vehicleName
+					};
+					drawIcon3D [MISSION_ROOT+"pictures\mark.paa", [0.66,1,0.66,0.5-(0.5*_progress)], _pos, 1.5+(1*_progress), 1.5+(1*_progress), 0, "", 0, 0.05, "PuristaMedium"];
+					drawLine3D [_pos, getPos sv_cur_obj, [1,1,1,1]];
+					drawIcon3D [MISSION_ROOT+"pictures\mark.paa", [1,1,1,1], _pos, 1.5, 1.5, 0, _title, 0, 0.05, "PuristaMedium"];
+				};
+			};
+
+		};
+
+
 		// Objectives
 		private _pos = sv_cur_obj getVariable ["positionAGL", []];
 		if (count _pos == 0) then {
@@ -78,17 +124,18 @@ if (isNil "rr_iconrenderer_executed") then {
 		};
 
 		private _objIsArmed = sv_cur_obj getVariable ["status", -1] isEqualTo 1;
-		if (player getVariable ["gameSide", "defenders"] == "defenders") then {
+		private _origin = if (cl_inSpawnMenu) then {_HQPos} else {getPos player};
+		if (_side isEqualTo "defenders") then {
 			if (_objIsArmed) then {
-				drawIcon3D [MISSION_ROOT+"pictures\objective_defender_armed.paa",[1,1,1,_alpha],_pos,1.5,1.5,0,format["Defuse (%1m)", round(player distance sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
+				drawIcon3D [MISSION_ROOT+"pictures\objective_defender_armed.paa",[1,1,1,_alpha],_pos,1.5,1.5,0,format["Defuse (%1m)", round(_origin distance2D sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
 			} else {
-				drawIcon3D [MISSION_ROOT+"pictures\objective_defender.paa",[1,1,1,_alpha],_pos,1.5,1.5,0,format["Defend (%1m)", round(player distance sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
+				drawIcon3D [MISSION_ROOT+"pictures\objective_defender.paa",[1,1,1,_alpha],_pos,1.5,1.5,0,format["Defend (%1m)", round(_origin distance2D sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
 			};
 		} else {
 			if (_objIsArmed) then {
-				drawIcon3D [MISSION_ROOT+"pictures\objective_attacker_armed.paa",[1,1,1,_alpha],_pos,1.5,1.5,0,format["Protect (%1m)", round(player distance sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
+				drawIcon3D [MISSION_ROOT+"pictures\objective_attacker_armed.paa",[1,1,1,_alpha],_pos,1.5,1.5,0,format["Protect (%1m)", round(_origin distance2D sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
 			} else {
-				drawIcon3D [MISSION_ROOT+"pictures\objective_attacker.paa",[1,1,1,_alpha],_pos,1.5,1.5,0,format["Attack (%1m)", round(player distance sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
+				drawIcon3D [MISSION_ROOT+"pictures\objective_attacker.paa",[1,1,1,_alpha],_pos,1.5,1.5,0,format["Attack (%1m)", round(_origin distance2D sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
 			};
 		};
 
@@ -213,7 +260,6 @@ if (isNil "rr_iconrenderer_executed") then {
 			if (_i < count _groupUnits) then {
 				private _unit = _groupUnits select _i;
 				private _colors = [_unit] call _getHUDTextColor;
-				diag_log (str _colors);
 				private _name = _unit getVariable["name", "ERROR: No Name"];
 				_teamMateName ctrlSetStructuredText parseText (format ["<t size='1.15' shadow='1' shadowColor='%1' color='%2' font='PuristaLight' align='right'>%3</t>", _colors select 1, _colors select 0, _name]);
 				private _arrayColors = [_unit] call _getHUDArrayColor;
@@ -302,7 +348,7 @@ if (isNil "rr_iconrenderer_executed") then {
 		};
 
 		if (player getVariable ["isAlive", false]) then {
-			private _isPlayerAttacking = player getVariable ["gameSide", "attackers"] == "attackers";
+			private _isPlayerAttacking = _side isEqualTo "attackers";
 			if !(
 					((vehicle player) inArea playArea) ||
 					((vehicle player) isKindOf "Air") ||

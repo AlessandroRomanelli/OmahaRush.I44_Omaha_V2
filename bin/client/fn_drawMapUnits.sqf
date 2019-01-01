@@ -1,16 +1,8 @@
-/*
-	Author: HallyG
+/* __________________________________________________________________
+
+	Author: A. Roman
 	Displays map markers for all friendly units on the map.
-
-	Argument(s):
-	0: Show AI: <BOOLEAN> (default: Show AI in singleplayer only)
-
-	Returns:
-	<NOTHING>
-
-	Example:
-	[true] spawn FUNCTIONNAME;
-	[true] execVM SCRIPTLOCATION;
+	
 __________________________________________________________________*/
 
 if (isDedicated || missionNamespace getVariable ["unitMarkers_running", false]) exitWith {};

@@ -120,7 +120,8 @@ switch (_value) do
 {
 	case -2: // Vehicle (classname given as data)
 	{
-		private _configName = (_d displayCtrl 9) lbData (lbCurSel (_d displayCtrl 9));
+		private _vehiclesDisplay = _d displayCtrl 9;
+		private _configName = _vehiclesDisplay lbData (lbCurSel _vehiclesDisplay);
 		[_configName] spawn client_fnc_spawnPlayerInVehicle;
 	};
 
@@ -131,7 +132,8 @@ switch (_value) do
 
 	default // Beacon or squad member (squad member may be in vehicle)
 	{
-		private _data = (_d displayCtrl 9) lbData (lbCurSel (_d displayCtrl 9));
+		private _spawnDisplay = _d displayCtrl 8;
+		private _data = _spawnDisplay lbData (lbCurSel _spawnDisplay);
 
 		// Soldier selected, is he in combat?
 		if (_data == "inCombat") exitWith {
