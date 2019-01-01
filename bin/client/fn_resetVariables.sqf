@@ -28,27 +28,6 @@ if (!isNull _beacon) then {
 	deleteVehicle _beacon;
 };
 
-private _makeCurrentSpawn = {
-	params ["_pos", "_title"];
-	private _progress = diag_tickTime % 1;
-	drawIcon3D [MISSION_ROOT+"pictures\mark.paa", [0.66,1,0.66,0.5-(0.5*_progress)], _pos, 2+(1*_progress), 2+(1*_progress), 0, "", 0, 0.05, "PuristaMedium"];
-	drawIcon3D [MISSION_ROOT+"pictures\mark.paa", [1,1,1,1], _pos, 1.5, 1.5, 0, _title, 0, 0.05, "PuristaMedium"];
-	drawLine3D [_pos, getPos sv_cur_obj, [1,1,1,1]];
-	private _leader = leader group player;
-	if (player isEqualTo _leader) then {
-		{
-			private _unitPos = _x modelToWorldVisual [0,0,1];
-			drawLine3D [_pos, _unitPos, [1,1,1,0.5]];
-		} forEach (units group player);
-	} else {
-		private _leaderPos = _leader modelToWorldVisual [0,0,1];
-		{
-			private _unitPos = _x modelToWorldVisual [0,0,1];
-			drawLine3D [_leaderPos, _unitPos, [1,1,1,0.5]];
-		} forEach (units group player);
-	};
-};
-
 // Start the ingame point feed
 301 cutRsc ["rr_pointfeed","PLAIN"];
 
@@ -79,10 +58,35 @@ if (isNil "rr_iconrenderer_executed") then {
 			private _ctrl = if ((lbCurSel (_d displayCtrl 8)) isEqualTo -1) then { _d displayCtrl 9 } else { _d displayCtrl 8 };
 			private _value = _ctrl lbValue (lbCurSel _ctrl);
 			private _data = _ctrl lbData (lbCurSel _ctrl);
+			private _makeCurrentSpawn = {
+				params ["_pos", "_title"];
+				private _progress = diag_tickTime % 1;
+				drawIcon3D [MISSION_ROOT+"pictures\mark.paa", [0.66,1,0.66,0.5-(0.5*_progress)], _pos, 2+(1*_progress), 2+(1*_progress), 0, "", 0, 0.05, "PuristaMedium"];
+				drawIcon3D [MISSION_ROOT+"pictures\mark.paa", [1,1,1,1], _pos, 1.5, 1.5, 0, _title, 0, 0.05, "PuristaMedium"];
+				drawLine3D [_pos, getPos sv_cur_obj, [1,1,1,1]];
+				private _leader = leader group player;
+				if (player isEqualTo _leader) then {
+					{
+						if (_x getVariable ["isAlive", false]) then {
+							private _unitPos = _x modelToWorldVisual [0,0,1];
+							drawLine3D [_pos, _unitPos, [1,1,1,0.5]];
+						};
+					} forEach (units group player);
+				} else {
+					private _leaderPos = _leader modelToWorldVisual [0,0,1];
+					{
+						if (_x getVariable ["isAlive", false]) then {
+							private _unitPos = _x modelToWorldVisual [0,0,1];
+							drawLine3D [_leaderPos, _unitPos, [1,1,1,0.5]];
+						};
+					} forEach (units group player);
+				};
+				true
+			};
 			[] call {
 				if (_data isEqualTo "") exitWith {};
 				if (_value isEqualTo -1) exitWith {
-					[_HQPos, "HQ"] spawn _makeCurrentSpawn;
+					[_HQPos, "HQ"] call _makeCurrentSpawn;
 				};
 				drawIcon3D [MISSION_ROOT+"pictures\mark.paa", [1,1,1,0.25], _HQPos, 1.5, 1.5, 0, "HQ", 0, 0.05, "PuristaMedium"];
 				if (_value isEqualTo -2) exitWith {
@@ -104,7 +108,7 @@ if (isNil "rr_iconrenderer_executed") then {
 						};
 						_vehicleName
 					};
-					[_pos, _title] spawn _makeCurrentSpawn;
+					[_pos, _title] call _makeCurrentSpawn;
 				};
 			};
 
