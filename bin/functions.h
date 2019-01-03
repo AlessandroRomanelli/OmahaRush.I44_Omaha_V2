@@ -53,6 +53,9 @@ class Maverick_Functions_Client {
 		class say3D {};
 		class getNextUnlockableWeapon {};
 		class displayKillfeed {};
+		class display3dIcons {};
+		class displayCurrentObjective {};
+		class displayHUD {};
 		class renderKillfeed {};
 		class administrationKill {};
 		class restoreAmmo {};
@@ -118,6 +121,7 @@ class Maverick_Functions_Client {
 		class spawnMenu_loadClasses {};
 		class spawnMenu_getClassAndSpawn {};
 		class spawnMenu_displayClassCustomization {};
+		class spawnMenu_displaySpawn {};
 	};
 };
 
