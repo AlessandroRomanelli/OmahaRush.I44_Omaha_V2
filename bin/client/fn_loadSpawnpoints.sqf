@@ -19,9 +19,19 @@ private _vehiclesCtrl = _d displayCtrl 9;
 lbClear _spawnCtrl;
 lbClear _vehiclesCtrl;
 
-private _playerIsDefending = (player getVariable ["gameSide", "defenders"]) isEqualTo "defenders";
+private _side = player getVariable ["gameSide", "defenders"];
+private _playerIsDefending = _side isEqualTo "defenders";
 
-// Load HQ spawnpoint
+private _configs = configProperties [missionConfigFile >> "MapSettings" >> "Stages" >> [] call client_fnc_getCurrentStageString >> "Spawns" >> _side, "true", false];
+
+{
+  _spawnCtrl lbAdd (getText(_x >> "name"));
+	_spawnCtrl lbSetPicture [(lbSize _spawnCtrl) - 1, "pictures\teammate.paa"];
+	_spawnCtrl lbSetValue [(lbSize _spawnCtrl) - 1, -1];
+	_spawnCtrl lbSetData [(lbSize _spawnCtrl) - 1, configName _x];
+} forEach _configs;
+
+/* // Load HQ spawnpoint
 if (_playerIsDefending) then {
 	_spawnCtrl lbAdd "Defender HQ";
 } else {
@@ -31,7 +41,7 @@ if (_playerIsDefending) then {
 // HQ Icon
 _spawnCtrl lbSetPicture [(lbSize _spawnCtrl) - 1, "pictures\teammate.paa"];
 _spawnCtrl lbSetValue [(lbSize _spawnCtrl) - 1, -1];
-_spawnCtrl lbSetData [(lbSize _spawnCtrl) - 1, "HQ"];
+_spawnCtrl lbSetData [(lbSize _spawnCtrl) - 1, "Spawn HQ"]; */
 
 // Load squad members
 private _index = -1;

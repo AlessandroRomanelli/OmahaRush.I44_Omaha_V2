@@ -116,6 +116,9 @@ cl_spawn_succ = {
 
 [] spawn client_fnc_saveStatistics;
 
+private _spawnDisplay = _d displayCtrl 8;
+private _data = _spawnDisplay lbData (lbCurSel _spawnDisplay);
+
 switch (_value) do
 {
 	case -2: // Vehicle (classname given as data)
@@ -127,14 +130,11 @@ switch (_value) do
 
 	case -1: // HQ
 	{
-		[] spawn client_fnc_spawnPlayerAtHQ;
+		[_data] spawn client_fnc_spawnPlayerAtLocation;
 	};
 
 	default // Beacon or squad member (squad member may be in vehicle)
 	{
-		private _spawnDisplay = _d displayCtrl 8;
-		private _data = _spawnDisplay lbData (lbCurSel _spawnDisplay);
-
 		// Soldier selected, is he in combat?
 		if (_data == "inCombat") exitWith {
 			["The selected player is in combat and cannot be spawned on"] spawn client_fnc_displayError;
