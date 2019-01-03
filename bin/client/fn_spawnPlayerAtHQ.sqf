@@ -14,12 +14,8 @@ if (isServer && !hasInterface) exitWith {};
 closeDialog 0;
 
 // Get spawn position
-private _HQPos = [0,0,0];
-if (player getVariable "gameSide" == "defenders") then {
-	_HQPos = getArray(missionConfigFile >> "MapSettings" >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Spawns" >> "defenders");
-} else {
-	_HQPos = getArray(missionConfigFile >> "MapSettings" >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Spawns" >> "attackers");
-};
+private _side = player getVariable ["gameSide", "defenders"];
+private _HQPos = getArray(missionConfigFile >> "MapSettings" >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Spawns" >> _side >> "HQSpawn" >> "positionATL");
 
 private _spawnPos = _HQPos findEmptyPosition [0,20];
 

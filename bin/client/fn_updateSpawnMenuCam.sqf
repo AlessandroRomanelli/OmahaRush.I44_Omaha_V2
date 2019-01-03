@@ -16,13 +16,14 @@ if (isNull cl_spawnmenu_cam) exitWith {hint "2"};
 // Get cam pos for spawn menu cam
 private _stage = [] call client_fnc_getCurrentStageString;
 private _side = if (player getVariable "gameSide" == "defenders") then {"defenders"} else {"attackers"};
-private _pos = getArray(missionConfigFile >> "MapSettings" >> "Stages" >> _stage >> "Spawns" >> _side);
+private _pos = getArray(missionConfigFile >> "MapSettings" >> "Stages" >> _stage >> "Spawns" >> _side >> "HQSpawn" >> "positionATL");
 
 // Determine point between current pos and target pos
 private _targetPos = [_pos, getPos sv_cur_obj] call client_fnc_getSectionCenter;
+private _height = round (100*log(_pos distance2D sv_cur_obj))+50;
 
 // Set cam pos height
-_pos set[2, 400];
+_pos set[2, _height];
 
 // Commit
 cl_spawnmenu_cam camPreparePos _pos;

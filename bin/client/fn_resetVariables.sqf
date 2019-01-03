@@ -51,7 +51,7 @@ if (isNil "rr_iconrenderer_executed") then {
 	cl_onEachFrameIconRenderedID = addMissionEventHandler["EachFrame", {
 	// onEachFrame {
 		private _side = player getVariable ["gameSide", "defenders"];
-		private _HQPos = getArray(missionConfigFile >> "MapSettings" >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Spawns" >> _side);
+		private _HQPos = getArray(missionConfigFile >> "MapSettings" >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Spawns" >> _side >> "HQSpawn" >> "positionATL");
 		// Spawn cam
 		if (cl_inSpawnMenu) then {
 			private _d = findDisplay 5000;
