@@ -18,7 +18,7 @@ class Maverick_Functions_Client {
 		class kill {};
 		class setupEventHandlers {};
 		class spawnPlayer {};
-		class spawnPlayerAtHQ {};
+		class spawnPlayerAtLocation {};
 		class spawnPlayerAtObject {};
 		class displayError {};
 		class startIngameGUI {};

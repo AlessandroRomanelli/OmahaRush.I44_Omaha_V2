@@ -35,7 +35,10 @@ private _makeCurrentSpawn = {
 [] call {
   if (_data isEqualTo "") exitWith {};
   if (_value isEqualTo -1) exitWith {
-    [_HQPos, "HQ"] call _makeCurrentSpawn;
+    private _spawnConfig = missionConfigFile >> "MapSettings" >> "Stages" >> [] call client_fnc_getCurrentStageString >> "Spawns" >> _side >> _data;
+    private _pos = getArray(_spawnConfig >> "positionATL");
+    private _name = getText(_spawnConfig >> "name");
+    [_pos, _name] call _makeCurrentSpawn;
   };
   drawIcon3D [MISSION_ROOT+"pictures\mark.paa", [1,1,1,0.25], _HQPos, _iconSize, _iconSize, 0, "HQ", 0, 0.05, "PuristaMedium"];
   if (_value isEqualTo -2) exitWith {

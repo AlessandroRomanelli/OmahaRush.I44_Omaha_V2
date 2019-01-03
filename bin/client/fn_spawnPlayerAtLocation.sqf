@@ -13,13 +13,19 @@ if (isServer && !hasInterface) exitWith {};
 // Close spawn dialog
 closeDialog 0;
 
-// Get spawn position
 private _side = player getVariable ["gameSide", "defenders"];
-private _HQPos = getArray(missionConfigFile >> "MapSettings" >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Spawns" >> _side >> "HQSpawn" >> "positionATL");
+private _spawnName = param [0, "HQSpawn", [""]];
+private _spawnConfig = missionConfigFile >> "MapSettings" >> "Stages" >> [] call client_fnc_getCurrentStageString >> "Spawns" >> _side >> _spawnName;
 
-private _spawnPos = _HQPos findEmptyPosition [0,20];
+// Get spawn position
+private _pos = getArray(_spawnConfig >> "positionATL");
+
+private _spawnPos = _pos findEmptyPosition [0,20];
 
 [] spawn client_fnc_equipAll;
+
+private _idx = (_spawnPos nearEntities ["Man", 25]) findIf {(_x getVariable "gameSide") isEqualTo _side};
+if !(_idx isEqualTo -1) exitWith {[] spawn client_fnc_spawnPlayerAtLocation;};
 
 // Move player to spawn location
 player setPos _spawnPos;
