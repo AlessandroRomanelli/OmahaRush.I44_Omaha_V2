@@ -200,8 +200,8 @@ _menuDisplay displayAddEventHandler ["KeyDown",{
 }];
 
 // Blurry background?
-/* if (getNumber(missionConfigFile >> "GeneralConfig" >> "PostProcessing") == 1) then {
-	["DynamicBlur", 400, [0.4]] spawn {
+if (getNumber(missionConfigFile >> "GeneralConfig" >> "PostProcessing") == 1) then {
+	["DynamicBlur", 400, [0.5]] spawn {
 		params ["_name", "_priority", "_effect"];
 		while {
 			cl_spawnmenu_blur = ppEffectCreate [_name, _priority];
@@ -213,7 +213,7 @@ _menuDisplay displayAddEventHandler ["KeyDown",{
 		cl_spawnmenu_blur ppEffectAdjust _effect;
 		cl_spawnmenu_blur ppEffectCommit 0.1;
 	};
-}; */
+};
 
 // Populate the structured texts
 [] spawn client_fnc_populateSpawnMenu;
