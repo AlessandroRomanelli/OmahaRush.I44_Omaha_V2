@@ -6,3 +6,5 @@ mission.sqm
 description.ext
 *.ext
 *.sqm
+config/master.h
+config/maps
