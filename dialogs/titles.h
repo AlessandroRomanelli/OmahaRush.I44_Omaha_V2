@@ -772,7 +772,7 @@ class rr_objective_gui
 		class image: RscPicture
 		{
 			idc = 0;
-			text = "pictures\objective_attacker.paa";
+			text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\objective_attacker.paa";
 			x = 0.479375 * safezoneW + safezoneX;
 			y = 0.00500001 * safezoneH + safezoneY;
 			w = 0.037125 * safezoneW;
@@ -1108,7 +1108,7 @@ class rr_reloadingFlares {
 			class teammate_1_perk: RscPicture
 			{
 				idc = 2200;
-				text = "pictures\assault.paa";
+				text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\assault.paa";
 				x = 0.971294 * safezoneW + safezoneX;
 				y = 0.828009 * safezoneH + safezoneY;
 				w = 0.0264426 * safezoneW;
@@ -1118,7 +1118,7 @@ class rr_reloadingFlares {
 			class teammate_2_perk: RscPicture
 			{
 				idc = 2201;
-				text = "pictures\assault.paa";
+				text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\assault.paa";
 				x = 0.971559 * safezoneW + safezoneX;
 				y = 0.791522 * safezoneH + safezoneY;
 				w = 0.0264426 * safezoneW;
@@ -1128,7 +1128,7 @@ class rr_reloadingFlares {
 			class teammate_3_perk: RscPicture
 			{
 				idc = 2202;
-				text = "pictures\assault.paa";
+				text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\assault.paa";
 				x = 0.971559 * safezoneW + safezoneX;
 				y = 0.753906 * safezoneH + safezoneY;
 				w = 0.0264426 * safezoneW;
@@ -1138,7 +1138,7 @@ class rr_reloadingFlares {
 			class teammate_4_perk: RscPicture
 			{
 				idc = 2203;
-				text = "pictures\assault.paa";
+				text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\assault.paa";
 				x = 0.971559 * safezoneW + safezoneX;
 				y = 0.71629 * safezoneH + safezoneY;
 				w = 0.0264426 * safezoneW;
@@ -1148,7 +1148,7 @@ class rr_reloadingFlares {
 			class teammate_5_perk: RscPicture
 			{
 				idc = 2204;
-				text = "pictures\assault.paa";
+				text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\assault.paa";
 				x = 0.971559 * safezoneW + safezoneX;
 				y = 0.678675 * safezoneH + safezoneY;
 				w = 0.0264426 * safezoneW;
@@ -1158,7 +1158,7 @@ class rr_reloadingFlares {
 			class teammate_1_lead: RscPicture
 			{
 				idc = 2300;
-				text = "pictures\star.paa";
+				text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\star.paa";
 				x = 0.856974 * safezoneW + safezoneX;
 				y = 0.829137 * safezoneH + safezoneY;
 				w = 0.0264426 * safezoneW;
@@ -1167,7 +1167,7 @@ class rr_reloadingFlares {
 			class teammate_2_lead: RscPicture
 			{
 				idc = 2301;
-				text = "pictures\star.paa";
+				text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\star.paa";
 				x = 0.856974 * safezoneW + safezoneX;
 				y = 0.791522 * safezoneH + safezoneY;
 				w = 0.0264426 * safezoneW;
@@ -1176,7 +1176,7 @@ class rr_reloadingFlares {
 			class teammate_3_lead: RscPicture
 			{
 				idc = 2302;
-				text = "pictures\star.paa";
+				text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\star.paa";
 				x = 0.856974 * safezoneW + safezoneX;
 				y = 0.753906 * safezoneH + safezoneY;
 				w = 0.0264426 * safezoneW;
@@ -1185,7 +1185,7 @@ class rr_reloadingFlares {
 			class teammate_4_lead: RscPicture
 			{
 				idc = 2303;
-				text = "pictures\star.paa";
+				text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\star.paa";
 				x = 0.856974 * safezoneW + safezoneX;
 				y = 0.71629 * safezoneH + safezoneY;
 				w = 0.0264426 * safezoneW;
@@ -1194,7 +1194,7 @@ class rr_reloadingFlares {
 			class teammate_5_lead: RscPicture
 			{
 				idc = 2304;
-				text = "pictures\star.paa";
+				text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\star.paa";
 				x = 0.856974 * safezoneW + safezoneX;
 				y = 0.678675 * safezoneH + safezoneY;
 				w = 0.0264426 * safezoneW;
@@ -1221,7 +1221,7 @@ class rr_reloadingFlares {
 			class RscText211000: RscPicture
 			{
 				idc = 1101;
-				text = "pictures\cu.paa"; //--- ToDo: Localize;
+				text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\cu.paa"; //--- ToDo: Localize;
 				x = 0 * safezoneW + safezoneX;
 				y = 0 * safezoneH + safezoneY;
 				w = 1 * safezoneW;
@@ -1247,7 +1247,7 @@ class rr_reloadingFlares {
 			class RscText211000: RscPicture
 			{
 				idc = 1101;
-				text = "pictures\cr.paa"; //--- ToDo: Localize;
+				text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\cr.paa"; //--- ToDo: Localize;
 				x = 0 * safezoneW + safezoneX;
 				y = 0 * safezoneH + safezoneY;
 				w = 1 * safezoneW;
@@ -1273,7 +1273,7 @@ class rr_reloadingFlares {
 			class RscText211000: RscPicture
 			{
 				idc = 1101;
-				text = "pictures\cl.paa"; //--- ToDo: Localize;
+				text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\cl.paa"; //--- ToDo: Localize;
 				x = 0 * safezoneW + safezoneX;
 				y = 0 * safezoneH + safezoneY;
 				w = 1 * safezoneW;
@@ -1299,7 +1299,7 @@ class rr_reloadingFlares {
 			class RscText211000: RscPicture
 			{
 				idc = 1101;
-				text = "pictures\cd.paa"; //--- ToDo: Localize;
+				text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\cd.paa"; //--- ToDo: Localize;
 				x = 0 * safezoneW + safezoneX;
 				y = 0 * safezoneH + safezoneY;
 				w = 1 * safezoneW;
@@ -1328,7 +1328,7 @@ class rr_reloadingFlares {
 				y = 0.422 * safezoneH + safezoneY;
 				w = 0.0886877 * safezoneW;
 				h = 0.154 * safezoneH;
-				text = "pictures\hm_kill.paa";
+				text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\hm_kill.paa";
 			};
 		};
 	};
@@ -1353,7 +1353,7 @@ class rr_reloadingFlares {
 				y = 0.422 * safezoneH + safezoneY;
 				w = 0.0886877 * safezoneW;
 				h = 0.154 * safezoneH;
-				text = "pictures\hm_headshot.paa";
+				text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\hm_headshot.paa";
 			};
 		};
 	};
@@ -1378,7 +1378,7 @@ class rr_reloadingFlares {
 				y = 0.422 * safezoneH + safezoneY;
 				w = 0.0886877 * safezoneW;
 				h = 0.154 * safezoneH;
-				text = "pictures\hm_hit.paa";
+				text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\hm_hit.paa";
 			};
 		};
 	};

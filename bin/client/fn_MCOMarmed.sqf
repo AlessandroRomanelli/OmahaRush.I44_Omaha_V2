@@ -31,7 +31,7 @@ if (isServer) then {
 		private _time = 60;
 		private _soundTime = 60;
 		private _status = sv_cur_obj getVariable ["status", -1];
-		private _beep = MISSION_ROOT + "sounds\beep.ogg";
+		private _beep = WWRUSH_ROOT + "sounds\beep.ogg";
 		// If the objective is armed and there's still time on the clock
 		playSound3D [_beep, sv_cur_obj, false, getPosATL sv_cur_obj, 10, 1, 300];
 		while {((_status == 1) || (_status == 0)) && _time >= 0} do {

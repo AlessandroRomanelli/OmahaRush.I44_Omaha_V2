@@ -65,8 +65,8 @@ diag_log "Setting up handlers... 1";
 private _id = [
 /* 0 object */							player,
 /* 1 action title */					"Replenish Own Ammunition",
-/* 2 idle icon */						"pictures\support.paa",
-/* 3 progress icon */					"pictures\support.paa",
+/* 2 idle icon */						WWRUSH_ROOT+"pictures\support.paa",
+/* 3 progress icon */					WWRUSH_ROOT+"pictures\support.paa",
 /* 4 condition to show */				"cl_classPerk == 'ammo' && [] call mg_conditionShowOnMyself ",
 /* 5 condition for action */			"true",
 /* 6 code executed on start */			{cl_lastActionTarget = player;},
@@ -88,8 +88,8 @@ diag_log "Setting up handlers... 2";
 private _id = [
 /* 0 object */							player,
 /* 1 action title */					"Replenish Ammunition",
-/* 2 idle icon */						"pictures\support.paa",
-/* 3 progress icon */					"pictures\support.paa",
+/* 2 idle icon */						WWRUSH_ROOT+"pictures\support.paa",
+/* 3 progress icon */					WWRUSH_ROOT+"pictures\support.paa",
 /* 4 condition to show */				"cl_classPerk == 'ammo' && {cursorTarget distance _this < 3} && {alive cursorTarget} && {!(cursorTarget getVariable ['ammo_restored',false])} && {(side cursorTarget) == playerSide} && {cursorTarget isKindOf 'Man'}",
 /* 5 condition for action */			"!(cursorTarget getVariable ['ammo_restored',false])",
 /* 6 code executed on start */			{cl_lastActionTarget = cursorTarget;},
@@ -108,7 +108,7 @@ for "_i" from 1 to 4  do {
 	private _objective = missionNamespace getVariable [format ["sv_stage%1_obj", _i], objNull];
 
 	// Planting and defusing objectives
-	private _icon = MISSION_ROOT+"pictures\";
+	private _icon = WWRUSH_ROOT+"pictures\";
 	private _cond = "";
 	private _text = "";
 	private _completion = {};
@@ -136,7 +136,7 @@ for "_i" from 1 to 4  do {
 	/* 3 progress icon */					_icon,
 	/* 4 condition to show */				_cond,
 	/* 5 condition for action */			"_caller distance2D _target < ceil(([_target] call client_fnc_getObjectiveDistance) + 2)",
-	/* 6 code executed on start */			{playSound3D[MISSION_ROOT + "sounds\arm.ogg", sv_cur_obj]; sv_cur_obj setVariable ["status", 0, true];},
+	/* 6 code executed on start */			{playSound3D[WWRUSH_ROOT + "sounds\arm.ogg", sv_cur_obj]; sv_cur_obj setVariable ["status", 0, true];},
 	/* 7 code executed per tick */			{},
 	/* 8 code executed on completion */		_completion,
 	/* 9 code executed on interruption */	_interruption,
@@ -193,8 +193,8 @@ diag_log "Setting up handlers... 6";
 private _id = [
 /* 0 object */							player,
 /* 1 action title */					"Replenish Vehicle Ammunition",
-/* 2 idle icon */						"pictures\support.paa",
-/* 3 progress icon */					"pictures\support.paa",
+/* 2 idle icon */						WWRUSH_ROOT+"pictures\support.paa",
+/* 3 progress icon */					WWRUSH_ROOT+"pictures\support.paa",
 /* 4 condition to show */				"cl_classPerk == 'ammo' && (cursorTarget distance _this) < 3 && alive cursorTarget && !(cursorTarget getVariable ['ammo_restored',false]) && ((typeOf cursorTarget) in cl_vehicleAmmoTypes)",
 /* 5 condition for action */			"!(cursorTarget getVariable ['ammo_restored',false])",
 /* 6 code executed on start */			{cl_lastActionTarget = cursorTarget;},
@@ -215,8 +215,8 @@ diag_log "Setting up handlers... 7";
 private _id = [
 	player,
 	"Repair Vehicle",
-	"pictures\engineer.paa",
-	"pictures\engineer.paa",
+	WWRUSH_ROOT+"pictures\engineer.paa",
+	WWRUSH_ROOT+"pictures\engineer.paa",
 	"cl_class == 'engineer' && (cursorTarget distance player) < 5 && alive cursorTarget && !(cursorTarget getVariable ['repaired',false]) && (cursorTarget isKindOf 'Air' || cursorTarget isKindOf 'LandVehicle' || cursorTarget isKindOf 'Ship')",
 	"!(cursorTarget getVariable ['repaired',false])",
 	{cl_lastActionTarget = cursorTarget;},
@@ -237,8 +237,8 @@ diag_log "Setting up handlers... 8";
 private _id = [
 /* 0 object */							player,
 /* 1 action title */					"Rearm at Ammobox",
-/* 2 idle icon */						"pictures\support.paa",
-/* 3 progress icon */					"pictures\support.paa",
+/* 2 idle icon */						WWRUSH_ROOT+"pictures\support.paa",
+/* 3 progress icon */					WWRUSH_ROOT+"pictures\support.paa",
 /* 4 condition to show */				"(typeOf cursorTarget) isEqualTo 'LIB_AmmoCrates_NoInteractive_Large' && (cursorTarget distance player) < 5",
 /* 5 condition for action */			"true",
 /* 6 code executed on start */			{},
