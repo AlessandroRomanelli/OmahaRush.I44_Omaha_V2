@@ -22,7 +22,7 @@ lbClear _vehiclesCtrl;
 private _side = player getVariable ["gameSide", "defenders"];
 private _playerIsDefending = _side isEqualTo "defenders";
 
-private _configs = configProperties [missionConfigFile >> "MapSettings" >> "Stages" >> [] call client_fnc_getCurrentStageString >> "Spawns" >> _side, "true", false];
+private _configs = configProperties [missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> [] call client_fnc_getCurrentStageString >> "Spawns" >> _side, "true", false];
 
 {
   _spawnCtrl lbAdd (getText(_x >> "name"));
@@ -108,8 +108,8 @@ private _index = -1;
 // Get configs of vehicles we can spawn at (PERSISTENT ONES)
 private _configs = [];
 private _side = ["Attacker", "Defender"] select (_playerIsDefending);
-_configs append ("true" configClasses (missionConfigFile >> "MapSettings" >> "PersistentVehicles" >> _side));
-_configs append ("true" configClasses (missionConfigFile >> "MapSettings" >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Vehicles" >> _side));
+_configs append ("true" configClasses (missionConfigFile >> "MapSettings" >> sv_mapSize >> "PersistentVehicles" >> _side));
+_configs append ("true" configClasses (missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Vehicles" >> _side));
 
 
 {

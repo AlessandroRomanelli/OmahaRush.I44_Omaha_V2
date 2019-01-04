@@ -13,11 +13,11 @@ if (isServer && !hasInterface) exitWith {};
 private _configName = param[0,"",[""]];
 
 /* private _side = ["Attacker", "Defender"] select (player getVariable "gameSide" == "defenders"); */
-/* private _config = (missionConfigFile >> "MapSettings" >> "PersistentVehicles" >> _side >> _configName);
+/* private _config = (missionConfigFile >> "MapSettings" >> sv_mapSize >> "PersistentVehicles" >> _side >> _configName);
 
 // If the config is null its most likely a stage vehicle
 if (isNull _config) then {
-	_config = (missionConfigFile >> "MapSettings" >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Vehicles" >> _side >> _configName);
+	_config = (missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Vehicles" >> _side >> _configName);
 }; */
 
 // Equip

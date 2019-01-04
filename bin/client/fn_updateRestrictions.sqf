@@ -27,9 +27,9 @@ private _currentPos = getPosATL _trigger;
 private _currentArea = triggerArea _trigger;
 
 // Future data of the trigger after alteration
-private _newArea = (getArray(missionConfigFile >> "MapSettings" >> "Stages" >> _currentStage >> "Area" >> (_side select 0) >> "area"));
+private _newArea = (getArray(missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> _currentStage >> "Area" >> (_side select 0) >> "area"));
 _newArea set [3, true];
-private _newPos = (getArray(missionConfigFile >> "MapSettings" >> "Stages" >> _currentStage >> "Area" >> (_side select 0) >> "positionATL"));
+private _newPos = (getArray(missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> _currentStage >> "Area" >> (_side select 0) >> "positionATL"));
 
 private _startTime = diag_tickTime;
 if (_transitionTime > 0) then {

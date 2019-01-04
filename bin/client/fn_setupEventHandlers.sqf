@@ -221,7 +221,7 @@ player addEventHandler ["Killed", {
 
 		_victim setVariable ["isAlive", false];
 
-		private _spawnSafeDistance = (getNumber (missionConfigFile >> "MapSettings" >> "safeSpawnDistance"));
+		private _spawnSafeDistance = (getNumber (missionConfigFile >> "MapSettings" >> sv_mapSize >> "safeSpawnDistance"));
 		private _spawnSafeTime = paramsArray#6;
 		private _spawnMarker = format ["mobile_respawn_%1", _victim getVariable "gameSide"];
 		if (_killer getVariable ["gameSide", "attackers"] != (_victim getVariable ["gameSide", "defenders"]) &&

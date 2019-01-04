@@ -132,7 +132,7 @@ while {_stage == ""} do {
 	_stage = [] call client_fnc_getCurrentStageString;
 };
 private _side = player getVariable "gameSide";
-private _pos = getArray(missionConfigFile >> "MapSettings" >> "Stages" >> _stage >> "Spawns" >> _side >> "HQSpawn" >> "positionATL");
+private _pos = getArray(missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> _stage >> "Spawns" >> _side >> "HQSpawn" >> "positionATL");
 
 // Determine point between current pos and target pos
 private _targetPos = [_pos, getPos sv_cur_obj] call client_fnc_getSectionCenter;
@@ -200,8 +200,8 @@ _menuDisplay displayAddEventHandler ["KeyDown",{
 }];
 
 // Blurry background?
-/* if (getNumber(missionConfigFile >> "GeneralConfig" >> "PostProcessing") == 1) then {
-	["DynamicBlur", 400, [0.4]] spawn {
+if (getNumber(missionConfigFile >> "GeneralConfig" >> "PostProcessing") == 1) then {
+	["DynamicBlur", 400, [0.5]] spawn {
 		params ["_name", "_priority", "_effect"];
 		while {
 			cl_spawnmenu_blur = ppEffectCreate [_name, _priority];
@@ -213,7 +213,7 @@ _menuDisplay displayAddEventHandler ["KeyDown",{
 		cl_spawnmenu_blur ppEffectAdjust _effect;
 		cl_spawnmenu_blur ppEffectCommit 0.1;
 	};
-}; */
+};
 
 // Populate the structured texts
 [] spawn client_fnc_populateSpawnMenu;

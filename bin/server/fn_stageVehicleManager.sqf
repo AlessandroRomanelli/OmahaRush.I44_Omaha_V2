@@ -131,8 +131,8 @@ private _sv_stage_deleteNullThreads = {
 private _sv_stage_getCurrentStageVehicleDataIncOld = {
 	// Get data of current stage
 	private _stage = [] call client_fnc_getCurrentStageString;
-	private _configs = "true" configClasses (missionConfigFile >> "MapSettings" >> "Stages" >> _stage >> "Vehicles" >> "Attacker");
-	_configs = _configs + ("true" configClasses (missionConfigFile >> "MapSettings" >> "Stages" >> _stage >> "Vehicles" >> "Defender"));
+	private _configs = "true" configClasses (missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> _stage >> "Vehicles" >> "Attacker");
+	_configs = _configs + ("true" configClasses (missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> _stage >> "Vehicles" >> "Defender"));
 	// Cycle through definitely up to date configs and add them if these vehicles are currently not being monitored
 	{
 		private _config = _x;
@@ -147,8 +147,8 @@ private _sv_stage_getCurrentStageVehicleDataIncOld = {
 private _sv_stage_getOnlyCurrentStageVehicleData = {
 	// Get data of current stage
 	private _stage = [] call client_fnc_getCurrentStageString;
-	private _configs = "true" configClasses (missionConfigFile >> "MapSettings" >> "Stages" >> _stage >> "Vehicles" >> "Attacker");
-	private _configs = _configs + ("true" configClasses (missionConfigFile >> "MapSettings" >> "Stages" >> _stage >> "Vehicles" >> "Defender"));
+	private _configs = "true" configClasses (missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> _stage >> "Vehicles" >> "Attacker");
+	private _configs = _configs + ("true" configClasses (missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> _stage >> "Vehicles" >> "Defender"));
 
 	// Return list of configs
 	_configs

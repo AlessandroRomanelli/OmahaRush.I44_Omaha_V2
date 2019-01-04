@@ -17,8 +17,8 @@ if !(_objMarkerStatusUpdate) then {
 	private _atkFaction = getText(missionConfigFile >> "Vehicles" >> "Attacker" >> "faction");
 	private _defMarker = getText(missionConfigFile >> "Vehicles" >> "Defender" >> "marker");
 	private _defFaction = getText(missionConfigFile >> "Vehicles" >> "Defender" >> "faction");
-	private _HQposDef = getArray(missionConfigFile >> "MapSettings" >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Spawns" >> "defenders" >> "HQSpawn" >> "positionATL");
-	private _HQposAtk = getArray(missionConfigFile >> "MapSettings" >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Spawns" >> "attackers" >> "HQSpawn" >> "positionATL");
+	private _HQposDef = getArray(missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Spawns" >> "defenders" >> "HQSpawn" >> "positionATL");
+	private _HQposAtk = getArray(missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Spawns" >> "attackers" >> "HQSpawn" >> "positionATL");
 	"mobile_respawn_defenders" setMarkerPosLocal _HQposDef;
 	"mobile_respawn_attackers" setMarkerPosLocal _HQposAtk;
 

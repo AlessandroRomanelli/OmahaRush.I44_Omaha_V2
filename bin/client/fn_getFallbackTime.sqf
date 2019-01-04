@@ -22,9 +22,9 @@ if (_oldStage isEqualTo "") exitWith {paramsArray#8};
 private _playerSpeed = 6;
 
 _oldStage = ""+_oldStage;
-private _oldSpawnPos = getArray(missionConfigFile >> "MapSettings" >> "Stages" >> _oldStage >> "Spawns" >> "defenders" >> "HQSpawn" >> "positionATL");
-private _oldObjPos = getArray(missionConfigFile >> "MapSettings" >> "Stages" >> _oldStage >> "Objective" >> "positionATL");
-private _newObjPos = getArray(missionConfigFile >> "MapSettings" >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Objective" >> "positionATL");
+private _oldSpawnPos = getArray(missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> _oldStage >> "Spawns" >> "defenders" >> "HQSpawn" >> "positionATL");
+private _oldObjPos = getArray(missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> _oldStage >> "Objective" >> "positionATL");
+private _newObjPos = getArray(missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Objective" >> "positionATL");
 
 
 private _avgOldPos = [_oldSpawnPos, _oldObjPos] call client_fnc_getSectionCenter;
