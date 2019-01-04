@@ -2,8 +2,7 @@ ChangeLog.md
 README.md
 config/factions.h
 mission.sqm
-description.ext
-*.ext
 *.sqm
 config/master.h
 config/maps
+config/params.h
