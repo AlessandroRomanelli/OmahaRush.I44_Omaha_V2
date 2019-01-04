@@ -28,7 +28,7 @@ rc_spawnBeacon = {
 	if (isNull (player getVariable ["assault_beacon_obj", objNull]) || (diag_tickTime - ((player getVariable ["assault_beacon_obj",objNull]) getVariable ["deployment_tick", 0])) > 180) then {
 		if (({!isNull (_x getVariable ["assault_beacon_obj", objNull])} count (units group player)) < 1) then {
 			private _safeSpawnDistance = getNumber(missionConfigFile >> "MapSettings" >> "safeSpawnDistance");
-			if (player distance sv_cur_obj < _safeSpawnDistance || (player distance (getMarkerPos cl_enemySpawnMarker)) < _safeSpawnDistance) then {
+			if (player distance sv_cur_obj < 50 || (player distance (getMarkerPos cl_enemySpawnMarker)) < _safeSpawnDistance) then {
 				["Your rally point may not be placed here"] spawn client_fnc_displayError;
 			} else {
 				private _existingBeacon = (player getVariable ["assault_beacon_obj",objNull]);
