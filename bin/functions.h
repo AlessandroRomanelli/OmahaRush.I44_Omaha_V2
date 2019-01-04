@@ -4,6 +4,7 @@ class Maverick_Functions_Client {
 	class functions {
 		file = "bin\client";
 		class init {headerType = -1;};
+		class preInit {preInit = 1;};
 		class waitForServer {};
 		class spawn {};
 		class getCurrentStageString {};
