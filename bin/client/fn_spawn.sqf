@@ -51,7 +51,7 @@ cl_assistsInfo = [];
 if (player getVariable "gameSide" == "defenders") then {
 	disableSerialization;
 	private _d = uiNamespace getVariable ["rr_objective_gui", displayNull];
-	(_d displayCtrl 0) ctrlSetText "pictures\objective_defender.paa";
+	(_d displayCtrl 0) ctrlSetText WWRUSH_ROOT+"pictures\objective_defender.paa";
 };
 
 // If the server will restart after this round, display a visual warning at the top right
@@ -253,7 +253,7 @@ updateObjectiveProgress = {
 		private _ctrlObj = _display displayCtrl _idc;
 		private _IntToAlpha = ["", "A", "B", "C", "D"];
 		private _playerSide = player getVariable ["gameSide", "defenders"];
-		private _picturePath = "pictures\"+(format["obj_%1_%2", _IntToAlpha select _i, _playerSide])+".paa";
+		private _picturePath = WWRUSH_ROOT+"pictures\"+(format["obj_%1_%2", _IntToAlpha select _i, _playerSide])+".paa";
 		private _objective = missionNamespace getVariable [format["sv_stage%1_obj", _i], objNull];
 		_ctrlObj ctrlSetText _picturePath;
 		if !(_objective isEqualTo sv_cur_obj) then {

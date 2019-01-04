@@ -39,7 +39,7 @@ if (_playerIsDefending) then {
 };
 
 // HQ Icon
-_spawnCtrl lbSetPicture [(lbSize _spawnCtrl) - 1, "pictures\teammate.paa"];
+_spawnCtrl lbSetPicture [(lbSize _spawnCtrl) - 1, WWRUSH_ROOT+"pictures\teammate.paa"];
 _spawnCtrl lbSetValue [(lbSize _spawnCtrl) - 1, -1];
 _spawnCtrl lbSetData [(lbSize _spawnCtrl) - 1, "Spawn HQ"]; */
 
@@ -81,7 +81,7 @@ private _index = -1;
 				_spawnCtrl lbAdd ((_x getVariable ["name", "ERROR: No Name"]) + "'s Beacon");
 				_spawnCtrl lbSetData [(lbSize _spawnCtrl) - 1, "beacon"];
 				_spawnCtrl lbSetValue [(lbSize _spawnCtrl) - 1, _index];
-				_spawnCtrl lbSetPicture [(lbSize _spawnCtrl) - 1, "pictures\squad.paa"];
+				_spawnCtrl lbSetPicture [(lbSize _spawnCtrl) - 1, WWRUSH_ROOT+"pictures\squad.paa"];
 			} else {
 				// Player
 				private _unit = _x;
@@ -92,12 +92,12 @@ private _index = -1;
 					_spawnCtrl lbAdd ((_x getVariable ["name", "ERROR: No Name"]) + " (IN COMBAT)");
 					_spawnCtrl lbSetValue [(lbSize _spawnCtrl) - 1, _index];
 					_spawnCtrl lbSetData [(lbSize _spawnCtrl) - 1, "inCombat"];
-					_spawnCtrl lbSetPicture [(lbSize _spawnCtrl) - 1, "pictures\enemy.paa"];
+					_spawnCtrl lbSetPicture [(lbSize _spawnCtrl) - 1, WWRUSH_ROOT+"pictures\enemy.paa"];
 				} else {
 					_spawnCtrl lbAdd (_x getVariable ["name", "ERROR: No Name"]);
 					_spawnCtrl lbSetValue [(lbSize _spawnCtrl) - 1, _index];
 					_spawnCtrl lbSetData [(lbSize _spawnCtrl) - 1, netID _unit];
-					_spawnCtrl lbSetPicture [(lbSize _spawnCtrl) - 1, "pictures\squad.paa"];
+					_spawnCtrl lbSetPicture [(lbSize _spawnCtrl) - 1, WWRUSH_ROOT+"pictures\squad.paa"];
 				};
 			};
 		};
@@ -125,7 +125,7 @@ _configs append ("true" configClasses (missionConfigFile >> "MapSettings" >> sv_
 			_vehiclesCtrl lbAdd _displayName;
 			_vehiclesCtrl lbSetData [(lbSize _vehiclesCtrl) - 1, configName _x];
 			_vehiclesCtrl lbSetValue [(lbSize _vehiclesCtrl) - 1, -2];
-			_vehiclesCtrl lbSetPicture [(lbSize _vehiclesCtrl) - 1, "pictures\teammate.paa"];
+			_vehiclesCtrl lbSetPicture [(lbSize _vehiclesCtrl) - 1, WWRUSH_ROOT+"pictures\teammate.paa"];
 		};
 	};
 } forEach _configs;

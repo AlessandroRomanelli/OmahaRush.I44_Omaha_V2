@@ -38,7 +38,7 @@ if (!isNull _beacon) then {
 if (player getVariable "gameSide" == "defenders") then {
 	disableSerialization;
 	private _d = uiNamespace getVariable ["rr_objective_gui", displayNull];
-	(_d displayCtrl 0) ctrlSetText "pictures\objective_defender.paa";
+	(_d displayCtrl 0) ctrlSetText WWRUSH_ROOT+"pictures\objective_defender.paa";
 };
 
 // Wait until we have a ticket count

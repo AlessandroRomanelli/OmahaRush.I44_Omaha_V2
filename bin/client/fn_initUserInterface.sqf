@@ -221,10 +221,10 @@ private _event = addMissionEventHandler["EachFrame", {
   private _getTeamIcon = {
     private _unit = param [0, objNull, [objNull]];
     private _perkIdx = _unit getVariable ["squadPerk", -1];
-    if (_perkIdx isEqualTo -1) exitWith {"pictures\noperk.paa"};
+    if (_perkIdx isEqualTo -1) exitWith {WWRUSH_ROOT+"pictures\noperk.paa"};
     private _availableSquadPerks = (missionConfigFile >> "CfgPerks" >> "SquadPerks") call bis_fnc_getCfgSubClasses;
     private _squadPerk = _availableSquadPerks select _perkIdx;
-    private _icon = "pictures\"+_squadPerk+".paa";
+    private _icon = WWRUSH_ROOT+"pictures\"+_squadPerk+".paa";
     _icon
   };
 
@@ -247,7 +247,7 @@ private _event = addMissionEventHandler["EachFrame", {
       }
     } else {
       _teamMateName ctrlSetStructuredText parseText "";
-      _teamMateIcon ctrlSetText "pictures\noperk.paa";
+      _teamMateIcon ctrlSetText WWRUSH_ROOT+"pictures\noperk.paa";
       _teamMateIcon ctrlSetTextColor [0,0,0,0.25];
       _teamMateLeader ctrlSetTextColor [0,0,0,0];
     };
@@ -295,7 +295,7 @@ private _event = addMissionEventHandler["EachFrame", {
     };
   };
 
-  private _grenadeIcon = if (toLower ((currentThrowable player) select 0) in ["lib_us_mk_2", "lib_shg24", "lib_rg42"]) then {"pictures\grenade.paa"} else {"pictures\smoke.paa"};
+  private _grenadeIcon = if (toLower ((currentThrowable player) select 0) in ["lib_us_mk_2", "lib_shg24", "lib_rg42"]) then {WWRUSH_ROOT+"pictures\grenade.paa"} else {WWRUSH_ROOT+"pictures\smoke.paa"};
   if ((currentThrowable player) isEqualto []) then {_grenadeIcon = "";};
 
   if (_grenades isEqualTo 0) then {_grenades = ""};

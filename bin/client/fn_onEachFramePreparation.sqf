@@ -12,11 +12,11 @@ scriptName "fn_onEachFramePreparation";
 // Inline function to determine icon
 private _getIcon = {
 	private _unit = param[0,objNull,[objNull]];
-	if (_unit getVariable ["class",""] == "medic") exitWith {"pictures\medic.paa"};
-	if (_unit getVariable ["class",""] == "engineer") exitWith {"pictures\engineer.paa"};
-	if (_unit getVariable ["class",""] == "support") exitWith {"pictures\support.paa"};
-	if (_unit getVariable ["class",""] == "recon") exitWith {"pictures\recon.paa"};
-	"pictures\assault.paa";
+	if (_unit getVariable ["class",""] == "medic") exitWith {WWRUSH_ROOT+"pictures\medic.paa"};
+	if (_unit getVariable ["class",""] == "engineer") exitWith {WWRUSH_ROOT+"pictures\engineer.paa"};
+	if (_unit getVariable ["class",""] == "support") exitWith {WWRUSH_ROOT+"pictures\support.paa"};
+	if (_unit getVariable ["class",""] == "recon") exitWith {WWRUSH_ROOT+"pictures\recon.paa"};
+	WWRUSH_ROOT+"pictures\assault.paa";
 };
 
 // Variables
