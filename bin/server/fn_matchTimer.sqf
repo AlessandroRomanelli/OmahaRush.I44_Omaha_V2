@@ -10,7 +10,7 @@ scriptName "fn_matchTimer";
 private _matchStart = param[0,false,[false]];
 private _additionalTime = param[1,0,[0]];
 
-/* _stageTime = getNumber(missionConfigFile >> "MapSettings" >> "roundTime"); */
+/* _stageTime = getNumber(missionConfigFile >> "MapSettings" >> sv_mapSize >> "roundTime"); */
 private _stageTime = ceil (paramsArray#3 * 60);
 
 sv_matchTime =  _stageTime + _additionalTime;

@@ -76,7 +76,7 @@ while {true} do {
 	[["sv_gameStatus"]] spawn server_fnc_updateVars;
 
 	// Start persistent vehicle manager
-	if (isClass(missionConfigFile >> "MapSettings" >> "PersistentVehicles")) then {
+	if (isClass(missionConfigFile >> "MapSettings" >> sv_mapSize >> "PersistentVehicles")) then {
 		sv_persistentVehicleManager_thread = [] spawn server_fnc_persistentVehicleManager;
 		["Persistent vehicles manager has been started"] spawn server_fnc_log;
 	};

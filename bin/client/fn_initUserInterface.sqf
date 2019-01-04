@@ -1,6 +1,6 @@
 private _event = addMissionEventHandler["EachFrame", {
   private _side = player getVariable ["gameSide", "defenders"];
-  private _HQPos = getArray(missionConfigFile >> "MapSettings" >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Spawns" >> _side >> "HQSpawn" >> "positionATL");
+  private _HQPos = getArray(missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Spawns" >> _side >> "HQSpawn" >> "positionATL");
   // Display the currently selected spawn if in spawn menu
   if (cl_inSpawnMenu) then {
     private _d = findDisplay 5000;
@@ -37,7 +37,7 @@ private _event = addMissionEventHandler["EachFrame", {
     [] call {
       if (_data isEqualTo "") exitWith {};
       if (_value isEqualTo -1) exitWith {
-        private _spawnConfig = missionConfigFile >> "MapSettings" >> "Stages" >> [] call client_fnc_getCurrentStageString >> "Spawns" >> _side >> _data;
+        private _spawnConfig = missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> [] call client_fnc_getCurrentStageString >> "Spawns" >> _side >> _data;
         private _pos = getArray(_spawnConfig >> "positionATL");
         private _name = getText(_spawnConfig >> "name");
         [_pos, _name] call _makeCurrentSpawn;
@@ -314,7 +314,7 @@ private _event = addMissionEventHandler["EachFrame", {
 
   // warning if we are too close to the enemy spawn
   if (alive player && {!(vehicle player isKindOf "Air")} && {player getVariable ["isAlive", false]}) then {
-    private _safeSpawnDistance = getNumber(missionConfigFile >> "MapSettings" >> "safeSpawnDistance");
+    private _safeSpawnDistance = getNumber(missionConfigFile >> "MapSettings" >> sv_mapSize >> "safeSpawnDistance");
     if (player distance (getMarkerPos cl_enemySpawnMarker) < _safeSpawnDistance) then {
       30 cutRsc ["rr_restrictedAreaSpawn", "PLAIN"];
       if (isNil "cl_restrictedArea_thread") then {

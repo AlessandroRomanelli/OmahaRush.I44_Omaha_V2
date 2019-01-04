@@ -14,9 +14,9 @@ private _objects = [];
 
 for "_i" from 1 to 4 do {
 	//Get data out of config
-	private _class = getText(missionConfigFile >> "MapSettings" >> "Stages" >> format["Stage%1", _i] >> "Objective" >> "classname");
-	private _posATL = getArray(missionConfigFile >> "MapSettings" >> "Stages" >> format["Stage%1", _i] >> "Objective" >> "positionATL");
-	private _dir = getNumber(missionConfigFile >> "MapSettings" >> "Stages" >> format["Stage%1", _i] >> "Objective" >> "dir");
+	private _class = getText(missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> format["Stage%1", _i] >> "Objective" >> "classname");
+	private _posATL = getArray(missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> format["Stage%1", _i] >> "Objective" >> "positionATL");
+	private _dir = getNumber(missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> format["Stage%1", _i] >> "Objective" >> "dir");
 
 	//Create object and make it invincible
 	private _obj = createVehicle [_class, _posATL, [], 0, "CAN_COLLIDE"];

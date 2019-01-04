@@ -16,8 +16,8 @@ sv_persistentVehiclesAwaitingRespawn = [];
 sv_persistentVehicleRespawnThreads = [];
 
 // Get vehicle configs from both attacker and defender
-private _configs = "true" configClasses (missionConfigFile >> "MapSettings" >> "PersistentVehicles" >> "Attacker");
-private _configs = _configs + ("true" configClasses (missionConfigFile >> "MapSettings" >> "PersistentVehicles" >> "Defender"));
+private _configs = "true" configClasses (missionConfigFile >> "MapSettings" >> sv_mapSize >> "PersistentVehicles" >> "Attacker");
+private _configs = _configs + ("true" configClasses (missionConfigFile >> "MapSettings" >> sv_mapSize >> "PersistentVehicles" >> "Defender"));
 
 // Pushback into main array
 {
