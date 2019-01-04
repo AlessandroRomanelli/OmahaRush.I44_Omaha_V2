@@ -295,8 +295,16 @@ private _event = addMissionEventHandler["EachFrame", {
     };
   };
 
-  private _grenadeIcon = if (toLower ((currentThrowable player) select 0) in ["lib_us_mk_2", "lib_shg24", "lib_rg42"]) then {WWRUSH_ROOT+"pictures\grenade.paa"} else {WWRUSH_ROOT+"pictures\smoke.paa"};
-  if ((currentThrowable player) isEqualto []) then {_grenadeIcon = "";};
+  private _grenadeIcon = "";
+  private _fragGrenades = ["lib_us_mk_2", "lib_shg24", "lib_rg42", "lib_millsbomb"];
+  if (count (currentThrowable player) > 0) then {
+    private _currentGrenade = (currentThrowable player) select 0;
+    _grenadeIcon = if (toLower _currentGrenade in _fragGrenades) then {
+      WWRUSH_ROOT+"pictures\grenade.paa"
+    } else {
+      WWRUSH_ROOT+"pictures\smoke.paa"
+    };
+  };
 
   if (_grenades isEqualTo 0) then {_grenades = ""};
 
