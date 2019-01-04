@@ -1,7 +1,6 @@
 ChangeLog.md
 README.md
 config/factions.h
-config/map_settings.h
 mission.sqm
 description.ext
 *.ext
