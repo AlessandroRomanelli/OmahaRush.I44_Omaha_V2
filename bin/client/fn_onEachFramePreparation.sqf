@@ -55,17 +55,17 @@ cl_onEachFramePreparationID = addMissionEventHandler["EachFrame", {
 						if (_x distance cl_safePos > 200) then {
 							private _alpha = [0.75, 0.55] select (_x distance player > 50);
 							private _icon = [_x] call _getIcon;
-							_squad_members pushBack [_x, _name, (MISSION_ROOT+_icon), _alpha];
+							_squad_members pushBack [_x, _name, (WWRUSH_ROOT+_icon), _alpha];
 						};
 					};
 				} else {
 					if (_x distance cl_safePos > 200 && alive _x) then {
 						if (cl_inSpawnMenu || ((vehicle player) isKindOf "Air")) then {
-							_team_members pushBack [_x, _name, (MISSION_ROOT+"pictures\teammate.paa")];
+							_team_members pushBack [_x, _name, (WWRUSH_ROOT+"pictures\teammate.paa")];
 						} else {
 							// Only teammates within 100 meters
 							if (_x distance player < 100 || _x == (driver vehicle cursorTarget) || _x == (driver vehicle cursorTarget)) then {
-								_team_members pushBack [_x, _name, (MISSION_ROOT+"pictures\teammate.paa")];
+								_team_members pushBack [_x, _name, (WWRUSH_ROOT+"pictures\teammate.paa")];
 							};
 						};
 					};

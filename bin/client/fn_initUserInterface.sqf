@@ -11,8 +11,8 @@ private _event = addMissionEventHandler["EachFrame", {
     private _makeCurrentSpawn = {
       params ["_pos", "_title"];
       private _progress = diag_tickTime % 1;
-      drawIcon3D [MISSION_ROOT+"pictures\mark.paa", [0.66,1,0.66,0.5-(0.5*_progress)], _pos, 2+(1*_progress), 2+(1*_progress), 0, "", 0, 0.05, "PuristaMedium"];
-      drawIcon3D [MISSION_ROOT+"pictures\mark.paa", [1,1,1,1], _pos, _iconSize, _iconSize, 0, _title, 0, 0.05, "PuristaMedium"];
+      drawIcon3D [WWRUSH_ROOT+"pictures\mark.paa", [0.66,1,0.66,0.5-(0.5*_progress)], _pos, 2+(1*_progress), 2+(1*_progress), 0, "", 0, 0.05, "PuristaMedium"];
+      drawIcon3D [WWRUSH_ROOT+"pictures\mark.paa", [1,1,1,1], _pos, _iconSize, _iconSize, 0, _title, 0, 0.05, "PuristaMedium"];
       drawLine3D [_pos, getPos sv_cur_obj, [1,1,1,1]];
       private _leader = leader group player;
       if (player isEqualTo _leader) then {
@@ -42,7 +42,7 @@ private _event = addMissionEventHandler["EachFrame", {
         private _name = getText(_spawnConfig >> "name");
         [_pos, _name] call _makeCurrentSpawn;
       };
-      drawIcon3D [MISSION_ROOT+"pictures\mark.paa", [1,1,1,0.25], _HQPos, _iconSize, _iconSize, 0, "HQ", 0, 0.05, "PuristaMedium"];
+      drawIcon3D [WWRUSH_ROOT+"pictures\mark.paa", [1,1,1,0.25], _HQPos, _iconSize, _iconSize, 0, "HQ", 0, 0.05, "PuristaMedium"];
       if (_value isEqualTo -2) exitWith {
         private _vehicle = missionNamespace getVariable [_data, objNull];
         if (isNull _vehicle) exitWith {};
@@ -102,15 +102,15 @@ private _event = addMissionEventHandler["EachFrame", {
   private _origin = if (cl_inSpawnMenu) then {_HQPos} else {getPos player};
   if (_side isEqualTo "defenders") then {
     if (_objIsArmed) then {
-      drawIcon3D [MISSION_ROOT+"pictures\objective_defender_armed.paa",[1,1,1,_alpha],_pos,1.5,1.5,0,format["Defuse (%1m)", round(_origin distance2D sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
+      drawIcon3D [WWRUSH_ROOT+"pictures\objective_defender_armed.paa",[1,1,1,_alpha],_pos,1.5,1.5,0,format["Defuse (%1m)", round(_origin distance2D sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
     } else {
-      drawIcon3D [MISSION_ROOT+"pictures\objective_defender.paa",[1,1,1,_alpha],_pos,1.5,1.5,0,format["Defend (%1m)", round(_origin distance2D sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
+      drawIcon3D [WWRUSH_ROOT+"pictures\objective_defender.paa",[1,1,1,_alpha],_pos,1.5,1.5,0,format["Defend (%1m)", round(_origin distance2D sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
     };
   } else {
     if (_objIsArmed) then {
-      drawIcon3D [MISSION_ROOT+"pictures\objective_attacker_armed.paa",[1,1,1,_alpha],_pos,1.5,1.5,0,format["Protect (%1m)", round(_origin distance2D sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
+      drawIcon3D [WWRUSH_ROOT+"pictures\objective_attacker_armed.paa",[1,1,1,_alpha],_pos,1.5,1.5,0,format["Protect (%1m)", round(_origin distance2D sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
     } else {
-      drawIcon3D [MISSION_ROOT+"pictures\objective_attacker.paa",[1,1,1,_alpha],_pos,1.5,1.5,0,format["Attack (%1m)", round(_origin distance2D sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
+      drawIcon3D [WWRUSH_ROOT+"pictures\objective_attacker.paa",[1,1,1,_alpha],_pos,1.5,1.5,0,format["Attack (%1m)", round(_origin distance2D sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
     };
   };
 
@@ -126,7 +126,7 @@ private _event = addMissionEventHandler["EachFrame", {
     _pos set [2, (_pos select 2) + 0.5];
     private _distance = player distance _x;
     private _alpha = if (_distance < 5) then {1} else {1-(1/2*_distance)+2.5};
-    drawIcon3D [MISSION_ROOT+"pictures\support.paa", [1,1,1,_alpha], ASLtoAGL _pos, 1.5, 1.5, 0, format["Rearm (%1m)", round _distance], 2, 0.04, "PuristaLight", "center", true];
+    drawIcon3D [WWRUSH_ROOT+"pictures\support.paa", [1,1,1,_alpha], ASLtoAGL _pos, 1.5, 1.5, 0, format["Rearm (%1m)", round _distance], 2, 0.04, "PuristaLight", "center", true];
   } forEach _ammoBoxes;
 
   // Squad icons
@@ -169,7 +169,7 @@ private _event = addMissionEventHandler["EachFrame", {
         if (_alpha < 0 || ([player, "VIEW", _unit] checkVisibility [eyePos player, eyePos _unit] < 0.2)) then {
           _alpha = 0;
         };
-        drawIcon3D [MISSION_ROOT+"pictures\enemy.paa", [1,1,1,_alpha], _pos, 0.3, 0.3, 0, "", 2, 0.03, "PuristaMedium", "center", false];
+        drawIcon3D [WWRUSH_ROOT+"pictures\enemy.paa", [1,1,1,_alpha], _pos, 0.3, 0.3, 0, "", 2, 0.03, "PuristaMedium", "center", false];
       };
     };
   } forEach cl_onEachFrame_spotted_enemies;
@@ -179,7 +179,7 @@ private _event = addMissionEventHandler["EachFrame", {
     {
       private _pos = getPosATLVisual _x;
       _pos set [2, (_pos select 2) + 0.1];
-      drawIcon3D [MISSION_ROOT+"pictures\revive.paa", [1,1,1,0.8], _pos, 1.5, 1.5, 0, "", 2, 0.035, "PuristaMedium", "center", false];
+      drawIcon3D [WWRUSH_ROOT+"pictures\revive.paa", [1,1,1,0.8], _pos, 1.5, 1.5, 0, "", 2, 0.035, "PuristaMedium", "center", false];
     } forEach cl_onEachFrame_team_reviveable;
   };
 

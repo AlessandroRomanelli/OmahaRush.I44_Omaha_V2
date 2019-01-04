@@ -26,7 +26,7 @@ private _configs = configProperties [missionConfigFile >> "MapSettings" >> sv_ma
 
 {
   _spawnCtrl lbAdd (getText(_x >> "name"));
-	_spawnCtrl lbSetPicture [(lbSize _spawnCtrl) - 1, "pictures\teammate.paa"];
+	_spawnCtrl lbSetPicture [(lbSize _spawnCtrl) - 1, WWRUSH_ROOT+"pictures\teammate.paa"];
 	_spawnCtrl lbSetValue [(lbSize _spawnCtrl) - 1, -1];
 	_spawnCtrl lbSetData [(lbSize _spawnCtrl) - 1, configName _x];
 } forEach _configs;

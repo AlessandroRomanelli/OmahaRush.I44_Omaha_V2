@@ -108,7 +108,7 @@ for "_i" from 1 to 4  do {
 	private _objective = missionNamespace getVariable [format ["sv_stage%1_obj", _i], objNull];
 
 	// Planting and defusing objectives
-	private _icon = MISSION_ROOT+"pictures\";
+	private _icon = WWRUSH_ROOT+"pictures\";
 	private _cond = "";
 	private _text = "";
 	private _completion = {};
@@ -136,7 +136,7 @@ for "_i" from 1 to 4  do {
 	/* 3 progress icon */					_icon,
 	/* 4 condition to show */				_cond,
 	/* 5 condition for action */			"_caller distance2D _target < ceil(([_target] call client_fnc_getObjectiveDistance) + 2)",
-	/* 6 code executed on start */			{playSound3D[MISSION_ROOT + "sounds\arm.ogg", sv_cur_obj]; sv_cur_obj setVariable ["status", 0, true];},
+	/* 6 code executed on start */			{playSound3D[WWRUSH_ROOT + "sounds\arm.ogg", sv_cur_obj]; sv_cur_obj setVariable ["status", 0, true];},
 	/* 7 code executed per tick */			{},
 	/* 8 code executed on completion */		_completion,
 	/* 9 code executed on interruption */	_interruption,
