@@ -9,18 +9,11 @@ scriptName "fn_getRandomMap";
 --------------------------------------------------------------------*/
 #define __filename "fn_getRandomMap.sqf"
 
-if (isNil "sv_map") then {
-	sv_map = "";
-};
-
-private _newMap = sv_map;
-
-while {sv_map == _newMap} do { // Make sure its not the same map
-	_newMap = configName (selectRandom ("true" configClasses (missionConfigFile >> "Maps")));
-	if (count ("true" configClasses (missionConfigFile >> "Maps")) == 1) exitWith {
-		sv_map = _newMap;
+private _isDebug = getNumber(missionConfigFile >> "GeneralConfig" >> "debug") isEqualTo 1;
+if (!_isDebug) then {
+	if (count allPlayers < 12) exitWith {
+		"SmallSetting"
 	};
 };
 
-// Return
-_newMap
+"LargeSetting"

@@ -133,7 +133,7 @@ class Maverick_Functions_Server {
 		class engine {};
 		class cleanUp {};
 		class spawnObjectives {};
-		class getRandomMap {};
+		class decideMapSize {};
 		class refreshTickets {};
 		class endRound {};
 		class matchTimer {};

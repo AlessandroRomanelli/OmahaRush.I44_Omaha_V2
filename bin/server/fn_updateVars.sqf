@@ -1,13 +1,13 @@
-scriptName "fn_PVUpdateAll";
+scriptName "fn_updateVars";
 /*--------------------------------------------------------------------
 	Author: Maverick (ofpectag: MAV)
-    File: fn_PVUpdateAll.sqf
+    File: fn_updateVars.sqf
 
 	<Maverick Applications>
     Written by Maverick Applications (www.maverick-apps.de)
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
-#define __filename "fn_PVUpdateAll.sqf"
+#define __filename "fn_updateVars.sqf"
 
 private _variables = param[0,[],[[]]];
 

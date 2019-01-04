@@ -40,7 +40,10 @@ while {true} do {
 	["Old threads have been killed"] spawn server_fnc_log;
 
 	// Get random map from config
-	/* sv_map = [] call server_fnc_getRandomMap; */
+	if (sv_gameCycle % 2 == 0) then {
+		sv_mapSize = [] call server_fnc_decideMapSize;
+		publicVariable "sv_mapSize";
+	};
 	/* ["Map has been selected"] spawn server_fnc_log; */
 
 	// Delete all objects off the map
