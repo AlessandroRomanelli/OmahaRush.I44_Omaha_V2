@@ -1200,6 +1200,52 @@ class rr_reloadingFlares {
 				w = 0.0264426 * safezoneW;
 				h = 0.0470196 * safezoneH;
 			};
+			class MinimapBackground: RscText
+			{
+				idc = 1799;
+				x = 0.863144 * safezoneW + safezoneX;
+				y = 0.00347277 * safezoneH + safezoneY;
+				w = 0.135093 * safezoneW;
+				h = 0.206886 * safezoneH;
+				colorBackground[] = {0.12,0.14,0.16,0.8};
+			};
+			class Minimap: RscMapControl
+			{
+				idc = 1800;
+				x = 0.863145 * safezoneW + safezoneX;
+				y = 0.00347277 * safezoneH + safezoneY;
+				w = 0.135093 * safezoneW;
+				h = 0.206886 * safezoneH;
+	      font = "RobotoCondensed";
+	      sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 0.75)";
+				sizeExLabel = "1.00 *     (pixelH * pixelGridNoUIScale * 1.4)";
+				sizeExUnits = "1.00 *     (pixelH * pixelGridNoUIScale * 1.4)";
+				sizeExNames = "1.00 *     (pixelH * pixelGridNoUIScale * 1.4)";
+				sizeExInfo = "1.00 *     (pixelH * pixelGridNoUIScale * 1.4)";
+				sizeExLevel = "1.00 *     (pixelH * pixelGridNoUIScale * 1.4)";
+				colorCountlines[] = {0,0,0,0};
+				colorMainCountlines[] = {0,0,0,0};
+				colorCountlinesWater[] = {0,0,0,0};
+				colorMainCountlinesWater[] = {0,0,0,0};
+				colorGrid[] = {0,0,0,0};
+				colorGridMap[] = {0,0,0,0};
+			};
+			class Direction: RscStructuredText
+			{
+				idc = 1801;
+				text = ""; //--- ToDo: Localize;
+				x = 0.864907 * safezoneW + safezoneX;
+				y = 0.214121 * safezoneH + safezoneY;
+				w = 0.131332 * safezoneW;
+				h = 0.0282118 * safezoneH;
+				sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 1.8)";
+				class Attributes {
+					font = "PuristaMedium";
+					color = "#FFFFFF";
+					align = "center";
+					valign = "middle";
+				};
+			};
 		};
 	};
 

@@ -36,4 +36,5 @@ cl_onEachFrame_team_reviveable = [];
 cl_onEachFramePreparationID = -1;
 cl_onEachFrameIconRenderedID = -1;
 cl_eventObserverID = -1;
+cl_mapObserverID = -1;
 true

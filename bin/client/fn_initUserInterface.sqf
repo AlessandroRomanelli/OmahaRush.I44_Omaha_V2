@@ -1,6 +1,9 @@
 private _event = addMissionEventHandler["EachFrame", {
+  if (visibleMap) exitWith {};
   private _side = player getVariable ["gameSide", "defenders"];
   private _HQPos = getArray(missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Spawns" >> _side >> "HQSpawn" >> "positionATL");
+  private _vehiclePlayer = vehicle player;
+  private _posPlayer = getPosWorld player;
   // Display the currently selected spawn if in spawn menu
   if (cl_inSpawnMenu) then {
     private _d = findDisplay 5000;
@@ -78,18 +81,17 @@ private _event = addMissionEventHandler["EachFrame", {
     sv_cur_obj setVariable ["positionAGL", _pos];
   };
 
-  private _alpha = [_pos] call {
-    private _pos = param [0, [], [[]]];
+  private _alpha = [] call {
     if (count _pos == 0) exitWith {1};
     private _relDir = player getRelDir _pos;
     if (_relDir < 10) exitWith {
-      0.25 + (3*_relDir/40)
+      0.1 + (_relDir/11.1)
     };
     if (_relDir >= 10 && _relDir <= 350) exitWith {
       1
     };
     if (_relDir > 350) exitWith {
-      1 - (3/40*_relDir) + 26.25
+      1 - ((_relDir - 350)/11.1)
     };
     1
   };
@@ -99,7 +101,7 @@ private _event = addMissionEventHandler["EachFrame", {
   };
 
   private _objIsArmed = sv_cur_obj getVariable ["status", -1] isEqualTo 1;
-  private _origin = if (cl_inSpawnMenu) then {_HQPos} else {getPos player};
+  private _origin = if (cl_inSpawnMenu) then {_HQPos} else {_posPlayer};
   if (_side isEqualTo "defenders") then {
     if (_objIsArmed) then {
       drawIcon3D [WWRUSH_ROOT+"pictures\objective_defender_armed.paa",[1,1,1,_alpha],_pos,1.5,1.5,0,format["Defuse (%1m)", round(_origin distance2D sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
@@ -120,7 +122,7 @@ private _event = addMissionEventHandler["EachFrame", {
   (_d displayCtrl 2) progressSetPosition (sv_tickets / sv_tickets_total);
 
 
-  private _ammoBoxes = (getPos player) nearObjects ["LIB_AmmoCrates_NoInteractive_Large", 7];
+  private _ammoBoxes = (_posPlayer) nearObjects ["LIB_AmmoCrates_NoInteractive_Large", 7];
   {
     private _pos = getPosASL _x;
     _pos set [2, (_pos select 2) + 0.5];
@@ -258,7 +260,7 @@ private _event = addMissionEventHandler["EachFrame", {
   private _grenades    = 0;
   private _fireMode = "";
 
-  private _mode = currentWeaponMode (gunner (vehicle player));
+  private _mode = currentWeaponMode (gunner _vehiclePlayer);
   if (_mode isEqualType "STRING") then {
     if (_mode == "Single") then {_fireMode = "SNGL"};
     if (_mode in ["Burst","Burst2rnd"]) then {_fireMode = "BRST"};
@@ -281,15 +283,15 @@ private _event = addMissionEventHandler["EachFrame", {
       };
     } forEach (magazinesAmmoFull player);
   } else {
-    if (driver (vehicle player) == player && {!((vehicle player) isKindOf "Air")}) then {
-      _currentAmmo = format ["%1", abs (floor (speed (vehicle player)))];
-      _reserveAmmo = format ["%1°", floor getDir (vehicle player)];
+    if (driver _vehiclePlayer == player && {!(_vehiclePlayer isKindOf "Air")}) then {
+      _currentAmmo = format ["%1", abs (floor (speed _vehiclePlayer))];
+      _reserveAmmo = format ["%1°", floor getDir _vehiclePlayer];
       _fireMode = "KM/H";
     } else {
-      _currentAmmo = (vehicle player) ammo (currentWeapon (vehicle player));
+      _currentAmmo = _vehiclePlayer ammo (currentWeapon _vehiclePlayer);
       _reserveAmmo = [] call {
-        private _ammoLeft = 0 - ((vehicle player) ammo (currentWeapon (vehicle player)));
-        {if ((_x select 0) isEqualto (currentMagazine (vehicle player))) then {_ammoLeft = _ammoLeft + (_x select 1)}} forEach magazinesAmmo (vehicle player);
+        private _ammoLeft = 0 - (_vehiclePlayer ammo (currentWeapon _vehiclePlayer));
+        {if ((_x select 0) isEqualto (currentMagazine _vehiclePlayer)) then {_ammoLeft = _ammoLeft + (_x select 1)}} forEach magazinesAmmo _vehiclePlayer;
         _ammoLeft
       };
     };
@@ -308,7 +310,7 @@ private _event = addMissionEventHandler["EachFrame", {
 
   if (_grenades isEqualTo 0) then {_grenades = ""};
 
-  private _weaponName = getText(configFile >> "cfgWeapons" >> currentWeapon (vehicle player) >> "displayName");
+  private _weaponName = getText(configFile >> "cfgWeapons" >> currentWeapon _vehiclePlayer >> "displayName");
 
   _HUD_currentAmmo  ctrlSetText format ["%1",_currentAmmo];
   _HUD_reserveAmmo  ctrlSetText format ["%1",_reserveAmmo];
@@ -319,9 +321,32 @@ private _event = addMissionEventHandler["EachFrame", {
   _HUD_grenades			ctrlSetText format ["%1", _grenades];
   _HUD_weaponName		ctrlSetText _weaponName;
 
+  private _minimap = _hud displayCtrl 1800;
+  private _zoom = 0.04;
+  if (_vehiclePlayer isEqualTo player) then {
+    _zoom = 0.04;
+  } else {
+    if (_vehiclePlayer isKindOf "Car") then {
+      _zoom = 0.1;
+    };
+    if (_vehiclePlayer isKindOf "Tank") then {
+      _zoom = 0.08;
+    };
+    if (_vehiclePlayer isKindOf "Air") then {
+      _zoom = 0.3;
+    };
+  };
+  _minimap ctrlMapAnimAdd [0, _zoom, _posPlayer];
+  ctrlMapAnimCommit _minimap;
+
+  private _dirCtrl = _hud displayCtrl 1801;
+  private _cameraDir = _posPlayer getDir (_posPlayer vectorAdd (getCameraViewDirection player));
+  _dirCtrl ctrlSetText format ["%1°", round _cameraDir];
+
+
 
   // warning if we are too close to the enemy spawn
-  if (alive player && {!(vehicle player isKindOf "Air")} && {player getVariable ["isAlive", false]}) then {
+  if (alive player && {!(_vehiclePlayer isKindOf "Air")} && {player getVariable ["isAlive", false]}) then {
     private _safeSpawnDistance = getNumber(missionConfigFile >> "MapSettings" >> sv_mapSize >> "safeSpawnDistance");
     if (player distance (getMarkerPos cl_enemySpawnMarker) < _safeSpawnDistance) then {
       30 cutRsc ["rr_restrictedAreaSpawn", "PLAIN"];
@@ -334,11 +359,11 @@ private _event = addMissionEventHandler["EachFrame", {
   if (player getVariable ["isAlive", false]) then {
     private _isPlayerAttacking = _side isEqualTo "attackers";
     if !(
-        ((vehicle player) inArea playArea) ||
-        ((vehicle player) isKindOf "Air") ||
+        (_vehiclePlayer inArea playArea) ||
+        (_vehiclePlayer isKindOf "Air") ||
         (
           (player getVariable ["isFallingBack", false]) &&
-          (((getPosATL player) distance2D (getMarkerPos "mobile_respawn_defenders")) < 300)
+          ((_posPlayer distance2D (getMarkerPos "mobile_respawn_defenders")) < 300)
         )) then {
       30 cutRsc ["rr_restrictedArea", "PLAIN"];
       private _display = uiNamespace getVariable ["rr_restrictedArea", displayNull];

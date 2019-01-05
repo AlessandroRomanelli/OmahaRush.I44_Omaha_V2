@@ -28,6 +28,22 @@ cl_groupSize = -1;
 cl_playAreaPos = [0,0,0];
 cl_obj_status = -1;
 cl_playerSwimming = !(isTouchingGround player) && (surfaceIsWater (getPosATL player));
+removeMissionEventHandler["Map", cl_mapObserverID];
+cl_mapObserverID = addMissionEventHandler["Map", {
+		params ["_mapIsOpened"];
+		if (_mapIsOpened && !cl_mapSetup) then {
+			cl_mapSetup = true;
+			private _fullScreenMapCtrl = (findDisplay 12) displayCtrl 51;
+			_fullScreenMapCtrl ctrlMapAnimAdd [0, 0.075, getPosATL sv_cur_obj];
+			ctrlMapAnimCommit _fullScreenMapCtrl;
+		};
+		if (_mapIsOpened) then {
+			300 cutText ["", "PLAIN"];
+		} else {
+			300 cutRsc ["playerHUD", "PLAIN"];
+		};
+}];
+
 removeMissionEventHandler["EachFrame", cl_eventObserverID];
 cl_eventObserverID = addMissionEventHandler["EachFrame", {
 		private ["_data"];
@@ -449,19 +465,5 @@ player addEventHandler ["GetOutMan", {
 		if (player getVariable ["hasChute", true]) then {
 			["PRESS <t size='1.5'>[SPACE BAR]</t> TO OPEN YOUR PARACHUTE!"] spawn client_fnc_displayInfo;
 		};
-		/* [] spawn {
-			waitUntil{((getPosATL player) select 2) < 30};
-			if (isNull (objectParent player)) then {
-				private _velPlayer = velocity player;
-				{_velPlayer set [_forEachIndex, _x/5]} forEach _velPlayer;
-				private _posPlayer = position player;
-				private _dirPlayer = getDir player;
-				private _para = "NonSteerable_Parachute_F" createVehicle _posPlayer;
-				player moveInDriver _para;
-				_para setPos _posPlayer;
-				_para setVelocity _velPlayer;
-				_para setDir _dirPlayer;
-			};
-		}; */
 	};
 }];
