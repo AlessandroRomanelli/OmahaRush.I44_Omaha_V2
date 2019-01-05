@@ -1428,3 +1428,82 @@ class rr_reloadingFlares {
 			};
 		};
 	};
+
+	class waitingForPlayers
+	{
+		idd = -1;
+		movingEnable = 1;
+		enableSimulation = 1;
+		fadeout=1.0;
+		fadein=0;
+		duration = 9999999;
+		onLoad = "uiNamespace setVariable ['waitingForPlayers', _this select 0];";
+		class controlsBackground {};
+
+		class controls {
+			class blackbackground: RscText
+			{
+				idc = 0;
+				x = 0 * safezoneW + safezoneX;
+				y = 0 * safezoneH + safezoneY;
+				w = 1 * safezoneW;
+				h = 1 * safezoneH;
+				colorBackground[] = {0,0,0,1};
+			};
+			class title: RscStructuredText
+			{
+				idc = 1100;
+				text = "WAITING FOR PLAYERS";
+				x = 0.323716 * safezoneW + safezoneX;
+				y = 0.45298 * safezoneH + safezoneY;
+				w = 0.352567 * safezoneW;
+				h = 0.0752314 * safezoneH;
+				colorBackground[] = {-1,-1,-1,0};
+				sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 1.0)";
+				shadow = 2;
+				class Attributes {
+					size = "4"
+					font = "PuristaMedium";
+					color = "#FFFFFF";
+					align = "center";
+					valign = "middle";
+				};
+			};
+			class subtitle_1: RscStructuredText
+			{
+				idc = 1101;
+				text = "";
+				x = 0.323716 * safezoneW + safezoneX;
+				y = 0.53 * safezoneH + safezoneY;
+				w = 0.352567 * safezoneW;
+				h = 0.0188079 * safezoneH;
+				colorBackground[] = {-1,-1,-1,0};
+				sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 1.8)";
+				shadow = 2;
+				class Attributes {
+					size = "1"
+					font = "PuristaMedium";
+					color = "#FFFFFF";
+					align = "left";
+				};
+			};
+			class subtitle_2: RscStructuredText
+			{
+				idc = 1102;
+				text = "";
+				x = 0.323716 * safezoneW + safezoneX;
+				y = 0.53 * safezoneH + safezoneY;
+				w = 0.352567 * safezoneW;
+				h = 0.0188079 * safezoneH;
+				colorBackground[] = {-1,-1,-1,0};
+				sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 1.8)";
+				shadow = 2;
+				class Attributes {
+					size = "1"
+					font = "PuristaMedium";
+					color = "#FFFFFF";
+					align = "right";
+				};
+			};
+		};
+	};
