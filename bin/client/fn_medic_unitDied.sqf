@@ -21,7 +21,9 @@ if (isNil "cl_equipClassnames") exitWith {};
 [_unit, _killer] spawn client_fnc_displayKillfeed;
 
 // Evaluate assist info
-[_assistsInfo, _killer] spawn client_fnc_evaluateAssistInfo;
+if (!isNull _killer) then {
+	[_assistsInfo, _killer] spawn client_fnc_evaluateAssistInfo;
+};
 
 // Is this unit on our side?
 if ((_unit getVariable ["side",civilian]) != playerSide) exitWith {};

@@ -216,18 +216,18 @@ player addEventHandler ["Killed", {
 		[format ["You have been killed by instigator %1", str _instigator]] call server_fnc_log;
 
 		// Send message to killer that he killed someone
-		if ((_victim != _killer) && (!isNull _victim) && (!isNull _killer)) then {
-			if (_victim getVariable ["isAlive", true]) then {
+		if ((!isNull _victim) && {!isNull _killer} && {_victim != _killer}) then {
+			if (_victim getVariable ["isAlive", false]) then {
 				[_victim, false] remoteExec ["client_fnc_kill", _killer];
 				_victim setVariable ["isAlive", false];
 			};
 			// you have been killed by message
 			[format ["You have been killed by<br/>%1", _killer getVariable ["name", "ERROR: No Name"]]] spawn client_fnc_displayInfo;
 
-			// Send message to all units that we are reviveable
-			// As this package gets send to all clients we might aswell use it to share our information regarding assists (damage that was inflicted on us)
-			[_victim,_killer, cl_assistsInfo] remoteExec ["client_fnc_medic_unitDied", 0];
 		};
+		// Send message to all units that we are reviveable
+		// As this package gets send to all clients we might aswell use it to share our information regarding assists (damage that was inflicted on us)
+		[_victim, _killer, cl_assistsInfo] remoteExec ["client_fnc_medic_unitDied", 0];
 
 		// Disable hud
 		["rr_spawn_bottom_right_hud_renderer", "onEachFrame"] call BIS_fnc_removeStackedEventHandler;
@@ -262,7 +262,7 @@ player addEventHandler ["Killed", {
 
 // Assign current weapon to player when firing (to avoid PUT and THROW)
 player addEventHandler ["Fired", {
-  params ["_unit", "_weapon", "_muzzle", "_mode", "_ammo", "_magazine", "_projectile", "_gunner"];
+  params ["_unit", "_weapon"];
   private _lastWepon = _unit getVariable ["lastWeaponFired", ""];
   if !(_weapon isEqualTo _lastWepon) then
   {
@@ -284,7 +284,7 @@ player addEventHandler ["HandleDamage", {
 	// Is the shooter on the opposite side of the victim and is the victim alive?
 	if ((_shooterSide != _unitSide) && _unit getVariable ["isAlive", true]) then {
 		//If critical damage to the head kill the victim and reward the shooter with HS bonus
-		if ((_hitSelection in ["head", "face_hub"]) && {_damage >= 0.5}) then {
+		if (_damage >= 0.3 && {_hitSelection in ["head", "face_hub"]}) then {
 			// Has the HS kill already been awarded?
 			if (!(_unit getVariable ["wasHS", false])) then {
 				// Give the HS bonus
@@ -365,7 +365,7 @@ player addEventHandler ["GetInMan", {
 
 		if ((local _vehicle) && {player getVariable ["side", sideUnknown] != _killer getVariable ["side", sideUnknown]}) exitWith {
 			{
-				if (!isNull _x && {_x getVariable ["isAlive", true]}) then {
+				if (!isNull _x && {alive _x}) then {
 					[_x, false] remoteExec ["client_fnc_kill", _killer];
 				};
 			} forEach (crew _vehicle);
@@ -375,17 +375,17 @@ player addEventHandler ["GetInMan", {
 			private _ltanks = ["LIB_SdKfz234_2", "LIB_T34_76", "LIB_M3A3_Stuart"];
 			private _apc = ["LIB_SdKfz222_camo","LIB_Zis5v_61K","LIB_M8_Greyhound"];
 			private _halfTrucks = ["LIB_US_M3_Halftrack", "LIB_SdKfz251_FFV", "LIB_Scout_M3_FFV", "LIB_US_Scout_M3_FFV"];
-			if (_vehType in _planes) exitWith {
-				[400, true, "AIRPLANE"] remoteExec ["client_fnc_vehicleDisabled", _killer];
-			};
-			if (_vehType in _htanks) exitWith {
-				[500, true, "MEDIUM TANK"] remoteExec ["client_fnc_vehicleDisabled", _killer];
+			if (_vehType in _apc || _vehType in _halfTrucks) exitWith {
+				[200, true, "ARMORED CAR"] remoteExec ["client_fnc_vehicleDisabled", _killer];
 			};
 			if (_vehType in _ltanks) exitWith {
 				[300, true, "LIGHT TANK"] remoteExec ["client_fnc_vehicleDisabled", _killer];
 			};
-			if (_vehType in _apc || _vehType in _halfTrucks) exitWith {
-				[200, true, "ARMORED CAR"] remoteExec ["client_fnc_vehicleDisabled", _killer];
+			if (_vehType in _htanks) exitWith {
+				[500, true, "MEDIUM TANK"] remoteExec ["client_fnc_vehicleDisabled", _killer];
+			};
+			if (_vehType in _planes) exitWith {
+				[400, true, "AIRPLANE"] remoteExec ["client_fnc_vehicleDisabled", _killer];
 			};
 			[100, true, "VEHICLE"] remoteExec ["client_fnc_vehicleDisabled", _killer];
 		};
