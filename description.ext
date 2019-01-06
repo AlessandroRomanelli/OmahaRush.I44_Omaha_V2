@@ -155,77 +155,83 @@ class CfgDebriefing
 };
 
 class Params {
-  class header_1 {
-    title = "========== TICKETS SETTINGS ==========";
+  class header {
+    title = "========== TICKETS SETTINGS =======================================";
+    values[] = {0};
+    default = 0;
+    texts[] = {""};
   };
   class MaxTickets {
     title = "Maximum tickets per objective:";
     values[] = {100, 200, 300, 400, 500};
     default = 300;
+    texts[] = {"100 Tickets", "200 Tickets", "300 Tickets", "400 Tickets", "500 Tickets"};
   };
   class MinTickets {
     title = "Minimum tickets per objective:";
     values[] = {25, 50, 75, 100};
+    texts[] = {"25 Tickets", "50 Tickets", "75 Tickets", "100 Tickets"};
     default = 25;
   };
   class TicketsRate {
-    title = "Tickets per attacker:";
+    title = "How many tickets should each attacker on average have:";
     values[] = {5, 7.5, 10, 12.5, 15, 20, 30};
+    texts[] = {"5 Tickets/Attacker", "7.5 Tickets/Attacker", "10 Tickets/Attacker", "12.5 Tickets/Attacker", "15 Tickets/Attacker", "20 Tickets/Attacker", "30 Tickets/Attacker"};
     default = 10;
   };
-  class header_2 {
-    title = "========== TIME SETTINGS ==========";
+  class header_2: header {
+    title = "========== TIME SETTINGS ==========================================";
   };
   class LobbyTime {
     title = "Interval between rounds:";
     values[] = {10, 20, 30, 60, 120, 180, 240, 300};
+    texts[] = {"10 Seconds", "20 Seconds", "30 Seconds", "60 Seconds", "120 Seconds", "180 Seconds", "240 Seconds", "300 Seconds"};
     default = 60;
   };
   class RoundTime {
     title = "How many minutes per objective:";
     values[] = {5,7.5,10,12.5,15,17.5,20};
-    texts[] = {"5m", "7m 30s", "10m", "12m 30s", "15m", "17m 30s", "20m"};
+    texts[] = {"5 Minutes", "7 Minutes 30 Seconds", "10 Minutes", "12 Minutes 30 Seconds", "15 Minutes", "17 Minutes 30 Seconds", "20 Minutes"};
     default = 15;
   };
   class MaxMatchDuration {
     title = "Maximum match duration:";
-    values[] = {3600, 7200, 10800, 14400, 18000};
-    texts[] = {"1 Hour", "2 Hours", "3 Hours", "4 Hours", "5 Hours"};
+    values[] = {-1, 3600, 7200, 10800, 14400, 18000};
+    texts[] = {"Infinite", "1 Hour", "2 Hours", "3 Hours", "4 Hours", "5 Hours"};
     default = 10800;
-  };
-  class header_3 {
-    title = "========== FACTIONS SETTINGS ==========";
-  };
-  #include "config\params.h"
-  class header_4 {
-    title = "========== FACTIONS SETTINGS ==========";
   };
   class SpawnSafeTime {
     title = "How many seconds should the spawn protection last:";
     values[] = {0, 3, 5, 10, 15};
-    texts[] = {"0s", "3s", "5s", "10s", "15s"};
+    texts[] = {"0 Seconds", "3 Seconds", "5 Seconds", "10 Seconds", "15 Seconds"};
     default = 5;
   };
-  class header_5 {
-    title = "========== BOUNDARIES SETTINGS ==========";
+  class header_3: header {
+    title = "========== FACTIONS SETTINGS ======================================";
+  };
+  #include "config\params.h"
+  class header_5: header {
+    title = "========== BOUNDARIES SETTINGS ====================================";
   };
   class OutOfBoundsTime {
     title = "Time a player is allowed to trespass bounds:";
     values[] = {5, 10, 15, 20, 25, 30};
+    texts[] = {"5 Seconds", "10 Seconds", "15 Seconds", "20 Seconds", "25 Seconds", "30 Seconds"};
     default = 20;
   };
   class InitialFallBack {
     title = "How many seconds for the defenders to be ready:";
     values[] = {15, 30, 60, 90, 120};
+    texts[] = {"15 Seconds", "30 Seconds", "60 Seconds", "90 Seconds", "120 Seconds"};
     default = 60;
   };
-  class header_6 {
-    title = "========== MAP SETTINGS ==========";
+  class header_6: header {
+    title = "========== MAP SETTINGS ===========================================";
   };
   class RotationsPerMatch {
     title = "How many rounds should be played before changing map:";
-    values[] = {1,2,3,4,5,6};
-    texts[] = {"1", "2", "3", "4", "5", "Never change map"};
+    values[] = {9999, 1,2,3,4,5,6};
+    texts[] = {"Never change map", "1", "2", "3", "4", "5"};
     default = 2;
   };
   class MapWeather {
@@ -233,6 +239,9 @@ class Params {
     values[] = {0, 1};
     texts[] = {"RANDOM", "MAP"};
     default = 0;
+  };
+  class header_7: header {
+    title = "========== AUTOBALANCER SETTINGS ==================================";
   };
   class AutoTeamBalancer {
     title = "Automatic Team-Balancer:";
@@ -244,6 +253,9 @@ class Params {
     title = "Difference between teams for auto team-balancer:";
     values[] = {1, 2, 3, 4, 5};
     default = 3;
+  };
+  class header_8: header {
+    title = "========== CAMERA RESTRICTIONS ====================================";
   };
   class InfantryFPOnly {
     title = "Enforcement of 1st Person only for infantry:";
@@ -262,6 +274,9 @@ class Params {
     values[] = {0, 1};
     texts[] = {"OFF", "ON"};
     default = 0;
+  };
+  class header_9: header {
+    title = "========== CLASS RESTRICTIONS =====================================";
   };
   class ClassLimits {
     title = "Enable class restrictions: ";
