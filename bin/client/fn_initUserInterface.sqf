@@ -20,7 +20,7 @@ private _event = addMissionEventHandler["EachFrame", {
       private _leader = leader group player;
       if (player isEqualTo _leader) then {
         {
-          if (_x getVariable ["isAlive", false]) then {
+          if (alive _x && (_x distance2D sv_cur_obj < 1000)) then {
             private _unitPos = _x modelToWorldVisual [0,0,1];
             drawLine3D [_pos, _unitPos, [1,1,1,0.5]];
           };
@@ -28,7 +28,7 @@ private _event = addMissionEventHandler["EachFrame", {
       } else {
         private _leaderPos = _leader modelToWorldVisual [0,0,1];
         {
-          if (_x getVariable ["isAlive", false]) then {
+          if (alive _x && (_x distance2D sv_cur_obj < 1000)) then {
             private _unitPos = _x modelToWorldVisual [0,0,1];
             drawLine3D [_leaderPos, _unitPos, [1,1,1,0.5]];
           };
@@ -203,7 +203,7 @@ private _event = addMissionEventHandler["EachFrame", {
     if (_unit getVariable ["inCombat", false]) exitWith {
       ["#ffcc99", "#66513d"]
     };
-    if (_unit getVariable ["isAlive", true]) exitWith {
+    if (alive _unit && (_unit distance2D sv_cur_obj < 1000)) exitWith {
       ["#aaffaa", "#446644"]
     };
     ["#ffaaaa", "#664444"]
@@ -214,7 +214,7 @@ private _event = addMissionEventHandler["EachFrame", {
     if (_unit getVariable ["inCombat", false]) exitWith {
       [[1, 0.8, 0.6, 1], [0.4, 0.32, 0.24]]
     };
-    if (_unit getVariable ["isAlive", true]) exitWith {
+    if (alive _unit && (_unit distance2D sv_cur_obj < 1000)) exitWith {
       [[0.66, 1, 0.66, 1], [0.26, 0.4, 0.26, 1]]
     };
     [[1, 0.66, 0.66, 1], [0.4, 0.26, 0.26, 1]]
