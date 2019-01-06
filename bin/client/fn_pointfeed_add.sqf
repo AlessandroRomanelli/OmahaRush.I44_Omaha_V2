@@ -39,9 +39,6 @@ if (!isNil "cl_pointfeed_removalThread") then {
 	terminate cl_pointfeed_removalThread;
 };
 
-// Play sound
-playSound "kill";
-
 cl_pointfeed_removalThread = [] spawn {
 	sleep 8;
 	cl_pointfeed_text = ""; // Reset own pointfeeds

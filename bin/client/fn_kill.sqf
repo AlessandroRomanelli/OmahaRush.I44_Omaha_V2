@@ -12,6 +12,9 @@ if (isServer && !hasInterface) exitWith {};
 
 params [["_victim", objNull, [objNull]], ["_wasHS", false, [false]]];
 
+// Play sound
+playSound "kill";
+
 // Increase kills
 cl_kills = cl_kills + 1;
 cl_total_kills = cl_total_kills + 1;
