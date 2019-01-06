@@ -77,7 +77,7 @@ class LIB_M3_GreaseGun {
   exp = 0;
   type = "primary";
   roles[] = {"engineer"};
-  damageMultiplier = 0.2;
+  damageMultiplier = 0.4;
   class attachments {};
 };
 
@@ -86,7 +86,7 @@ class LIB_M1A1_Thompson {
   exp = 7500;
   type = "primary";
   roles[] = {"engineer"};
-  damageMultiplier = 0.3;
+  damageMultiplier = 0.5;
   class attachments {};
 };
 
@@ -95,7 +95,7 @@ class LIB_M1928_Thompson {
   exp = 12500;
   type = "primary";
   roles[] = {"engineer"};
-  damageMultiplier = 0.3;
+  damageMultiplier = 0.5;
   class attachments {};
 };
 

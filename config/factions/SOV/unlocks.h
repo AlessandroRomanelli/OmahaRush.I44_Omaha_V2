@@ -69,7 +69,7 @@ class LIB_PPSh41_m {
   exp = 0;
   type = "primary";
   roles[] = {"engineer"};
-  damageMultiplier = 0.4;
+  damageMultiplier = 0.45;
   class attachments {};
 };
 

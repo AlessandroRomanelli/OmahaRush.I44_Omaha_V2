@@ -95,7 +95,7 @@ class LIB_MP38 {
   exp = 0;
   type = "primary";
   roles[] = {"engineer"};
-  damageMultiplier = 0.3;
+  damageMultiplier = 0.45;
   class attachments {};
 };
 
@@ -104,7 +104,7 @@ class LIB_MP40 {
   exp = 7500;
   type = "primary";
   roles[] = {"engineer"};
-  damageMultiplier = 0.35;
+  damageMultiplier = 0.45;
   class attachments {};
 };
 
