@@ -72,7 +72,8 @@ while {true} do {
 	waitUntil{debug_ready_players >= round(debug_players*0.8)}; */
 	if (isDedicated && sv_gameCycle == 0) then {
 		waitUntil{(playersNumber WEST + playersNumber INDEPENDENT) >= 4};
-		waitUntil{{_x getVariable ["playerInitOK", false]} count allPlayers > round ((playersNumber WEST + playersNumber INDEPENDENT)*0.8)};
+		private _then = diag_tickTime;
+		waitUntil{(diag_tickTime - _then >= 60) || ({_x getVariable ["playerInitOK", false]} count allPlayers > round ((playersNumber WEST + playersNumber INDEPENDENT)*0.8))};
 	};
 
 	// Make a new matchtimer with matchStart param true so it gets broadcasted to all clients
