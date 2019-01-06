@@ -12,7 +12,7 @@ private _class = param[0,"medic",[""]];
 private _isRestricted = false;
 
 // Check if the mission parameters restrict classes
-private _classRestrictionEnabled = [false, true] select (paramsArray#18);
+private _classRestrictionEnabled = (["ClassLimits", 1] call BIS_fnc_getParamValue) isEqualTo 1;
 // If the class restriction is OFF or the class is not restricted, we got nothing to do!
 if (!_classRestrictionEnabled || !(_class in ["support", "engineer", "recon"])) exitWith {false};
 

@@ -55,7 +55,7 @@ if (player getVariable "gameSide" == "defenders") then {
 };
 
 // If the server will restart after this round, display a visual warning at the top right
-if (sv_gameCycle >= ((paramsArray#11) - 1)) then {
+if (sv_gameCycle >= ((["RotationsPerMatch", 2] call BIS_fnc_getParamValue) - 1)) then {
 	15 cutRsc ["rr_topRightWarning", "PLAIN"];
 	((uiNamespace getVariable ["rr_topRightWarning", displayNull]) displayCtrl 0) ctrlSetStructuredText parseText "<t size='1.2' color='#FE4629' shadow='2' align='right'>LAST ROUND BEFORE MAP CHANGE</t>"
 };
@@ -103,8 +103,7 @@ if (player getVariable "gameSide" == "defenders") then {
 [] spawn client_fnc_updateMarkers;
 
 // Hide hud
-private _3dcursor = [false, true] select (paramsArray#17);
-showHUD [true,false,false,false,false,true,false,_3dcursor,false];
+showHUD [true,false,false,false,false,true,false,true,false];
 
 // Run equipment checks
 [] call client_fnc_getLoadedEquipment;

@@ -72,7 +72,7 @@ private _sv_spawnVehicle = {
 	sv_persistentVehiclesAwaitingRespawn pushBack (configName _config);
 
 	// Wait the respawn time
-	private _sleepTime = if (_initialSpawn) then {paramsArray#8} else {getNumber(_config >> "respawnTime")};
+	private _sleepTime = if (_initialSpawn) then {["InitialFallBack", 60] call BIS_fnc_getParamValue} else {getNumber(_config >> "respawnTime")};
 	sleep _sleepTime;
 
 	//diag_log "_1";

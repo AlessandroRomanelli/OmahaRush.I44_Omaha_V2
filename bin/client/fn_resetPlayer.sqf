@@ -17,7 +17,7 @@ if (missionNamespace getVariable ["cl_resetPlayerRunning", false]) exitWith {};
 cl_resetPlayerRunning = true;
 
 // Start a countdown until the next match starts
-private _time = paramsArray#9;
+private _time = ["LobbyTime", 60] call BIS_fnc_getParamValue;
 
 // Enable global voice
 0 enableChannel [true, true];
@@ -75,7 +75,7 @@ if (true) then {
 
 
 // If we have OnTenRestart enabled, WARN THE PLAYER
-if ((sv_gameCycle >= ((paramsArray#11) - 1)) && sv_dedicatedEnvironment) then {
+if ((sv_gameCycle >= ((["RotationsPerMatch", 2] call BIS_fnc_getParamValue) - 1)) && sv_dedicatedEnvironment) then {
 	(_d displayCtrl 0) ctrlSetStructuredText parseText "<t size='2' color='#FE4629' shadow='2' align='center'>THE SERVER IS CHANGING MAP</t>";
 	sleep 30;
 } else {
@@ -121,9 +121,6 @@ waitUntil {cl_statisticsLoaded};
 
 // Restart!
 [] spawn client_fnc_spawn;
-
-// Restart match timer
-private _roundTime = ceil (paramsArray#3 * 60);
 
 // Give us points for playing :)
 [] spawn {

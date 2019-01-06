@@ -84,8 +84,7 @@ cl_spawn_succ = {
 	cl_inSpawnMenu = false;
 
 	// Hide hud
-	private _3dcursor = [false, true] select (paramsArray#17);
-	showHUD [true,false,false,false,false,true,false,_3dcursor,false];
+	showHUD [true,false,false,false,false,true,false,true,false];
 
 	// Run check if we have been moved to an OK position, if not, move us to our HQ, failed spawn as it seems...
 	if (player distance cl_safePos < 100) then {

@@ -18,7 +18,7 @@ private _isRefreshing = param[0, false, [false]];
 private _d = findDisplay 5000;
 private _l = _d displayCtrl 300;
 
-private _classRestrictionEnabled = [false, true] select (paramsArray#18);
+private _classRestrictionEnabled = (["ClassLimits", 1] call BIS_fnc_getParamValue) isEqualTo 1;
 
 private _countClassPlayers = {
 	private _class = param[0, "", [""]];

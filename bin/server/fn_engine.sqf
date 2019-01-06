@@ -11,14 +11,14 @@ scriptName "fn_engine";
 
 ["Server engine has been started"] spawn server_fnc_log;
 
-private _fallBackTime = paramsArray#8;
+private _fallBackTime = ["InitialFallBack", 60] call BIS_fnc_getParamValue;
 
 // Server is now ready
 sv_serverReady = true;
 [["sv_serverReady"]] spawn server_fnc_updateVars;
 
 // Persistent weather
-private _mapWeather = paramsArray#12;
+private _mapWeather = ["MapWeather", 0] call BIS_fnc_getParamValue;
 if (_mapWeather == 0) then {
 	[] spawn server_fnc_loadPersistentWeather;
 	["Persistent weather loaded"] spawn server_fnc_log;
@@ -95,7 +95,7 @@ while {true} do {
 	["Stage vehicles manager has been started"] spawn server_fnc_log;
 
 	// Start autobalancer (will auto close when the match ends)
-	if ((paramsArray#13) == 1) then {
+	if ((["AutoTeamBalancer", 1] call BIS_fnc_getParamValue) == 1) then {
 		sv_autoTeamBalancer_thread = [] spawn server_fnc_autoTeamBalancer;
 	};
 
@@ -109,7 +109,8 @@ while {true} do {
 	[format["Cycle %1 has been finished", sv_gameCycle]] spawn server_fnc_log;
 
 	// If we have OnMatchEndRestart enabled, restart the mission rather than just keep running
-	if (((sv_gameCycle >= (paramsArray#11)) || (((paramsArray#10) != -1) && ((paramsArray#10) <= diag_tickTime))) && isDedicated) then {
+	private _maxMatchTime = ["MaxMatchDuration", 10800] call BIS_fnc_getParamValue;
+	if (((sv_gameCycle >= (["RotationsPerMatch", 2] call BIS_fnc_getParamValue)) || ((_maxMatchTime != -1) && (_maxMatchTime <= diag_tickTime))) && isDedicated) then {
 		["Attempting to restart mission...."] spawn server_fnc_log;
 		sleep 1;
 		with uiNamespace do {

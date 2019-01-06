@@ -155,6 +155,9 @@ class CfgDebriefing
 };
 
 class Params {
+  class header_1 {
+    title = "========== TICKETS SETTINGS ==========";
+  };
   class MaxTickets {
     title = "Maximum tickets per objective:";
     values[] = {100, 200, 300, 400, 500};
@@ -167,8 +170,16 @@ class Params {
   };
   class TicketsRate {
     title = "Tickets per attacker:";
-    values[] = {5, 7.5, 10, 12.5, 15};
+    values[] = {5, 7.5, 10, 12.5, 15, 20, 30};
     default = 10;
+  };
+  class header_2 {
+    title = "========== TIME SETTINGS ==========";
+  };
+  class LobbyTime {
+    title = "Interval between rounds:";
+    values[] = {10, 20, 30, 60, 120, 180, 240, 300};
+    default = 60;
   };
   class RoundTime {
     title = "How many minutes per objective:";
@@ -176,33 +187,40 @@ class Params {
     texts[] = {"5m", "7m 30s", "10m", "12m 30s", "15m", "17m 30s", "20m"};
     default = 15;
   };
+  class MaxMatchDuration {
+    title = "Maximum match duration:";
+    values[] = {3600, 7200, 10800, 14400, 18000};
+    texts[] = {"1 Hour", "2 Hours", "3 Hours", "4 Hours", "5 Hours"};
+    default = 10800;
+  };
+  class header_3 {
+    title = "========== FACTIONS SETTINGS ==========";
+  };
   #include "config\params.h"
+  class header_4 {
+    title = "========== FACTIONS SETTINGS ==========";
+  };
   class SpawnSafeTime {
     title = "How many seconds should the spawn protection last:";
     values[] = {0, 3, 5, 10, 15};
     texts[] = {"0s", "3s", "5s", "10s", "15s"};
-    default = 10;
+    default = 5;
+  };
+  class header_5 {
+    title = "========== BOUNDARIES SETTINGS ==========";
   };
   class OutOfBoundsTime {
     title = "Time a player is allowed to trespass bounds:";
     values[] = {5, 10, 15, 20, 25, 30};
     default = 20;
   };
-  class FallBackSeconds {
-    title = "Time for the defenders to fall back:";
-    values[] = {30, 60, 90, 120};
+  class InitialFallBack {
+    title = "How many seconds for the defenders to be ready:";
+    values[] = {15, 30, 60, 90, 120};
     default = 60;
   };
-  class LobbyTime {
-    title = "Interval between rounds:";
-    values[] = {10, 20, 30, 60, 120};
-    default = 30;
-  };
-  class MaxMatchDuration {
-    title = "Maximum match duration:";
-    values[] = {3600, 7200, 10800, 14400, 18000};
-    texts[] = {"1 Hour", "2 Hours", "3 Hours", "4 Hours", "5 Hours"};
-    default = 10800;
+  class header_6 {
+    title = "========== MAP SETTINGS ==========";
   };
   class RotationsPerMatch {
     title = "How many rounds should be played before changing map:";
@@ -239,11 +257,11 @@ class Params {
     texts[] = {"OFF", "ON"};
     default = 0;
   };
-  class Cursor3DEnable {
-    title = "Enables the 3D cursor:";
+  class HardcoreMode {
+    title = "Enable hardcore mode (no icons or aids):";
     values[] = {0, 1};
     texts[] = {"OFF", "ON"};
-    default = 1;
+    default = 0;
   };
   class ClassLimits {
     title = "Enable class restrictions: ";

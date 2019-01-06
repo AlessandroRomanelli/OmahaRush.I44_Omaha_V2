@@ -11,7 +11,7 @@ private _matchStart = param[0,false,[false]];
 private _additionalTime = param[1,0,[0]];
 
 /* _stageTime = getNumber(missionConfigFile >> "MapSettings" >> sv_mapSize >> "roundTime"); */
-private _stageTime = ceil (paramsArray#3 * 60);
+private _stageTime = ceil ((["RoundTime", 15] call BIS_fnc_getParamValue) * 60);
 
 sv_matchTime =  _stageTime + _additionalTime;
 sv_matchEndTime =  sv_matchTime + (ceil diag_tickTime);

@@ -41,12 +41,10 @@ private _animate = {
 	_c ctrlCommit 0.25;
 };
 
-private _fallBackTime = [] call client_fnc_getFallbackTime;
 
 // Param is TRUE if the just destroyed mcom was NOT the last one
 if (param[0,false,[false]]) then {
-	// If this objective was NOT the last one, reset the time!
-	private _roundTime = ceil (paramsArray#3 * 60);
+	private _fallBackTime = [] call client_fnc_getFallbackTime;
 
 	if (player getVariable ["gameSide", "attackers"] == "attackers") then {
 		[] spawn client_fnc_blockSpawn;

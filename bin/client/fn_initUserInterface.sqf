@@ -372,7 +372,7 @@ private _event = addMissionEventHandler["EachFrame", {
         _fallBackTime = [] call client_fnc_getFallbackTime;
         player setVariable ["fallBackTime", _fallBackTime];
       };
-      private _outOfBoundsTimeout = if (player getVariable ["isFallingBack", false]) then [{_fallBackTime}, {paramsArray#7}];
+      private _outOfBoundsTimeout = if (player getVariable ["isFallingBack", false]) then [{_fallBackTime}, {["OutOfBoundsTime", 20] call BIS_fnc_getParamValue}];
       if (diag_tickTime - (player getVariable "entryTime") < _outOfBoundsTimeout) then {
         if (!_isPlayerAttacking && player getVariable "isFallingBack") then {
           (_display displayCtrl 0) ctrlSetStructuredText parseText "<t size='3.5' color='#FFFFFF' shadow='2' align='center' font='PuristaBold'>FALL BACK</t><br/><t size='2' color='#FFFFFF' shadow='2' align='center'>YOU ARE BEYOND OUR LAST DEFENCE</t>";

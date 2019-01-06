@@ -36,7 +36,7 @@ while {sv_gameStatus == 2} do {
 	private _defendersTeam = {(_x getVariable ["gameSide", "defenders"]) isEqualTo "defenders"} count allPlayers;
 
 	private _diff = _attackersTeam - _defendersTeam;
-	private _maxDiff = paramsArray#14;
+	private _maxDiff = ["AutoTeamBalanceAtDifference", 3] call BIS_fnc_getParamValue;
 	private _sideWithMoreUnits = if (_attackersTeam >= _defendersTeam) then {_attackersSide} else {_defendersSide};
 
 	if (_diff < 0 || _diff > _maxDiff) then {
