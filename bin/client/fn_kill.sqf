@@ -10,7 +10,7 @@ scriptName "fn_kill";
 #define __filename "fn_kill.sqf"
 if (isServer && !hasInterface) exitWith {};
 
-params [["_victim", objNull, [objNull]], ["_wasHS", false, [false]]];
+params [["_victim", objNull, [objNull]], ["_wasHS", false, [false]], ["_grenade", "", [""]]];
 
 // Play sound
 playSound "kill";
@@ -38,30 +38,35 @@ if !(isNull objectParent player) then {
 };
 
 // Pushback into render array
-private _curWeapon = if (_seat in [-1, 0]) then {
-	currentWeapon (vehicle player)
+private _curWeapon = "";
+if (_grenade != "") then {
+	_curWeapon = _grenade;
 } else {
-	currentWeapon player
+	_curWeapon = if (_seat in [-1, 0]) then {
+		currentWeapon (vehicle player)
+	} else {
+		currentWeapon player
+	};
 };
 
-// Current weapon
-_curWeapon = currentWeapon (vehicle player);
-private _reason = "KILLED";
 
+private _reason = "KILLED";
 if (_curWeapon != "") then {
 	_reason = (([_curWeapon] call client_fnc_weaponDetails) select 1);
 };
+
+diag_log (__filename + ": "+ str [_grenade, _curWeapon, _reason]);
 
 private _points = 100;
 
 // Display hit marker
 private _HSkill = "";
 if (_wasHS) then {
-	-0.03122 call client_fnc_MPHit;
+	-0.03122 spawn client_fnc_MPHit;
 	_HSkill = "<br/><t size='1.0' color='#FFFFFF'>HEADSHOT BONUS</t>";
 	_points = _points + 50;
 } else {
-	-0.03184 call client_fnc_MPHit;
+	-0.03184 spawn client_fnc_MPHit;
 };
 
 // Any additional points?

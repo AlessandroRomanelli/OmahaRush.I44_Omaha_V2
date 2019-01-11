@@ -215,10 +215,13 @@ player addEventHandler ["Killed", {
 		[format ["You have been killed by killer %1", str _killer]] call server_fnc_log;
 		[format ["You have been killed by instigator %1", str _instigator]] call server_fnc_log;
 
+		// Attempt to retrieve the grenade that killed the unit
+		private _grenade = _victim getVariable ["grenade_kill", ""];
 		// Send message to killer that he killed someone
 		if ((!isNull _victim) && {!isNull _killer} && {_victim != _killer}) then {
 			if (_victim getVariable ["isAlive", false]) then {
-				[_victim, false] remoteExec ["client_fnc_kill", _killer];
+        private _wasHS = _victim getVariable ["wasHS", false];
+				[_victim, _wasHS, _grenade] remoteExec ["client_fnc_kill", _killer];
 				_victim setVariable ["isAlive", false];
 			};
 			// you have been killed by message
@@ -227,8 +230,8 @@ player addEventHandler ["Killed", {
 		};
 		// Send message to all units that we are reviveable
 		// As this package gets send to all clients we might aswell use it to share our information regarding assists (damage that was inflicted on us)
-		[_victim, _killer, cl_assistsInfo] remoteExec ["client_fnc_medic_unitDied", 0];
-
+		[_victim, _killer, cl_assistsInfo, _grenade] remoteExec ["client_fnc_medic_unitDied", 0];
+		_victim setVariable ["grenade_kill", nil];
 		// Disable hud
 		["rr_spawn_bottom_right_hud_renderer", "onEachFrame"] call BIS_fnc_removeStackedEventHandler;
 		300 cutRsc ["default","PLAIN"];
@@ -281,18 +284,18 @@ player addEventHandler ["HandleDamage", {
 	if (isNull _shooter) exitWith {_damage/10};
 	private _shooterSide = _shooter getVariable ["gameSide", "attackers"];
 	private _unitSide = _unit getVariable ["gameSide", "defenders"];
+	private _grenades = ["lib_us_mk_2", "lib_shg24", "lib_rg42", "lib_millsbomb"];
+	if (_damage >= 1 && {(toLower _projectile) in _grenades}) then {
+		_unit setVariable ["grenade_kill", _projectile];
+	};
 	// Is the shooter on the opposite side of the victim and is the victim alive?
 	if ((_shooterSide != _unitSide) && _unit getVariable ["isAlive", true]) then {
 		//If critical damage to the head kill the victim and reward the shooter with HS bonus
 		if (_damage >= 0.3 && {_hitSelection in ["head", "face_hub"]}) then {
 			// Has the HS kill already been awarded?
 			if (!(_unit getVariable ["wasHS", false])) then {
-				// Give the HS bonus
-				[_unit, true] remoteExec ["client_fnc_kill",_shooter];
-				// Definitely kill the victim
-				_unit setDamage 1;
 				_unit setVariable ["wasHS", true];
-				_unit setVariable ["isAlive", false];
+        _damage = 1 + _damage;
 			};
 		} else {
 			// Get the last weapon the shooter fired
@@ -364,18 +367,13 @@ player addEventHandler ["GetInMan", {
 		if (isNull _killer) exitWith {};
 
 		if ((local _vehicle) && {player getVariable ["side", sideUnknown] != _killer getVariable ["side", sideUnknown]}) exitWith {
-			{
-				if (!isNull _x && {alive _x}) then {
-					[_x, false] remoteExec ["client_fnc_kill", _killer];
-				};
-			} forEach (crew _vehicle);
 			private _vehType = typeOf _vehicle;
-			private _planes = ["LIB_US_P39_2", "LIB_P47", "LIB_P39", "LIB_Pe2", "LIB_FW190F8", "LIB_Ju87"];
-			private _htanks = ["LIB_PzKpfwV", "LIB_T34_85", "LIB_M4A4_FIREFLY"];
-			private _ltanks = ["LIB_SdKfz234_2", "LIB_T34_76", "LIB_M3A3_Stuart"];
-			private _apc = ["LIB_SdKfz222_camo","LIB_Zis5v_61K","LIB_M8_Greyhound"];
-			private _halfTrucks = ["LIB_US_M3_Halftrack", "LIB_SdKfz251_FFV", "LIB_Scout_M3_FFV", "LIB_US_Scout_M3_FFV"];
-			if (_vehType in _apc || _vehType in _halfTrucks) exitWith {
+			private _planes = getArray(missionConfigFile >> "Vehicles" >> "planes");
+			private _htanks = getArray(missionConfigFile >> "Vehicles" >> "htanks");
+			private _ltanks = getArray(missionConfigFile >> "Vehicles" >> "ltanks");
+			private _apc = getArray(missionConfigFile >> "Vehicles" >> "apc");
+			private _ifv = getArray(missionConfigFile >> "Vehicles" >> "ifv");
+			if (_vehType in _apc || _vehType in _ifv) exitWith {
 				[200, true, "ARMORED CAR"] remoteExec ["client_fnc_vehicleDisabled", _killer];
 			};
 			if (_vehType in _ltanks) exitWith {
@@ -385,7 +383,7 @@ player addEventHandler ["GetInMan", {
 				[500, true, "MEDIUM TANK"] remoteExec ["client_fnc_vehicleDisabled", _killer];
 			};
 			if (_vehType in _planes) exitWith {
-				[400, true, "AIRPLANE"] remoteExec ["client_fnc_vehicleDisabled", _killer];
+				[500, true, "AIRPLANE"] remoteExec ["client_fnc_vehicleDisabled", _killer];
 			};
 			[100, true, "VEHICLE"] remoteExec ["client_fnc_vehicleDisabled", _killer];
 		};
@@ -395,7 +393,7 @@ player addEventHandler ["GetInMan", {
 	_vehicle removeAllEventHandlers "HandleDamage";
 	_vehicle addEventHandler ["HandleDamage", {
 		params ["_vehicle", "_hitSelection", "_damage", "_shooter", "_projectile"];
-  	private _rockets = ["LIB_60mm_M6", "LIB_R_88mm_RPzB"];
+  	private _rockets = ["LIB_60mm_M6", "LIB_R_88mm_RPzB", "LIB_1Rnd_89m_PIAT"];
 		if (_projectile in _rockets) then {
 			_damage = damage _vehicle + (_damage*2);
 		};

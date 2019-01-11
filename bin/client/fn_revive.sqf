@@ -69,6 +69,7 @@ player setUnitLoadout (player getVariable ["wwr_unit_loadout",[]]);
 cl_gui_thread = [] spawn client_fnc_startIngameGUI;
 
 player setVariable ["isAlive", true];
+player setVariable ["grenade_kill", nil];
 player setVariable ["wasHS", false];
 
 sleep 1;
