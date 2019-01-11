@@ -35,7 +35,7 @@ private _dir = _spawnPos getDir (getPos sv_cur_obj);
 player setDir _dir;
 
 // Move camera down to player, then delete it
-cl_spawnmenu_cam camPreparePos (ASLToATL (eyePos player));
+cl_spawnmenu_cam camPreparePos (_spawnPos vectorAdd [0,0,2]);
 cl_spawnmenu_cam camPrepareTarget sv_cur_obj;
 cl_spawnmenu_cam camCommitPrepared 1;
 
