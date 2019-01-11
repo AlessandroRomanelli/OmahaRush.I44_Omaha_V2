@@ -3,7 +3,7 @@ private _event = addMissionEventHandler["EachFrame", {
   private _side = player getVariable ["gameSide", "defenders"];
   private _HQPos = getArray(missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Spawns" >> _side >> "HQSpawn" >> "positionATL");
   private _vehiclePlayer = vehicle player;
-  private _posPlayer = getPosWorld player;
+  private _posPlayer = getPosATL player;
   // Display the currently selected spawn if in spawn menu
   if (cl_inSpawnMenu) then {
     private _d = findDisplay 5000;
@@ -82,16 +82,19 @@ private _event = addMissionEventHandler["EachFrame", {
   };
 
   private _alpha = [] call {
-    if (count _pos == 0) exitWith {1};
-    private _relDir = player getRelDir _pos;
-    if (_relDir < 10) exitWith {
-      0.1 + (_relDir/11.1)
+    private _cameraDir = _posPlayer getDir (_posPlayer vectorAdd (getCameraViewDirection player));
+    private _weaponDir = getDir player;
+    private _offset = abs(_weaponDir - _cameraDir);
+    private _relDir = player getRelDir sv_cur_obj;
+    private _cameraRelDir = abs (_offset - _relDir);
+    if (_cameraRelDir < 10) exitWith {
+      0.1 + (_cameraRelDir/11.1)
     };
-    if (_relDir >= 10 && _relDir <= 350) exitWith {
+    if (_cameraRelDir >= 10 && _cameraRelDir <= 350) exitWith {
       1
     };
-    if (_relDir > 350) exitWith {
-      1 - ((_relDir - 350)/11.1)
+    if (_cameraRelDir > 350) exitWith {
+      1 - ((_cameraRelDir - 350)/11.1)
     };
     1
   };
@@ -155,23 +158,58 @@ private _event = addMissionEventHandler["EachFrame", {
     };
   } forEach cl_onEachFrame_team_members;
 
+  private _tanks = [];
+  _tanks append (getArray(missionConfigFile >> "Vehicles" >> "htanks"));
+  _tanks append (getArray(missionConfigFile >> "Vehicles" >> "ltanks"));
+  private _planes = getArray(missionConfigFile >> "Vehicles" >> "planes");
+  private _apc = getArray(missionConfigFile >> "Vehicles" >> "apc");
+  private _ifv = getArray(missionConfigFile >> "Vehicles" >> "ifv");
+  private _trucks = getArray(missionConfigFile >> "Vehicles" >> "trucks");
+
   // 3D Spotted enemies
   {
     private _unit = _x select 0;
     private _time = _x select 1;
-    private _pos = getPosATLVisual _unit;
-    _pos set [2, (_pos select 2) + 1];
+    private _pos = _unit modelToWorldVisual [0,0,2.5];
     if (serverTime - _time > 10) then {
-      /* systemChat format ["Expired 3D spot for unit: %1 because %2s passed since spotting.", name _unit, serverTime - _time]; */
       _unit setVariable ["isSpotted", nil];
       _unit setVariable ["3dspotted", false];
     } else {
-      if (_unit getVariable ["3dspotted", false]) then {
+      if ((_unit getVariable ["isSpotted", -1]) > 0) then {
         private _alpha = ((10 + _time - serverTime)/10)*0.66;
         if (_alpha < 0 || ([player, "VIEW", _unit] checkVisibility [eyePos player, eyePos _unit] < 0.2)) then {
           _alpha = 0;
         };
-        drawIcon3D [WWRUSH_ROOT+"pictures\enemy.paa", [1,1,1,_alpha], _pos, 0.3, 0.3, 0, "", 2, 0.03, "PuristaMedium", "center", false];
+        private _icon = [] call {
+          private _icon = "";
+          if (isNull (objectParent _unit)) then {
+            private _class = _unit getVariable ["class", "medic"];
+            _icon = "\a3\ui_f\data\Map\VehicleIcons\iconMan_ca.paa";
+            if (_class isEqualTo "medic") then {
+              _icon = "\a3\ui_f\data\Map\VehicleIcons\iconManMedic_ca.paa";
+            };
+            if ((leader group _unit) isEqualTo _unit) then {
+              _icon = "\a3\ui_f\data\Map\VehicleIcons\iconManCommander_ca.paa";
+            };
+          } else {
+            private _type = typeOf (vehicle _unit);
+            if (_type in _tanks) exitWith {
+              _icon = "\a3\ui_f\data\Map\VehicleIcons\iconTank_ca.paa";
+            };
+            if (_type in _apc || _type in _ifv) exitWith {
+              _icon = "\a3\ui_f\data\Map\VehicleIcons\iconAPC_ca.paa";
+            };
+            if (_type in _trucks) exitWith {
+              _icon = "\a3\ui_f\data\Map\VehicleIcons\iconTruck_ca.paa";
+            };
+            if (_type in _planes) exitWith {
+              _icon = "\a3\ui_f\data\Map\VehicleIcons\iconPlane_ca.paa";
+            };
+            _icon = "\a3\ui_f\data\Map\VehicleIcons\iconCar_ca.paa";
+          };
+          _icon
+        };
+        drawIcon3D [_icon, [0.968,0.423,0.353,_alpha], _pos, 0.8, 0.8, 0, "", 2, 0.03, "PuristaMedium", "center", false];
       };
     };
   } forEach cl_onEachFrame_spotted_enemies;
