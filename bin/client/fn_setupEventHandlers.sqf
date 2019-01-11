@@ -28,6 +28,7 @@ cl_groupSize = -1;
 cl_playAreaPos = [0,0,0];
 cl_obj_status = -1;
 cl_playerSwimming = !(isTouchingGround player) && (surfaceIsWater (getPosATL player));
+cl_enemiesNearby = 0;
 removeMissionEventHandler["Map", cl_mapObserverID];
 cl_mapObserverID = addMissionEventHandler["Map", {
 		params ["_mapIsOpened"];
@@ -75,6 +76,13 @@ cl_eventObserverID = addMissionEventHandler["EachFrame", {
 			[missionNamespace, "playerSwimChanged"] call BIS_fnc_callScriptedEventHandler;
 			cl_playerSwimming = _data;
 		};
+
+		private _enemiesNearby = ((getPosATL player) nearEntities 5) select {	_x getVariable ["isAlive", false] && !((_x getVariable ["gameSide", "attackers"]) isEqualTo (player getVariable ["gameSide", "defenders"]))};
+		_data =  count _enemiesNearby;
+		if !(_data isEqualTo cl_enemiesNearby) then {
+			[missionNamespace, "newEnemiesNearby", [_enemiesNearby]] call BIS_fnc_callScriptedEventHandler;
+			cl_enemiesNearby = _data;
+		};
 }];
 
 // If the group size changes (either we left or some other people joined) update the perks
@@ -120,6 +128,39 @@ cl_eventObserverID = addMissionEventHandler["EachFrame", {
 			["Third person view for vehicles is disabled"] spawn client_fnc_displayError;
 		};
 	};
+}] call bis_fnc_addScriptedEventHandler;
+
+[missionNamespace, "newEnemiesNearby", {
+	params [["_enemiesNearby", [], []]];
+	{
+		[
+		/* 0 object */							_x,
+		/* 1 action title */					"Melee Kill",
+		/* 2 idle icon */						WWRUSH_ROOT+"pictures\support.paa",
+		/* 3 progress icon */					WWRUSH_ROOT+"pictures\support.paa",
+		/* 4 condition to show */				"(_this distance2D _target) < 2.5 && {_target getVariable ['isAlive', false]} && {(_target getRelDir _this) > 90 && (_target getRelDir _this) < 270}",
+		/* 5 condition for action */			"(_this distance2D _target) < 2.5 && {_target getVariable ['isAlive', false]} && {(_target getRelDir _this) > 90 && (_target getRelDir _this) < 270}",
+		/* 6 code executed on start */			{
+			params ["_target", "_caller"];
+			_caller action ["SwitchWeapon", _caller, _caller, 100];
+		},
+		/* 7 code executed per tick */			{},
+		/* 8 code executed on completion */		{
+			params ["_target", "_caller"];
+			[_caller] remoteExec ["client_fnc_meleeTakedown", _target];
+			_caller selectWeapon (primaryWeapon _caller);
+		},
+		/* 9 code executed on interruption */	{
+			params ["_target", "_caller"];
+			_caller selectWeapon (primaryWeapon _caller);
+		},
+		/* 10 arguments */						[],
+		/* 11 action duration */				0.5,
+		/* 12 priority */						500,
+		/* 13 remove on completion */			true,
+		/* 14 show unconscious */				false
+		] call BIS_fnc_holdActionAdd;
+	} forEach _enemiesNearby;
 }] call bis_fnc_addScriptedEventHandler;
 
 // Automatic magazine recombination
@@ -217,11 +258,18 @@ player addEventHandler ["Killed", {
 
 		// Attempt to retrieve the grenade that killed the unit
 		private _grenade = _victim getVariable ["grenade_kill", ""];
+		// Check if the player was killed via melee takedown
+		private _meleeKiller = _victim getVariable ["melee_killer", objNull];
+		private _wasMelee = false;
+		if (!isNull _meleeKiller) then {
+			_killer = _meleeKiller;
+			_wasMelee = true;
+		};
 		// Send message to killer that he killed someone
 		if ((!isNull _victim) && {!isNull _killer} && {_victim != _killer}) then {
 			if (_victim getVariable ["isAlive", false]) then {
         private _wasHS = _victim getVariable ["wasHS", false];
-				[_victim, _wasHS, _grenade] remoteExec ["client_fnc_kill", _killer];
+				[_victim, _wasHS, _grenade, _wasMelee] remoteExec ["client_fnc_kill", _killer];
 				_victim setVariable ["isAlive", false];
 			};
 			// you have been killed by message
@@ -230,7 +278,7 @@ player addEventHandler ["Killed", {
 		};
 		// Send message to all units that we are reviveable
 		// As this package gets send to all clients we might aswell use it to share our information regarding assists (damage that was inflicted on us)
-		[_victim, _killer, cl_assistsInfo, _grenade] remoteExec ["client_fnc_medic_unitDied", 0];
+		[_victim, _killer, cl_assistsInfo, _grenade, _wasMelee] remoteExec ["client_fnc_medic_unitDied", 0];
 		_victim setVariable ["grenade_kill", nil];
 		// Disable hud
 		["rr_spawn_bottom_right_hud_renderer", "onEachFrame"] call BIS_fnc_removeStackedEventHandler;

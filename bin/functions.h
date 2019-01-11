@@ -108,6 +108,7 @@ class Maverick_Functions_Client {
 		class moveWithinVehicle {};
 		class getObjectiveDistance {};
 		class initUserInterface {};
+		class meleeTakedown {};
 		// Pointfeed
 		class pointfeed_add {};
 

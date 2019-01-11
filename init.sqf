@@ -10,6 +10,6 @@ scriptName "init";
 #define __filename "init.sqf"
 
 // Absolute mission directory for later use (such as icon rendering that requires absolut paths)
-/* MISSION_ROOT = (str missionConfigFile select [0, count str missionConfigFile - 15]); */
+MISSION_ROOT = (str missionConfigFile select [0, count str missionConfigFile - 15]);
 activateAddons ["WW2_MissionsWW2_p_WW2_Gamemodes_p"];
 WWRUSH_ROOT = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\";

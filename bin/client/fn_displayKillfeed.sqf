@@ -13,6 +13,7 @@ if (isServer && !hasInterface) exitWith {};
 private _unit = param[0,objNull,[objNull]];
 private _killer = param[1,objNull,[objNull]];
 private _grenade = param[2,"",[""]];
+private _wasMelee = param[3, false, [false]];
 
 if (isNil "cl_killfeed") exitWith {};
 
@@ -53,7 +54,7 @@ if (_grenade != "") then {
 	};
 };
 
-cl_killfeed pushBack [_killer, _reason, _unit];
+cl_killfeed pushBack [_killer, _reason, _unit, _wasMelee];
 
 // Render the killfeed and remove it later on again :)
 [] spawn client_fnc_renderKillfeed;
