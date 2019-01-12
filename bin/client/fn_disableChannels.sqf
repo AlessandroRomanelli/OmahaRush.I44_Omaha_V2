@@ -11,8 +11,10 @@ scriptName "fn_disableChannels";
 if (isServer && !hasInterface) exitWith {};
 
 0 enableChannel false;
-1 enableChannel [true, false];
+1 enableChannel true;
 2 enableChannel false;
-3 enableChannel [true, true];
-4 enableChannel [true, true];
-5 enableChannel [true, true];
+3 enableChannel true;
+4 enableChannel true;
+5 enableChannel true;
+
+true

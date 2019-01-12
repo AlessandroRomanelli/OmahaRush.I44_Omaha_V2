@@ -12,9 +12,9 @@ scriptName "fn_brightNight";
 if (isServer && !hasInterface) exitWith {};
 
 [] spawn {
-	_adjustLight = {
+	private _adjustLight = {
 		CHBN_adjustBrightness = CHBN_adjustBrightness max 0 min 1;
-		_brightness = if (CHBN_adjustBrightness > 0) then {200 * abs (1 - (2 ^ CHBN_adjustBrightness))} else {0};
+		private _brightness = if (CHBN_adjustBrightness > 0) then {200 * abs (1 - (2 ^ CHBN_adjustBrightness))} else {0};
 		CHBN_light setLightAttenuation [10e10,(30000 / (_brightness max 10e-10)),4.31918e-005,4.31918e-005];
 		CHBN_light setLightAmbient CHBN_adjustColor;
 	};
@@ -33,8 +33,8 @@ if (isServer && !hasInterface) exitWith {};
 	call _adjustLight;
 
 	for "_i" from 0 to 1 step 0 do {
-		_adjustBrightness = CHBN_adjustBrightness;
-		_adjustColor = CHBN_adjustColor;
+		private _adjustBrightness = CHBN_adjustBrightness;
+		private _adjustColor = CHBN_adjustColor;
 		waitUntil {!(_adjustBrightness isEqualTo CHBN_adjustBrightness) || !(_adjustColor isEqualTo CHBN_adjustColor)};
 		call _adjustLight;
 	};

@@ -66,6 +66,6 @@ while {_time >= 0 && sv_gameStatus == 2} do {
 		sv_matchTime = 0;
 		sleep 1;
 		// Only if the time actually got to 0, end the match for the defenders
-		[] spawn server_fnc_endRound;
+		[] call server_fnc_endRound;
 	};
 };

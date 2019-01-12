@@ -12,3 +12,5 @@ if (isServer && !hasInterface) exitWith {};
 private _killer = param [0, objNull, [objNull]];
 player setVariable ["melee_killer", _killer];
 player setDamage 1;
+
+true

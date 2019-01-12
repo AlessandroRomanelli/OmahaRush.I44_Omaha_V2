@@ -31,4 +31,4 @@ sv_tickets = _tickets;
 sv_tickets_total = _tickets;
 
 // Broadcast
-[["sv_tickets","sv_tickets_total"]] spawn server_fnc_updateVars;
+[["sv_tickets","sv_tickets_total"]] call server_fnc_updateVars;

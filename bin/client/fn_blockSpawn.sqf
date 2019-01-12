@@ -12,5 +12,5 @@ diag_log format["DEBUG: Spawning prohibited for: %1 seconds more", sv_fallBack_t
 // If the prohibitedTime is greater than 0, make sure we also cant spawn
 if (sv_fallBack_timeLeft > 0) then {
 	cl_blockSpawnUntil = sv_fallBack_timeLeft + diag_tickTime;
-	[] spawn client_fnc_displaySpawnRestriction;
+	[] call client_fnc_displaySpawnRestriction;
 };

@@ -21,8 +21,8 @@ sv_cur_obj setVariable ["status", 2, true];
 ["THE EXPLOSIVES HAVE BEEN DEFUSED"] remoteExec ["client_fnc_displayObjectiveMessage"];
 
 // Give points
-["<t size='1.3' color='#FFFFFF'>EXPLOSIVES DISARMED</t><br/><t size='1.0' color='#FFFFFF'>Objective Defender</t>", 425] spawn client_fnc_pointfeed_add;
-[425] spawn client_fnc_addPoints;
-
+["<t size='1.3' color='#FFFFFF'>EXPLOSIVES DISARMED</t><br/><t size='1.0' color='#FFFFFF'>Objective Defender</t>", 425] call client_fnc_pointfeed_add;
+[425] call client_fnc_addPoints;
+true
 
 //Todo Add MLG version

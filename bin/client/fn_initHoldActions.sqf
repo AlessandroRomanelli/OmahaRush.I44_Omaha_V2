@@ -34,13 +34,13 @@ mg_conditionShowOnMyself = {
 
 private _mg_code = {
 	if (!isNull cl_lastActionTarget) then {
-		[player] remoteExec ["client_fnc_restoreAmmo", cl_lastActionTarget];
+		[player] remoteExecCall ["client_fnc_restoreAmmo", cl_lastActionTarget];
 	};
 
 	// Pointsssss
 	if (cl_lastActionTarget != player) then {
-		["<t size='1.3' color='#FFFFFF'>AMMUNITION REPLENISHED</t>", 30] spawn client_fnc_pointfeed_add;
-		[30] spawn client_fnc_addPoints;
+		["<t size='1.3' color='#FFFFFF'>AMMUNITION REPLENISHED</t>", 30] call client_fnc_pointfeed_add;
+		[30] call client_fnc_addPoints;
 	};
 
 	// Make sure we cant spam it
@@ -118,13 +118,13 @@ for "_i" from 1 to 4  do {
 		_icon = _icon + "bombDefuse.paa";
 		_text = "Disarm Explosives";
 		_cond = "_target isEqualTo sv_cur_obj && {(_this distance2D _target) < ceil(([_target] call client_fnc_getObjectiveDistance) + 2)} && {(_target getVariable ['status',-1] == 1) || (_target getVariable ['status', -1] == 0 && (_this isEqualTo player))}";
-		_completion = {if (sv_cur_obj distance2D player < ceil(([_target] call client_fnc_getObjectiveDistance) + 2)) then {[] spawn client_fnc_disarmMCOM;};};
+		_completion = {if (sv_cur_obj distance2D player < ceil(([_target] call client_fnc_getObjectiveDistance) + 2)) then {[] call client_fnc_disarmMCOM;};};
 		_interruption = {sv_cur_obj setVariable ["status", 1, true]};
 	} else {
 		_icon = _icon + "bombPlant.paa";
 		_text = "Plant Explosives";
 		_cond = "_target isEqualTo sv_cur_obj && {(_this distance2D _target) < ceil(([_target] call client_fnc_getObjectiveDistance) + 2)} && {(_target getVariable ['status',-1] == -1) || (_target getVariable ['status', -1] == 2) || ((_target getVariable ['status', -1] == 0) && (_this isEqualTo player))}";
-		_completion = {if (sv_cur_obj distance2D player < ceil(([_target] call client_fnc_getObjectiveDistance) + 2)) then {[] spawn client_fnc_armMCOM;};};
+		_completion = {if (sv_cur_obj distance2D player < ceil(([_target] call client_fnc_getObjectiveDistance) + 2)) then {[] call client_fnc_armMCOM;};};
 		_interruption = {sv_cur_obj setVariable ["status", -1, true]};
 	};
 
@@ -154,8 +154,8 @@ for "_i" from 1 to 4  do {
 private _completed = {
 	if (player distance cl_lastActionTarget > 5) exitWith {};
 
-	["<t size='1.3' color='#FFFFFF'>AMMUNITION REPLENISHED</t>", 50] spawn client_fnc_pointfeed_add;
-	[50] spawn client_fnc_addPoints;
+	["<t size='1.3' color='#FFFFFF'>AMMUNITION REPLENISHED</t>", 50] call client_fnc_pointfeed_add;
+	[50] call client_fnc_addPoints;
 
 	// Make sure we cant spam it
 	cl_lastActionTarget setVariable ["ammo_restored",true];
@@ -172,8 +172,8 @@ cl_vehicleAmmoTypes = [] call client_fnc_getAllAmmoVehicles;
 
 private _completedEngineer = {
 	if (player distance cl_lastActionTarget > 5) exitWith {};
-	["<t size='1.3' color='#FFFFFF'>VEHICLE REPAIRED</t>", 50] spawn client_fnc_pointfeed_add;
-	[50] spawn client_fnc_addPoints;
+	["<t size='1.3' color='#FFFFFF'>VEHICLE REPAIRED</t>", 50] call client_fnc_pointfeed_add;
+	[50] call client_fnc_addPoints;
 	cl_lastActionTarget setVariable ["vehDmg", 0];
 	// Make sure we cant spam it
 	cl_lastActionTarget setVariable ["repaired",true];
@@ -254,3 +254,5 @@ private _id = [
 cl_actionIDs pushBack _id;
 
 diag_log "Setting up handlers... 9";
+
+true

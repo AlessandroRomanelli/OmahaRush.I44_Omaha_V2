@@ -19,3 +19,5 @@ disableSerialization;
 if (isNil "rr_spawn_bottom_right_hud_ran") then {
 	rr_spawn_bottom_right_hud_ran = true;
 };
+
+true

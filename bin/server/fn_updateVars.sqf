@@ -16,3 +16,4 @@ private _variables = param[0,[],[[]]];
 	publicVariable _x;
 	[format ["Variable %1 has been updated on all clients", _x]] call server_fnc_log;
 } forEach _variables;
+true

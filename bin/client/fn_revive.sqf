@@ -29,6 +29,7 @@ if (cl_inSpawnMenu) exitWith {};
 // Make sure the spawn menu script gets cancelled
 cl_revived = true;
 
+sleep 0.5;
 // Looks like we have been revived :)
 setPlayerRespawnTime 0.1;
 sleep 0.2;
@@ -39,9 +40,9 @@ player playActionNow "PlayerProne";
 
 // Message
 if (!isNull _savior) then {
-	[format ["You have been revived by<br/>%1", _savior getVariable ["name", "ERROR: No Name"]]] spawn client_fnc_displayInfo;
+	[format ["You have been revived by<br/>%1", _savior getVariable ["name", "ERROR: No Name"]]] call client_fnc_displayInfo;
 } else {
-	["You have been revived"] spawn client_fnc_displayInfo;
+	["You have been revived"] call client_fnc_displayInfo;
 };
 
 if (!isNil "rr_respawn_thread") then {
@@ -62,11 +63,11 @@ private _objs = nearestObjects [player, ["Man","GroundWeaponHolder", "WeaponHold
 player setUnitLoadout (player getVariable ["wwr_unit_loadout",[]]);
 
 // Give player all his items
-[true] spawn client_fnc_equipAll;
+[true] call client_fnc_equipAll;
 
 // Reenable hud
 300 cutRsc ["default","PLAIN"];
-cl_gui_thread = [] spawn client_fnc_startIngameGUI;
+[] call client_fnc_startIngameGUI;
 
 player setVariable ["isAlive", true];
 player setVariable ["grenade_kill", nil];
@@ -80,4 +81,4 @@ cl_revived = false;
 cl_inSpawnMenu = false;
 
 // Hold actions
-[] spawn client_fnc_initHoldActions;
+[] call client_fnc_initHoldActions;

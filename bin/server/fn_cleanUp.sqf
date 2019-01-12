@@ -43,3 +43,5 @@ if (!isNil "sv_persistentVehicles") then {
 
 // Log
 [format["Cleaned up %1 objects", count _allObjects]] call server_fnc_log;
+
+true

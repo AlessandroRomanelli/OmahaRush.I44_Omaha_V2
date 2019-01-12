@@ -96,7 +96,7 @@ player switchCamera "INTERNAL";
 // Disable global voice
 0 enableChannel [false, false];
 
-[] spawn client_fnc_saveStatistics;
+[] call client_fnc_saveStatistics;
 
 if (sv_gameCycle % 2 == 0) then {
 	if (playerSide == WEST) then {
@@ -127,7 +127,7 @@ waitUntil {cl_statisticsLoaded};
 	private _fallBackTime = [] call client_fnc_getFallbackTime;
 	sleep 3;
 	// Message about preparation phase
-	[format ["DEFENDERS HAVE %1 SECONDS TO PREPARE", _fallBackTime]] spawn client_fnc_displayObjectiveMessage;
+	[format ["DEFENDERS HAVE %1 SECONDS TO PREPARE", _fallBackTime]] call client_fnc_displayObjectiveMessage;
 };
 
 cl_resetPlayerRunning = false;

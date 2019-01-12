@@ -133,3 +133,5 @@ if ("frag" in cl_squadPerks) then {
 		player addItem _handGrenade;
 	};
 };
+
+true

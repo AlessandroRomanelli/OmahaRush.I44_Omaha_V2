@@ -129,3 +129,4 @@ _configs append ("true" configClasses (missionConfigFile >> "MapSettings" >> sv_
 		};
 	};
 } forEach _configs;
+true

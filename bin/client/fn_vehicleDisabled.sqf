@@ -12,5 +12,5 @@ params [["_points", 0, [0]], ["_wasDestroyed", false, [false]], ["_vehString", "
 private _view = if (_wasDestroyed) then {"hm_kill"} else {"hm_hit"};
 
 27 cutRsc [_view, "PLAIN"];
-[format ["<t size='1.3' color='#FFFFFF'>%1 DESTROYED</t>", _vehString], _points] spawn client_fnc_pointfeed_add;
-[_points] spawn client_fnc_addPoints;
+[format ["<t size='1.3' color='#FFFFFF'>%1 DESTROYED</t>", _vehString], _points] call client_fnc_pointfeed_add;
+[_points] call client_fnc_addPoints;

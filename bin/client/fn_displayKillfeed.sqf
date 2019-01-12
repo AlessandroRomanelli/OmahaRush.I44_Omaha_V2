@@ -57,7 +57,7 @@ if (_grenade != "") then {
 cl_killfeed pushBack [_killer, _reason, _unit, _wasMelee];
 
 // Render the killfeed and remove it later on again :)
-[] spawn client_fnc_renderKillfeed;
+[] call client_fnc_renderKillfeed;
 sleep 7;
 cl_killfeed deleteAt 0;
-[] spawn client_fnc_renderKillfeed;
+[] call client_fnc_renderKillfeed;

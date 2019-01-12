@@ -92,7 +92,6 @@ class Maverick_Functions_Client {
 		class onEachFramePreparation {};
 		class displaySpawnRestriction {};
 		class moveUnitIntoVehicle {};
-		class damageHandler {};
 		class teleport {};
 		class displayAds {};
 		class drawMapUnits {};

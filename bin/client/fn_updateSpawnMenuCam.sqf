@@ -30,3 +30,4 @@ cl_spawnmenu_cam camPreparePos _pos;
 cl_spawnmenu_cam camPrepareTarget _targetPos;
 
 cl_spawnmenu_cam camCommitPrepared 1.5;
+true

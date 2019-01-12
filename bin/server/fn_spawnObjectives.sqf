@@ -38,7 +38,7 @@ for "_i" from 1 to 4 do {
 sv_cur_obj = sv_stage1_obj;
 
 // Broadcast
-[["sv_stage1_obj","sv_stage2_obj","sv_stage3_obj","sv_stage4_obj","sv_cur_obj"]] spawn server_fnc_updateVars;
+[["sv_stage1_obj","sv_stage2_obj","sv_stage3_obj","sv_stage4_obj","sv_cur_obj"]] call server_fnc_updateVars;
 
 
 //Make objects around objective invincible
@@ -46,3 +46,5 @@ sv_cur_obj = sv_stage1_obj;
 	_x allowDamage false;
 	_x setDamage 0;
 } forEach _objects;
+
+true

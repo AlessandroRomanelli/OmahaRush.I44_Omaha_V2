@@ -95,19 +95,19 @@ cl_allowActions = true;
 			{
 				cl_soundLevel = 0.5;
 				0.5 fadeSound cl_soundLevel;
-				["Soundlevel has been reduced to 50%"] spawn client_fnc_displayInfo;
+				["Soundlevel has been reduced to 50%"] call client_fnc_displayInfo;
 			};
 			case 0.5:
 			{
 				cl_soundLevel = 0.1;
 				0.5 fadeSound cl_soundLevel;
-				["Soundlevel has been reduced to 10%"] spawn client_fnc_displayInfo;
+				["Soundlevel has been reduced to 10%"] call client_fnc_displayInfo;
 			};
 			case 0.1:
 			{
 				cl_soundLevel = 1;
 				0.5 fadeSound cl_soundLevel;
-				["Soundlevel has been increased to 100%"] spawn client_fnc_displayInfo;
+				["Soundlevel has been increased to 100%"] call client_fnc_displayInfo;
 			};
 		};
 	};
@@ -125,7 +125,7 @@ cl_allowActions = true;
 			_para setVelocity _velPlayer;
 			_para setDir _dirPlayer;
 			player setVariable ["hasChute", false];
-			["PRESS <t size='1.5'>[SPACE BAR]</t> TO CUT YOUR PARACHUTE!"] spawn client_fnc_displayInfo;
+			["PRESS <t size='1.5'>[SPACE BAR]</t> TO CUT YOUR PARACHUTE!"] call client_fnc_displayInfo;
 		} else {
 			if ((typeOf (vehicle player)) isEqualTo "NonSteerable_Parachute_F") then {
 				private _para = vehicle player;
@@ -155,7 +155,7 @@ cl_allowActions = true;
 	// F1 to F10 - SEAT SWITCH
 	if (_DIKcode > 58 && _DIKcode < 69) then {
 		if (!isNull (objectParent player)) then {
-			[_DIKcode] spawn client_fnc_moveWithinVehicle;
+			[_DIKcode] call client_fnc_moveWithinVehicle;
 		};
 	};
 
@@ -182,9 +182,11 @@ cl_allowActions = true;
 				};
 			};
 		} else {
-			[] spawn client_fnc_spotTarget;
+			[] call client_fnc_spotTarget;
 		};
 		cl_lastKeyPressed = diag_tickTime;
 	};
 	_h
 }];
+
+true

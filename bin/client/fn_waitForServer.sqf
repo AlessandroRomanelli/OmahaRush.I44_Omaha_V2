@@ -38,4 +38,4 @@ removeMissionEventHandler ["EachFrame", cl_waitingThread];
 // Cycle..
 60000 cutText ["", "PLAIN"];
 
-[] spawn client_fnc_spawn;
+[] call client_fnc_spawn;

@@ -15,3 +15,4 @@ private _spawnDisplay = findDisplay 5000;
 private _requestedClass = (_spawnDisplay displayCtrl 300) lbData (lbCurSel (_spawnDisplay displayCtrl 300));
 
 [_requestedClass] spawn client_fnc_spawnPlayer;
+true

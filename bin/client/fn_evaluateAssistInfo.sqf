@@ -50,12 +50,12 @@ if ((_myData select 1) > 0.15) then {
 	["Damage was greater 0.15"] call server_fnc_log;
 	if ((_myData select 1) < 0.8) then {
 		// Regular assist
-		[format["<t size='1.3' color='#FFFFFF'>%1 DAMAGE KILL ASSIST</t>",(_myData select 1) * 100], (_myData select 1) * 100] spawn client_fnc_pointfeed_add;
-		[(_myData select 1) * 100] spawn client_fnc_addPoints;
+		[format["<t size='1.3' color='#FFFFFF'>%1 DAMAGE KILL ASSIST</t>",(_myData select 1) * 100], (_myData select 1) * 100] call client_fnc_pointfeed_add;
+		[(_myData select 1) * 100] call client_fnc_addPoints;
 	} else {
 		// We inflicted so much damage, why not count it as a kill?
-		[format["<t size='1.3' color='#FFFFFF'>%1 DAMAGE KILL ASSIST</t><br/><t size='1.0' color='#FFFFFF'>ASSIST COUNTS AS KILL</t>",(_myData select 1) * 100], (_myData select 1) * 100] spawn client_fnc_pointfeed_add;
-		[(_myData select 1) * 100] spawn client_fnc_addPoints;
+		[format["<t size='1.3' color='#FFFFFF'>%1 DAMAGE KILL ASSIST</t><br/><t size='1.0' color='#FFFFFF'>ASSIST COUNTS AS KILL</t>",(_myData select 1) * 100], (_myData select 1) * 100] call client_fnc_pointfeed_add;
+		[(_myData select 1) * 100] call client_fnc_addPoints;
 
 		// Add a kill
 		cl_kills = cl_kills + 1;

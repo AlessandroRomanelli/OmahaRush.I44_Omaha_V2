@@ -53,3 +53,5 @@ if (_role == "") exitWith {};
     player action [format ["moveTo%1", _role], _vehicle];
   }
 } forEach _slotsOfRole;
+
+true

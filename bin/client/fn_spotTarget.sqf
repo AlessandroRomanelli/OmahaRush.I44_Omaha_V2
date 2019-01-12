@@ -32,3 +32,5 @@ private _fnc_getRelDirPOV = {
     };
   };
 } forEach _allEnemies;
+
+true

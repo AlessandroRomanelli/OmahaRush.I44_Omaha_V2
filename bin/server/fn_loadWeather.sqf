@@ -37,3 +37,5 @@ setDate _time;
 		0 setFog _fog;
 	};
 };
+
+true

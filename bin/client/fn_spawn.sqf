@@ -100,7 +100,7 @@ if (player getVariable "gameSide" == "defenders") then {
 };
 
 // Markers
-[] spawn client_fnc_updateMarkers;
+[] call client_fnc_updateMarkers;
 
 // Hide hud
 showHUD [true,false,false,false,false,true,false,true,false];
@@ -111,7 +111,7 @@ showHUD [true,false,false,false,false,true,false,true,false];
 
 
 // Disable voice channels
-[] spawn client_fnc_disableChannels;
+[] call client_fnc_disableChannels;
 
 removeUniform player;
 removeVest player;
@@ -119,7 +119,7 @@ removeHeadgear player;
 removeBackpack player;
 
 // Markers
-[playArea] spawn client_fnc_updateRestrictions;
+[playArea] call client_fnc_updateRestrictions;
 
 
 // Wait until the objectives are available
@@ -215,7 +215,7 @@ if (getNumber(missionConfigFile >> "GeneralConfig" >> "PostProcessing") == 1) th
 };
 
 // Populate the structured texts
-[] spawn client_fnc_populateSpawnMenu;
+[] call client_fnc_populateSpawnMenu;
 
 scaleCtrl = {
 	params [["_ctrl", controlNull, [controlNull]],["_factor", 0, [0]], ["_time", 0, [0]]];
@@ -227,6 +227,7 @@ scaleCtrl = {
 	true
 };
 
+// TODO: Move this to PFH
 animateCtrl = {
 	params [["_objective", objNUll, [objNull]],["_ctrl", controlNull, [controlNull]],["_factor", 0, [0]], ["_time", 0, [0]]];
 	private _ctrlPos = ctrlPosition _ctrl;
@@ -242,9 +243,9 @@ animateCtrl = {
 	_ctrl ctrlSetPosition _ctrlPos;
 	_ctrl ctrlCommit 0;
 	cl_objectiveSpawnAnimation = nil;
-	[] spawn updateObjectiveProgress;
+	[] call updateObjectiveProgress;
 };
-
+// TODO: Move this to PFH
 updateObjectiveProgress = {
 	private _display = findDisplay 5000;
 	for "_i" from 1 to 4 do {
@@ -265,6 +266,7 @@ updateObjectiveProgress = {
 			_ctrlObj ctrlSetTextColor [-1, -1, -1, 0.25];
 		};
 	};
+	true
 };
 
 [_menuDisplay] spawn updateObjectiveProgress;
@@ -292,7 +294,7 @@ updateObjectiveProgress = {
 // Enable spawn buttons // REDONE WITH LISTBOX UPDATE // SEE SPAWNMENU_LOADCLASSES
 (_menuDisplay displayCtrl 302) ctrlAddEventHandler ["ButtonDown",{
 	profileNamespace setVariable ["rr_class_preferred", cl_class];
-	[] spawn client_fnc_spawnMenu_getClassAndSpawn
+	[] call client_fnc_spawnMenu_getClassAndSpawn
 }];
 
 // Add eventhandlers to the dialog and hide the weapon selection
@@ -331,13 +333,13 @@ disableSerialization;
 } forEach [15,16];
 
 (_menuDisplay displayCtrl 15) ctrlAddEventHandler ["ButtonDown", {
-	[] spawn client_fnc_spawnMenu_displayPrimaryWeaponSelection;
+	[] call client_fnc_spawnMenu_displayPrimaryWeaponSelection;
 }];
 
 (_menuDisplay displayCtrl 16) ctrlAddEventHandler ["ButtonDown", {
 	private _secondaryWeapons = cl_equipConfigurations select {(getText(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> _x >> "type")) == "secondary"};
 	if (count _secondaryWeapons != 0) then {
-		[] spawn client_fnc_spawnMenu_displaySecondaryWeaponSelection;
+		[] call client_fnc_spawnMenu_displaySecondaryWeaponSelection;
 	};
 }];
 
@@ -358,7 +360,7 @@ disableSerialization;
 /* (_menuDisplay displayCtrl 12) ctrlAddEventHandler ["ButtonDown",{[] spawn client_fnc_spawnMenu_displayPrimaryAttachmentSelection;}];
 (_menuDisplay displayCtrl 13) ctrlAddEventHandler ["ButtonDown",{[] spawn client_fnc_spawnMenu_displaySecondaryAttachmentSelection;}]; */
 (_menuDisplay displayCtrl 100) ctrlAddEventHandler ["ButtonDown",{
-	[] spawn client_fnc_spawnMenu_displayGroupManagement;
+	[] call client_fnc_spawnMenu_displayGroupManagement;
 }];
 
 // Hide the weapon selection listbox and its background + the attachment listboxes and their backgrounds
@@ -369,21 +371,19 @@ disableSerialization;
 	20,21,22,25,23,24,26,27,28,29
 ];
 
+// TODO: Move to PFH
 [] spawn {
-	[] spawn client_fnc_loadSpawnpoints;
-	[false] spawn client_fnc_spawnMenu_loadClasses;
-	while {dialog} do {
-		sleep 0.2;
-		[] spawn client_fnc_loadSpawnpoints;
-		[true] spawn client_fnc_spawnMenu_loadClasses;
-	};
-};
-// No selection made? Select 0
-[] spawn {
+	[] call client_fnc_loadSpawnpoints;
+	[false] call client_fnc_spawnMenu_loadClasses;
 	private _display = findDisplay 5000;
 	private _spawnCtrl = _display displayCtrl 8;
 	waitUntil {(lbSize _spawnCtrl) > 0};
 	_spawnCtrl lbSetCurSel 0;
+	while {dialog} do {
+		sleep 0.2;
+		[] call client_fnc_loadSpawnpoints;
+		[true] call client_fnc_spawnMenu_loadClasses;
+	};
 };
 
 private _spawnCtrl = _menuDisplay displayCtrl 8;

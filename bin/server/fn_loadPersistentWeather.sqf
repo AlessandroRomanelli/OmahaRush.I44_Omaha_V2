@@ -32,3 +32,5 @@ setWind [(floor random 10)/10, (floor random 10)/10, false];
 86400 setOvercast (round random [0,1,10])/10;
 86400 setRain ((floor random [0,0,10])/10);
 86400 setFog _fog;
+
+true

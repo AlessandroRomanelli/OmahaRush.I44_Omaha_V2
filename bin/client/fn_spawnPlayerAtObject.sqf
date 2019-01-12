@@ -22,7 +22,7 @@ private _nearbyEnemies = {player getVariable ["gameSide", ""] != _x getVariable 
 // Invalid spawnpoint check (spawnpoint is not within the playable area)
 if ((!alive _unit) || (_unit distance sv_cur_obj) > 5000 || _nearbyEnemies) exitWith {
 	// The spawnpoint is unavailable, do not spawn the player here
-	["Spawnpoint unavailable"] spawn client_fnc_displayError;
+	["Spawnpoint unavailable"] call client_fnc_displayError;
 };
 
 private _vehicleNoSpace = false;
@@ -34,7 +34,7 @@ if (_inVehicle) then {
 
 // Was the vehicle full?
 if (_vehicleNoSpace) exitWith {
-	["Vehicle full"] spawn client_fnc_displayError;
+	["Vehicle full"] call client_fnc_displayError;
 };
 
 // Close spawn dialog
@@ -48,7 +48,7 @@ if (_unit isKindOf "LIB_GerRadio" || _unit isKindOf "LIB_SovRadio") then {
 };
 
 // Equip
-[] spawn client_fnc_equipAll;
+[] call client_fnc_equipAll;
 
 if (!_inVehicle) then { // Normal on-unit-spawn
 	// Move player to spawn location
@@ -62,7 +62,7 @@ if (!_inVehicle) then { // Normal on-unit-spawn
 
 // Give units points
 if (_sendPoints) then {
-	[] remoteExec ["client_fnc_squadSpawn",_unit];
+	[] remoteExecCall ["client_fnc_squadSpawn",_unit];
 };
 
 // Move camera down to player, then delete it
@@ -117,10 +117,10 @@ camDestroy cl_spawnmenu_cam;
 player switchCamera "INTERNAL";
 
 // Launch GUI
-cl_gui_thread = [] spawn client_fnc_startIngameGUI;
+[] call client_fnc_startIngameGUI;
 
 // General success script
-[] spawn cl_spawn_succ;
+[] call cl_spawn_succ;
 
 // Display help hint
 if (player getVariable "gameSide" == "defenders") then {
@@ -130,8 +130,6 @@ if (player getVariable "gameSide" == "defenders") then {
 };
 
 // Display instructions hint for currently selected perk
-[] spawn {
-	sleep 10.3;
-	private _instructions = [cl_classPerk] call client_fnc_getPerkInstructions;
-	[_instructions select 0, _instructions select 1] spawn client_fnc_hint;
-};
+sleep 10.3;
+private _instructions = [cl_classPerk] call client_fnc_getPerkInstructions;
+[_instructions select 0, _instructions select 1] call client_fnc_hint;

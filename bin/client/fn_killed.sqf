@@ -77,13 +77,13 @@ if (player getVariable "gameSide" == "attackers") then {
 	// Sometimes the respawn handler doesnt fire so we have to manuall check here if it did!
 	sleep 0.5;
 	if (!cl_inSpawnMenu || !dialog) then {
-		["Player respawned - Backup"] spawn server_fnc_log;
-		[format["sv_gameStatus %1 cl_revived %2", sv_gameStatus, cl_revived]] spawn server_fnc_log;
+		["Player respawned - Backup"] call server_fnc_log;
+		[format["sv_gameStatus %1 cl_revived %2", sv_gameStatus, cl_revived]] call server_fnc_log;
 		if (sv_gameStatus == 2 && !cl_revived) then {
-			[] spawn client_fnc_spawn;
 
 			player enableStamina false;
 			player forceWalk false;
+			[] call client_fnc_spawn;
 		};
 	};
 };

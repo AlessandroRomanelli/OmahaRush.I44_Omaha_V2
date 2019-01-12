@@ -113,6 +113,7 @@ private _assignVariables = {
   cl_equipConfigurations = _record select 3;
   cl_equipClassnames = _record select 4;
   cl_statisticsLoaded = true;
+  true
 };
 
 // Removes a previous entry from the player's records
@@ -167,7 +168,7 @@ diag_log format["DEBUG: 5) Decoding the hash from the given record and comparing
 // Check if the two hashes match
 if (_stats isEqualTo (str (_record select 1))) then {
   // Load the variables
-  [_record select 1] spawn _assignVariables;
+  [_record select 1] call _assignVariables;
   // Push the loaded record into the backups array
   private _backup = +_record;
   [_backup, "wwr_records_backups", _serverKey] call _updateEntry;
@@ -183,7 +184,7 @@ if (_stats isEqualTo (str (_record select 1))) then {
     private _stats = [_record select 2] call _decodeHash;
     if (_stats isEqualTo (str (_record select 1))) then {
       // Assign it to our variables and save it as our current record
-      [_record select 1] spawn _assignVariables;
+      [_record select 1] call _assignVariables;
       diag_log "DEBUG: 10) Fallback accepted: variables assigned";
     } else {
       diag_log "DEBUG: 11) Fallback refused: resetting data";
@@ -192,7 +193,7 @@ if (_stats isEqualTo (str (_record select 1))) then {
       // Create new entry
       _record = [] call _createNewRecord;
       // Assign it to players vars
-      [_record select 1] spawn _assignVariables;
+      [_record select 1] call _assignVariables;
     }
   } else {
     diag_log "DEBUG: 12) No backup found: resetting player";
@@ -201,7 +202,7 @@ if (_stats isEqualTo (str (_record select 1))) then {
     // Create new entry
     _record = [] call _createNewRecord;
     // Assign it to players vars
-    [_record select 1] spawn _assignVariables;
+    [_record select 1] call _assignVariables;
   };
 
   [_record, "wwr_records", _serverKey] call _updateEntry;

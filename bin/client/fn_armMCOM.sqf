@@ -17,8 +17,10 @@ if (!alive player) exitWith {};
 sv_cur_obj setVariable ["status", 1, true];
 
 // Give points
-["<t size='1.3' color='#FFFFFF'>EXPLOSIVES ARMED</t><br/><t size='1.0' color='#FFFFFF'>Objective Attacker</t>", 225] spawn client_fnc_pointfeed_add;
-[225] spawn client_fnc_addPoints;
+["<t size='1.3' color='#FFFFFF'>EXPLOSIVES ARMED</t><br/><t size='1.0' color='#FFFFFF'>Objective Attacker</t>", 225] call client_fnc_pointfeed_add;
+[225] call client_fnc_addPoints;
 
-// Inform everyone that the mcom has been planted
+// Inform server that the mcom has been planted
 [player] remoteExec ["client_fnc_MCOMarmed", 0];
+
+true

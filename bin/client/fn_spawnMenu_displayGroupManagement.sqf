@@ -12,3 +12,4 @@ if (isServer && !hasInterface) exitWith {};
 
 // Display the group management system
 (findDisplay 5000) createDisplay "RscDisplayDynamicGroups";
+true

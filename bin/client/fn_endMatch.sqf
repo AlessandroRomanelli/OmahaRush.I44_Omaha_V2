@@ -40,19 +40,19 @@ for "_i" from 1 to 4 do {
 	private _mcomsDestroyed = param[0, 0, [0]];
 	if (player getVariable ["gameSide", "defenders"] == "defenders" && _mcomsDestroyed < 4) then {
 		private _mcomDefended = 4 - _mcomsDestroyed;
-		[format ["<t size='1.3' color='#FFFFFF'>%1 OBJECTIVE(S) DEFENDED</t>", _mcomDefended], 150*_mcomDefended] spawn client_fnc_pointfeed_add;
-		[150*_mcomDefended] spawn client_fnc_addPoints;
+		[format ["<t size='1.3' color='#FFFFFF'>%1 OBJECTIVE(S) DEFENDED</t>", _mcomDefended], 150*_mcomDefended] call client_fnc_pointfeed_add;
+		[150*_mcomDefended] call client_fnc_addPoints;
 	};
 	if (player getVariable ["gameSide", "attackers"] == "attackers" && _mcomsDestroyed > 0) then {
-		[format ["<t size='1.3' color='#FFFFFF'>%1 OBJECTIVE(S) DESTROYED</t>", _mcomsDestroyed], 150*_mcomsDestroyed] spawn client_fnc_pointfeed_add;
-		[150*_mcomsDestroyed] spawn client_fnc_addPoints;
+		[format ["<t size='1.3' color='#FFFFFF'>%1 OBJECTIVE(S) DESTROYED</t>", _mcomsDestroyed], 150*_mcomsDestroyed] call client_fnc_pointfeed_add;
+		[150*_mcomsDestroyed] call client_fnc_addPoints;
 	};
-	["<t size='1.3' color='#FFFFFF'>ROUND COMPLETED BONUS</t>", 200] spawn client_fnc_pointfeed_add;
-	[200] spawn client_fnc_addPoints;
+	["<t size='1.3' color='#FFFFFF'>ROUND COMPLETED BONUS</t>", 200] call client_fnc_pointfeed_add;
+	[200] call client_fnc_addPoints;
 };
 
 // Save stats
-[] spawn client_fnc_saveStatistics;
+[] call client_fnc_saveStatistics;
 
 // No damage
 player allowDamage false;
@@ -88,15 +88,15 @@ showCinemaBorder false;
 // Display message
 if (_winners == "attackers") then {
 	if (player getVariable "gameSide" == "defenders") then {
-		["THE ENEMY TEAM HAS WON THE GAME"] spawn client_fnc_displayObjectiveMessage;
+		["THE ENEMY TEAM HAS WON THE GAME"] call client_fnc_displayObjectiveMessage;
 	} else {
-		["YOUR TEAM HAS WON THE GAME"] spawn client_fnc_displayObjectiveMessage;
+		["YOUR TEAM HAS WON THE GAME"] call client_fnc_displayObjectiveMessage;
 	};
 } else {
 	if (player getVariable "gameSide" != "defenders") then {
-		["THE ENEMY TEAM HAS WON THE GAME"] spawn client_fnc_displayObjectiveMessage;
+		["THE ENEMY TEAM HAS WON THE GAME"] call client_fnc_displayObjectiveMessage;
 	} else {
-		["YOUR TEAM HAS WON THE GAME"] spawn client_fnc_displayObjectiveMessage;
+		["YOUR TEAM HAS WON THE GAME"] call client_fnc_displayObjectiveMessage;
 	};
 };
 

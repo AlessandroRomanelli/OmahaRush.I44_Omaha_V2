@@ -22,6 +22,8 @@ player removeAllEventHandlers "HandleDamage";
 [missionNamespace, "switchedToExtCamera"] call BIS_fnc_removeAllScriptedEventHandlers;
 [missionNamespace, "playAreaChanged"] call BIS_fnc_removeAllScriptedEventHandlers;
 [missionNamespace, "objStatusChanged"] call BIS_fnc_removeAllScriptedEventHandlers;
+[missionNamespace, "playerSwimChanged"] call BIS_fnc_removeAllScriptedEventHandlers;
+[missionNamespace, "newEnemiesNearby"] call BIS_fnc_removeAllScriptedEventHandlers;
 
 // Custom Event Handler for Group Change
 cl_groupSize = -1;
@@ -67,7 +69,7 @@ cl_eventObserverID = addMissionEventHandler["EachFrame", {
 
 		_data = sv_cur_obj getVariable ["status", -1];
 		if !(_data isEqualTo cl_obj_status) then {
-			[missionNamespace, "objStatusChanged"] call BIS_fnc_callScriptedEventHandler;
+			[missionNamespace, "objStatusChanged", [_data]] call BIS_fnc_callScriptedEventHandler;
 			cl_obj_status = _data;
 		};
 
@@ -87,11 +89,11 @@ cl_eventObserverID = addMissionEventHandler["EachFrame", {
 
 // If the group size changes (either we left or some other people joined) update the perks
 [missionNamespace, "groupPlayerChanged", {
-	[] spawn client_fnc_getSquadPerks;
+	[] call client_fnc_getSquadPerks;
 }] call bis_fnc_addScriptedEventHandler;
 
 [missionNamespace, "playAreaChanged", {
-	["playArea"] spawn client_fnc_updateLine;
+	["playArea"] call client_fnc_updateLine;
 }] call bis_fnc_addScriptedEventHandler;
 
 [missionNamespace, "playerSwimChanged", {
@@ -108,8 +110,9 @@ cl_eventObserverID = addMissionEventHandler["EachFrame", {
 
 [missionNamespace, "objStatusChanged", {
 	// Update objective marker to reflect status
-		[true] spawn client_fnc_updateMarkers;
-		if ((sv_cur_obj getVariable ["status", -1]) isEqualTo 1) then {
+		private _status = param [0, -1, [0]];
+		[true] call client_fnc_updateMarkers;
+		if (_status isEqualTo 1) then {
 			// Make the UI at the top blink
 			[] spawn client_fnc_objectiveArmedGUIAnimation;
 		};
@@ -125,7 +128,7 @@ cl_eventObserverID = addMissionEventHandler["EachFrame", {
 	} else {
 		if (_vehFP) then {
 			player switchCamera "INTERNAL";
-			["Third person view for vehicles is disabled"] spawn client_fnc_displayError;
+			["Third person view for vehicles is disabled"] call client_fnc_displayError;
 		};
 	};
 }] call bis_fnc_addScriptedEventHandler;
@@ -140,20 +143,13 @@ cl_eventObserverID = addMissionEventHandler["EachFrame", {
 		/* 3 progress icon */					WWRUSH_ROOT+"pictures\support.paa",
 		/* 4 condition to show */				"(_this distance2D _target) < 2.5 && {_target getVariable ['isAlive', false]} && {(_target getRelDir _this) > 90 && (_target getRelDir _this) < 270}",
 		/* 5 condition for action */			"(_this distance2D _target) < 2.5 && {_target getVariable ['isAlive', false]} && {(_target getRelDir _this) > 90 && (_target getRelDir _this) < 270}",
-		/* 6 code executed on start */			{
-			params ["_target", "_caller"];
-			_caller action ["SwitchWeapon", _caller, _caller, 100];
-		},
+		/* 6 code executed on start */			{},
 		/* 7 code executed per tick */			{},
 		/* 8 code executed on completion */		{
 			params ["_target", "_caller"];
-			[_caller] remoteExec ["client_fnc_meleeTakedown", _target];
-			_caller selectWeapon (primaryWeapon _caller);
+			[_caller] remoteExecCall ["client_fnc_meleeTakedown", _target];
 		},
-		/* 9 code executed on interruption */	{
-			params ["_target", "_caller"];
-			_caller selectWeapon (primaryWeapon _caller);
-		},
+		/* 9 code executed on interruption */	{},
 		/* 10 arguments */						[],
 		/* 11 action duration */				0.5,
 		/* 12 priority */						500,
@@ -226,7 +222,7 @@ player addEventHandler ["Hit",
 	private _causedBy = _this select 1;
 	if (!isNull _causedBy && isPlayer _causedBy) then {
 		["Assists detected 0"] call server_fnc_log;
-		[_causedBy, _this select 2] spawn client_fnc_countAssist;
+		[_causedBy, _this select 2] call client_fnc_countAssist;
 	};
 
 	// Hp regeneration
@@ -269,11 +265,11 @@ player addEventHandler ["Killed", {
 		if ((!isNull _victim) && {!isNull _killer} && {_victim != _killer}) then {
 			if (_victim getVariable ["isAlive", false]) then {
         private _wasHS = _victim getVariable ["wasHS", false];
-				[_victim, _wasHS, _grenade, _wasMelee] remoteExec ["client_fnc_kill", _killer];
+				[_victim, _wasHS, _grenade, _wasMelee] remoteExecCall ["client_fnc_kill", _killer];
 				_victim setVariable ["isAlive", false];
 			};
 			// you have been killed by message
-			[format ["You have been killed by<br/>%1", _killer getVariable ["name", "ERROR: No Name"]]] spawn client_fnc_displayInfo;
+			[format ["You have been killed by<br/>%1", _killer getVariable ["name", "ERROR: No Name"]]] call client_fnc_displayInfo;
 
 		};
 		// Send message to all units that we are reviveable
@@ -295,18 +291,15 @@ player addEventHandler ["Killed", {
 				{(diag_tickTime - cl_spawn_tick) < _spawnSafeTime} &&
 				{(_victim distance (getMarkerPos _spawnMarker)) < _spawnSafeDistance}) exitWith {
 			// Info
-			["Your killer has been punished for spawn camping, your death will not be counted"] spawn client_fnc_displayError;
+			["Your killer has been punished for spawn camping, your death will not be counted"] call client_fnc_displayError;
 			cl_deaths = cl_deaths - 1;
 			cl_total_deaths = cl_total_deaths - 1;
 
 			// Revive us
-			[] spawn {
-				sleep 0.5;
-				[objNull, true] spawn client_fnc_revive;
-			};
+			[objNull, true] spawn client_fnc_revive;
 
 			// Kill the killer
-			["You have been killed for spawn camping"] remoteExec ["client_fnc_administrationKill",_killer];
+			["You have been killed for spawn camping"] remoteExecCall ["client_fnc_administrationKill",_killer];
 		};
 	};
 }];
@@ -390,7 +383,7 @@ player addEventHandler ["GetInMan", {
 
 	if (_vehicle isKindOf "Air") then {
 		private _fuelTime = getNumber(missionConfigFile >> "Vehicles" >> "Plane" >> "fuelTime");
-		[format["YOU HAVE %1 SECONDS WORTH OF FUEL, BE QUICK!", _fuelTime]] spawn client_fnc_displayInfo;
+		[format["YOU HAVE %1 SECONDS WORTH OF FUEL, BE QUICK!", _fuelTime]] call client_fnc_displayInfo;
 		_vehicle setVectorUp [0,0,1];
 		private _velocity = (vectorDir _vehicle) vectorMultiply 50;
 		_vehicle setVelocity _velocity;
@@ -488,7 +481,7 @@ player addEventHandler ["GetInMan", {
 				sleep (_fuelTime - 10);
 				private _timeLeft = diag_tickTime + 10;
 				while {_timeLeft > diag_tickTime && ((vehicle player) isEqualTo _vehicle)} do {
-					[format["YOU'LL RUN OUT OF FUEL IN %1 SECONDS<br /><t size='1.25'>PREPARE TO BAIL OUT!</t>", round (_timeLeft - diag_tickTime)]] spawn client_fnc_displayError;
+					[format["YOU'LL RUN OUT OF FUEL IN %1 SECONDS<br /><t size='1.25'>PREPARE TO BAIL OUT!</t>", round (_timeLeft - diag_tickTime)]] call client_fnc_displayError;
 					sleep 1;
 				};
 				if ((vehicle player) isEqualTo _vehicle) then {
@@ -509,7 +502,8 @@ player addEventHandler ["GetOutMan", {
 		private _velPlayer = (velocity player) vectorMultiply 0.1;
 		player setVelocity _velPlayer;
 		if (player getVariable ["hasChute", true]) then {
-			["PRESS <t size='1.5'>[SPACE BAR]</t> TO OPEN YOUR PARACHUTE!"] spawn client_fnc_displayInfo;
+			["PRESS <t size='1.5'>[SPACE BAR]</t> TO OPEN YOUR PARACHUTE!"] call client_fnc_displayInfo;
 		};
 	};
 }];
+true

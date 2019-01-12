@@ -27,3 +27,5 @@ private _display = uiNamespace getVariable ["rr_weaponUnlockSingle",displayNull]
 
 // Play sound
 playSound "unlock_epic";
+
+true

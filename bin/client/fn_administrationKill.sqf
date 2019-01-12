@@ -18,4 +18,6 @@ player setDamage 1;
 player setVariable ["isAlive", false];
 
 // Display the reason
-[_reason] spawn client_fnc_displayError;
+[_reason] call client_fnc_displayError;
+
+true
