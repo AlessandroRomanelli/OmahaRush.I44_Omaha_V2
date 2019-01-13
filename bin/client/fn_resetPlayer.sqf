@@ -80,11 +80,12 @@ if ((sv_gameCycle >= ((["RotationsPerMatch", 2] call BIS_fnc_getParamValue) - 1)
 	sleep 30;
 } else {
 // While loop
-	while {_time > 0} do {
+private _restartTime = diag_tickTime + _time;
+private _timeLeft = _time;
+	while {_timeLeft > 0} do {
 		sleep 1;
-		_time = _time - 1;
-
-		(_d displayCtrl 0) ctrlSetStructuredText parseText format ["<t size='2' color='#FFFFFF' shadow='2' align='center'>Next match begins in %1</t>", [_time, "MM:SS"] call bis_fnc_secondsToString];
+		_timeLeft = round (_restartTime - diag_tickTime);
+		(_d displayCtrl 0) ctrlSetStructuredText parseText format ["<t size='2' color='#FFFFFF' shadow='2' align='center'>Next match begins in %1</t>", [_timeLeft, "MM:SS"] call bis_fnc_secondsToString];
 	};
 };
 
