@@ -1,16 +1,16 @@
 scriptName "fn_waitForServer";
 /*--------------------------------------------------------------------
-	Author: Maverick (ofpectag: MAV)
+	Author: A. Roman
     File: fn_waitForServer.sqf
 
-	<Maverick Applications>
-    Written by Maverick Applications (www.maverick-apps.de)
+    Written by A. Roman
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_waitForServer.sqf"
 if (isServer && !hasInterface) exitWith {};
 
 player setVariable ["playerInitOK", true, true];
+player enableSimulation false;
 // Apparently the server isnt done selecting a map yet
 60000 cutRsc ["waitingForPlayers", "PLAIN"];
 cl_waitingThread = addMissionEventHandler["EachFrame", {
@@ -35,6 +35,8 @@ cl_waitingThread = addMissionEventHandler["EachFrame", {
 
 waitUntil{sv_gameStatus isEqualTo 2};
 removeMissionEventHandler ["EachFrame", cl_waitingThread];
+
+player enableSimulation true;
 // Cycle..
 60000 cutText ["", "PLAIN"];
 
