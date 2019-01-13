@@ -67,7 +67,7 @@ while {true} do {
 		};
 
 		if ((_x getVariable "gameSide") isEqualTo (player getVariable "gameSide")) then {
-			if !(_x getVariable "isAlive") then {
+			if !(alive _x) then {
 				_icon = "loc_hospital";
 				_dir = 0;
 			} else {
