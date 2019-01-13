@@ -24,8 +24,8 @@ private _spawnPos = _pos findEmptyPosition [0,20];
 
 [] spawn client_fnc_equipAll;
 
-private _idx = (_spawnPos nearEntities ["Man", 25]) findIf {(_x getVariable "gameSide") isEqualTo _side};
-if !(_idx isEqualTo -1) exitWith {[] spawn client_fnc_spawnPlayerAtLocation;};
+private _idx = (_spawnPos nearEntities ["Man", 25]) findIf {(_x getVariable "gameSide") != _side};
+if !(_idx isEqualTo -1) exitWith {["Enemies nearby this spawn point!"] spawn client_fnc_displayError};
 
 // Move player to spawn location
 player setPos _spawnPos;
