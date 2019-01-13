@@ -371,20 +371,12 @@ disableSerialization;
 	20,21,22,25,23,24,26,27,28,29
 ];
 
-// TODO: Move to PFH
-[] spawn {
-	[] call client_fnc_loadSpawnpoints;
-	[false] call client_fnc_spawnMenu_loadClasses;
-	private _display = findDisplay 5000;
-	private _spawnCtrl = _display displayCtrl 8;
-	waitUntil {(lbSize _spawnCtrl) > 0};
-	_spawnCtrl lbSetCurSel 0;
-	while {dialog} do {
-		sleep 0.2;
-		[] call client_fnc_loadSpawnpoints;
-		[true] call client_fnc_spawnMenu_loadClasses;
-	};
-};
+[] call client_fnc_loadSpawnpoints;
+[false] call client_fnc_spawnMenu_loadClasses;
+private _display = findDisplay 5000;
+private _spawnCtrl = _display displayCtrl 8;
+waitUntil {(lbSize _spawnCtrl) > 0};
+_spawnCtrl lbSetCurSel 0;
 
 private _spawnCtrl = _menuDisplay displayCtrl 8;
 _spawnCtrl ctrlAddEventHandler ["MouseButtonClick", {

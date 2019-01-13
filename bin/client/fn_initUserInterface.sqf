@@ -4,7 +4,7 @@ private _event = addMissionEventHandler["EachFrame", {
   (_d displayCtrl 1) ctrlSetStructuredText parseText format ["<t size='1' color='#FFFFFF' shadow='2' font='PuristaMedium' align='left'>%1</t>", sv_tickets];
   (_d displayCtrl 4) ctrlSetStructuredText parseText format ["<t size='1' color='#FFFFFF' shadow='2' font='PuristaMedium' align='right'>%1</t>", [sv_matchTime, "MM:SS"] call bis_fnc_secondsToString];
   (_d displayCtrl 2) progressSetPosition (sv_tickets / sv_tickets_total);
-  
+
   if (visibleMap) exitWith {};
   private _side = player getVariable ["gameSide", "defenders"];
   private _HQPos = getArray(missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Spawns" >> _side >> "HQSpawn" >> "positionATL");
@@ -78,6 +78,9 @@ private _event = addMissionEventHandler["EachFrame", {
       private _name = _unit getVariable ["name", "ERROR: No Name"];
       [_pos, _name] call _makeCurrentSpawn;
     };
+
+    [] call client_fnc_loadSpawnpoints;
+    [true] call client_fnc_spawnMenu_loadClasses;
   };
 
   // Objectives
