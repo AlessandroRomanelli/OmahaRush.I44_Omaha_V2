@@ -82,7 +82,7 @@ if ((sv_gameCycle >= ((["RotationsPerMatch", 2] call BIS_fnc_getParamValue) - 1)
 // While loop
 private _restartTime = diag_tickTime + _time;
 private _timeLeft = _time;
-	while {_timeLeft > 0} do {
+	while {_timeLeft > 0 && (sv_gameStatus in [3,4])} do {
 		sleep 1;
 		_timeLeft = round (_restartTime - diag_tickTime);
 		(_d displayCtrl 0) ctrlSetStructuredText parseText format ["<t size='2' color='#FFFFFF' shadow='2' align='center'>Next match begins in %1</t>", [_timeLeft, "MM:SS"] call bis_fnc_secondsToString];
@@ -115,7 +115,7 @@ if (sv_gameCycle % 2 == 0) then {
 
 cl_statisticsLoaded = false;
 [] call client_fnc_loadStatistics;
-waitUntil {cl_statisticsLoaded};
+waitUntil {cl_statisticsLoaded && {sv_gameStatus isEqualTo 2}};
 
 // Reset everything
 [] spawn client_fnc_resetVariables;
