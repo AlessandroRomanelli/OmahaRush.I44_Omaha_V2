@@ -112,7 +112,7 @@ cl_spawn_succ = {
 	};
 }; */
 
-[] call client_fnc_saveStatistics;
+[] spawn client_fnc_saveStatistics;
 
 private _spawnDisplay = _d displayCtrl 8;
 private _data = _spawnDisplay lbData (lbCurSel _spawnDisplay);
@@ -148,12 +148,12 @@ switch (_value) do
 		if (_data == "beacon") then {
 			// Spawn at object
 			if (!isNull _beacon) then {
-				[_beacon, false] call client_fnc_spawnPlayerAtObject;
-
 				// Give points
 				if (_unit != player) then {
-					[] remoteExec ["client_fnc_beaconSpawn", _unit];
+					[] remoteExecCall ["client_fnc_beaconSpawn", _unit];
 				};
+				[_beacon, false] call client_fnc_spawnPlayerAtObject;
+
 			} else {
 				["The beacon is unavailable"] call client_fnc_displayError;
 			};

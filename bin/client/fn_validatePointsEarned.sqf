@@ -29,7 +29,7 @@ if (cl_pointsBelowMinimumPlayers > 15000) then {
 		cl_exp
 		]] remoteExec ["server_fnc_db_setPlayer", 2];
 	} else { */
-	[] call client_fnc_saveStatistics;
+	[] spawn client_fnc_saveStatistics;
 	/* }; */
 };
 

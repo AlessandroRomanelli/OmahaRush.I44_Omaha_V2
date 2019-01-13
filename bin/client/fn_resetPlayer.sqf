@@ -96,7 +96,7 @@ player switchCamera "INTERNAL";
 // Disable global voice
 0 enableChannel [false, false];
 
-[] call client_fnc_saveStatistics;
+[] spawn client_fnc_saveStatistics;
 
 if (sv_gameCycle % 2 == 0) then {
 	if (playerSide == WEST) then {

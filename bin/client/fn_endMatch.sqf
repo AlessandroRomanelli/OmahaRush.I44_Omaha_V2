@@ -52,7 +52,7 @@ for "_i" from 1 to 4 do {
 };
 
 // Save stats
-[] call client_fnc_saveStatistics;
+[] spawn client_fnc_saveStatistics;
 
 // No damage
 player allowDamage false;
