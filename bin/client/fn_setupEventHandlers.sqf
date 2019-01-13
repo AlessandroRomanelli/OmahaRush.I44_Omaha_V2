@@ -79,7 +79,7 @@ cl_eventObserverID = addMissionEventHandler["EachFrame", {
 			cl_playerSwimming = _data;
 		};
 
-		private _enemiesNearby = ((getPosATL player) nearEntities 5) select {	_x getVariable ["isAlive", false] && !((_x getVariable ["gameSide", "attackers"]) isEqualTo (player getVariable ["gameSide", "defenders"]))};
+		private _enemiesNearby = ((getPosATL player) nearEntities 5) select {alive _x && {(_x getVariable ["gameSide", ""]) != (player getVariable ["gameSide", ""])}};
 		_data =  count _enemiesNearby;
 		if !(_data isEqualTo cl_enemiesNearby) then {
 			[missionNamespace, "newEnemiesNearby", [_enemiesNearby]] call BIS_fnc_callScriptedEventHandler;
