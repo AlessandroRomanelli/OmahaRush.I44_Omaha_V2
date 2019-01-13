@@ -1462,7 +1462,7 @@ class rr_reloadingFlares {
 				sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 1.0)";
 				shadow = 2;
 				class Attributes {
-					size = "4"
+					size = "4";
 					font = "PuristaMedium";
 					color = "#FFFFFF";
 					align = "center";
@@ -1481,7 +1481,7 @@ class rr_reloadingFlares {
 				sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 1.8)";
 				shadow = 2;
 				class Attributes {
-					size = "1"
+					size = "1";
 					font = "PuristaMedium";
 					color = "#FFFFFF";
 					align = "left";
@@ -1499,7 +1499,7 @@ class rr_reloadingFlares {
 				sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 1.8)";
 				shadow = 2;
 				class Attributes {
-					size = "1"
+					size = "1";
 					font = "PuristaMedium";
 					color = "#FFFFFF";
 					align = "right";
