@@ -24,6 +24,8 @@ if (_matchStart) then {
 	};
 };
 
+private _objective = sv_cur_obj;
+
 // Initial delay
 private _delay = 0;
 // Current match time
@@ -39,7 +41,7 @@ while {_time >= 0 && sv_gameStatus == 2} do {
 		publicVariable "sv_fallBack_timeLeft";
 	};
 	// Get objective status on the server (super partes)
-	private _status = sv_cur_obj getVariable ["status", -1];
+	private _status = _objective getVariable ["status", -1];
 	// If the bomb is armed or being armed
 	if (_status == 0 || _status == 1) then {
 		// Increase the delay by one second
@@ -53,12 +55,12 @@ while {_time >= 0 && sv_gameStatus == 2} do {
 	};
 	// Refresh status of objective for all clinets
 	if (((floor diag_tickTime) % _refreshRate) == 0) then {
-		sv_cur_obj setVariable ["status", _status, true];
+		_objective setVariable ["status", _status, true];
 	};
 	// Current time is given by the intended endMatch time, summed with the delay, minus the serverTime
 	_time = sv_matchEndTime - (ceil diag_tickTime) + _delay;
 	// Broadcast the matchTime only if NOT done
-	if ((sv_cur_obj getVariable ["status", -1] != 3) && _time >= 0) then {
+	if ((_status != 3) && _time >= 0) then {
 		sv_matchTime = _time;
 		publicVariable "sv_matchTime";
 	};
