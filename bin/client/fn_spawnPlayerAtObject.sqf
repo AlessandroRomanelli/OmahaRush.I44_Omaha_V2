@@ -57,7 +57,7 @@ if (!_inVehicle) then { // Normal on-unit-spawn
 	// Make player look into the direction of the objective
 	player setDir (getDir _unit);
 } else { // In-vehicle-spawn
-
+	[_unit] call client_fnc_moveUnitIntoVehicle;
 };
 
 // Give units points
