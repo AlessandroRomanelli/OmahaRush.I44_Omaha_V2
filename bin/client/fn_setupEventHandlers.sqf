@@ -141,8 +141,8 @@ cl_eventObserverID = addMissionEventHandler["EachFrame", {
 		/* 1 action title */					"Melee Kill",
 		/* 2 idle icon */						WWRUSH_ROOT+"pictures\support.paa",
 		/* 3 progress icon */					WWRUSH_ROOT+"pictures\support.paa",
-		/* 4 condition to show */				"(_this distance2D _target) < 2.5 && {_target getVariable ['isAlive', false]} && {(_target getRelDir _this) > 90 && (_target getRelDir _this) < 270}",
-		/* 5 condition for action */			"(_this distance2D _target) < 2.5 && {_target getVariable ['isAlive', false]} && {(_target getRelDir _this) > 90 && (_target getRelDir _this) < 270}",
+		/* 4 condition to show */				"(_this distance2D _target) < 2.5 && {alive _target} && {(_target getRelDir _this) > 90 && (_target getRelDir _this) < 270}",
+		/* 5 condition for action */			"(_this distance2D _target) < 2.5 && {alive _target} && {(_target getRelDir _this) > 90 && (_target getRelDir _this) < 270}",
 		/* 6 code executed on start */			{},
 		/* 7 code executed per tick */			{},
 		/* 8 code executed on completion */		{
