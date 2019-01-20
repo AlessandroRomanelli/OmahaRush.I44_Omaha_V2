@@ -85,7 +85,6 @@ class Maverick_Functions_Client {
 		class vehicleDisabled {};
 		class displayKeyBindingHint {};
 		class restrictedArea {};
-		class blockSpawn {};
 		class validatePointsEarned {};
 		class updateSpawnMenuCam {};
 		class revealFriendlyUnits {};

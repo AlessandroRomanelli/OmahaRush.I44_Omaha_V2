@@ -278,6 +278,35 @@ class rr_spawnmenu {
     	h = 0.044 * safezoneH;
     	colorText[] = {0,0,0,1};
     	colorBackground[] = {0.96,0.65,0.12,0.8};
+      colorDisabled[] = {0.52,0.54,0.56,1};
+      colorBackgroundDisabled[] = {0.12,0.14,0.16,0.8};
+    };
+    class AbortButton: RscButtonMenu
+    {
+      idc = 303;
+      color[] = {1,1,1,1};
+      font = "PuristaBold";
+      size = "1.00 *		 (pixelH * pixelGridNoUIScale * 2.5)";
+
+      text = "QUIT"; //--- ToDo: Localize;
+      x = 0.0064056 * safezoneW + safezoneX;
+      y = 0.0109959 * safezoneH + safezoneY;
+      w = 0.154556 * safezoneW;
+      h = 0.044 * safezoneH;
+      colorText[] = {1,1,1,1};
+      colorBackground[] = {0.12,0.14,0.16,0.8};
+    };
+    class timeLeft: RscStructuredText
+    {
+      idc = 304;
+      font = "PuristaBold";
+      size = "1.00 *		 (pixelH * pixelGridNoUIScale * 2.5)";
+      x = 0.918674 * safezoneW + safezoneX;
+      y = 0.695602 * safezoneH + safezoneY;
+      w = 0.0749206 * safezoneW;
+      h = 0.0376157 * safezoneH;
+      colorText[] = {1,1,1,1};
+      colorBackground[] = {0,0,0,0};
     };
     class ClassHeader: RscText
     {
@@ -427,21 +456,6 @@ class rr_spawnmenu {
       colorSelect2[] = {1, 1, 1, 1};
       colorSelectBackground[] = {0.96,0.65,0.12,0.8};
       colorSelectBackground2[] = {0.96,0.65,0.12,0.8};
-    };
-    class AbortButton: RscButtonMenu
-    {
-    	idc = 303;
-    	color[] = {1,1,1,1};
-    	font = "PuristaBold";
-    	size = "1.00 *		 (pixelH * pixelGridNoUIScale * 2.5)";
-
-    	text = "QUIT"; //--- ToDo: Localize;
-    	x = 0.0064056 * safezoneW + safezoneX;
-    	y = 0.0109959 * safezoneH + safezoneY;
-    	w = 0.154556 * safezoneW;
-    	h = 0.044 * safezoneH;
-    	colorText[] = {1,1,1,1};
-    	colorBackground[] = {0.12,0.14,0.16,0.8};
     };
   };
 };
