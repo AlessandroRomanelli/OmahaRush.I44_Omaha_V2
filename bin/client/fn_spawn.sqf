@@ -297,6 +297,12 @@ updateObjectiveProgress = {
 	[] call client_fnc_spawnMenu_getClassAndSpawn
 }];
 
+// Enable abort button
+(_menuDisplay displayCtrl 303) ctrlAddEventHandler ["ButtonDown",{
+	[] call client_fnc_saveStatistics;
+	endMission "MatchLeft";
+}];
+
 // Add eventhandlers to the dialog and hide the weapon selection
 cl_spawnmenu_currentWeaponSelectionState = 0; // Nothing open
 disableSerialization;
