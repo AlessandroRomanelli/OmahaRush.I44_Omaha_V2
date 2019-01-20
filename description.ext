@@ -116,7 +116,7 @@ class CfgDebriefing
     class MatchLeft
     {
         title = "MATCH LEFT";
-        subtitle = "YOU HAVE LEFT AN UNGOING BATTLE";
+        subtitle = "YOU HAVE LEFT AN ONGOING BATTLE";
         description = "Your progress has been saved";
         pictureBackground = "";
         picture = "";

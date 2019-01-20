@@ -18,7 +18,7 @@ if (!alive player) exitWith {};
 sv_cur_obj setVariable ["status", 2, true];
 
 // Send message to everyone
-["THE EXPLOSIVES HAVE BEEN DEFUSED"] remoteExec ["client_fnc_displayObjectiveMessage"];
+["THE EXPLOSIVES HAVE BEEN DEFUSED"] remoteExecCall ["client_fnc_displayObjectiveMessage", -2];
 
 // Give points
 ["<t size='1.3' color='#FFFFFF'>EXPLOSIVES DISARMED</t><br/><t size='1.0' color='#FFFFFF'>Objective Defender</t>", 425] call client_fnc_pointfeed_add;

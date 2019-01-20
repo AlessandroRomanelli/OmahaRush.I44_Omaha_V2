@@ -42,7 +42,7 @@ while {true} do {
 	// Get random map from config
 	if (sv_gameCycle % 2 == 0) then {
 		sv_mapSize = [] call server_fnc_decideMapSize;
-		publicVariable "sv_mapSize";
+		[["sv_mapSize"]] call server_fnc_updateVars;
 	};
 	/* ["Map has been selected"] spawn server_fnc_log; */
 
