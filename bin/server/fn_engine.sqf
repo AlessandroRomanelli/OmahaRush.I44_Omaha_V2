@@ -9,19 +9,19 @@ scriptName "fn_engine";
 --------------------------------------------------------------------*/
 #define __filename "fn_engine.sqf"
 
-["Server engine has been started"] spawn server_fnc_log;
+["Server engine has been started"] call server_fnc_log;
 
 private _fallBackTime = ["InitialFallBack", 60] call BIS_fnc_getParamValue;
 
 // Server is now ready
 sv_serverReady = true;
-[["sv_serverReady"]] spawn server_fnc_updateVars;
+[["sv_serverReady"]] call server_fnc_updateVars;
 
 // Persistent weather
 private _mapWeather = ["MapWeather", 0] call BIS_fnc_getParamValue;
 if (_mapWeather == 0) then {
-	[] spawn server_fnc_loadPersistentWeather;
-	["Persistent weather loaded"] spawn server_fnc_log;
+	[] call server_fnc_loadPersistentWeather;
+	["Persistent weather loaded"] call server_fnc_log;
 };
 
 // Script monitoring
@@ -37,35 +37,35 @@ while {true} do {
 	if (!isNil "sv_stageVehicleManager_thread") then {terminate sv_stageVehicleManager_thread};
 	if (!isNil "sv_matchTimer_thread") then {terminate sv_matchTimer_thread};
 	if (!isNil "sv_autoTeamBalancer_thread") then {terminate sv_autoTeamBalancer_thread};
-	["Old threads have been killed"] spawn server_fnc_log;
+	["Old threads have been killed"] call server_fnc_log;
 
 	// Get random map from config
 	if (sv_gameCycle % 2 == 0) then {
 		sv_mapSize = [] call server_fnc_decideMapSize;
-		publicVariable "sv_mapSize";
+		[["sv_mapSize"]] call server_fnc_updateVars;
 	};
 	/* ["Map has been selected"] spawn server_fnc_log; */
 
 	// Delete all objects off the map
 	[] call server_fnc_cleanUp;
-	["Map has been cleaned"] spawn server_fnc_log;
+	["Map has been cleaned"] call server_fnc_log;
 
 	// Load weather
 	if (_mapWeather == 1) then {
 		[] call server_fnc_loadWeather;
-		["Weather has been loaded"] spawn server_fnc_log;
+		["Weather has been loaded"] call server_fnc_log;
 	};
 
 	// Spawn in MCOMs
 	[] call server_fnc_spawnObjectives;
-	["Objectives have been spawned"] spawn server_fnc_log;
+	["Objectives have been spawned"] call server_fnc_log;
 
 	//[] call server_fnc_importantObjects;
 	//["Important objects have been restored"] spawn server_fnc_log;
 
 	// Refresh tickets
 	[] call server_fnc_refreshTickets;
-	["Tickets have been reset"] spawn server_fnc_log;
+	["Tickets have been reset"] call server_fnc_log;
  	/* debug_players = 0;
 	debug_ready_players = 0;
 	waitUntil{debug_players >= 4};
@@ -78,21 +78,21 @@ while {true} do {
 
 	// Make a new matchtimer with matchStart param true so it gets broadcasted to all clients
 	sv_matchTimer_thread = [true, _fallBackTime] spawn server_fnc_matchTimer;
-	["Matchtimer has been started"] spawn server_fnc_log;
+	["Matchtimer has been started"] call server_fnc_log;
 
 	// Map has been selected, broadcast
 	sv_gameStatus = 2; // Game may start now
-	[["sv_gameStatus"]] spawn server_fnc_updateVars;
+	[["sv_gameStatus"]] call server_fnc_updateVars;
 
 	// Start persistent vehicle manager
 	if (isClass(missionConfigFile >> "MapSettings" >> sv_mapSize >> "PersistentVehicles")) then {
 		sv_persistentVehicleManager_thread = [] spawn server_fnc_persistentVehicleManager;
-		["Persistent vehicles manager has been started"] spawn server_fnc_log;
+		["Persistent vehicles manager has been started"] call server_fnc_log;
 	};
 
 	// Start stage vehicle manager (vehicles that spawn at different locations)
 	sv_stageVehicleManager_thread = [] spawn server_fnc_stageVehicleManager;
-	["Stage vehicles manager has been started"] spawn server_fnc_log;
+	["Stage vehicles manager has been started"] call server_fnc_log;
 
 	// Start autobalancer (will auto close when the match ends)
 	if ((["AutoTeamBalancer", 1] call BIS_fnc_getParamValue) == 1) then {
@@ -101,17 +101,17 @@ while {true} do {
 
 
 	waitUntil {sv_gameStatus == 4};
-	["Restarting engine..."] spawn server_fnc_log;
+	["Restarting engine..."] call server_fnc_log;
 
 	// Count up cycles
 	sv_gameCycle = sv_gameCycle + 1;
-	[["sv_gameCycle"]] spawn server_fnc_updateVars;
-	[format["Cycle %1 has been finished", sv_gameCycle]] spawn server_fnc_log;
+	[["sv_gameCycle"]] call server_fnc_updateVars;
+	[format["Cycle %1 has been finished", sv_gameCycle]] call server_fnc_log;
 
 	// If we have OnMatchEndRestart enabled, restart the mission rather than just keep running
 	private _maxMatchTime = ["MaxMatchDuration", 10800] call BIS_fnc_getParamValue;
 	if (((sv_gameCycle >= (["RotationsPerMatch", 2] call BIS_fnc_getParamValue)) || ((_maxMatchTime != -1) && (_maxMatchTime <= diag_tickTime))) && isDedicated) then {
-		["Attempting to restart mission...."] spawn server_fnc_log;
+		["Attempting to restart mission...."] call server_fnc_log;
 		sleep 1;
 		with uiNamespace do {
 			private _missions = getArray(missionConfigFile >> "GeneralConfig" >> "mapsPool");

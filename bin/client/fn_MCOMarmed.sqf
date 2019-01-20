@@ -13,7 +13,7 @@ scriptName "fn_MCOMarmed";
 private _planter = param[0,objNull,[objNull]];
 
 // Display warning
-["EXPLOSIVES HAVE BEEN SET"] spawn client_fnc_displayObjectiveMessage;
+["EXPLOSIVES HAVE BEEN SET"] call client_fnc_displayObjectiveMessage;
 
 
 // Info
@@ -27,9 +27,9 @@ if (isServer) then {
 	};
 
 	sv_mcom_thread = [] spawn {
-		// Countdown of 60 seconds
 		private _time = 60;
 		private _soundTime = 60;
+		// Countdown of 60 seconds
 		private _status = sv_cur_obj getVariable ["status", -1];
 		private _beep = WWRUSH_ROOT + "sounds\beep.ogg";
 		// If the objective is armed and there's still time on the clock
@@ -88,13 +88,13 @@ if (isServer) then {
 		private _killZone = sv_cur_obj nearEntities ["Man", 25];
 		{
 			if ((_x distance sv_cur_obj < 10) || {_x distance sv_cur_obj < 25 && {([sv_cur_obj, "VIEW"] checkVisibility [eyePos sv_cur_obj, eyePos _x]) > 0.1}}) then {
-				["You were killed by the blast of the explosion"] remoteExec ["client_fnc_administrationKill", _x];
+				["You were killed by the blast of the explosion"] remoteExecCall ["client_fnc_administrationKill", _x];
 			};
 		} forEach _killZone;
 
 		if (sv_cur_obj == sv_stage4_obj) then {
 			// Trigger win
-			[] spawn server_fnc_endRound;
+			[] call server_fnc_endRound;
 		} else {
 			// Move onto next objective
 			if (sv_cur_obj == sv_stage1_obj) then {
@@ -118,7 +118,7 @@ if (isServer) then {
 			[] call server_fnc_refreshTickets;
 
 			// Update everyones variable
-			[["sv_cur_obj"]] spawn server_fnc_updateVars;
+			[["sv_cur_obj"]] call server_fnc_updateVars;
 		};
 	};
 };
@@ -133,8 +133,8 @@ if (_planter == player) then {
 	if (_objective == sv_cur_obj) exitWith {};
 
 	// We made it work yay
-	["<t size='1.3' color='#FFFFFF'>OBJECTIVE DESTROYED</t>", 400] spawn client_fnc_pointfeed_add;
-	[400] spawn client_fnc_addPoints;
+	["<t size='1.3' color='#FFFFFF'>OBJECTIVE DESTROYED</t>", 400] call client_fnc_pointfeed_add;
+	[400] call client_fnc_addPoints;
 };
 
 // PROPER FORMATTING

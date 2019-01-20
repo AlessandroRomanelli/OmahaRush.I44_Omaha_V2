@@ -44,3 +44,5 @@ if (_existingEntry) exitWith {};
 
 // Pushback!
 cl_assistsInfo pushBack [_causedBy, _inflictedDamage];
+
+true

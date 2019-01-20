@@ -16,7 +16,8 @@ disableSerialization;
 50000 cutRsc ["rr_objectivemessage","PLAIN"];
 
 // Get display
-_d = uiNamespace getVariable ["rr_objectivemessage",displayNull];
+private _d = uiNamespace getVariable ["rr_objectivemessage",displayNull];
 
 // Display text
 (_d displayCtrl 0) ctrlSetStructuredText parseText ("<t size='4' color='#FFFFFF' shadow='2' align='center'>" + (param[0,"",[""]]) + "</t>");
+true

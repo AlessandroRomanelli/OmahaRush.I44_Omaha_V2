@@ -62,3 +62,5 @@ if (true) then {
 
 	cl_equipConfigurations = _validatedArray;
 };
+
+true

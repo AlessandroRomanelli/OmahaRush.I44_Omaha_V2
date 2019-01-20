@@ -21,3 +21,5 @@ if (_text isEqualTo "") exitWith {};
 private _display = uiNamespace getVariable ["errorText", displayNull];
 
 (_display displayCtrl 0) ctrlSetStructuredText parseText format ["<t size='1.5' align='center' shadow='2' font='PuristaMedium' color='#ff0000'>%1</t>", _text];
+
+true

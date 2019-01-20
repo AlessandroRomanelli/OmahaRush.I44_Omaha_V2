@@ -14,7 +14,7 @@ if (sv_gameStatus == 3) exitWith {};
 
 // Update status var
 sv_gameStatus = 3;
-[["sv_gameStatus"]] spawn server_fnc_updateVars;
+[["sv_gameStatus"]] call server_fnc_updateVars;
 
 // Disable team balancer
 if (!isNil "sv_autoTeamBalancer_thread") then {terminate sv_autoTeamBalancer_thread};
@@ -39,4 +39,4 @@ private _time = ["LobbyTime", 60] call BIS_fnc_getParamValue;
 sleep (_time - 3);
 
 sv_gameStatus = 4;
-[["sv_gameStatus"]] spawn server_fnc_updateVars;
+[["sv_gameStatus"]] call server_fnc_updateVars;

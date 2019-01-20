@@ -82,5 +82,7 @@ private _primaryWeapons = [];
 	profileNamespace setVariable [format["rr_prefPWeaponIdx_%1_%2", cl_class, cl_faction], _idx];
 	profileNamespace setVariable [format["rr_prefPWeapon_%1_%2", cl_class, cl_faction], (cl_equipClassNames select 0)];
 	// Populate the structured texts
-	[] spawn client_fnc_populateSpawnMenu;
+	[] call client_fnc_populateSpawnMenu;
 }];
+
+true

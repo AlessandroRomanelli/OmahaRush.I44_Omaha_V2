@@ -1,13 +1,13 @@
-scriptName "fn_spawnPlayerAtHQ";
+scriptName "fn_spawnPlayerAtLocation";
 /*--------------------------------------------------------------------
 	Author: Maverick (ofpectag: MAV)
-    File: fn_spawnPlayerAtHQ.sqf
+    File: fn_spawnPlayerAtLocation.sqf
 
 	<Maverick Applications>
     Written by Maverick Applications (www.maverick-apps.de)
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
-#define __filename "fn_spawnPlayerAtHQ.sqf"
+#define __filename "fn_spawnPlayerAtLocation.sqf"
 if (isServer && !hasInterface) exitWith {};
 
 // Close spawn dialog
@@ -22,10 +22,10 @@ private _pos = getArray(_spawnConfig >> "positionATL");
 
 private _spawnPos = _pos findEmptyPosition [0,20];
 
-[] spawn client_fnc_equipAll;
-
 private _idx = (_spawnPos nearEntities ["Man", 25]) findIf {(_x getVariable "gameSide") != _side};
-if !(_idx isEqualTo -1) exitWith {["Enemies nearby this spawn point!"] spawn client_fnc_displayError};
+if !(_idx isEqualTo -1) exitWith {["Enemies nearby this spawn point!"] call client_fnc_displayError};
+
+[] call client_fnc_equipAll;
 
 // Move player to spawn location
 player setPos _spawnPos;
@@ -86,10 +86,10 @@ camDestroy cl_spawnmenu_cam;
 player switchCamera "INTERNAL";
 
 // Launch GUI
-cl_gui_thread = [] spawn client_fnc_startIngameGUI;
+[] call client_fnc_startIngameGUI;
 
 // General success script
-[] spawn cl_spawn_succ;
+[] call cl_spawn_succ;
 
 // Display help hint
 if (player getVariable "gameSide" == "defenders") then {
@@ -102,8 +102,6 @@ if (player getVariable "gameSide" == "defenders") then {
 cl_spawn_tick = diag_tickTime;
 
 // Display instructions hint for currently selected perk
-[] spawn {
-	sleep 10.3;
-	private _instructions = [cl_classPerk] call client_fnc_getPerkInstructions;
-	[_instructions select 0, _instructions select 1] spawn client_fnc_hint;
-};
+sleep 10.3;
+private _instructions = [cl_classPerk] call client_fnc_getPerkInstructions;
+[_instructions select 0, _instructions select 1] call client_fnc_hint;

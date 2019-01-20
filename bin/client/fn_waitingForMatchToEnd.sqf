@@ -24,4 +24,4 @@ waitUntil {!(sv_gameStatus in [3,4])};
 ((uiNamespace getVariable ["rr_black",displayNull]) displayCtrl 0) ctrlCommit 0.2;
 
 // spawn?
-[] spawn client_fnc_spawn;
+[] call client_fnc_spawn;

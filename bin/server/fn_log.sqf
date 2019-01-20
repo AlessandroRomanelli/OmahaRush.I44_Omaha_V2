@@ -12,3 +12,5 @@ scriptName "fn_log";
 if (getNumber(missionConfigFile >> "GeneralConfig" >> "debug") == 1) then {
 	diag_log format["Rush-Redux-Server-Log: %1",param[0,"",[""]]];
 };
+
+true

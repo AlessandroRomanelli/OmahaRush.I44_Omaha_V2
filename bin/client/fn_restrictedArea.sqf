@@ -22,7 +22,7 @@ waitUntil {((diag_tickTime - (player getVariable "entryTime")) > _outOfBoundsTim
 if ((diag_tickTime - (player getVariable "entryTime")) > _outOfBoundsTimeout && (player getVariable ["isAlive", false])) then {
 	player setDamage 1;
 	player setVariable ["isAlive", false];
-	["You have been killed for remaining in a restricted area"] spawn client_fnc_displayError;
+	["You have been killed for remaining in a restricted area"] call client_fnc_displayError;
 };
 
 // Delete myself ay!

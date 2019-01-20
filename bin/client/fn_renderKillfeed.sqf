@@ -12,7 +12,6 @@ if (isServer && !hasInterface) exitWith {};
 
 if (isNil "cl_killfeed") exitWith {};
 
-
 private _fnc_getColorForObj = {
 	private _obj = param [0, objNull, [objNull]];
 	private _color = "";
@@ -62,3 +61,4 @@ private _out = "";
 } forEach cl_killfeed;
 
 (uiNamespace getVariable ["rr_objective_gui", displayNull] displayCtrl 10) ctrlSetStructuredText (parseText _out);
+true

@@ -57,3 +57,5 @@ cl_pointfeed_removalThread = [] spawn {
 	((uiNamespace getVariable ["rr_pointfeed",displayNull]) displayCtrl 0) ctrlSetStructuredText parseText "";
 	((uiNamespace getVariable ["rr_pointfeed",displayNull]) displayCtrl 1) ctrlSetStructuredText parseText "";
 };
+
+true

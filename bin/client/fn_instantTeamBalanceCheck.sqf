@@ -33,3 +33,4 @@ private _ending = ["teamFullWEST", "teamFullindependent"] select (playerSide isE
 if ((playerSide isEqualTo _sideWithMoreUnits) && (_diff < 0 || _diff > _maxDiff)) then {
 	endMission _ending;
 };
+true

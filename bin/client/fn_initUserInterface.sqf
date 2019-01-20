@@ -1,4 +1,10 @@
 private _event = addMissionEventHandler["EachFrame", {
+
+  private _d = uiNamespace getVariable ["rr_objective_gui", displayNull];
+  (_d displayCtrl 1) ctrlSetStructuredText parseText format ["<t size='1' color='#FFFFFF' shadow='2' font='PuristaMedium' align='left'>%1</t>", sv_tickets];
+  (_d displayCtrl 4) ctrlSetStructuredText parseText format ["<t size='1' color='#FFFFFF' shadow='2' font='PuristaMedium' align='right'>%1</t>", [sv_matchTime, "MM:SS"] call bis_fnc_secondsToString];
+  (_d displayCtrl 2) progressSetPosition (sv_tickets / sv_tickets_total);
+
   if (visibleMap) exitWith {};
   private _side = player getVariable ["gameSide", "defenders"];
   private _HQPos = getArray(missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Spawns" >> _side >> "HQSpawn" >> "positionATL");
@@ -72,6 +78,9 @@ private _event = addMissionEventHandler["EachFrame", {
       private _name = _unit getVariable ["name", "ERROR: No Name"];
       [_pos, _name] call _makeCurrentSpawn;
     };
+
+    [] call client_fnc_loadSpawnpoints;
+    [true] call client_fnc_spawnMenu_loadClasses;
   };
 
   // Objectives
@@ -118,11 +127,6 @@ private _event = addMissionEventHandler["EachFrame", {
       drawIcon3D [WWRUSH_ROOT+"pictures\objective_attacker.paa",[1,1,1,_alpha],_pos,1.5,1.5,0,format["Attack (%1m)", round(_origin distance2D sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
     };
   };
-
-  private _d = uiNamespace getVariable ["rr_objective_gui", displayNull];
-  (_d displayCtrl 1) ctrlSetStructuredText parseText format ["<t size='1' color='#FFFFFF' shadow='2' font='PuristaMedium' align='left'>%1</t>", sv_tickets];
-  (_d displayCtrl 4) ctrlSetStructuredText parseText format ["<t size='1' color='#FFFFFF' shadow='2' font='PuristaMedium' align='right'>%1</t>", [sv_matchTime, "MM:SS"] call bis_fnc_secondsToString];
-  (_d displayCtrl 2) progressSetPosition (sv_tickets / sv_tickets_total);
 
 
   private _ammoBoxes = (_posPlayer) nearObjects ["LIB_AmmoCrates_NoInteractive_Large", 7];

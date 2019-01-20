@@ -19,7 +19,7 @@ if (isNull _unit || _unit == player) then {
 	[format["%1 HAS REPLENISHED YOUR AMMUNITION", _unit getVariable ["name", "ERROR: No Name"]]] spawn client_fnc_displayInfo;
 };
 
-playSound3D [WWRUSH_ROOT+"\sounds\reload.ogg", player];
+playSound3D [WWRUSH_ROOT+"sounds\reload.ogg", player];
 
 private _rearmMagazines = {
 	private _magName = param[0, "", [""]];
@@ -133,3 +133,5 @@ if ("frag" in cl_squadPerks) then {
 		player addItem _handGrenade;
 	};
 };
+
+true

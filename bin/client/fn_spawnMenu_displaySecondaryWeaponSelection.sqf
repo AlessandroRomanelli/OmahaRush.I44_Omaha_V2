@@ -68,5 +68,5 @@ private _secondaryWeapons = cl_equipConfigurations select {(getText(missionConfi
 	cl_equipClassnames set [1, (_d displayCtrl 3) lbData (lbCurSel (_d displayCtrl 3))];
 
 	// Populate the structured texts
-	[] spawn client_fnc_populateSpawnMenu;
+	[] call client_fnc_populateSpawnMenu;
 }];

@@ -28,3 +28,5 @@ if (_damage == -0.03122) exitWith {
 	26 cutRsc ["hm_headshot","PLAIN"];
 	playSound "head_shot";
 };
+
+true

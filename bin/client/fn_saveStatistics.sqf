@@ -53,3 +53,5 @@ with missionNamespace do {
 	diag_log format["New records entry is: %1", _records];
 	saveProfileNamespace;
 };
+
+true

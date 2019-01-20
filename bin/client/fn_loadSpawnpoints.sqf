@@ -31,17 +31,17 @@ private _configs = configProperties [missionConfigFile >> "MapSettings" >> sv_ma
 	_spawnCtrl lbSetData [(lbSize _spawnCtrl) - 1, configName _x];
 } forEach _configs;
 
-/* // Load HQ spawnpoint
-if (_playerIsDefending) then {
-	_spawnCtrl lbAdd "Defender HQ";
-} else {
-	_spawnCtrl lbAdd "Attacker HQ";
+private _getIconPlayer = {
+  private _unit = param [0, objNull, [objNull]];
+  private _class = _unit getVariable ["class", ""];
+  if (_class isEqualTo "") exitWith {"\a3\ui_f\data\Map\VehicleIcons\iconMan_ca.paa"};
+  if (_unit isEqualTo (leader group _unit)) exitWith {"\a3\ui_f\data\Map\VehicleIcons\iconManCommander_ca.paa"};
+  if (_class isEqualTo "medic") exitWith {"\a3\ui_f\data\Map\VehicleIcons\iconManMedic_ca.paa"};
+  if (_class isEqualTo "assault") exitWith {"\a3\ui_f\data\Map\VehicleIcons\iconManLeader_ca.paa"};
+  if (_class isEqualTo "engineer") exitWith {"\a3\ui_f\data\Map\VehicleIcons\iconManEngineer_ca.paa"};
+  if (_class isEqualTo "support") exitWith {"\a3\ui_f\data\Map\VehicleIcons\iconManMG_ca.paa"};
+  if (_class isEqualTo "recon") exitWith {"\a3\ui_f\data\Map\VehicleIcons\iconManLeader_ca.paa"};
 };
-
-// HQ Icon
-_spawnCtrl lbSetPicture [(lbSize _spawnCtrl) - 1, WWRUSH_ROOT+"pictures\teammate.paa"];
-_spawnCtrl lbSetValue [(lbSize _spawnCtrl) - 1, -1];
-_spawnCtrl lbSetData [(lbSize _spawnCtrl) - 1, "Spawn HQ"]; */
 
 // Load squad members
 private _index = -1;
@@ -56,19 +56,6 @@ private _index = -1;
 		if (alive _x && {_x != player} && {!_playerIsDefending || (_x == (leader group player)) || ((leader group player) == player)}) then {
 			_add = true;
 		};
-/*
-		if (alive _x && {_x != player}) then {
-			if (_playerIsDefending) then {
-				if (_x == (leader group player)) then {
-					_add = true;
-				};
-				if ((leader group player) == player) then {
-				_add = true;
-				};
-			} else {
-				_add = true;
-			};
-		}; */
 
 		private _beacon = _x getVariable ["assault_beacon_obj", objNull];
 		if (!isNull _beacon) then {
@@ -81,10 +68,12 @@ private _index = -1;
 				_spawnCtrl lbAdd ((_x getVariable ["name", "ERROR: No Name"]) + "'s Beacon");
 				_spawnCtrl lbSetData [(lbSize _spawnCtrl) - 1, "beacon"];
 				_spawnCtrl lbSetValue [(lbSize _spawnCtrl) - 1, _index];
-				_spawnCtrl lbSetPicture [(lbSize _spawnCtrl) - 1, WWRUSH_ROOT+"pictures\squad.paa"];
+				_spawnCtrl lbSetPicture [(lbSize _spawnCtrl) - 1, "\a3\ui_f\data\Map\MapControl\bunker_CA.paa"];
+				_spawnCtrl lbSetPictureColor [(lbSize _spawnCtrl) - 1, [0,0.3,0.6,1]];
 			} else {
 				// Player
 				private _unit = _x;
+        private _icon = [_x] call _getIconPlayer;
 				// Find enemies within 20m radius
 				private _nearbyEnemies = {(_unit getVariable "gameSide") != (_x getVariable "gameSide")} count (_x nearEntities ["Man", 25]);
 				// If the unit was hit or is nearby enemies
@@ -92,12 +81,14 @@ private _index = -1;
 					_spawnCtrl lbAdd ((_x getVariable ["name", "ERROR: No Name"]) + " (IN COMBAT)");
 					_spawnCtrl lbSetValue [(lbSize _spawnCtrl) - 1, _index];
 					_spawnCtrl lbSetData [(lbSize _spawnCtrl) - 1, "inCombat"];
-					_spawnCtrl lbSetPicture [(lbSize _spawnCtrl) - 1, WWRUSH_ROOT+"pictures\enemy.paa"];
+					_spawnCtrl lbSetPicture [(lbSize _spawnCtrl) - 1, _icon];
+					_spawnCtrl lbSetPictureColor [(lbSize _spawnCtrl) - 1, [0.51,0,0,1]];
 				} else {
 					_spawnCtrl lbAdd (_x getVariable ["name", "ERROR: No Name"]);
 					_spawnCtrl lbSetValue [(lbSize _spawnCtrl) - 1, _index];
 					_spawnCtrl lbSetData [(lbSize _spawnCtrl) - 1, netID _unit];
-					_spawnCtrl lbSetPicture [(lbSize _spawnCtrl) - 1, WWRUSH_ROOT+"pictures\squad.paa"];
+					_spawnCtrl lbSetPicture [(lbSize _spawnCtrl) - 1, _icon];
+					_spawnCtrl lbSetPictureColor [(lbSize _spawnCtrl) - 1, [0,0.3,0.6,1]];
 				};
 			};
 		};
@@ -113,19 +104,20 @@ _configs append ("true" configClasses (missionConfigFile >> "MapSettings" >> sv_
 
 
 {
-	private _pos = getArray(_x >> "positionATL");
-	private _class = getText(_x >> "classname");
+  private _initialPos = getArray(_x >> "positionATL");
 	private _displayName = getText(_x >> "displayName");
-	private _objects = nearestObjects [_pos, [_class], 20];
-	private _config = _x;
-	if (count _objects > 0) then {
-		// Check whether this array of found vehicles actually containers our vehicle
-		private _OK = (_objects findIf {_x getVariable ["id", ""] isEqualTo (configName _config)}) != -1;
-		if (_OK) then {
-			_vehiclesCtrl lbAdd _displayName;
-			_vehiclesCtrl lbSetData [(lbSize _vehiclesCtrl) - 1, configName _x];
-			_vehiclesCtrl lbSetValue [(lbSize _vehiclesCtrl) - 1, -2];
-			_vehiclesCtrl lbSetPicture [(lbSize _vehiclesCtrl) - 1, WWRUSH_ROOT+"pictures\teammate.paa"];
-		};
+	private _className = getText(_x >> "className");
+  private _configName = configName _x;
+  private _vehicle = missionNamespace getVariable [_configName, objNull];
+  private _crew = fullCrew [_vehicle, "", true];
+  private _seats = count _crew;
+  private _occupants = {!isNull (_x select 0)} count _crew;
+	// Check whether this array of found vehicles actually containers our vehicle
+	if (!isNull _vehicle && {(_seats - _occupants) > 0} && {(_vehicle distance2D _initialPos) < 50}) then {
+		_vehiclesCtrl lbAdd (format ["%1 (%2/%3)",_displayName, _occupants, _seats]);
+		_vehiclesCtrl lbSetData [(lbSize _vehiclesCtrl) - 1, _configName];
+		_vehiclesCtrl lbSetValue [(lbSize _vehiclesCtrl) - 1, -2];
+		_vehiclesCtrl lbSetPicture [(lbSize _vehiclesCtrl) - 1, getText(configFile >> "CfgVehicles" >> _className >> "Icon")];
 	};
 } forEach _configs;
+true

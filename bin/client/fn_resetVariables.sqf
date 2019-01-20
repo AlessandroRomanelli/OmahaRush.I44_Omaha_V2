@@ -59,3 +59,5 @@ cl_pointfeed_points = 0;
 player setVariable ["kills",nil,true];
 player setVariable ["deaths",nil,true];
 player setVariable ["points",nil,true];
+
+true

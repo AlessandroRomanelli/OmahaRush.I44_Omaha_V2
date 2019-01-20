@@ -17,3 +17,5 @@ if ("sprint" in cl_squadPerks) then {
 } else {
 	player setAnimSpeedCoef 1.15;
 };
+
+true

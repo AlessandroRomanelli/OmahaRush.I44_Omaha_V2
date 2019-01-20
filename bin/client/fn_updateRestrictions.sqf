@@ -40,19 +40,20 @@ if (_transitionTime > 0) then {
       private _tickPos = [(_currentPos select 0) + (((_newPos select 0) - (_currentpos select 0))*_percentage), (_currentPos select 1) + (((_newPos select 1) - (_currentpos select 1))*_percentage), 0];
       private _tickArea = [(_currentArea select 0) + (((_newArea select 0) - (_currentArea select 0))*_percentage), (_currentArea select 1) + (((_newArea select 1) - (_currentArea select 1))*_percentage), (_currentArea select 2) + (((_newArea select 2) - (_currentArea select 2))*_percentage), true, -1];
       // We set our trigger accordingly
-      systemChat ("Progress: "+(str _percentage)+", Time left: "+(str (_transitionTime - _time)));
+      /* systemChat ("Progress: "+(str _percentage)+", Time left: "+(str (_transitionTime - _time))); */
       _trigger setPos _tickPos;
       _trigger setTriggerArea _tickArea;
+    } else {
+      ["triggerTransition", "onEachFrame"] call bis_fnc_removeStackedEventHandler;
+      _trigger setPos _newPos;
+      _trigger setTriggerArea _newArea;
     };
   }, [_transitionTime, _currentPos, _currentArea, _newArea, _newPos, _trigger, _startTime]] call bis_fnc_addStackedEventHandler;
-
-  waitUntil{sleep 1; diag_ticktime > (_startTime + _transitionTime)};
-
-  ["triggerTransition", "onEachFrame"] call bis_fnc_removeStackedEventHandler;
+} else {
+  _trigger setPos _newPos;
+  _trigger setTriggerArea _newArea;
 };
 
-_trigger setPos _newPos;
-_trigger setTriggerArea _newArea;
 
 // Update enemy base marker name
 private _enemyMarkerName = _side select 1;

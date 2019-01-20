@@ -80,8 +80,9 @@ if ((lbCurSel _listboxSquadPerks) == -1 && (lbSize _listboxSquadPerks) > 0) then
 
 // Give the listboxes their ability to edit our perks
 _listboxClassPerks ctrlAddEventHandler ["LBSelChanged", {
-	[cl_class] spawn client_fnc_setUsedPerksForClass;
+	[cl_class] call client_fnc_setUsedPerksForClass;
 }];
 _listboxSquadPerks ctrlAddEventHandler ["LBSelChanged", {
-	[cl_class] spawn client_fnc_setUsedPerksForClass;
+	[cl_class] call client_fnc_setUsedPerksForClass;
 }];
+true

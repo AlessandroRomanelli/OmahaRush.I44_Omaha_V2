@@ -104,3 +104,5 @@ cl_onEachFramePreparationID = addMissionEventHandler["EachFrame", {
 	cl_onEachFrame_team_reviveable = _toBeRevived;
 	cl_onEachFrame_spotted_enemies = _spottedTargets;
 }];
+
+true

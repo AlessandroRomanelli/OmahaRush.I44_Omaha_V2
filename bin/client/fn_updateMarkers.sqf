@@ -57,3 +57,4 @@ if !(_objMarkerStatusUpdate) then {
 	"objective" setMarkerColorLocal "ColorBlack";
 	"objective" setMarkerTextLocal " Objective";
 };
+true

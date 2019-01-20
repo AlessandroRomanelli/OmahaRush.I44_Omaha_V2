@@ -1,26 +1,16 @@
 scriptName "fn_spawnPlayer";
 /*--------------------------------------------------------------------
-	Author: Maverick (ofpectag: MAV)
+	Author: Maverick (ofpectag: MAV) & A. Roman
     File: fn_spawnPlayer.sqf
 
-	<Maverick Applications>
-    Written by Maverick Applications (www.maverick-apps.de)
-    You're not allowed to use this file without permission from the author!
+    Written by both authors
+    You're not allowed to use this file without permission from the authors!
 --------------------------------------------------------------------*/
 #define __filename "fn_spawnPlayer.sqf"
 if (isServer && !hasInterface) exitWith {};
-
-if (isNil "cl_blockSpawnUntil") then {
-	cl_blockSpawnUntil = diag_tickTime;
-};
-
-// Check if spawning is currently allowed and if we are the side thats not allowed to spawn
-if (cl_blockSpawnUntil - diag_tickTime > 0) exitWith {
-	[format ["SPAWNING ALLOWED IN %1", [cl_blockSpawnUntil - diag_tickTime, "MM:SS"] call bis_fnc_secondsToString]] spawn client_fnc_displayError;
-};
-
+	
 if (cl_equipClassnames select 0 == "") exitWith {
-	 ["YOU NEED TO CHOOSE A WEAPON BEFORE SPAWNING"] spawn client_fnc_displayError;
+	 ["YOU NEED TO CHOOSE A WEAPON BEFORE SPAWNING"] call client_fnc_displayError;
 };
 
 disableSerialization;
@@ -35,7 +25,7 @@ if (_isClassRestricted) exitWith {};
 cl_class = _class;
 private _perkData = [cl_class] call client_fnc_getUsedPerksForClass;
 if ((count _perkData) isEqualTo 0) then {
-	["NO CLASS PERK SELECTED, PLEASE RESELECT ONE AND TRY AGAIN"] spawn client_fnc_displayError;
+	["NO CLASS PERK SELECTED, PLEASE RESELECT ONE AND TRY AGAIN"] call client_fnc_displayError;
 };
 
 cl_classPerk = _perkData select 0;
@@ -78,7 +68,7 @@ cl_spawn_succ = {
 	[] call client_fnc_initPerks;
 
 	// Init hold actions
-	[] spawn client_fnc_initHoldActions;
+	[] call client_fnc_initHoldActions;
 
 	// Out of spawn menu
 	cl_inSpawnMenu = false;
@@ -124,19 +114,19 @@ switch (_value) do
 	{
 		private _vehiclesDisplay = _d displayCtrl 9;
 		private _configName = _vehiclesDisplay lbData (lbCurSel _vehiclesDisplay);
-		[_configName] spawn client_fnc_spawnPlayerInVehicle;
+		[_configName] call client_fnc_spawnPlayerInVehicle;
 	};
 
 	case -1: // HQ
 	{
-		[_data] spawn client_fnc_spawnPlayerAtLocation;
+		[_data] call client_fnc_spawnPlayerAtLocation;
 	};
 
 	default // Beacon or squad member (squad member may be in vehicle)
 	{
 		// Soldier selected, is he in combat?
 		if (_data == "inCombat") exitWith {
-			["The selected player is in combat and cannot be spawned on"] spawn client_fnc_displayError;
+			["The selected player is in combat and cannot be spawned on"] call client_fnc_displayError;
 		};
 
 		// Get unit to spawn at
@@ -149,21 +139,21 @@ switch (_value) do
 		if (_data == "beacon") then {
 			// Spawn at object
 			if (!isNull _beacon) then {
-				[_beacon, false] spawn client_fnc_spawnPlayerAtObject;
-
 				// Give points
 				if (_unit != player) then {
-					[] remoteExec ["client_fnc_beaconSpawn", _unit];
+					[] remoteExecCall ["client_fnc_beaconSpawn", _unit];
 				};
+				[_beacon, false] call client_fnc_spawnPlayerAtObject;
+
 			} else {
-				["The beacon is unavailable"] spawn client_fnc_displayError;
+				["The beacon is unavailable"] call client_fnc_displayError;
 			};
 		} else {
 			// Spawn at object
 			if (vehicle _unit == _unit) then {
-				[_unit] spawn client_fnc_spawnPlayerAtObject;
+				[_unit] call client_fnc_spawnPlayerAtObject;
 			} else {
-				[_unit, true, true] spawn client_fnc_spawnPlayerAtObject;
+				[_unit, true, true] call client_fnc_spawnPlayerAtObject;
 			};
 		};
 	};

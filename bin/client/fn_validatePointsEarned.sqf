@@ -32,3 +32,5 @@ if (cl_pointsBelowMinimumPlayers > 15000) then {
 	[] spawn client_fnc_saveStatistics;
 	/* }; */
 };
+
+true

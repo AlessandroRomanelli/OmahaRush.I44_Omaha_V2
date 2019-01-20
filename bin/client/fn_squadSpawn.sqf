@@ -11,5 +11,7 @@ scriptName "fn_squadSpawn";
 if (isServer && !hasInterface) exitWith {};
 
 // We are nice, arent we?
-["<t size='1.3' color='#FFFFFF'>SQUAD SPAWN ON YOU</t>", 15] spawn client_fnc_pointfeed_add;
-[15] spawn client_fnc_addPoints;
+["<t size='1.3' color='#FFFFFF'>SQUAD SPAWN ON YOU</t>", 15] call client_fnc_pointfeed_add;
+[15] call client_fnc_addPoints;
+
+true

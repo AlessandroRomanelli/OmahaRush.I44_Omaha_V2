@@ -150,3 +150,5 @@ if ("frag" in cl_squadPerks) then {
 		player addMagazine _grenade;
 	};
 };
+
+true

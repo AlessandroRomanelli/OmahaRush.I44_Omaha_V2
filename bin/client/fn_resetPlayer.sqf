@@ -80,11 +80,12 @@ if ((sv_gameCycle >= ((["RotationsPerMatch", 2] call BIS_fnc_getParamValue) - 1)
 	sleep 30;
 } else {
 // While loop
-	while {_time > 0} do {
+private _restartTime = diag_tickTime + _time;
+private _timeLeft = _time;
+	while {_timeLeft > 0 && (sv_gameStatus in [3,4])} do {
 		sleep 1;
-		_time = _time - 1;
-
-		(_d displayCtrl 0) ctrlSetStructuredText parseText format ["<t size='2' color='#FFFFFF' shadow='2' align='center'>Next match begins in %1</t>", [_time, "MM:SS"] call bis_fnc_secondsToString];
+		_timeLeft = round (_restartTime - diag_tickTime);
+		(_d displayCtrl 0) ctrlSetStructuredText parseText format ["<t size='2' color='#FFFFFF' shadow='2' align='center'>Next match begins in %1</t>", [_timeLeft, "MM:SS"] call bis_fnc_secondsToString];
 	};
 };
 
@@ -114,7 +115,7 @@ if (sv_gameCycle % 2 == 0) then {
 
 cl_statisticsLoaded = false;
 [] call client_fnc_loadStatistics;
-waitUntil {cl_statisticsLoaded};
+waitUntil {cl_statisticsLoaded && {sv_gameStatus isEqualTo 2}};
 
 // Reset everything
 [] spawn client_fnc_resetVariables;
@@ -127,7 +128,7 @@ waitUntil {cl_statisticsLoaded};
 	private _fallBackTime = [] call client_fnc_getFallbackTime;
 	sleep 3;
 	// Message about preparation phase
-	[format ["DEFENDERS HAVE %1 SECONDS TO PREPARE", _fallBackTime]] spawn client_fnc_displayObjectiveMessage;
+	[format ["DEFENDERS HAVE %1 SECONDS TO PREPARE", _fallBackTime]] call client_fnc_displayObjectiveMessage;
 };
 
 cl_resetPlayerRunning = false;
