@@ -50,7 +50,7 @@ class APC: Vehicle {
 
 class Car_HMG: Vehicle {
   displayName = "M3 Scout Car";
-  className = "LIB_US_Scout_M3_FFV";
+  className = "LIB_UK_M3_Halftrack";
   respawnTime = 60;
   populationReq = 6;
 };
@@ -63,6 +63,6 @@ class Truck: Vehicle {
 
 class Car: Vehicle {
   displayName = "Willys Jeep";
-  className = "LIB_US_Willys_MB";
+  className = "LIB_UK_Willys_MB";
   respawnTime = 15;
 };

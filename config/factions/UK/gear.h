@@ -65,13 +65,13 @@ class Loadouts {
     ATbackpack = "B_LIB_UK_HSack_Blanco";
   };
   class Desert {
-    uniforms[] = {"U_LIB_UK_Desert"};
+    uniforms[] = {"U_LIB_UK_KhakiDrills"};
     goggles = "";
-    headgears[] = {"H_LIB_UK_Helmet_Mk2_Desert", "H_LIB_UK_Helmet_Mk2_Desert2", "H_LIB_UK_Beret"};
+    headgears[] = {"H_LIB_UK_Helmet_Mk2_Desert", "H_LIB_UK_Helmet_Mk2_Desert_Bowed", "H_LIB_UK_Beret"};
     vests[] = {"V_LIB_UK_P37_Rifleman", "V_LIB_UK_P37_Holster", "V_LIB_UK_P37_Heavy", "V_LIB_UK_P37_Officer"};
     backpacks[] = {"B_LIB_UK_HSack", "B_LIB_UK_HSack_Cape"};
     class medics {
-      uniforms[] = {"U_LIB_UK_Desert"};
+      uniforms[] = {"U_LIB_UK_KhakiDrills"};
       vests[] = {"V_LIB_UK_P37_Gasmask"};
       headgears[] = {"H_LIB_UK_Helmet_Mk2_Cover"};
       backpacks[] = {"B_LIB_UK_HSack_Tea"};
@@ -79,7 +79,7 @@ class Loadouts {
     ATbackpack = "B_LIB_UK_HSack";
   };
   class Winter {
-    uniforms[] = {"U_LIB_UK_Jerkins"};
+    uniforms[] = {"U_LIB_UK_P37Jerkins"};
     goggles = "";
     headgears[] = {"H_LIB_UK_Helmet_Mk2_W", "H_LIB_UK_Helmet_Mk2_W_Net", "H_LIB_UK_Helmet_Mk2_Cover_W", "H_LIB_UK_Para_Beret"};
     vests[] = {"V_LIB_UK_P37_Rifleman_Blanco", "V_LIB_UK_P37_Holster_Blanco", "V_LIB_UK_P37_Heavy_Blanco", "V_LIB_UK_P37_Officer_Blanco"};
