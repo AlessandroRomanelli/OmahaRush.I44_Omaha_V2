@@ -113,6 +113,16 @@ class CfgDebriefing
         pictureColor[] = {0.96,0.65,0.12,0.8};
     };
 
+    class MatchLeft
+    {
+        title = "MATCH LEFT";
+        subtitle = "YOU HAVE LEFT AN UNGOING BATTLE";
+        description = "Your progress has been saved";
+        pictureBackground = "";
+        picture = "";
+        pictureColor[] = {0.96,0.65,0.12,0.8};
+    };
+
     class JoinWEST
     {
         title = "AUTO TEAM BALANCE";

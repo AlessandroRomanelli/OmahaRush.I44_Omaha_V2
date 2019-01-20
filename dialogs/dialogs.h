@@ -428,6 +428,21 @@ class rr_spawnmenu {
       colorSelectBackground[] = {0.96,0.65,0.12,0.8};
       colorSelectBackground2[] = {0.96,0.65,0.12,0.8};
     };
+    class AbortButton: RscButtonMenu
+    {
+    	idc = 303;
+    	color[] = {1,1,1,1};
+    	font = "PuristaBold";
+    	size = "1.00 *		 (pixelH * pixelGridNoUIScale * 2.5)";
+
+    	text = "QUIT"; //--- ToDo: Localize;
+    	x = 0.0064056 * safezoneW + safezoneX;
+    	y = 0.0109959 * safezoneH + safezoneY;
+    	w = 0.154556 * safezoneW;
+    	h = 0.044 * safezoneH;
+    	colorText[] = {1,1,1,1};
+    	colorBackground[] = {0.12,0.14,0.16,0.8};
+    };
   };
 };
 
