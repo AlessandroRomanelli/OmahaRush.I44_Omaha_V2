@@ -22,7 +22,7 @@ class Launcher {
 
 class Loadouts {
   class Army {
-    uniforms[] = {"U_LIB_UK_Soldier"};
+    uniforms[] = {"U_LIB_UK_P37","U_LIB_UK_P37_Sergeant","U_LIB_UK_P37_Corporal","U_LIB_UK_P37_LanceCorporal" };
     goggles = "";
     headgears[] = {"H_LIB_UK_Helmet_Mk2", "H_LIB_UK_Helmet_Mk2_Net", "H_LIB_UK_Helmet_Mk2_Camo",
                    "H_LIB_UK_Beret_Commando", "H_LIB_UK_Beret_Commando_Kieffer"};
@@ -37,7 +37,7 @@ class Loadouts {
     ATbackpack = "B_LIB_UK_HSack";
   };
   class Blanco {
-    uniforms[] = {"U_LIB_UK_Soldier"};
+    uniforms[] = {"U_LIB_UK_P37","U_LIB_UK_P37_Sergeant","U_LIB_UK_P37_Corporal","U_LIB_UK_P37_LanceCorporal" };
     goggles = "";
     headgears[] = {"H_LIB_UK_Helmet_Mk3", "H_LIB_UK_Helmet_Mk3_Net", "H_LIB_UK_Helmet_Mk3_Camo", "H_LIB_UK_Beret_Commando", "H_LIB_UK_Beret_Commando_Kieffer"};
     vests[] = {"V_LIB_UK_P37_Rifleman_Blanco", "V_LIB_UK_P37_Holster_Blanco", "V_LIB_UK_P37_Heavy_Blanco", "V_LIB_UK_P37_Officer_Blanco"};
@@ -51,13 +51,13 @@ class Loadouts {
     ATbackpack = "B_LIB_UK_HSack_Blanco";
   };
   class Para {
-    uniforms[] = {"U_LIB_UK_Para"};
+    uniforms[] = {"U_LIB_UK_DenisonSmock"};
     goggles = "";
     headgears[] = {"H_LIB_UK_Para_Helmet_Mk2", "H_LIB_UK_Para_Helmet_Mk2_Net", "H_LIB_UK_Para_Helmet_Mk2_Camo", "H_LIB_UK_Para_Beret"};
     vests[] = {"V_LIB_UK_P37_Rifleman_Blanco", "V_LIB_UK_P37_Holster_Blanco", "V_LIB_UK_P37_Heavy_Blanco", "V_LIB_UK_P37_Officer_Blanco"};
     backpacks[] = {"B_LIB_UK_HSack_Blanco", "B_LIB_UK_HSack_Blanco_cape"};
     class medics {
-      uniforms[] = {"U_LIB_UK_Para"};
+      uniforms[] = {"U_LIB_UK_DenisonSmock"};
       vests[] = {"V_LIB_UK_P37_Gasmask_Blanco"};
       headgears[] = {};
       backpacks[] = {"B_LIB_UK_HSack_Tea"};
