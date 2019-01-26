@@ -82,7 +82,6 @@ if (isServer) then {
 		sv_cur_obj allowDamage true;
 		// Explosion
 		createVehicle ["HelicopterExploBig", _pos, [], 0, "CAN_COLLIDE"];
-		createVehicle ["test_EmptyObjectForFireBig", _pos, [], 0, "CAN_COLLIDE"];
 		sv_cur_obj setDamage 1;
 
 		private _killZone = sv_cur_obj nearEntities ["Man", 25];
