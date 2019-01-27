@@ -46,10 +46,6 @@ private _animate = {
 if (param[0,false,[false]]) then {
 	private _fallBackTime = [] call client_fnc_getFallbackTime;
 
-	if (player getVariable ["gameSide", "attackers"] == "attackers") then {
-		[] spawn client_fnc_blockSpawn;
-	};
-
 	// Update markers
 	[] call client_fnc_updateMarkers;
 

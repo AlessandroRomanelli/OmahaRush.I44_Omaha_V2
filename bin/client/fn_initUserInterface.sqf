@@ -79,6 +79,10 @@ private _event = addMissionEventHandler["EachFrame", {
       [_pos, _name] call _makeCurrentSpawn;
     };
 
+    if (player getVariable ["gameSide", "attackers"] == "attackers") then {
+    	[] call client_fnc_displaySpawnRestriction;
+    };
+
     [] call client_fnc_loadSpawnpoints;
     [true] call client_fnc_spawnMenu_loadClasses;
   };
@@ -364,9 +368,9 @@ private _event = addMissionEventHandler["EachFrame", {
   _HUD_weaponName		ctrlSetText _weaponName;
 
   private _minimap = _hud displayCtrl 1800;
-  private _zoom = 0.04;
+  private _zoom = 0.075;
   if (_vehiclePlayer isEqualTo player) then {
-    _zoom = 0.04;
+    _zoom = 0.075;
   } else {
     if (_vehiclePlayer isKindOf "Car") then {
       _zoom = 0.1;

@@ -22,17 +22,17 @@ private _disabledBackgroundColor = getArray(_deployBtnCfg >> "colorBackgroundDis
 
 // Update text
 private _matchTime = (["RoundTime", 15] call BIS_fnc_getParamValue)*60;
-while {sv_matchTime > _matchTime} do {
+if (sv_matchTime > _matchTime) then {
 	(_d displayCtrl 304) ctrlSetStructuredText parseText format ["<t size='1' color='#FD1A07' shadow='2' align='right' font='PuristaBold'>%1s</t>", round (sv_matchTime - _matchTime)];
 	if (ctrlEnabled _deployBtn) then {
 		_deployBtn ctrlEnable false;
 		_deployBtn ctrlSetBackgroundColor _disabledBackgroundColor;
 	};
-	sleep 1;
+} else {
+	_deployBtn ctrlEnable true;
+	(_d displayCtrl 304) ctrlSetStructuredText parseText "";
+	_deployBtn ctrlSetBackgroundColor _backgroundColor;
 };
-_deployBtn ctrlEnable true;
-(_d displayCtrl 304) ctrlSetStructuredText parseText "";
-_deployBtn ctrlSetBackgroundColor _backgroundColor;
 
 // Delete display
 /* 30 cutRsc ["default", "PLAIN"]; */

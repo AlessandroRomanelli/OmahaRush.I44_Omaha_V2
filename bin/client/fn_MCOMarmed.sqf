@@ -58,7 +58,7 @@ if (isServer) then {
 					playSound3D [_beep, sv_cur_obj, false, getPosATL sv_cur_obj, 10, 1, 300];
 				};
 			};
-			sleep 1;
+			uiSleep 1;
 		};
 
 		_status = sv_cur_obj getVariable ["status", -1];

@@ -15,7 +15,7 @@ if ((sv_cur_obj getVariable ["status", -1] != 1) && (sv_cur_obj getVariable ["st
 if (!alive player) exitWith {};
 
 // Set disarmed
-sv_cur_obj setVariable ["status", 2, true];
+sv_cur_obj setVariable ["status", -1, true];
 
 // Send message to everyone
 ["THE EXPLOSIVES HAVE BEEN DEFUSED"] remoteExecCall ["client_fnc_displayObjectiveMessage", -2];

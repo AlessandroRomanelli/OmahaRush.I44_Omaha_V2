@@ -284,12 +284,6 @@ updateObjectiveProgress = {
 	}];
 } forEach [1201,1202,1203,1204];
 
-
-if (player getVariable ["gameSide", "attackers"] == "attackers") then {
-	[] spawn client_fnc_displaySpawnRestriction;
-};
-
-
 // Enable spawn buttons // REDONE WITH LISTBOX UPDATE // SEE SPAWNMENU_LOADCLASSES
 (_menuDisplay displayCtrl 302) ctrlAddEventHandler ["ButtonDown",{
 	profileNamespace setVariable ["rr_class_preferred", cl_class];
