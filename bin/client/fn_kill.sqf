@@ -106,5 +106,5 @@ if ((player distance sv_cur_obj) < 25 || (_victim distance sv_cur_obj) < 25) the
 };
 
 // We've done good! Give me points
-["<t size='1.3'>[" + _reason + "] <t color='#FE251B'>" + (_victim getVariable ["name", "ERROR: No Name"]) + "</t></t>" + _meleeTakedown + _HSkill + _distanceKill + _objectiveKill, _points] call client_fnc_pointfeed_add;
+["<t size='1.3'>[" + _reason + "] <t color='#FE251B'>" + [_victim] call client_fnc_getUnitName + "</t></t>" + _meleeTakedown + _HSkill + _distanceKill + _objectiveKill, _points] call client_fnc_pointfeed_add;
 [_points] call client_fnc_addPoints;

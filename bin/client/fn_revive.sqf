@@ -40,7 +40,7 @@ player playActionNow "PlayerProne";
 
 // Message
 if (!isNull _savior) then {
-	[format ["You have been revived by<br/>%1", _savior getVariable ["name", "ERROR: No Name"]]] call client_fnc_displayInfo;
+	[format ["You have been revived by<br/>%1", [_savior] call client_fnc_getUnitName]] call client_fnc_displayInfo;
 } else {
 	["You have been revived"] call client_fnc_displayInfo;
 };
