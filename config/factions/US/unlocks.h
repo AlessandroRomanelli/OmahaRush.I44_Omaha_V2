@@ -5,7 +5,7 @@ class LIB_M1_Garand {
   exp = 0;
   type = "primary";
   roles[] = {"assault", "medic"};
-  damageMultiplier = 0.25;
+  damageMultiplier = 1;
   class attachments {};
 };
 
@@ -14,7 +14,7 @@ class LIB_Colt_M1911 {
   exp = 5000;
   type = "secondary";
   roles[] = {"assault", "medic", "engineer", "support"};
-  damageMultiplier = 0.5;
+  damageMultiplier = 1;
   class attachments {};
 };
 
@@ -32,7 +32,7 @@ class LIB_M1_Carbine {
   exp = 12500;
   type = "primary";
   roles[] = {"medic"};
-  damageMultiplier = 0.2;
+  damageMultiplier = 1;
   class attachments {};
 };
 
@@ -41,7 +41,7 @@ class LIB_M1A1_Carbine {
   exp = 12500;
   type = "primary";
   roles[] = {"assault"};
-  damageMultiplier = 0.2;
+  damageMultiplier = 1;
   class attachments {};
 };
 
@@ -50,7 +50,7 @@ class LIB_M1918A2_BAR {
   exp = 0;
   type = "primary";
   roles[] = {"support"};
-  damageMultiplier = 0.1;
+  damageMultiplier = 0.25;
   class attachments {};
 };
 
@@ -59,7 +59,7 @@ class LIB_M1919A4 {
   exp = 7500;
   type = "primary";
   roles[] = {"support"};
-  damageMultiplier = 0.04;
+  damageMultiplier = 0.25;
   class attachments {};
 };
 
@@ -68,7 +68,7 @@ class LIB_M1919A6 {
   exp = 12500;
   type = "primary";
   roles[] = {"support"};
-  damageMultiplier = 0.06;
+  damageMultiplier = 0.25;
   class attachments {};
 };
 
@@ -77,7 +77,7 @@ class LIB_M3_GreaseGun {
   exp = 0;
   type = "primary";
   roles[] = {"engineer"};
-  damageMultiplier = 0.4;
+  damageMultiplier = 1;
   class attachments {};
 };
 
@@ -86,7 +86,7 @@ class LIB_M1A1_Thompson {
   exp = 7500;
   type = "primary";
   roles[] = {"engineer"};
-  damageMultiplier = 0.5;
+  damageMultiplier = 1;
   class attachments {};
 };
 
@@ -95,7 +95,7 @@ class LIB_M1928_Thompson {
   exp = 12500;
   type = "primary";
   roles[] = {"engineer"};
-  damageMultiplier = 0.5;
+  damageMultiplier = 1;
   class attachments {};
 };
 
@@ -104,7 +104,7 @@ class LIB_M1903A3_Springfield {
   exp = 0;
   type = "primary";
   roles[] = {"recon"};
-  damageMultiplier = 1;
+  damageMultiplier = 2;
   class attachments {};
 };
 
@@ -113,6 +113,6 @@ class LIB_M1903A4_Springfield {
   exp = 7500;
   type = "primary";
   roles[] = {"recon"};
-  damageMultiplier = 1;
+  damageMultiplier = 2;
   class attachments {};
 };
