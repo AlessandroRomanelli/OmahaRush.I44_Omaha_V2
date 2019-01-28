@@ -11,6 +11,7 @@ scriptName "fn_spawnObjectives";
 
 //Init array of objects nearby our objectives
 private _objects = [];
+private _walls = [];
 
 for "_i" from 1 to 4 do {
 	//Get data out of config
@@ -30,8 +31,7 @@ for "_i" from 1 to 4 do {
 	private _objective = missionNamespace getVariable (format["sv_stage%1_obj", _i]);
 	_objective setVariable ['status', -1, true];
 	_objects append (nearestTerrainObjects [_objective, [], 75, false]);
-	private _fences = nearestTerrainObjects [_objective, ["FENCE", "WALL"], 75, false];
-	_objects = _objects - _fences;
+	_walls append (nearestTerrainObjects [_objective, ["FENCE", "WALL"], 75, false]);
 };
 
 // Set active objective
@@ -40,6 +40,14 @@ sv_cur_obj = sv_stage1_obj;
 // Broadcast
 [["sv_stage1_obj","sv_stage2_obj","sv_stage3_obj","sv_stage4_obj","sv_cur_obj"]] call server_fnc_updateVars;
 
+{
+	private _obj = _x;
+	{
+			_obj animateSource [_x, 1, true];
+	} forEach animationNames _obj;
+} forEach _objects;
+
+_objects = _objects - _walls;
 
 //Make objects around objective invincible
 {
