@@ -10,8 +10,7 @@ scriptName "fn_armMCOM";
 #define __filename "fn_armMCOM.sqf"
 if (isServer && !hasInterface) exitWith {};
 // If the objective is already armed, do nothing!
-if (sv_cur_obj getVariable ["status", -1] == 1) exitWith {};
-if (!alive player) exitWith {};
+if ((sv_cur_obj getVariable ["status", -1] == 1) || {cl_action_obj != sv_cur_obj} || {!alive player}) exitWith {};
 
 // Set armed
 sv_cur_obj setVariable ["status", 1, true];
