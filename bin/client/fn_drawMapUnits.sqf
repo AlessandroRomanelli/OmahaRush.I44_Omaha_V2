@@ -55,7 +55,7 @@ while {true} do {
 		private _pos = visiblePositionASL _x;
 		private _dir = getDirVisual _x;
 		private _icon = "mil_triangle";
-		private _name = _x getVariable ["name", "ERROR: No Name"];
+		private _name = [_x] call client_fnc_getUnitName;
 		private _veh = {isPlayer _x || _showAI} count (crew vehicle _x);
 		private _color = [_x] call _fnc_getMarkerColor;
 		private _size = [1,1];
@@ -72,7 +72,7 @@ while {true} do {
 				_dir = 0;
 			} else {
 				if (!isNull objectParent _x) then {
-					_name = format ["%1: %2 %3", getText (configFile >> "cfgVehicles" >> typeOf vehicle _x >> "displayname"), (_x getVariable ["name", "ERROR: No Name"]), format [["+%1",""] select (_veh < 2), _veh -1]];
+					_name = format ["%1: %2 %3", getText (configFile >> "cfgVehicles" >> typeOf vehicle _x >> "displayname"), [_x] call client_fnc_getUnitName, format [["+%1",""] select (_veh < 2), _veh -1]];
 					if (((crew vehicle _x) select {isPlayer _x || _showAI} select 0) isEqualTo _x) then {
 						_icon = "mil_box";
 					} else {

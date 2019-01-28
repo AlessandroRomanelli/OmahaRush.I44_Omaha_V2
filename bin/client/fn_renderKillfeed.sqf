@@ -32,11 +32,11 @@ private _fnc_getColorForObj = {
 private _out = "";
 {
 	private _killerObj = _x select 0;
-	private _killerName = _killerObj getVariable ["name", "ERROR: No Name"];
+	private _killerName = [_killerObj] call client_fnc_getUnitName;
 	private _killer = format["<t color='%1' shadow='2' font='PuristaMedium'>%2<t/>", [_killerObj] call _fnc_getColorForObj, _killerName];
 
 	private _killedObj = _x select 2;
-	private _killedName = _killedObj getVariable ["name", "ERROR: No Name"];
+	private _killedName = [_killedObj] call client_fnc_getUnitName;
 	private _killed = format["<t color='%1' shadow='2' font='PuristaMedium'>%2<t/>", [_killedObj] call _fnc_getColorForObj, _killedName];
 
 	private _weapon = if ((_x select 1) == "") then {"KILLED"} else {([_x select 1] call client_fnc_weaponDetails) select 1};
