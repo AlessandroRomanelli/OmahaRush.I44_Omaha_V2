@@ -17,7 +17,7 @@ class Grenade {
 class Launcher {
   weapon = "LIB_PIAT";
   ammoType = "LIB_1Rnd_89m_PIAT";
-  ammoCount = 4;
+  ammoCount = 2;
 };
 
 class Loadouts {

@@ -123,7 +123,15 @@ if (cl_class == "medic" && cl_classPerk == "smoke_grenades") then {
 
 if (cl_class == "engineer" && cl_classPerk == "perkAT") then {
 	private _ammo = getText(missionConfigFile >> "Soldiers" >> _side >> "Launcher" >> "ammoType");
-	player addMagazines [_ammo, 1];
+	private _max = getNumber(missionConfigFile >> "Soldiers" >> _side >> "Launcher" >> "ammoCount");
+	private _currentRockets = {(_x select 0) isEqualTo _ammo} count (magazinesAmmo player);
+	if (_currentRockets == 0) then {
+		player addMagazines [_ammo, 1];
+	} else {
+		if (("expl" in cl_squadPerks) && {_currentRockets < _max}) then {
+			player addMagazines [_ammo, 1];
+		};
+	};
 };
 
 if ("frag" in cl_squadPerks) then {
