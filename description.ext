@@ -250,6 +250,12 @@ class Params {
     texts[] = {"RANDOM", "MAP"};
     default = 0;
   };
+  class MapPopulation {
+    title = "Threshold of players below which the smaller map will be used:";
+    values[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 9999};
+    texts[] = {"ALWAYS LARGE", "1 Players", "2 Players", "3 Players", "4 Players", "5 Players", "6 Players", "7 Players", "8 Players", "9 Players", "10 Players", "11 Players", "12 Players", "13 Players", "14 Players", "15 Players", "16 Players", "ALWAYS SMALL"};
+    default = 12;
+  };
   class header_7: header {
     title = "========== AUTOBALANCER SETTINGS ==================================";
   };
