@@ -74,6 +74,7 @@ while {true} do {
 		waitUntil{(playersNumber WEST + playersNumber INDEPENDENT) >= 4};
 		private _then = diag_tickTime;
 		waitUntil{(diag_tickTime - _then >= 60) || ({_x getVariable ["playerInitOK", false]} count allPlayers > round ((playersNumber WEST + playersNumber INDEPENDENT)*0.8))};
+		uiSleep 1;
 	};
 
 	// Make a new matchtimer with matchStart param true so it gets broadcasted to all clients
@@ -112,7 +113,7 @@ while {true} do {
 	private _maxMatchTime = ["MaxMatchDuration", 10800] call BIS_fnc_getParamValue;
 	if (((sv_gameCycle >= (["RotationsPerMatch", 2] call BIS_fnc_getParamValue)) || ((_maxMatchTime != -1) && (_maxMatchTime <= diag_tickTime))) && isDedicated) then {
 		["Attempting to restart mission...."] call server_fnc_log;
-		sleep 1;
+		uiSleep 1;
 		with uiNamespace do {
 			private _missions = getArray(missionConfigFile >> "GeneralConfig" >> "mapsPool");
 			private _currentMission = [format["%1.%2", missionName, worldName]];

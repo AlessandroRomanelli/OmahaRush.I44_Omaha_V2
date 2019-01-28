@@ -29,28 +29,6 @@ sv_stage_getVehicleByID = {
 	_ret;
 };
 
-/* private _sv_stage_deleteNullVehicles = {
-	private _newList = sv_stageVehicles select {!isNull _x};
-	sv_stageVehicles = _newList;
-};
-
-private _sv_stage_tryRespawn = {
-	private _v = param[0, objNull, [objNull]];
-	// Terminate old script handling this vehicle
-	if (!isNull (_v getVariable ["vehicle_getout_thread", scriptNull])) then {
-		terminate (_v getVariable ["vehicle_getout_thread", scriptNull]);
-	};
-	private _scriptHandler = [_v] spawn {
-		sleep 30;
-		private _v = param[0, objNull, [objNull]];
-		if ((({alive _x} count (crew _v)) == 0) && {{alive _x} count ((getPos _v) nearEntities ["man", 10]) == 0}) then {
-			deleteVehicle _v;
-		};
-	};
-	// Set handler on vehicle
-	_v setVariable ["vehicle_getout_thread", _scriptHandler];
-}; */
-
 private _sv_stage_spawnVehicle = {
 	params [["_config", configNull,[configNull]], ["_initialSpawn", false,[false]]];
 
@@ -66,7 +44,7 @@ private _sv_stage_spawnVehicle = {
 	// Wait the respawn time
 	private _sleepTime = 0;
 	if (!_initialSpawn) then {_sleepTime = getNumber(_config >> "respawnTime")};
-	sleep _sleepTime;
+	uiSleep _sleepTime;
 
 	// Check if there is a old vehicle, if yes, delete it
 	private _oldVeh = [configName _config] call sv_getVehicleByID;
@@ -184,7 +162,7 @@ private _sv_stage_removeObsoleteVehicles = {
 	while {{!isNull _x} count _vehicles > 0} do {
 		private _emptyVehicles = _vehicles select {if (({alive _x} count (crew _x)) == 0) then {true}};
 		{_x setVehicleLock "LOCKED"} forEach _emptyVehicles;
-		sleep 10;
+		uiSleep 10;
 		{deleteVehicle _x} forEach _emptyVehicles;
 	};
 
@@ -194,7 +172,7 @@ private _sv_stage_removeObsoleteVehicles = {
 // Main brain of this script
 private _matchStart = true;
 while {sv_gameStatus == 2} do {
-	sleep 1;
+	uiSleep 1;
 
 	// Get vehicles that need to be removed as they are not part of the stage
 	private _obsoleteConfigs = [] call _sv_stage_getObsoleteVehiclesAndRemove;

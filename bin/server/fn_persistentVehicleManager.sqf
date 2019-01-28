@@ -54,7 +54,7 @@ sv_tryRespawn = {
 	};
 	private _scriptHandler = [_v] spawn {
 		private _veh = param[0, objNull, [objNull]];
-		sleep 10;
+		uiSleep 10;
 		if ((({alive _x} count (crew _veh)) == 0) && {({alive _x} count ((getPos _veh) nearEntities ["man", 10])) == 0}) then {
 			deleteVehicle _veh;
 		};
@@ -73,7 +73,7 @@ private _sv_spawnVehicle = {
 
 	// Wait the respawn time
 	private _sleepTime = if (_initialSpawn) then {["InitialFallBack", 60] call BIS_fnc_getParamValue} else {getNumber(_config >> "respawnTime")};
-	sleep _sleepTime;
+	uiSleep _sleepTime;
 
 	//diag_log "_1";
 
@@ -157,7 +157,7 @@ private _sv_deleteNullThreads = {
 // Main brain of this script
 private _matchStart = true;
 while {sv_gameStatus == 2} do {
-	sleep 1;
+	uiSleep 1;
 	// Delete all respawn threads that are null
 	[] call _sv_deleteNullThreads;
 	{

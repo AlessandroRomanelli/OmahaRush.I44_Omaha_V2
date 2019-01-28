@@ -19,7 +19,7 @@ sv_fallBack_timeLeft = _additionalTime;
 
 if (_matchStart) then {
 	[_additionalTime] spawn {
-		sleep (param[0, 0, [0]]);
+		uiSleep (param[0, 0, [0]]);
 		[] call server_fnc_refreshTickets;
 	};
 };
@@ -35,7 +35,7 @@ private _refreshRate = 10;
 // While there's time left and the game is ongoing
 while {_time >= 0 && sv_gameStatus == 2} do {
 	// Tick each second
-	sleep 1;
+	uiSleep 1;
 	if (sv_fallBack_timeLeft >= 0) then {
 		sv_fallBack_timeLeft = sv_fallBack_timeLeft - 1;
 		publicVariable "sv_fallBack_timeLeft";
@@ -66,7 +66,7 @@ while {_time >= 0 && sv_gameStatus == 2} do {
 	};
 	if (_time < 0) exitWith {
 		sv_matchTime = 0;
-		sleep 1;
+		uiSleep 1;
 		// Only if the time actually got to 0, end the match for the defenders
 		[] call server_fnc_endRound;
 	};

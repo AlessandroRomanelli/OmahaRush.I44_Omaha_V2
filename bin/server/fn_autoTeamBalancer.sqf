@@ -27,7 +27,7 @@ private _getUnitsThatLastJoined = {
 sv_autoTeamBalancerWarning = false;
 
 while {sv_gameStatus == 2} do {
-	sleep 60;
+	uiSleep 60;
 
 	private _attackersSide = [WEST, independent] select (sv_gameCycle % 2 == 0);
 	private _defendersSide = [WEST, independent] select (sv_gameCycle % 2 != 0);
@@ -60,7 +60,7 @@ while {sv_gameStatus == 2} do {
 				};
 
 				// Make sure this unit will be gone until next evaluation
-				sleep 5;
+				uiSleep 5;
 			};
 		};
 	} else {
