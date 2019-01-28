@@ -14,13 +14,6 @@ if (!isNil "cl_init_ran") exitWith {};
 cl_init_ran = true;
 cl_init_done = false;
 
-
-// Player name
-player setVariable ["name", name player, true];
-
-// Time played to make sure the auto team balancer knows our jointime
-player setVariable ["joinServerTime", serverTime, true];
-
 // Wait for the client to be ready for deployment
 waitUntil {(!isNull (findDisplay 46)) AND (isNull (findDisplay 101)) AND (!isNull player) AND (alive player) AND !dialog};
 
@@ -38,6 +31,12 @@ if (isNil "sv_serverReady") then {
 waitUntil {sv_serverReady && !isNil "sv_usingDatabase"};
 
 [] call client_fnc_initGlobalVars;
+
+// Player name
+player setVariable ["name", name player, true];
+
+// Time played to make sure the auto team balancer knows our jointime
+player setVariable ["joinServerTime", serverTime, true];
 
 // Used for determining if a player is on our side since side _x returns civilian if someone is dead
 player setVariable ["side", playerSide, true];
