@@ -79,7 +79,7 @@ cl_eventObserverID = addMissionEventHandler["EachFrame", {
 			cl_playerSwimming = _data;
 		};
 
-		private _enemiesNearby = ((getPosATL player) nearEntities ["Man", 5]) select {alive _x && {(_x getVariable ["gameSide", ""]) != (player getVariable ["gameSide", ""])}};
+		private _enemiesNearby = ((getPosATL player) nearEntities ["Man", 10]) select {alive _x && {(_x getVariable ["gameSide", ""]) != (player getVariable ["gameSide", ""])}};
 		_data =  count _enemiesNearby;
 		if !(_data isEqualTo cl_enemiesNearby) then {
 			[missionNamespace, "newEnemiesNearby", [_enemiesNearby]] call BIS_fnc_callScriptedEventHandler;
@@ -136,29 +136,30 @@ cl_eventObserverID = addMissionEventHandler["EachFrame", {
 [missionNamespace, "newEnemiesNearby", {
 	params [["_enemiesNearby", [], []]];
 	{
-		if (_x getVariable ["melee_action", -1] == -1) then {
-			private _id = [
-			/* 0 object */							_x,
-			/* 1 action title */					"Melee Kill",
-			/* 2 idle icon */						WWRUSH_ROOT+"pictures\support.paa",
-			/* 3 progress icon */					WWRUSH_ROOT+"pictures\support.paa",
-			/* 4 condition to show */				"(_this distance _target) < 2.5 && {alive _target} && {(_target getRelDir _this) > 90 && (_target getRelDir _this) < 270}",
-			/* 5 condition for action */			"(_this distance _target) < 2.5 && {alive _target} && {(_target getRelDir _this) > 90 && (_target getRelDir _this) < 270}",
-			/* 6 code executed on start */			{},
-			/* 7 code executed per tick */			{},
-			/* 8 code executed on completion */		{
-				params ["_target", "_caller"];
-				[_caller] remoteExecCall ["client_fnc_meleeTakedown", _target];
-			},
-			/* 9 code executed on interruption */	{},
-			/* 10 arguments */						[],
-			/* 11 action duration */				0.5,
-			/* 12 priority */						500,
-			/* 13 remove on completion */			true,
-			/* 14 show unconscious */				false
-			] call BIS_fnc_holdActionAdd;
-			_x setVariable ["melee_action", _id];
+		if (_x getVariable ["melee_action", -1] != -1) then {
+			[_x, _x getVariable "melee_action"] call BIS_fnc_holdActionRemove;
 		};
+		private _id = [
+		/* 0 object */							_x,
+		/* 1 action title */					"Melee Kill",
+		/* 2 idle icon */						WWRUSH_ROOT+"pictures\support.paa",
+		/* 3 progress icon */					WWRUSH_ROOT+"pictures\support.paa",
+		/* 4 condition to show */				"(_this distance _target) < 2.5 && {alive _target} && {(_target getRelDir _this) > 90 && (_target getRelDir _this) < 270}",
+		/* 5 condition for action */			"(_this distance _target) < 2.5 && {alive _target} && {(_target getRelDir _this) > 90 && (_target getRelDir _this) < 270}",
+		/* 6 code executed on start */			{},
+		/* 7 code executed per tick */			{},
+		/* 8 code executed on completion */		{
+			params ["_target", "_caller"];
+			[_caller] remoteExecCall ["client_fnc_meleeTakedown", _target];
+		},
+		/* 9 code executed on interruption */	{},
+		/* 10 arguments */						[],
+		/* 11 action duration */				0.5,
+		/* 12 priority */						500,
+		/* 13 remove on completion */			true,
+		/* 14 show unconscious */				false
+		] call BIS_fnc_holdActionAdd;
+		_x setVariable ["melee_action", _id];
 	} forEach _enemiesNearby;
 }] call bis_fnc_addScriptedEventHandler;
 
