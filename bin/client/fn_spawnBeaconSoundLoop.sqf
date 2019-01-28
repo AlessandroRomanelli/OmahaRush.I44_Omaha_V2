@@ -13,6 +13,6 @@ if (isServer && !hasInterface) exitWith {};
 private _beacon = param[0,objNull,[objNull]];
 
 while {!isNull _beacon} do {
-	sleep 2;
+	uiSleep 2;
 	_beacon say3D "tug_beep";
 };

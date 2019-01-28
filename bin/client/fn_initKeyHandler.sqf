@@ -139,7 +139,7 @@ cl_allowActions = true;
 				};
 				[_para] spawn {
 					private _para = param[0, objNull, [objNull]];
-					sleep 5;
+					uiSleep 5;
 					deleteVehicle _para;
 				};
 			};
@@ -176,7 +176,7 @@ cl_allowActions = true;
 			if (isNil "cl_disableKeyThread") then {
 				cl_disableKeyThread = [] spawn {
 					cl_allowActions = false;
-					sleep 5;
+					uiSleep 5;
 					cl_allowActions = true;
 					cl_disableKeyThread = nil;
 				};

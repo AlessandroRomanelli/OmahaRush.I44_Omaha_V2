@@ -20,7 +20,7 @@ cl_matchTimer_thread = [] spawn {
 	private ["_time"];
 	private _delay = 0;
 	while {sv_gameStatus == 2} do {
-		sleep 1;
+		uiSleep 1;
 		private _status = sv_cur_obj getVariable ["status", -1];
 		if (_status == 0 || _status == 1) then {
 			_delay = _delay + 1;

@@ -16,7 +16,7 @@ if (_sideToJoin == sideUnknown) exitWith {};
 
 // Save data
 [] call client_fnc_saveStatistics;
-sleep 1;
+uiSleep 1;
 
 // End mission according to side
 if (_sideToJoin == WEST) then {

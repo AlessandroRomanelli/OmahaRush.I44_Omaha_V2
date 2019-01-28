@@ -34,7 +34,7 @@ private _animate = {
 	// Move to new position
 	_c ctrlSetPosition [0.443281 * safezoneW + safezoneX, 0.203 * safezoneH + safezoneY, 0.108281 * safezoneW, 0.187 * safezoneH];
 	_c ctrlCommit 0.25;
-	sleep 6.5;
+	uiSleep 6.5;
 
 	// Move to old pos
 	_c ctrlSetPosition _pos;
@@ -59,14 +59,14 @@ if (param[0,false,[false]]) then {
 		player setVariable ["isFallingBack", true];
 	};
 
-	sleep 3;
+	uiSleep 3;
 	[format["DEFENDERS HAVE %1 SECONDS TO FALL BACK", _fallBackTime]] call client_fnc_displayObjectiveMessage;
 
 	if (!_isPlayerAttacking) then {
 		[playArea, (_fallBackTime-3)] call client_fnc_updateRestrictions;
 	};
 
-	sleep (_fallBackTime-3);
+	uiSleep (_fallBackTime-3);
 	if (_isPlayerAttacking) then {
 		["NEW OBJECTIVE HAS BEEN ASSIGNED, PUSH!"] call client_fnc_displayObjectiveMessage;
 	} else {

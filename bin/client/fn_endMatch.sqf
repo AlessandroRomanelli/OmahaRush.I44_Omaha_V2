@@ -16,7 +16,7 @@ private _winners = param[0,"",[""]];
 if (_winners == "") exitWith {};
 
 // Make people hear the explosion :)
-sleep 1;
+uiSleep 1;
 
 // Close dialogs
 while {dialog} do {
@@ -67,7 +67,7 @@ player setVariable ["isAlive", false];
 ((uiNamespace getVariable ["rr_black",displayNull]) displayCtrl 0) ctrlSetPosition [0 * safezoneW + safezoneX, 0 * safezoneH + safezoneY];
 ((uiNamespace getVariable ["rr_black",displayNull]) displayCtrl 0) ctrlCommit 0.2;
 
-sleep 0.25;
+uiSleep 0.25;
 
 // Delete spawn cam if it exists
 if (!isNil "cl_spawnmenu_cam") then {
@@ -82,7 +82,7 @@ cl_exitcam_object cameraEffect ["Internal", "Back"];
 cl_exitcam_object camSetFOV .65;
 cl_exitcam_object camSetFocus [150, 1];
 cl_exitcam_object camCommit 0;
-sleep .05;
+uiSleep .05;
 showCinemaBorder false;
 
 // Display message
@@ -131,7 +131,7 @@ if (getNumber(missionConfigFile >> "GeneralConfig" >> "PostProcessing") == 1) th
 	};
 };
 
-sleep .3;
+uiSleep .3;
 
 // Move out
 ((uiNamespace getVariable ["rr_black",displayNull]) displayCtrl 0) ctrlSetPosition [-1 * safezoneW + safezoneX, 0 * safezoneH + safezoneY];
@@ -143,7 +143,7 @@ player setVariable ["deaths",cl_deaths,true];
 player setVariable ["points",cl_points,true];
 
 // Wait...
-sleep 6.5;
+uiSleep 6.5;
 
 // Display for best-ofs
 250 cutRsc ["rr_end_bestof","PLAIN"];
@@ -177,7 +177,7 @@ private _fadeInFadeOut = {
 	_c3 ctrlCommit 0.5;
 
 	// Wait 7 seconds
-	sleep 5;
+	uiSleep 5;
 
 	// Move to left and fade out
 	_c1 ctrlSetPosition [(-1) * safezoneW + safezoneX, 0.302 * safezoneH + safezoneY];
@@ -211,7 +211,7 @@ if (true) then {
 	[] spawn _fadeInFadeOut;
 
 	// Sleep
-	sleep 5.25;
+	uiSleep 5.25;
 };
 
 if (true) then {
@@ -238,7 +238,7 @@ if (true) then {
 	[] spawn _fadeInFadeOut;
 
 	// Sleep
-	sleep 5.25;
+	uiSleep 5.25;
 };
 
 if (true) then {
@@ -260,7 +260,7 @@ if (true) then {
 	[] spawn _fadeInFadeOut;
 
 	// Sleep
-	sleep 5.25;
+	uiSleep 5.25;
 };
 
 if (true) then {
@@ -299,7 +299,7 @@ if (true) then {
 	[] spawn _fadeInFadeOut;
 
 	// Sleep
-	sleep 4.5;
+	uiSleep 4.5;
 };
 
 60000 cutRsc ["rr_black", "PLAIN"];
@@ -310,7 +310,7 @@ if (true) then {
 ((uiNamespace getVariable ["rr_black",displayNull]) displayCtrl 0) ctrlSetPosition [0 * safezoneW + safezoneX, 0 * safezoneH + safezoneY];
 ((uiNamespace getVariable ["rr_black",displayNull]) displayCtrl 0) ctrlCommit 0.2;
 
-sleep 1;
+uiSleep 1;
 
 // To safe pos
 player setPos cl_safePos;

@@ -20,13 +20,13 @@ _pos set [1, (_pos select 1)+cos(_dir)*_rdist];
 
 titleCut ["", "BLACK OUT", 0.5];
 player allowDamage false;
-sleep 0.75;
+uiSleep 0.75;
 player setVariable ["isAlive", false];
 player setPosATL _pos;
 titleText [format ["<t color='#ffffff' size='2'>Using the %1...</t>", _path], "PLAIN", -1, true, true];
-sleep 1;
+uiSleep 1;
 titleFadeOut 0.5;
-sleep 0.5;
+uiSleep 0.5;
 
 _pos = getPosATL _dest;
 _pos set [0, (_pos select 0)+sin(_dir)*_rdist];
@@ -36,6 +36,6 @@ player setPosATL _pos;
 player setDir (getDir _dest);
 
 titleCut ["", "BLACK IN", 0.5];
-sleep 0.5;
+uiSleep 0.5;
 player allowDamage true;
 player setVariable ["isAlive", true];

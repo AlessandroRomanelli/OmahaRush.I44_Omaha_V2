@@ -40,7 +40,7 @@ if (!isNil "cl_pointfeed_removalThread") then {
 };
 
 cl_pointfeed_removalThread = [] spawn {
-	sleep 8;
+	uiSleep 8;
 	cl_pointfeed_text = ""; // Reset own pointfeeds
 	cl_pointfeed_points = 0;
 
@@ -51,7 +51,7 @@ cl_pointfeed_removalThread = [] spawn {
 	((uiNamespace getVariable ["rr_pointfeed",displayNull]) displayCtrl 0) ctrlCommit 0.6;
 	((uiNamespace getVariable ["rr_pointfeed",displayNull]) displayCtrl 1) ctrlCommit 0.6;
 
-	sleep 1;
+	uiSleep 1;
 
 	// Clear display
 	((uiNamespace getVariable ["rr_pointfeed",displayNull]) displayCtrl 0) ctrlSetStructuredText parseText "";

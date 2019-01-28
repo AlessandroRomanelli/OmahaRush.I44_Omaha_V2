@@ -66,7 +66,7 @@ cl_spawn_succ = {
 	player setVariable ["isAlive", true];
 	// Spawn protection
 	[] spawn {
-		sleep 0.5;
+		uiSleep 0.5;
 		player allowDamage true;
 	};
 

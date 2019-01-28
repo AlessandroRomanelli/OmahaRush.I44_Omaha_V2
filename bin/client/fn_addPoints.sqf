@@ -55,7 +55,7 @@ if (count _before != count _after) then {
 		private _unlockedClassnames = param [0, [], [[]]];
 		{
 			[_x] call client_fnc_displayUnlockWeapon;
-			sleep 5.5;
+			uiSleep 5.5;
 		} forEach _unlockedClassnames;
 	};
 };

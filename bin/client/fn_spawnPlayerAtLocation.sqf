@@ -56,11 +56,11 @@ if (_PPon) then {
 	};
 };
 
-sleep 0.7;
+uiSleep 0.7;
 
 // Black fade out/in
 2000 cutRsc ["rr_spawnPlayer","PLAIN"];
-sleep 0.4;
+uiSleep 0.4;
 
 // Delete blurry effect
 if (_PPon) then {
@@ -102,6 +102,6 @@ if (player getVariable "gameSide" == "defenders") then {
 cl_spawn_tick = diag_tickTime;
 
 // Display instructions hint for currently selected perk
-sleep 10.3;
+uiSleep 10.3;
 private _instructions = [cl_classPerk] call client_fnc_getPerkInstructions;
 [_instructions select 0, _instructions select 1] call client_fnc_hint;

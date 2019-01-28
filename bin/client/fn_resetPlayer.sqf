@@ -77,13 +77,13 @@ if (true) then {
 // If we have OnTenRestart enabled, WARN THE PLAYER
 if ((sv_gameCycle >= ((["RotationsPerMatch", 2] call BIS_fnc_getParamValue) - 1)) && sv_dedicatedEnvironment) then {
 	(_d displayCtrl 0) ctrlSetStructuredText parseText "<t size='2' color='#FE4629' shadow='2' align='center'>THE SERVER IS CHANGING MAP</t>";
-	sleep 30;
+	uiSleep 30;
 } else {
 // While loop
 private _restartTime = diag_tickTime + _time;
 private _timeLeft = _time;
 	while {_timeLeft > 0 && (sv_gameStatus in [3,4])} do {
-		sleep 1;
+		uiSleep 1;
 		_timeLeft = round (_restartTime - diag_tickTime);
 		(_d displayCtrl 0) ctrlSetStructuredText parseText format ["<t size='2' color='#FFFFFF' shadow='2' align='center'>Next match begins in %1</t>", [_timeLeft, "MM:SS"] call bis_fnc_secondsToString];
 	};
@@ -126,7 +126,7 @@ waitUntil {cl_statisticsLoaded && {sv_gameStatus isEqualTo 2}};
 // Give us points for playing :)
 [] spawn {
 	private _fallBackTime = [] call client_fnc_getFallbackTime;
-	sleep 3;
+	uiSleep 3;
 	// Message about preparation phase
 	[format ["DEFENDERS HAVE %1 SECONDS TO PREPARE", _fallBackTime]] call client_fnc_displayObjectiveMessage;
 };

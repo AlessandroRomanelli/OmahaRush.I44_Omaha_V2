@@ -58,6 +58,6 @@ cl_killfeed pushBack [_killer, _reason, _unit, _wasMelee];
 
 // Render the killfeed and remove it later on again :)
 [] call client_fnc_renderKillfeed;
-sleep 7;
+uiSleep 7;
 cl_killfeed deleteAt 0;
 [] call client_fnc_renderKillfeed;

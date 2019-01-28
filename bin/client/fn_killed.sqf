@@ -22,7 +22,7 @@ cl_spawnmenu_cam camPreparePos (getPosATL player);
 cl_spawnmenu_cam camPrepareTarget (getPosATL player);
 cl_spawnmenu_cam camCommitPrepared 0;
 
-sleep 0.05;
+uiSleep 0.05;
 showCinemaBorder false;
 cameraEffectEnableHUD true;
 
@@ -48,11 +48,11 @@ if (_vehicle != player) then {
 	};
 };
 
-sleep 15;
+uiSleep 15;
 
 // Move dead body out of vehicle
 if !(isNull objectParent player) then {moveOut player};
-sleep 0.1;
+uiSleep 0.1;
 
 // Destroy all objects that are left of us
 private _objs = nearestObjects [_pos, ["Man","GroundWeaponHolder", "WeaponHolder"], 5];
@@ -75,7 +75,7 @@ if (player getVariable "gameSide" == "attackers") then {
 
 	// DEAD CHECK
 	// Sometimes the respawn handler doesnt fire so we have to manuall check here if it did!
-	sleep 0.5;
+	uiSleep 0.5;
 	if (!cl_inSpawnMenu || !dialog) then {
 		["Player respawned - Backup"] call server_fnc_log;
 		[format["sv_gameStatus %1 cl_revived %2", sv_gameStatus, cl_revived]] call server_fnc_log;

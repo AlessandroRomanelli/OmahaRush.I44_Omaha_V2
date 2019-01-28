@@ -49,9 +49,9 @@ private _mg_code = {
 	[cl_lastActionTarget] spawn {
 		private _lastActionTarget = param[0, objNull, [objNull]];
 		if (_lastActionTarget isEqualTo player) then {
-			sleep 60;
+			uiSleep 60;
 		} else {
-			sleep 13;
+			uiSleep 13;
 		};
 
 		// allow us to restore ammo again
@@ -157,7 +157,7 @@ private _completed = {
 	cl_lastActionTarget setVariable ["ammo_restored",true];
 
 	[cl_lastActionTarget] spawn {
-		sleep 120;
+		uiSleep 120;
 		private _lastActionTarget = param[0, objNull, [objNull]];
 		// allow us to restore ammo again
 		_lastActionTarget setVariable ["ammo_restored",false];
@@ -177,7 +177,7 @@ private _completedEngineer = {
 	cl_lastActionTarget setFuel 1;
 
 	[cl_lastActionTarget] spawn {
-		sleep 120;
+		uiSleep 120;
 		private _lastActionTarget = param[0, objNull, [objNull]];
 		// allow us to restore ammo again
 		_lastActionTarget setVariable ["repaired",false];

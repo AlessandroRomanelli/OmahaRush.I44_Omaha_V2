@@ -165,7 +165,7 @@ if (isNil "cl_spawnmenu_cam") then {
 		diag_log "SPAWNMENU_CAM WAS NEITHER";
 	};
 };
-sleep 0.05;
+uiSleep 0.05;
 showCinemaBorder false;
 cameraEffectEnableHUD true;
 
@@ -231,10 +231,10 @@ animateCtrl = {
 		cl_objectiveSpawnAnimation = true;
 	while {(str _objective) isEqualTo (str sv_cur_obj)} do {
 		[_ctrl, _factor, _time] call scaleCtrl;
-		sleep (_time + 0.1);
+		uiSleep (_time + 0.1);
 		_ctrl ctrlSetPosition _ctrlPos;
 		_ctrl ctrlCommit _time;
-		sleep (_time + 0.1);
+		uiSleep (_time + 0.1);
 	};
 	_ctrl ctrlSetPosition _ctrlPos;
 	_ctrl ctrlCommit 0;

@@ -472,7 +472,7 @@ player addEventHandler ["GetInMan", {
 	}];
 
 	if (_vehicle isKindOf "Air") then {
-		if (typeOf _vehicle isEqualTo "NonSteerable_Parachute_F") then {
+		if ((typeOf _vehicle) isEqualTo "NonSteerable_Parachute_F") then {
 			[_vehicle] spawn {
 				private _vehicle = param[0, objNull, [objNull]];
 				waitUntil{(getPosATL _vehicle) select 2 < 3};
@@ -482,11 +482,11 @@ player addEventHandler ["GetInMan", {
 			[_vehicle] spawn {
 				private _vehicle = param[0, objNull, [objNull]];
 				private _fuelTime = getNumber(missionConfigFile >> "Vehicles" >> "Plane" >> "fuelTime");
-				sleep (_fuelTime - 10);
+				uiSleep (_fuelTime - 10);
 				private _timeLeft = diag_tickTime + 10;
 				while {_timeLeft > diag_tickTime && ((vehicle player) isEqualTo _vehicle)} do {
 					[format["YOU'LL RUN OUT OF FUEL IN %1 SECONDS<br /><t size='1.25'>PREPARE TO BAIL OUT!</t>", round (_timeLeft - diag_tickTime)]] call client_fnc_displayError;
-					sleep 1;
+					uiSleep 1;
 				};
 				if ((vehicle player) isEqualTo _vehicle) then {
 					_vehicle setFuel 0;

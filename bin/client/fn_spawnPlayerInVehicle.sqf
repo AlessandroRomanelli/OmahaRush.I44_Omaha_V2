@@ -66,11 +66,11 @@ if (getNumber(missionConfigFile >> "GeneralConfig" >> "PostProcessing") == 1) th
 	};
 };
 
-sleep 0.7;
+uiSleep 0.7;
 
 // Black fade out/in
 2000 cutRsc ["rr_spawnPlayer","PLAIN"];
-sleep 0.4;
+uiSleep 0.4;
 
 // Delete blurry effect
 if (getNumber(missionConfigFile >> "GeneralConfig" >> "PostProcessing") == 1) then {
@@ -109,6 +109,6 @@ if (player getVariable "gameSide" == "defenders") then {
 };
 
 // Display instructions hint for currently selected perk
-sleep 10.3;
+uiSleep 10.3;
 private _instructions = [cl_classPerk] call client_fnc_getPerkInstructions;
 [_instructions select 0, _instructions select 1] spawn client_fnc_hint;

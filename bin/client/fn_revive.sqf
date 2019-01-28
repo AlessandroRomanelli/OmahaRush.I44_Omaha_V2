@@ -29,10 +29,10 @@ if (cl_inSpawnMenu) exitWith {};
 // Make sure the spawn menu script gets cancelled
 cl_revived = true;
 
-sleep 0.5;
+uiSleep 0.5;
 // Looks like we have been revived :)
 setPlayerRespawnTime 0.1;
-sleep 0.2;
+uiSleep 0.2;
 
 // Set pos
 player setPosATL _pos;
@@ -73,7 +73,7 @@ player setVariable ["isAlive", true];
 player setVariable ["grenade_kill", nil];
 player setVariable ["wasHS", false];
 
-sleep 1;
+uiSleep 1;
 setPlayerRespawnTime 15;
 cl_revived = false;
 
