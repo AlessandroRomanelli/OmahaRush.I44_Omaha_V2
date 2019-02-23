@@ -279,7 +279,6 @@ player addEventHandler ["Killed", {
 		// Send message to all units that we are reviveable
 		// As this package gets send to all clients we might aswell use it to share our information regarding assists (damage that was inflicted on us)
 		[_victim, _killer, cl_assistsInfo, _grenade, _wasMelee] remoteExec ["client_fnc_medic_unitDied", 0];
-		_victim setVariable ["grenade_kill", nil];
 		// Disable hud
 		["rr_spawn_bottom_right_hud_renderer", "onEachFrame"] call BIS_fnc_removeStackedEventHandler;
 		300 cutRsc ["default","PLAIN"];
@@ -330,41 +329,49 @@ player addEventHandler ["HandleDamage", {
 	private _shooterSide = _shooter getVariable ["gameSide", "attackers"];
 	private _unitSide = _unit getVariable ["gameSide", "defenders"];
 	private _grenades = ["lib_us_mk_2", "lib_shg24", "lib_rg42", "lib_millsbomb"];
-	if (_damage >= 1 && {(toLower _projectile) in _grenades}) then {
+	// If the damage
+	if (_damage >= 1 && {isNil {_unit getVariable "grenade_kill"}} && {(toLower _projectile) in _grenades}) then {
 		_unit setVariable ["grenade_kill", _projectile];
-	};
-	// Is the shooter on the opposite side of the victim and is the victim alive?
-	if ((_shooterSide != _unitSide) && _unit getVariable ["isAlive", true]) then {
-		//If critical damage to the head kill the victim and reward the shooter with HS bonus
-		if (_damage >= 0.3 && {_hitSelection in ["head", "face_hub"]}) then {
-			// Has the HS kill already been awarded?
-			if (!(_unit getVariable ["wasHS", false])) then {
-				_unit setVariable ["wasHS", true];
-        _damage = 1 + _damage;
-			};
-		} else {
-			// Get the last weapon the shooter fired
-			private _shooterWeapon = _shooter getVariable ["lastWeaponFired", ""];
-			// Was it not defined? Get the current one, we might be lucky
-			if (_shooterWeapon isEqualTo "") then {
-				_shooterWeapon = currentWeapon _shooter;
-			};
-			// Is it not a listed weapon?
-			private _isWeaponListed = isClass(missionConfigFile >> "Unlocks" >> _shooterSide >> _shooterWeapon);
-			// If it is listed, get the multiplier, else don't do anything and use 1
-			private _damageMultiplier = if (_isWeaponListed) then {getNumber(missionConfigFile >> "Unlocks" >> _shooterSide >> _shooterWeapon >> "damageMultiplier")} else {1};
-			// Handle only the global hit part
-			if (_hitSelection isEqualTo "") then {
-				// Set the damage we are dealing according to the weapon that got us
-				_damage = (damage _unit) + (_damage * _damageMultiplier);
-				// If the damage is non fatal
-				if (_damage > 0 && _damage < 1) then {
-					// Display hit marker
-					_damage remoteExec ["client_fnc_MPHit", _shooter];
+		[_unit] spawn {
+			params ["_unit"];
+			uiSleep 0.25;
+			_unit setVariable ["grenade_kill", nil];
+		};
+	} else {
+		// Is the shooter on the opposite side of the victim and is the victim alive?
+		if ((_shooterSide != _unitSide) && _unit getVariable ["isAlive", true]) then {
+			private _isExplosive = (getNumber(configFile >> "CfgAmmo" >> _projectile >> "explosive")) > 0;
+			//If critical damage to the head kill the victim and reward the shooter with HS bonus
+			if (_damage >= 0.3 && {_hitSelection in ["head", "face_hub"]} && {_projectile != ""} && {!_isExplosive}) then {
+				// Has the HS kill already been awarded?
+				if (!(_unit getVariable ["wasHS", false])) then {
+					_unit setVariable ["wasHS", true];
+	        _damage = 1 + _damage;
 				};
 			} else {
-				// Don't damage the part if it's not the global hit part
-				_damage = _unit getHit _hitSelection;
+				// Get the last weapon the shooter fired
+				private _shooterWeapon = _shooter getVariable ["lastWeaponFired", ""];
+				// Was it not defined? Get the current one, we might be lucky
+				if (_shooterWeapon isEqualTo "") then {
+					_shooterWeapon = currentWeapon _shooter;
+				};
+				// Is it not a listed weapon?
+				private _isWeaponListed = isClass(missionConfigFile >> "Unlocks" >> _shooterSide >> _shooterWeapon);
+				// If it is listed, get the multiplier, else don't do anything and use 1
+				private _damageMultiplier = if (_isWeaponListed) then {getNumber(missionConfigFile >> "Unlocks" >> _shooterSide >> _shooterWeapon >> "damageMultiplier")} else {1};
+				// Handle only the global hit part
+				if (_hitSelection isEqualTo "") then {
+					// Set the damage we are dealing according to the weapon that got us
+					_damage = (damage _unit) + (_damage * _damageMultiplier);
+					// If the damage is non fatal
+					if (_damage > 0 && _damage < 1) then {
+						// Display hit marker
+						_damage remoteExec ["client_fnc_MPHit", _shooter];
+					};
+				} else {
+					// Don't damage the part if it's not the global hit part
+					_damage = _unit getHit _hitSelection;
+				};
 			};
 		};
 	};
