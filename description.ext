@@ -3,6 +3,12 @@ onLoadMission = "Battlefield brought to ArmA3";
 author = "A. Roman";
 onLoadMissionTime = 0;
 
+#define DEBUGGING
+
+#ifdef DEBUGGING
+allowFunctionsRecompile = 1;
+#endif
+
 // Debug
 enableDebugConsole[] = {"76561198039414328"};
 
