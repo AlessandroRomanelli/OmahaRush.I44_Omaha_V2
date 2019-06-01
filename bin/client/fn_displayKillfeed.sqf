@@ -54,7 +54,7 @@ if (_grenade != "") then {
 	};
 };
 
-cl_killfeed pushBack [_killer, _reason, _unit, _wasMelee];
+cl_killfeed pushBack [_killer call BIS_fnc_netId, _reason, _unit call BIS_fnc_netId, _wasMelee];
 
 // Render the killfeed and remove it later on again :)
 [] call client_fnc_renderKillfeed;

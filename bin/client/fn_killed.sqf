@@ -8,37 +8,62 @@ scriptName "fn_killed";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_killed.sqf"
+#define CAM_DIST 2
+#define pm_random(x) random [-x, 0, x]
 if (isServer && !hasInterface) exitWith {};
 
-// Create a death camera above our corpse
-cl_spawnmenu_cam = "camera" camCreate (getPos player);
-cl_spawnmenu_cam cameraEffect ["Internal", "Back"];
-cl_spawnmenu_cam camSetFOV .90;
-cl_spawnmenu_cam camSetFocus [2, 2];
-cl_spawnmenu_cam camCommit 0;
+params [["_killer", objNull, [objNull]]];
 
-// From body pos to dead cam pos
-cl_spawnmenu_cam camPreparePos (getPosATL player);
-cl_spawnmenu_cam camPrepareTarget (getPosATL player);
-cl_spawnmenu_cam camCommitPrepared 0;
+if (!isNil "cl_killcam_thread") then {
+	terminate cl_killcam_thread;
+};
 
-uiSleep 0.05;
-showCinemaBorder false;
-cameraEffectEnableHUD true;
+cl_killcam_thread = [_killer] spawn {
+	params [["_killer", objNull, [objNull]]];
+	// Create a death camera above our corpse
+	cl_spawnmenu_cam = "camera" camCreate (ASLtoATL (eyePos player));
+	cl_spawnmenu_cam cameraEffect ["Internal", "BACK"];
+	cl_spawnmenu_cam camSetFOV 0.75;
+	cl_spawnmenu_cam camSetTarget player;
+	cl_spawnmenu_cam camSetFocus [2, 2];
+	cl_spawnmenu_cam camCommit 0;
+
+	showCinemaBorder false;
+	cameraEffectEnableHUD true;
+
+	// From body pos to dead cam pos
+	cl_spawnmenu_cam camSetRelPos [pm_random(CAM_DIST), pm_random(CAM_DIST),4];
+	cl_spawnmenu_cam camCommit 2;
+	uiSleep 3;
+
+	if (isNull _killer || {_killer isEqualTo player}) exitWith {
+		cl_spawnmenu_cam camSetRelPos [0,0,50];
+		cl_spawnmenu_cam camCommit 13;
+	};
+
+	cl_spawnmenu_cam camSetTarget _killer;
+	cl_spawnmenu_cam camCommit 2;
+	waitUntil { camCommitted cl_spawnmenu_cam };
+
+	while {!cl_inSpawnMenu || !dialog} do {
+		private _dist = player distance _killer;
+		private _fov = if (_dist > 10) then {(750/(_dist^3)) max 0.025} else {0.75};
+		cl_spawnmenu_cam camSetFOV _fov;
+		cl_spawnmenu_cam camSetFocus [round _dist, 0];
+		cl_spawnmenu_cam camCommit 0.25;
+		waitUntil { camCommitted cl_spawnmenu_cam };
+	};
+	cl_killcam_thread = nil;
+};
+
+
+
 
 // Disable possible flare thread
 if (!isNull (missionNamespace getVariable ["cl_reloadFlares_thread", scriptNull])) then {
 	terminate cl_reloadFlares_thread;
 	285 cutRsc ["default", "PLAIN"];
 };
-
-// Move above body
-private _pos = player modelToWorld [0.1,0.1,3];
-private _targetPos = (getPosATL player);
-_targetPos set [2, 0];
-cl_spawnmenu_cam camPreparePos _pos;
-cl_spawnmenu_cam camPrepareTarget _targetPos;
-cl_spawnmenu_cam camCommitPrepared 1;
 
 // Are no alive units left? Send a respawn request to the server
 private _vehicle = vehicle player;
@@ -48,14 +73,15 @@ if (_vehicle != player) then {
 	};
 };
 
-uiSleep 15;
+uiSleep 3;
 
 // Move dead body out of vehicle
 if !(isNull objectParent player) then {moveOut player};
-uiSleep 0.1;
+
+uiSleep 12;
 
 // Destroy all objects that are left of us
-private _objs = nearestObjects [_pos, ["Man","GroundWeaponHolder", "WeaponHolder"], 5];
+private _objs = nearestObjects [getPos player, ["Man","GroundWeaponHolder", "WeaponHolder"], 5];
 {
 	deleteVehicle _x;
 } forEach _objs;

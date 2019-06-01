@@ -114,13 +114,13 @@ private _duration = if (cl_classPerk == "saboteur") then {1} else {4};
 if ((player getVariable "gameSide") == "defenders") then {
 	_icon = _icon + "bombDefuse.paa";
 	_text = "Disarm Explosives";
-	_cond = "(player distance sv_cur_obj) < ceil(([sv_cur_obj] call client_fnc_getObjectiveDistance) + 1.5) && {(sv_cur_obj getVariable ['status',-1] == 1) || (sv_cur_obj getVariable ['status', -1] == 0 && (_this isEqualTo player))}";
+	_cond = "((player getVariable 'gameSide') == 'defenders') && {(player distance sv_cur_obj) < ceil(([sv_cur_obj] call client_fnc_getObjectiveDistance) + 1.5)} && {(sv_cur_obj getVariable ['status',-1] == 1) || (sv_cur_obj getVariable ['status', -1] == 0 && (_this isEqualTo player))}";
 	_completion = {if ((sv_cur_obj distance player) < ceil(([sv_cur_obj] call client_fnc_getObjectiveDistance) + 1.5)) then {[] call client_fnc_disarmMCOM;};};
 	_interruption = {sv_cur_obj setVariable ["status", 1, true]};
 } else {
 	_icon = _icon + "bombPlant.paa";
 	_text = "Plant Explosives";
-	_cond = "(player distance sv_cur_obj) < ceil(([sv_cur_obj] call client_fnc_getObjectiveDistance) + 1.5) && {(sv_cur_obj getVariable ['status',-1] == -1) || (sv_cur_obj getVariable ['status', -1] == 2) || ((sv_cur_obj getVariable ['status', -1] == 0) && (_this isEqualTo player))}";
+	_cond = "((player getVariable 'gameSide') == 'attackers') && {(player distance sv_cur_obj) < ceil(([sv_cur_obj] call client_fnc_getObjectiveDistance) + 1.5)} && {(sv_cur_obj getVariable ['status',-1] == -1) || (sv_cur_obj getVariable ['status', -1] == 2) || ((sv_cur_obj getVariable ['status', -1] == 0) && (_this isEqualTo player))}";
 	_completion = {if ((sv_cur_obj distance player) < ceil(([sv_cur_obj] call client_fnc_getObjectiveDistance) + 1.5)) then {[] call client_fnc_armMCOM;};};
 	_interruption = {sv_cur_obj setVariable ["status", -1, true]};
 };

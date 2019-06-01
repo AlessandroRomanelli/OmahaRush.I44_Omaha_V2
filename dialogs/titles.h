@@ -1229,6 +1229,7 @@ class rr_reloadingFlares {
 				colorMainCountlinesWater[] = {0,0,0,0};
 				colorGrid[] = {0,0,0,0};
 				colorGridMap[] = {0,0,0,0};
+				widthRailWay = 1;
 			};
 			class Direction: RscStructuredText
 			{

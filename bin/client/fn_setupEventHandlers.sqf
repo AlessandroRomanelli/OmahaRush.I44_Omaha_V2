@@ -283,7 +283,7 @@ player addEventHandler ["Killed", {
 		["rr_spawn_bottom_right_hud_renderer", "onEachFrame"] call BIS_fnc_removeStackedEventHandler;
 		300 cutRsc ["default","PLAIN"];
 
-		rr_respawn_thread = [] spawn client_fnc_killed;
+		rr_respawn_thread = [_killer] spawn client_fnc_killed;
 
 		_victim setVariable ["isAlive", false];
 
@@ -358,7 +358,9 @@ player addEventHandler ["HandleDamage", {
 				// Is it not a listed weapon?
 				private _isWeaponListed = isClass(missionConfigFile >> "Unlocks" >> _shooterSide >> _shooterWeapon);
 				// If it is listed, get the multiplier, else don't do anything and use 1
-				private _damageMultiplier = if (_isWeaponListed) then {getNumber(missionConfigFile >> "Unlocks" >> _shooterSide >> _shooterWeapon >> "damageMultiplier")} else {1};
+				private _damageMultiplier = if (_isWeaponListed) then {
+					getNumber(missionConfigFile >> "Unlocks" >> _shooterSide >> _shooterWeapon >> "damageMultiplier")
+				} else {1};
 				// Handle only the global hit part
 				if (_hitSelection isEqualTo "") then {
 					// Set the damage we are dealing according to the weapon that got us

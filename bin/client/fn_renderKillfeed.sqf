@@ -14,6 +14,7 @@ if (isNil "cl_killfeed") exitWith {};
 
 private _fnc_getColorForObj = {
 	private _obj = param [0, objNull, [objNull]];
+	if (isNull _obj) exitWith {"#FFFFFF"};
 	private _color = "";
 	private _sameSide = ((effectiveCommander vehicle _obj) getVariable ["side",civilian]) isEqualTo playerSide;
 	private _sameGroup = (group _obj) isEqualTo (group player);
@@ -31,17 +32,17 @@ private _fnc_getColorForObj = {
 
 private _out = "";
 {
-	private _killerObj = _x select 0;
-	private _killerName = [_killerObj] call client_fnc_getUnitName;
-	private _killer = format["<t color='%1' shadow='2' font='PuristaMedium'>%2<t/>", [_killerObj] call _fnc_getColorForObj, _killerName];
-
-	private _killedObj = _x select 2;
-	private _killedName = [_killedObj] call client_fnc_getUnitName;
-	private _killed = format["<t color='%1' shadow='2' font='PuristaMedium'>%2<t/>", [_killedObj] call _fnc_getColorForObj, _killedName];
-
+	private _killer = (_x select 0) call BIS_fnc_objectFromNetId;
+	systemChat str _killer;
+	private _kname = format["<t color='%1' shadow='2' font='PuristaMedium'>%2<t/>", [_killer] call _fnc_getColorForObj, [_killer] call client_fnc_getUnitName];
+	systemChat _kname;
+	private _victim = (_x select 2) call BIS_fnc_objectFromNetId;
+	systemChat str _victim;
+	private _vname = format["<t color='%1' shadow='2' font='PuristaMedium'>%2<t/>", [_victim] call _fnc_getColorForObj, [_victim] call client_fnc_getUnitName];
+	systemChat _vname;
 	private _weapon = if ((_x select 1) == "") then {"KILLED"} else {([_x select 1] call client_fnc_weaponDetails) select 1};
 
-	private _distance = format ["%1m", ceil (_killerObj distance _killedObj)];
+	private _distance = format ["%1m", ceil (_killer distance _victim)];
 
 	private _wasMelee = _x select 3;
 	if (_wasMelee) then {
@@ -49,14 +50,14 @@ private _out = "";
 	};
 
 	// Add to master string
-	if (!isNull _killerObj) then {
-		if (_killerObj isEqualTo _killedObj) then {
-			_out = _out + _killed + " <t color='#ffffff' shadow='2'>COMMITTED SUICIDE<t/><br/>";
+	if (!isNull _killer) then {
+		if (_killer isEqualTo _victim) then {
+			_out = _out + _vname + " <t color='#ffffff' shadow='2'>COMMITTED SUICIDE<t/><br/>";
 		} else {
-			_out = _out + _killer + " <t color='#ffffff' shadow='2'>[" + _weapon + "]<t/> " + _killed + " <t color='#ffffff' shadow='2'>(" + _distance + ")<t/><br/>";
+			_out = _out + _kname + " <t color='#ffffff' shadow='2'>[" + _weapon + "]<t/> " + _vname + " <t color='#ffffff' shadow='2'>(" + _distance + ")<t/><br/>";
 		};
 	} else {
-		_out = _out + _killed + " <t color='#ffffff' shadow='2'>DIED<t/><br/>";
+		_out = _out + _vname + " <t color='#ffffff' shadow='2'>DIED<t/><br/>";
 	};
 } forEach cl_killfeed;
 

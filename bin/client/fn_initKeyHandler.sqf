@@ -164,7 +164,8 @@ cl_allowActions = true;
 	// T - SPOTTING TARGETS
 	if (_DIKcode == 20) then {
 		if (!cl_allowActions) exitWith {
-			systemChat format ["SPAM PREVENTION - Keys blocked for %1s", round (cl_lastKeyPressed + 5 - diag_tickTime)];
+			private _text = format ["3D SPOTTING BLOCKED FOR %1 SECONDS", round (cl_lastKeyPressed + 5 - diag_tickTime)];
+			[_text] call client_fnc_displayError;
 		};
 		_h = true;
 		if (diag_tickTime - cl_lastKeyPressed < 1.5) then {
