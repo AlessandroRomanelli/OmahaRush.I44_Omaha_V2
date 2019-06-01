@@ -389,11 +389,17 @@ _vehiclesCtrl ctrlAddEventHandler ["MouseButtonClick", {
 	(_spawnDisplay displayCtrl 8) lbSetCurSel -1;
 }];
 
-// First start warning TEMP
 if (isNil "TEMPWARNING") then {
-	// TEMPRARY WARNING TODO
 	createDialog "rr_info_box";
-	((findDisplay 10000) displayCtrl 0) ctrlSetStructuredText parseText "<t size='1' color='#FFFFFF' shadow='2' align='left'><t font='PuristaBold'>WWRush Version</t><br/>0.70.0<br/><br/><t font='PuristaBold'>Changelog</t><br/><a href='https://github.com/AlessandroRomanelli/OmahaRush.I44_Omaha_V2/blob/master/ChangeLog.md'>Learn more</a><br/><br/><t font='PuristaBold'>Official Website</t><br/><a href='http://www.no4commando.com'>Open</a></t>";
+	((findDisplay 10000) displayCtrl 0) ctrlSetStructuredText parseText ("<t size='1' color='#FFFFFF' shadow='2' align='left'>
+	<t font='PuristaBold'>WWRush</t>
+	<br/>V"+getText(missionConfigFile >> "version")+"
+	<br/>
+	<br/><t font='PuristaBold'>Changelog</t>
+	<br/><a href='https://github.com/AlessandroRomanelli/WWR-Template/blob/master/ChangeLog.md'>Learn more</a>
+	<br/>
+	<br/><t font='PuristaBold'>Github Repository</t>
+	<br/><a href='https://github.com/AlessandroRomanelli/WWR-Template'>Browse Files</a></t>");
 	playSound "introSong";
 	TEMPWARNING = true;
 };

@@ -3,6 +3,8 @@ onLoadMission = "Battlefield brought to ArmA3";
 author = "A. Roman";
 onLoadMissionTime = 0;
 
+version = "0.71.0";
+
 // Debug
 enableDebugConsole[] = {"76561198039414328"};
 
