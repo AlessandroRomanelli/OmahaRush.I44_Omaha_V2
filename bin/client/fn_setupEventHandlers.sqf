@@ -22,12 +22,31 @@ player removeAllEventHandlers "HandleDamage";
 [missionNamespace, "switchedToExtCamera"] call BIS_fnc_removeAllScriptedEventHandlers;
 [missionNamespace, "playAreaChanged"] call BIS_fnc_removeAllScriptedEventHandlers;
 [missionNamespace, "objStatusChanged"] call BIS_fnc_removeAllScriptedEventHandlers;
+[missionNamespace, "playerSwimChanged"] call BIS_fnc_removeAllScriptedEventHandlers;
+[missionNamespace, "newEnemiesNearby"] call BIS_fnc_removeAllScriptedEventHandlers;
 
 // Custom Event Handler for Group Change
 cl_groupSize = -1;
 cl_playAreaPos = [0,0,0];
 cl_obj_status = -1;
 cl_playerSwimming = !(isTouchingGround player) && (surfaceIsWater (getPosATL player));
+cl_enemiesNearby = 0;
+removeMissionEventHandler["Map", cl_mapObserverID];
+cl_mapObserverID = addMissionEventHandler["Map", {
+		params ["_mapIsOpened"];
+		if (_mapIsOpened && !cl_mapSetup) then {
+			cl_mapSetup = true;
+			private _fullScreenMapCtrl = (findDisplay 12) displayCtrl 51;
+			_fullScreenMapCtrl ctrlMapAnimAdd [0, 0.075, getPosATL sv_cur_obj];
+			ctrlMapAnimCommit _fullScreenMapCtrl;
+		};
+		if (_mapIsOpened) then {
+			300 cutText ["", "PLAIN"];
+		} else {
+			300 cutRsc ["playerHUD", "PLAIN"];
+		};
+}];
+
 removeMissionEventHandler["EachFrame", cl_eventObserverID];
 cl_eventObserverID = addMissionEventHandler["EachFrame", {
 		private ["_data"];
@@ -50,7 +69,7 @@ cl_eventObserverID = addMissionEventHandler["EachFrame", {
 
 		_data = sv_cur_obj getVariable ["status", -1];
 		if !(_data isEqualTo cl_obj_status) then {
-			[missionNamespace, "objStatusChanged"] call BIS_fnc_callScriptedEventHandler;
+			[missionNamespace, "objStatusChanged", [_data]] call BIS_fnc_callScriptedEventHandler;
 			cl_obj_status = _data;
 		};
 
@@ -59,15 +78,22 @@ cl_eventObserverID = addMissionEventHandler["EachFrame", {
 			[missionNamespace, "playerSwimChanged"] call BIS_fnc_callScriptedEventHandler;
 			cl_playerSwimming = _data;
 		};
+
+		private _enemiesNearby = ((getPosATL player) nearEntities ["Man", 10]) select {alive _x && {(_x getVariable ["gameSide", ""]) != (player getVariable ["gameSide", ""])}};
+		_data =  count _enemiesNearby;
+		if !(_data isEqualTo cl_enemiesNearby) then {
+			[missionNamespace, "newEnemiesNearby", [_enemiesNearby]] call BIS_fnc_callScriptedEventHandler;
+			cl_enemiesNearby = _data;
+		};
 }];
 
 // If the group size changes (either we left or some other people joined) update the perks
 [missionNamespace, "groupPlayerChanged", {
-	[] spawn client_fnc_getSquadPerks;
+	[] call client_fnc_getSquadPerks;
 }] call bis_fnc_addScriptedEventHandler;
 
 [missionNamespace, "playAreaChanged", {
-	["playArea"] spawn client_fnc_updateLine;
+	["playArea"] call client_fnc_updateLine;
 }] call bis_fnc_addScriptedEventHandler;
 
 [missionNamespace, "playerSwimChanged", {
@@ -84,16 +110,17 @@ cl_eventObserverID = addMissionEventHandler["EachFrame", {
 
 [missionNamespace, "objStatusChanged", {
 	// Update objective marker to reflect status
-		[true] spawn client_fnc_updateMarkers;
-		if ((sv_cur_obj getVariable ["status", -1]) isEqualTo 1) then {
+		private _status = param [0, -1, [0]];
+		[true] call client_fnc_updateMarkers;
+		if (_status isEqualTo 1) then {
 			// Make the UI at the top blink
 			[] spawn client_fnc_objectiveArmedGUIAnimation;
 		};
 }] call bis_fnc_addScriptedEventHandler;
 
 [missionNamespace, "switchedToExtCamera", {
-	private _infFP = [false, true] select (paramsArray#15);
-	private _vehFP = [false, true] select (paramsArray#16);
+	private _infFP = (["InfantryFPOnly", 1] call BIS_fnc_getParamValue) isEqualTo 1;
+	private _vehFP = (["VehicleFPOnly", 0] call BIS_fnc_getParamValue) isEqualTo 1;
 	if (isNull objectParent player) then {
 		if (_infFP) then {
 			player switchCamera "INTERNAL";
@@ -101,9 +128,39 @@ cl_eventObserverID = addMissionEventHandler["EachFrame", {
 	} else {
 		if (_vehFP) then {
 			player switchCamera "INTERNAL";
-			["Third person view for vehicles is disabled"] spawn client_fnc_displayError;
+			["Third person view for vehicles is disabled"] call client_fnc_displayError;
 		};
 	};
+}] call bis_fnc_addScriptedEventHandler;
+
+[missionNamespace, "newEnemiesNearby", {
+	params [["_enemiesNearby", [], []]];
+	{
+		if (_x getVariable ["melee_action", -1] != -1) then {
+			[_x, _x getVariable "melee_action"] call BIS_fnc_holdActionRemove;
+		};
+		private _id = [
+		/* 0 object */							_x,
+		/* 1 action title */					"Melee Kill",
+		/* 2 idle icon */						WWRUSH_ROOT+"pictures\support.paa",
+		/* 3 progress icon */					WWRUSH_ROOT+"pictures\support.paa",
+		/* 4 condition to show */				"(_this distance _target) < 2.5 && {alive _target} && {(_target getRelDir _this) > 90 && (_target getRelDir _this) < 270}",
+		/* 5 condition for action */			"(_this distance _target) < 2.5 && {alive _target} && {(_target getRelDir _this) > 90 && (_target getRelDir _this) < 270}",
+		/* 6 code executed on start */			{},
+		/* 7 code executed per tick */			{},
+		/* 8 code executed on completion */		{
+			params ["_target", "_caller"];
+			[_caller] remoteExecCall ["client_fnc_meleeTakedown", _target];
+		},
+		/* 9 code executed on interruption */	{},
+		/* 10 arguments */						[],
+		/* 11 action duration */				0.5,
+		/* 12 priority */						500,
+		/* 13 remove on completion */			true,
+		/* 14 show unconscious */				false
+		] call BIS_fnc_holdActionAdd;
+		_x setVariable ["melee_action", _id];
+	} forEach _enemiesNearby;
 }] call bis_fnc_addScriptedEventHandler;
 
 // Automatic magazine recombination
@@ -169,7 +226,7 @@ player addEventHandler ["Hit",
 	private _causedBy = _this select 1;
 	if (!isNull _causedBy && isPlayer _causedBy) then {
 		["Assists detected 0"] call server_fnc_log;
-		[_causedBy, _this select 2] spawn client_fnc_countAssist;
+		[_causedBy, _this select 2] call client_fnc_countAssist;
 	};
 
 	// Hp regeneration
@@ -199,54 +256,60 @@ player addEventHandler ["Killed", {
 		[format ["You have been killed by killer %1", str _killer]] call server_fnc_log;
 		[format ["You have been killed by instigator %1", str _instigator]] call server_fnc_log;
 
+		// Attempt to retrieve the grenade that killed the unit
+		private _grenade = _victim getVariable ["grenade_kill", ""];
+		// Check if the player was killed via melee takedown
+		private _meleeKiller = _victim getVariable ["melee_killer", objNull];
+		private _wasMelee = false;
+		if (!isNull _meleeKiller) then {
+			_killer = _meleeKiller;
+			_wasMelee = true;
+		};
 		// Send message to killer that he killed someone
-		if ((_victim != _killer) && (!isNull _victim) && (!isNull _killer)) then {
-			if (_victim getVariable ["isAlive", true]) then {
-				[_victim, false] remoteExec ["client_fnc_kill", _killer];
+		if ((!isNull _victim) && {!isNull _killer} && {_victim != _killer}) then {
+			if (_victim getVariable ["isAlive", false]) then {
+        private _wasHS = _victim getVariable ["wasHS", false];
+				[_victim, _wasHS, _grenade, _wasMelee] remoteExecCall ["client_fnc_kill", _killer];
 				_victim setVariable ["isAlive", false];
 			};
 			// you have been killed by message
-			[format ["You have been killed by<br/>%1", _killer getVariable ["name", "ERROR: No Name"]]] spawn client_fnc_displayInfo;
+			[format ["You have been killed by<br/>%1", [_killer] call client_fnc_getUnitName]] call client_fnc_displayInfo;
 
-			// Send message to all units that we are reviveable
-			// As this package gets send to all clients we might aswell use it to share our information regarding assists (damage that was inflicted on us)
-			[_victim,_killer, cl_assistsInfo] remoteExec ["client_fnc_medic_unitDied", 0];
 		};
-
+		// Send message to all units that we are reviveable
+		// As this package gets send to all clients we might aswell use it to share our information regarding assists (damage that was inflicted on us)
+		[_victim, _killer, cl_assistsInfo, _grenade, _wasMelee] remoteExec ["client_fnc_medic_unitDied", 0];
 		// Disable hud
 		["rr_spawn_bottom_right_hud_renderer", "onEachFrame"] call BIS_fnc_removeStackedEventHandler;
 		300 cutRsc ["default","PLAIN"];
 
-		rr_respawn_thread = [] spawn client_fnc_killed;
+		rr_respawn_thread = [_killer] spawn client_fnc_killed;
 
 		_victim setVariable ["isAlive", false];
 
 		private _spawnSafeDistance = (getNumber (missionConfigFile >> "MapSettings" >> sv_mapSize >> "safeSpawnDistance"));
-		private _spawnSafeTime = paramsArray#6;
+		private _spawnSafeTime = ["SpawnSafeTime", 5] call BIS_fnc_getParamValue;
 		private _spawnMarker = format ["mobile_respawn_%1", _victim getVariable "gameSide"];
 		if (_killer getVariable ["gameSide", "attackers"] != (_victim getVariable ["gameSide", "defenders"]) &&
 				{(diag_tickTime - cl_spawn_tick) < _spawnSafeTime} &&
 				{(_victim distance (getMarkerPos _spawnMarker)) < _spawnSafeDistance}) exitWith {
 			// Info
-			["Your killer has been punished for spawn camping, your death will not be counted"] spawn client_fnc_displayError;
+			["Your killer has been punished for spawn camping, your death will not be counted"] call client_fnc_displayError;
 			cl_deaths = cl_deaths - 1;
 			cl_total_deaths = cl_total_deaths - 1;
 
 			// Revive us
-			[] spawn {
-				sleep 0.5;
-				[objNull, true] spawn client_fnc_revive;
-			};
+			[objNull, true] spawn client_fnc_revive;
 
 			// Kill the killer
-			["You have been killed for spawn camping"] remoteExec ["client_fnc_administrationKill",_killer];
+			["You have been killed for spawn camping"] remoteExecCall ["client_fnc_administrationKill",_killer];
 		};
 	};
 }];
 
 // Assign current weapon to player when firing (to avoid PUT and THROW)
 player addEventHandler ["Fired", {
-  params ["_unit", "_weapon", "_muzzle", "_mode", "_ammo", "_magazine", "_projectile", "_gunner"];
+  params ["_unit", "_weapon"];
   private _lastWepon = _unit getVariable ["lastWeaponFired", ""];
   if !(_weapon isEqualTo _lastWepon) then
   {
@@ -265,42 +328,52 @@ player addEventHandler ["HandleDamage", {
 	if (isNull _shooter) exitWith {_damage/10};
 	private _shooterSide = _shooter getVariable ["gameSide", "attackers"];
 	private _unitSide = _unit getVariable ["gameSide", "defenders"];
-	// Is the shooter on the opposite side of the victim and is the victim alive?
-	if ((_shooterSide != _unitSide) && _unit getVariable ["isAlive", true]) then {
-		//If critical damage to the head kill the victim and reward the shooter with HS bonus
-		if ((_hitSelection in ["head", "face_hub"]) && {_damage >= 0.5}) then {
-			// Has the HS kill already been awarded?
-			if (!(_unit getVariable ["wasHS", false])) then {
-				// Give the HS bonus
-				[_unit, true] remoteExec ["client_fnc_kill",_shooter];
-				// Definitely kill the victim
-				_unit setDamage 1;
-				_unit setVariable ["wasHS", true];
-				_unit setVariable ["isAlive", false];
-			};
-		} else {
-			// Get the last weapon the shooter fired
-			private _shooterWeapon = _shooter getVariable ["lastWeaponFired", ""];
-			// Was it not defined? Get the current one, we might be lucky
-			if (_shooterWeapon isEqualTo "") then {
-				_shooterWeapon = currentWeapon _shooter;
-			};
-			// Is it not a listed weapon?
-			private _isWeaponListed = isClass(missionConfigFile >> "Unlocks" >> _shooterSide >> _shooterWeapon);
-			// If it is listed, get the multiplier, else don't do anything and use 1
-			private _damageMultiplier = if (_isWeaponListed) then {getNumber(missionConfigFile >> "Unlocks" >> _shooterSide >> _shooterWeapon >> "damageMultiplier")} else {1};
-			// Handle only the global hit part
-			if (_hitSelection isEqualTo "") then {
-				// Set the damage we are dealing according to the weapon that got us
-				_damage = (damage _unit) + (_damage * _damageMultiplier);
-				// If the damage is non fatal
-				if (_damage > 0 && _damage < 1) then {
-					// Display hit marker
-					_damage remoteExec ["client_fnc_MPHit", _shooter];
+	private _grenades = ["lib_us_mk_2", "lib_shg24", "lib_rg42", "lib_millsbomb"];
+	// If the damage
+	if (_damage >= 1 && {isNil {_unit getVariable "grenade_kill"}} && {(toLower _projectile) in _grenades}) then {
+		_unit setVariable ["grenade_kill", _projectile];
+		[_unit] spawn {
+			params ["_unit"];
+			uiSleep 0.25;
+			_unit setVariable ["grenade_kill", nil];
+		};
+	} else {
+		// Is the shooter on the opposite side of the victim and is the victim alive?
+		if ((_shooterSide != _unitSide) && _unit getVariable ["isAlive", true]) then {
+			private _isExplosive = (getNumber(configFile >> "CfgAmmo" >> _projectile >> "explosive")) > 0;
+			//If critical damage to the head kill the victim and reward the shooter with HS bonus
+			if (_damage >= 0.3 && {_hitSelection in ["head", "face_hub"]} && {_projectile != ""} && {!_isExplosive}) then {
+				// Has the HS kill already been awarded?
+				if (!(_unit getVariable ["wasHS", false])) then {
+					_unit setVariable ["wasHS", true];
+	        _damage = 1 + _damage;
 				};
 			} else {
-				// Don't damage the part if it's not the global hit part
-				_damage = _unit getHit _hitSelection;
+				// Get the last weapon the shooter fired
+				private _shooterWeapon = _shooter getVariable ["lastWeaponFired", ""];
+				// Was it not defined? Get the current one, we might be lucky
+				if (_shooterWeapon isEqualTo "") then {
+					_shooterWeapon = currentWeapon _shooter;
+				};
+				// Is it not a listed weapon?
+				private _isWeaponListed = isClass(missionConfigFile >> "Unlocks" >> _shooterSide >> _shooterWeapon);
+				// If it is listed, get the multiplier, else don't do anything and use 1
+				private _damageMultiplier = if (_isWeaponListed) then {
+					getNumber(missionConfigFile >> "Unlocks" >> _shooterSide >> _shooterWeapon >> "damageMultiplier")
+				} else {1};
+				// Handle only the global hit part
+				if (_hitSelection isEqualTo "") then {
+					// Set the damage we are dealing according to the weapon that got us
+					_damage = (damage _unit) + (_damage * _damageMultiplier);
+					// If the damage is non fatal
+					if (_damage > 0 && _damage < 1) then {
+						// Display hit marker
+						_damage remoteExec ["client_fnc_MPHit", _shooter];
+					};
+				} else {
+					// Don't damage the part if it's not the global hit part
+					_damage = _unit getHit _hitSelection;
+				};
 			};
 		};
 	};
@@ -323,7 +396,7 @@ player addEventHandler ["GetInMan", {
 
 	if (_vehicle isKindOf "Air") then {
 		private _fuelTime = getNumber(missionConfigFile >> "Vehicles" >> "Plane" >> "fuelTime");
-		[format["YOU HAVE %1 SECONDS WORTH OF FUEL, BE QUICK!", _fuelTime]] spawn client_fnc_displayInfo;
+		[format["YOU HAVE %1 SECONDS WORTH OF FUEL, BE QUICK!", _fuelTime]] call client_fnc_displayInfo;
 		_vehicle setVectorUp [0,0,1];
 		private _velocity = (vectorDir _vehicle) vectorMultiply 50;
 		_vehicle setVelocity _velocity;
@@ -348,28 +421,23 @@ player addEventHandler ["GetInMan", {
 		if (isNull _killer) exitWith {};
 
 		if ((local _vehicle) && {player getVariable ["side", sideUnknown] != _killer getVariable ["side", sideUnknown]}) exitWith {
-			{
-				if (!isNull _x && {_x getVariable ["isAlive", true]}) then {
-					[_x, false] remoteExec ["client_fnc_kill", _killer];
-				};
-			} forEach (crew _vehicle);
 			private _vehType = typeOf _vehicle;
-			private _planes = ["LIB_US_P39_2", "LIB_P47", "LIB_P39", "LIB_Pe2", "LIB_FW190F8", "LIB_Ju87"];
-			private _htanks = ["LIB_PzKpfwV", "LIB_T34_85", "LIB_M4A4_FIREFLY"];
-			private _ltanks = ["LIB_SdKfz234_2", "LIB_T34_76", "LIB_M3A3_Stuart"];
-			private _apc = ["LIB_SdKfz222_camo","LIB_Zis5v_61K","LIB_M8_Greyhound"];
-			private _halfTrucks = ["LIB_US_M3_Halftrack", "LIB_SdKfz251_FFV", "LIB_Scout_M3_FFV", "LIB_US_Scout_M3_FFV"];
-			if (_vehType in _planes) exitWith {
-				[400, true, "AIRPLANE"] remoteExec ["client_fnc_vehicleDisabled", _killer];
-			};
-			if (_vehType in _htanks) exitWith {
-				[500, true, "MEDIUM TANK"] remoteExec ["client_fnc_vehicleDisabled", _killer];
+			private _planes = getArray(missionConfigFile >> "Vehicles" >> "planes");
+			private _htanks = getArray(missionConfigFile >> "Vehicles" >> "htanks");
+			private _ltanks = getArray(missionConfigFile >> "Vehicles" >> "ltanks");
+			private _apc = getArray(missionConfigFile >> "Vehicles" >> "apc");
+			private _ifv = getArray(missionConfigFile >> "Vehicles" >> "ifv");
+			if (_vehType in _apc || _vehType in _ifv) exitWith {
+				[200, true, "ARMORED CAR"] remoteExec ["client_fnc_vehicleDisabled", _killer];
 			};
 			if (_vehType in _ltanks) exitWith {
 				[300, true, "LIGHT TANK"] remoteExec ["client_fnc_vehicleDisabled", _killer];
 			};
-			if (_vehType in _apc || _vehType in _halfTrucks) exitWith {
-				[200, true, "ARMORED CAR"] remoteExec ["client_fnc_vehicleDisabled", _killer];
+			if (_vehType in _htanks) exitWith {
+				[500, true, "MEDIUM TANK"] remoteExec ["client_fnc_vehicleDisabled", _killer];
+			};
+			if (_vehType in _planes) exitWith {
+				[500, true, "AIRPLANE"] remoteExec ["client_fnc_vehicleDisabled", _killer];
 			};
 			[100, true, "VEHICLE"] remoteExec ["client_fnc_vehicleDisabled", _killer];
 		};
@@ -379,7 +447,7 @@ player addEventHandler ["GetInMan", {
 	_vehicle removeAllEventHandlers "HandleDamage";
 	_vehicle addEventHandler ["HandleDamage", {
 		params ["_vehicle", "_hitSelection", "_damage", "_shooter", "_projectile"];
-  	private _rockets = ["LIB_60mm_M6", "LIB_R_88mm_RPzB"];
+  	private _rockets = ["LIB_60mm_M6", "LIB_R_88mm_RPzB", "LIB_1Rnd_89m_PIAT"];
 		if (_projectile in _rockets) then {
 			_damage = damage _vehicle + (_damage*2);
 		};
@@ -413,7 +481,7 @@ player addEventHandler ["GetInMan", {
 	}];
 
 	if (_vehicle isKindOf "Air") then {
-		if (typeOf _vehicle isEqualTo "NonSteerable_Parachute_F") then {
+		if ((typeOf _vehicle) isEqualTo "NonSteerable_Parachute_F") then {
 			[_vehicle] spawn {
 				private _vehicle = param[0, objNull, [objNull]];
 				waitUntil{(getPosATL _vehicle) select 2 < 3};
@@ -423,11 +491,11 @@ player addEventHandler ["GetInMan", {
 			[_vehicle] spawn {
 				private _vehicle = param[0, objNull, [objNull]];
 				private _fuelTime = getNumber(missionConfigFile >> "Vehicles" >> "Plane" >> "fuelTime");
-				sleep (_fuelTime - 10);
+				uiSleep (_fuelTime - 10);
 				private _timeLeft = diag_tickTime + 10;
 				while {_timeLeft > diag_tickTime && ((vehicle player) isEqualTo _vehicle)} do {
-					[format["YOU'LL RUN OUT OF FUEL IN %1 SECONDS<br /><t size='1.25'>PREPARE TO BAIL OUT!</t>", round (_timeLeft - diag_tickTime)]] spawn client_fnc_displayError;
-					sleep 1;
+					[format["YOU'LL RUN OUT OF FUEL IN %1 SECONDS<br /><t size='1.25'>PREPARE TO BAIL OUT!</t>", round (_timeLeft - diag_tickTime)]] call client_fnc_displayError;
+					uiSleep 1;
 				};
 				if ((vehicle player) isEqualTo _vehicle) then {
 					_vehicle setFuel 0;
@@ -447,21 +515,8 @@ player addEventHandler ["GetOutMan", {
 		private _velPlayer = (velocity player) vectorMultiply 0.1;
 		player setVelocity _velPlayer;
 		if (player getVariable ["hasChute", true]) then {
-			["PRESS <t size='1.5'>[SPACE BAR]</t> TO OPEN YOUR PARACHUTE!"] spawn client_fnc_displayInfo;
+			["PRESS <t size='1.5'>[SPACE BAR]</t> TO OPEN YOUR PARACHUTE!"] call client_fnc_displayInfo;
 		};
-		/* [] spawn {
-			waitUntil{((getPosATL player) select 2) < 30};
-			if (isNull (objectParent player)) then {
-				private _velPlayer = velocity player;
-				{_velPlayer set [_forEachIndex, _x/5]} forEach _velPlayer;
-				private _posPlayer = position player;
-				private _dirPlayer = getDir player;
-				private _para = "NonSteerable_Parachute_F" createVehicle _posPlayer;
-				player moveInDriver _para;
-				_para setPos _posPlayer;
-				_para setVelocity _velPlayer;
-				_para setDir _dirPlayer;
-			};
-		}; */
 	};
 }];
+true

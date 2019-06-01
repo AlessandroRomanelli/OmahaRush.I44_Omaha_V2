@@ -30,7 +30,7 @@ private _id = addMissionEventHandler ["Draw3D", {
         0,
         0,
         0,
-        _x getVariable ["name", "ERROR: No Name"],
+        [_x] call client_fnc_getUnitName,
         2,
         0.03,
         'PuristaMedium'

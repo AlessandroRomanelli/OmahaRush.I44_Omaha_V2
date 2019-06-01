@@ -33,7 +33,9 @@ setDate _time;
 	private _tick = diag_tickTime;
 	while {diag_tickTime - _tick < 120} do
 	{
-		sleep 1;
+		uiSleep 1;
 		0 setFog _fog;
 	};
 };
+
+true

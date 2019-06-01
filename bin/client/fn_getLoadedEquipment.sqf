@@ -18,6 +18,10 @@ if (isNil "cl_equipConfigurations") then {
 if (count cl_equipConfigurations == 0) then {
 	// Get all unlockable weapons
 	private _configs = "true" configClasses (missionConfigFile >> "Unlocks" >> player getVariable "gameSide");
+	private _validHandgun = _configs findIf {(configName _x) isEqualTo (cl_equipClassnames select 1)};
+	if (_validHandgun isEqualTo -1) then {
+			cl_equipClassnames set [1, ""];
+	};
 
 	private _maxExp = selectMax [cl_exp_assault, cl_exp_medic, cl_exp_engineer, cl_exp_support, cl_exp_recon];
 	// Populate cl_equipConfigurations with all possible weapons

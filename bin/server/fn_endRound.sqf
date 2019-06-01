@@ -14,7 +14,7 @@ if (sv_gameStatus == 3) exitWith {};
 
 // Update status var
 sv_gameStatus = 3;
-[["sv_gameStatus"]] spawn server_fnc_updateVars;
+[["sv_gameStatus"]] call server_fnc_updateVars;
 
 // Disable team balancer
 if (!isNil "sv_autoTeamBalancer_thread") then {terminate sv_autoTeamBalancer_thread};
@@ -29,14 +29,14 @@ if (sv_tickets <= 0 || sv_matchTime <= 0 || _mcomsLeft) then {
 };
 
 // Wait 38 seconds
-sleep 31;
+uiSleep 31;
 
 // Start countdown on users
 [] remoteExec ["client_fnc_resetPlayer", 0];
 
 // Tell upper script we're done after all players waited
-private _time = paramsArray#9;
-sleep (_time - 3);
+private _time = ["LobbyTime", 60] call BIS_fnc_getParamValue;
+uiSleep (_time - 3);
 
 sv_gameStatus = 4;
-[["sv_gameStatus"]] spawn server_fnc_updateVars;
+[["sv_gameStatus"]] call server_fnc_updateVars;

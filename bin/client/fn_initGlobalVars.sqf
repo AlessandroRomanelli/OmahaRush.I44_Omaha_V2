@@ -36,4 +36,11 @@ cl_onEachFrame_team_reviveable = [];
 cl_onEachFramePreparationID = -1;
 cl_onEachFrameIconRenderedID = -1;
 cl_eventObserverID = -1;
+cl_mapObserverID = -1;
+cl_mapSetup = false;
+cl_equipConfigurations = [];
+if (!isNil "cl_equipClassnames") then {
+  cl_equipClassnames set [0, ""];
+  cl_equipClassnames set [1, ""];
+};
 true

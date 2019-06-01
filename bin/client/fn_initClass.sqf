@@ -29,7 +29,7 @@ rc_spawnBeacon = {
 		if (({!isNull (_x getVariable ["assault_beacon_obj", objNull])} count (units group player)) < 1) then {
 			private _safeSpawnDistance = getNumber(missionConfigFile >> "MapSettings" >> sv_mapSize >> "safeSpawnDistance");
 			if (player distance sv_cur_obj < 50 || (player distance (getMarkerPos cl_enemySpawnMarker)) < _safeSpawnDistance) then {
-				["Your rally point may not be placed here"] spawn client_fnc_displayError;
+				["Your rally point may not be placed here"] call client_fnc_displayError;
 			} else {
 				private _existingBeacon = (player getVariable ["assault_beacon_obj",objNull]);
 
@@ -66,14 +66,14 @@ rc_spawnBeacon = {
 				cl_beacon_used = 0;
 
 				// Give beacon damage handler
-				[_beacon] remoteExec ["client_fnc_beaconEventHandler", 0];
+				[_beacon] remoteExecCall ["client_fnc_beaconEventHandler", 0];
 			};
 		} else {
-			["Your squad already has a rally point placed down"] spawn client_fnc_displayError;
+			["Your squad already has a rally point placed down"] call client_fnc_displayError;
 		};
 	} else {
 		//["Destroy your old beacon or wait " + (diag_tickTime - ((player getVariable ["assault_beacon_obj",objNull]) getVariable ["deployment_tick", 0])) + " more seconds to deploy a new beacon"] spawn client_fnc_displayError;
-		[format["Destroy your old beacon or wait %1 more seconds to deploy a new beacon", round (180 - (diag_tickTime - ((player getVariable ["assault_beacon_obj",objNull]) getVariable ["deployment_tick", 0])))]] spawn client_fnc_displayError;
+		[format["Destroy your old beacon or wait %1 more seconds to deploy a new beacon", round (180 - (diag_tickTime - ((player getVariable ["assault_beacon_obj",objNull]) getVariable ["deployment_tick", 0])))]] call client_fnc_displayError;
 	};
 };
 
@@ -94,24 +94,24 @@ if (true) then {
 					if (([cursorObject] call client_fnc_getBeaconOwner) == player) then {
 						// Were the owner, destroy it!
 						deleteVehicle cursorObject;
-						["You have destroyed your rally point"] spawn client_fnc_displayInfo;
+						["You have destroyed your rally point"] call client_fnc_displayInfo;
 					} else {
 						// Were not the owner and its on our team, error!
-						["This rally point is owned by a team member"] spawn client_fnc_displayError;
+						["This rally point is owned by a team member"] call client_fnc_displayError;
 						diag_log "5";
 					};
 				} else {
 					// not on our team, destroy it!
 					deleteVehicle cursorObject;
 					// Points!
-					["<t size='1.3' color='#FFFFFF'>RALLY POINT DESTROYED</t>", 50] spawn client_fnc_pointfeed_add;
-					[50] spawn client_fnc_addPoints;
+					["<t size='1.3' color='#FFFFFF'>RALLY POINT DESTROYED</t>", 50] call client_fnc_pointfeed_add;
+					[50] call client_fnc_addPoints;
 				};
 			} else {
 				// check if were assault and we have the spawnbeacon perk, then place beacon
 				if (cl_classPerk == "spawnbeacon") then {
 					if (isNull (objectParent player)) then {
-						[] spawn rc_spawnBeacon;
+						[] call rc_spawnBeacon;
 					};
 				};
 			};

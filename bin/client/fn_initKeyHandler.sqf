@@ -41,7 +41,7 @@ cl_allowActions = true;
 			// Fill data from objects
 			_h = true;
 			{
-				private _name = (_x getVariable ["name", "ERROR: No Name"]);
+				private _name = [_x] call client_fnc_getUnitName;
 				private _classInitial = [_x getVariable ["class", ""]] call {
 					private _class = param [0, "", [""]];
 					if (_class isEqualTo "medic") exitWith {"M"};
@@ -95,19 +95,19 @@ cl_allowActions = true;
 			{
 				cl_soundLevel = 0.5;
 				0.5 fadeSound cl_soundLevel;
-				["Soundlevel has been reduced to 50%"] spawn client_fnc_displayInfo;
+				["Soundlevel has been reduced to 50%"] call client_fnc_displayInfo;
 			};
 			case 0.5:
 			{
 				cl_soundLevel = 0.1;
 				0.5 fadeSound cl_soundLevel;
-				["Soundlevel has been reduced to 10%"] spawn client_fnc_displayInfo;
+				["Soundlevel has been reduced to 10%"] call client_fnc_displayInfo;
 			};
 			case 0.1:
 			{
 				cl_soundLevel = 1;
 				0.5 fadeSound cl_soundLevel;
-				["Soundlevel has been increased to 100%"] spawn client_fnc_displayInfo;
+				["Soundlevel has been increased to 100%"] call client_fnc_displayInfo;
 			};
 		};
 	};
@@ -125,7 +125,7 @@ cl_allowActions = true;
 			_para setVelocity _velPlayer;
 			_para setDir _dirPlayer;
 			player setVariable ["hasChute", false];
-			["PRESS <t size='1.5'>[SPACE BAR]</t> TO CUT YOUR PARACHUTE!"] spawn client_fnc_displayInfo;
+			["PRESS <t size='1.5'>[SPACE BAR]</t> TO CUT YOUR PARACHUTE!"] call client_fnc_displayInfo;
 		} else {
 			if ((typeOf (vehicle player)) isEqualTo "NonSteerable_Parachute_F") then {
 				private _para = vehicle player;
@@ -139,7 +139,7 @@ cl_allowActions = true;
 				};
 				[_para] spawn {
 					private _para = param[0, objNull, [objNull]];
-					sleep 5;
+					uiSleep 5;
 					deleteVehicle _para;
 				};
 			};
@@ -155,7 +155,7 @@ cl_allowActions = true;
 	// F1 to F10 - SEAT SWITCH
 	if (_DIKcode > 58 && _DIKcode < 69) then {
 		if (!isNull (objectParent player)) then {
-			[_DIKcode] spawn client_fnc_moveWithinVehicle;
+			[_DIKcode] call client_fnc_moveWithinVehicle;
 		};
 	};
 
@@ -164,7 +164,8 @@ cl_allowActions = true;
 	// T - SPOTTING TARGETS
 	if (_DIKcode == 20) then {
 		if (!cl_allowActions) exitWith {
-			systemChat format ["SPAM PREVENTION - Keys blocked for %1s", round (cl_lastKeyPressed + 5 - diag_tickTime)];
+			private _text = format ["3D SPOTTING BLOCKED FOR %1 SECONDS", round (cl_lastKeyPressed + 5 - diag_tickTime)];
+			[_text] call client_fnc_displayError;
 		};
 		_h = true;
 		if (diag_tickTime - cl_lastKeyPressed < 1.5) then {
@@ -176,15 +177,17 @@ cl_allowActions = true;
 			if (isNil "cl_disableKeyThread") then {
 				cl_disableKeyThread = [] spawn {
 					cl_allowActions = false;
-					sleep 5;
+					uiSleep 5;
 					cl_allowActions = true;
 					cl_disableKeyThread = nil;
 				};
 			};
 		} else {
-			[] spawn client_fnc_spotTarget;
+			[] call client_fnc_spotTarget;
 		};
 		cl_lastKeyPressed = diag_tickTime;
 	};
 	_h
 }];
+
+true

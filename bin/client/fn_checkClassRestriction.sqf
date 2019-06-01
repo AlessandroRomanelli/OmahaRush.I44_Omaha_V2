@@ -12,7 +12,7 @@ private _class = param[0,"medic",[""]];
 private _isRestricted = false;
 
 // Check if the mission parameters restrict classes
-private _classRestrictionEnabled = [false, true] select (paramsArray#18);
+private _classRestrictionEnabled = (["ClassLimits", 1] call BIS_fnc_getParamValue) isEqualTo 1;
 // If the class restriction is OFF or the class is not restricted, we got nothing to do!
 if (!_classRestrictionEnabled || !(_class in ["support", "engineer", "recon"])) exitWith {false};
 
@@ -26,7 +26,8 @@ private _classLimitException = {
 	if (_currentClassPlayers isEqualTo 0) then {
 		_message = format["THE %1 CLASS IS NOT AVAILABLE <br />PLEASE SELECT ANOTHER CLASS AND TRY AGAIN LATER", toUpper _class];
 	};
-	[_message] spawn client_fnc_displayError;
+	[_message] call client_fnc_displayError;
+	true
 };
 
 // Count how many players are on our side
@@ -41,7 +42,7 @@ private _newClassMember = if !(player getVariable ["class", "medic"] isEqualTo _
 
 // If the ratio between players with the same restricted class and the players on the same side is beyond the limit, restrict
 if (_classLimit != 1 && {((_sameClassPlayers + _newClassMember)/(count _sameSidePlayers)) > _classLimit}) then {
-  [_class, _sameClassPlayers] spawn _classLimitException;
+  [_class, _sameClassPlayers] call _classLimitException;
   _isRestricted = true;
 };
 

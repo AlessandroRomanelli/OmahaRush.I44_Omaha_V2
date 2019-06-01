@@ -12,7 +12,7 @@ scriptName "fn_MCOMdestroyed";
 if (isServer && !hasInterface) exitWith {};
 
 // Warning
-["THE OBJECTIVE HAS BEEN DESTROYED"] spawn client_fnc_displayObjectiveMessage;
+["THE OBJECTIVE HAS BEEN DESTROYED"] call client_fnc_displayObjectiveMessage;
 
 // Clean our spawnbeacons
 private _beacon = player getVariable ["assault_beacon_obj", objNull];
@@ -21,7 +21,7 @@ if (!isNull _beacon) then {
 };
 
 // Update spawn cam
-[] spawn client_fnc_updateSpawnMenuCam;
+[] call client_fnc_updateSpawnMenuCam;
 
 // Animation
 private _animate = {
@@ -34,26 +34,20 @@ private _animate = {
 	// Move to new position
 	_c ctrlSetPosition [0.443281 * safezoneW + safezoneX, 0.203 * safezoneH + safezoneY, 0.108281 * safezoneW, 0.187 * safezoneH];
 	_c ctrlCommit 0.25;
-	sleep 6.5;
+	uiSleep 6.5;
 
 	// Move to old pos
 	_c ctrlSetPosition _pos;
 	_c ctrlCommit 0.25;
 };
 
-private _fallBackTime = [] call client_fnc_getFallbackTime;
 
 // Param is TRUE if the just destroyed mcom was NOT the last one
 if (param[0,false,[false]]) then {
-	// If this objective was NOT the last one, reset the time!
-	private _roundTime = ceil (paramsArray#3 * 60);
-
-	if (player getVariable ["gameSide", "attackers"] == "attackers") then {
-		[] spawn client_fnc_blockSpawn;
-	};
+	private _fallBackTime = [] call client_fnc_getFallbackTime;
 
 	// Update markers
-	[] spawn client_fnc_updateMarkers;
+	[] call client_fnc_updateMarkers;
 
 	private _isPlayerAttacking = ((player getVariable "gameSide") isEqualTo "attackers");
 
@@ -65,18 +59,18 @@ if (param[0,false,[false]]) then {
 		player setVariable ["isFallingBack", true];
 	};
 
-	sleep 3;
-	[format["DEFENDERS HAVE %1 SECONDS TO FALL BACK", _fallBackTime]] spawn client_fnc_displayObjectiveMessage;
+	uiSleep 3;
+	[format["DEFENDERS HAVE %1 SECONDS TO FALL BACK", _fallBackTime]] call client_fnc_displayObjectiveMessage;
 
 	if (!_isPlayerAttacking) then {
-		[playArea, (_fallBackTime-3)] spawn client_fnc_updateRestrictions;
+		[playArea, (_fallBackTime-3)] call client_fnc_updateRestrictions;
 	};
 
-	sleep (_fallBackTime-3);
+	uiSleep (_fallBackTime-3);
 	if (_isPlayerAttacking) then {
-		["NEW OBJECTIVE HAS BEEN ASSIGNED, PUSH!"] spawn client_fnc_displayObjectiveMessage;
+		["NEW OBJECTIVE HAS BEEN ASSIGNED, PUSH!"] call client_fnc_displayObjectiveMessage;
 	} else {
-		["NEW OBJECTIVE HAS BEEN ASSIGNED, DEFEND!"] spawn client_fnc_displayObjectiveMessage;
+		["NEW OBJECTIVE HAS BEEN ASSIGNED, DEFEND!"] call client_fnc_displayObjectiveMessage;
 		player setVariable ["isFallingBack", false];
 	};
 
@@ -85,10 +79,10 @@ if (param[0,false,[false]]) then {
 	private _idx = (floor (random 4))+1;
 	playSound format["%1Order%2_%3", _side, _faction, _idx];
 
-	[] spawn _animate;
-
 	// Update markers
 	if (_isPlayerAttacking) then {
-		[playArea] spawn client_fnc_updateRestrictions;
+		[playArea] call client_fnc_updateRestrictions;
 	};
+
+	[] call _animate;
 };

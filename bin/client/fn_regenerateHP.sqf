@@ -11,7 +11,7 @@ scriptName "fn_regenerateHP";
 if (isServer && !hasInterface) exitWith {};
 
 // Lets regenerate HP after 5 seconds of not taking damage
-sleep 5;
+uiSleep 5;
 
 // Not in combat anymore
 player setVariable ["inCombat",nil,true];
@@ -19,7 +19,7 @@ player setVariable ["inCombat",nil,true];
 // Regenerate HP
 while {damage player > 0} do {
 	player setDamage ((damage player) - 0.01);
-	sleep 0.2;
+	uiSleep 0.2;
 };
 
 // Reset assists

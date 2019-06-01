@@ -30,7 +30,7 @@ if (count AllPlayers <= 6) then {
 };
 
 // Validate points earned
-[] spawn client_fnc_validatePointsEarned;
+[] call client_fnc_validatePointsEarned;
 
 // Validate equipment
 [] call client_fnc_validateEquipment;
@@ -51,10 +51,13 @@ if (count _before != count _after) then {
 	private _unlockedClassnames = _unlockedWeapons;
 
 	// Display unlocked weapons
-	{
-		[_x] spawn client_fnc_displayUnlockWeapon;
-		sleep 5.5;
-	} forEach _unlockedClassnames;
+	[_unlockedClassnames] spawn {
+		private _unlockedClassnames = param [0, [], [[]]];
+		{
+			[_x] call client_fnc_displayUnlockWeapon;
+			uiSleep 5.5;
+		} forEach _unlockedClassnames;
+	};
 };
 
 // Generate timeline event

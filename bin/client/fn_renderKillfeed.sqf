@@ -12,35 +12,54 @@ if (isServer && !hasInterface) exitWith {};
 
 if (isNil "cl_killfeed") exitWith {};
 
+private _fnc_getColorForObj = {
+	private _obj = param [0, objNull, [objNull]];
+	if (isNull _obj) exitWith {"#FFFFFF"};
+	private _color = "";
+	private _sameSide = ((effectiveCommander vehicle _obj) getVariable ["side",civilian]) isEqualTo playerSide;
+	private _sameGroup = (group _obj) isEqualTo (group player);
+	if (_sameSide) then {
+		if (_sameGroup) then {
+			_color = '#009D05';
+		} else {
+			_color = '#3083F4';
+		};
+	} else {
+		_color = '#FE251B';
+	};
+	_color
+};
+
 private _out = "";
 {
-	private _killerName = (_x select 0) getVariable ["name", "ERROR: No Name"];
+	private _killer = (_x select 0) call BIS_fnc_objectFromNetId;
+	systemChat str _killer;
+	private _kname = format["<t color='%1' shadow='2' font='PuristaMedium'>%2<t/>", [_killer] call _fnc_getColorForObj, [_killer] call client_fnc_getUnitName];
+	systemChat _kname;
+	private _victim = (_x select 2) call BIS_fnc_objectFromNetId;
+	systemChat str _victim;
+	private _vname = format["<t color='%1' shadow='2' font='PuristaMedium'>%2<t/>", [_victim] call _fnc_getColorForObj, [_victim] call client_fnc_getUnitName];
+	systemChat _vname;
 	private _weapon = if ((_x select 1) == "") then {"KILLED"} else {([_x select 1] call client_fnc_weaponDetails) select 1};
-	private _killer = if (((driver vehicle (_x select 0)) getVariable ["side",civilian]) == playerSide) then {
-		if (group (_x select 0) == group player) then {
-			"<t color='#009D05' shadow='2' font='PuristaMedium'>" + _killerName + "<t/>"
-		} else {
-			"<t color='#3083F4' shadow='2' font='PuristaMedium'>" + _killerName + "<t/>"
-		};
-	} else {
-		"<t color='#FE251B' shadow='2' font='PuristaMedium'>" + _killerName + "<t/>"
-	};
 
-	private _killedName = (_x select 2) getVariable ["name", "ERROR: No Name"];
-	private _killed = if (((driver vehicle (_x select 2)) getVariable ["side",civilian]) == playerSide) then {
-		if (group (_x select 2) == group player) then {
-			"<t color='#009D05' shadow='2' font='PuristaMedium'>" + _killedName + "<t/>"
-		} else {
-			"<t color='#3083F4' shadow='2' font='PuristaMedium'>" + _killedName + "<t/>"
-		};
-	} else {
-		"<t color='#FE251B' shadow='2' font='PuristaMedium'>" + _killedName + "<t/>"
-	};
+	private _distance = format ["%1m", ceil (_killer distance _victim)];
 
-	private _distance = format ["%1m", ceil ((_x select 0) distance (_x select 2))];
+	private _wasMelee = _x select 3;
+	if (_wasMelee) then {
+		_weapon = "KNIFE";
+	};
 
 	// Add to master string
-	_out = _out + _killer + " <t color='#ffffff' shadow='2'>[" + _weapon + "]<t/> " + _killed + " <t color='#ffffff' shadow='2'>(" + _distance + ")<t/><br/>";
+	if (!isNull _killer) then {
+		if (_killer isEqualTo _victim) then {
+			_out = _out + _vname + " <t color='#ffffff' shadow='2'>COMMITTED SUICIDE<t/><br/>";
+		} else {
+			_out = _out + _kname + " <t color='#ffffff' shadow='2'>[" + _weapon + "]<t/> " + _vname + " <t color='#ffffff' shadow='2'>(" + _distance + ")<t/><br/>";
+		};
+	} else {
+		_out = _out + _vname + " <t color='#ffffff' shadow='2'>DIED<t/><br/>";
+	};
 } forEach cl_killfeed;
 
 (uiNamespace getVariable ["rr_objective_gui", displayNull] displayCtrl 10) ctrlSetStructuredText (parseText _out);
+true

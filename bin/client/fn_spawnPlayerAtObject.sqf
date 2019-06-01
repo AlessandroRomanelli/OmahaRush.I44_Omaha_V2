@@ -19,10 +19,14 @@ private _inVehicle = param[2,false,[false]];
 
 private _nearbyEnemies = {player getVariable ["gameSide", ""] != _x getVariable ["gameSide", ""]} count (_unit nearEntities ["Man", 25]) > 0;
 
+if !(_unit in playArea) then {
+	["Unit is too far away from the battlefield"] call client_fnc_displayError;
+};
+
 // Invalid spawnpoint check (spawnpoint is not within the playable area)
 if ((!alive _unit) || (_unit distance sv_cur_obj) > 5000 || _nearbyEnemies) exitWith {
 	// The spawnpoint is unavailable, do not spawn the player here
-	["Spawnpoint unavailable"] spawn client_fnc_displayError;
+	["Spawnpoint unavailable"] call client_fnc_displayError;
 };
 
 private _vehicleNoSpace = false;
@@ -34,7 +38,7 @@ if (_inVehicle) then {
 
 // Was the vehicle full?
 if (_vehicleNoSpace) exitWith {
-	["Vehicle full"] spawn client_fnc_displayError;
+	["Vehicle full"] call client_fnc_displayError;
 };
 
 // Close spawn dialog
@@ -48,7 +52,7 @@ if (_unit isKindOf "LIB_GerRadio" || _unit isKindOf "LIB_SovRadio") then {
 };
 
 // Equip
-[] spawn client_fnc_equipAll;
+[] call client_fnc_equipAll;
 
 if (!_inVehicle) then { // Normal on-unit-spawn
 	// Move player to spawn location
@@ -57,16 +61,16 @@ if (!_inVehicle) then { // Normal on-unit-spawn
 	// Make player look into the direction of the objective
 	player setDir (getDir _unit);
 } else { // In-vehicle-spawn
-
+	[_unit] call client_fnc_moveUnitIntoVehicle;
 };
 
 // Give units points
 if (_sendPoints) then {
-	[] remoteExec ["client_fnc_squadSpawn",_unit];
+	[] remoteExecCall ["client_fnc_squadSpawn",_unit];
 };
 
 // Move camera down to player, then delete it
-cl_spawnmenu_cam camPreparePos (ASLToATL (eyePos player));
+cl_spawnmenu_cam camPreparePos (_spawnPos vectorAdd [0,0,2]);
 cl_spawnmenu_cam camPrepareTarget sv_cur_obj;
 cl_spawnmenu_cam camCommitPrepared 1;
 
@@ -87,11 +91,11 @@ if (_PPon) then {
 	};
 };
 
-sleep 0.7;
+uiSleep 0.7;
 
 // Black fade out/in
 2000 cutRsc ["rr_spawnPlayer","PLAIN"];
-sleep 0.4;
+uiSleep 0.4;
 
 // Delete blurry effect
 if (_PPon) then {
@@ -117,10 +121,10 @@ camDestroy cl_spawnmenu_cam;
 player switchCamera "INTERNAL";
 
 // Launch GUI
-cl_gui_thread = [] spawn client_fnc_startIngameGUI;
+[] call client_fnc_startIngameGUI;
 
 // General success script
-[] spawn cl_spawn_succ;
+[] call cl_spawn_succ;
 
 // Display help hint
 if (player getVariable "gameSide" == "defenders") then {
@@ -130,8 +134,6 @@ if (player getVariable "gameSide" == "defenders") then {
 };
 
 // Display instructions hint for currently selected perk
-[] spawn {
-	sleep 10.3;
-	private _instructions = [cl_classPerk] call client_fnc_getPerkInstructions;
-	[_instructions select 0, _instructions select 1] spawn client_fnc_hint;
-};
+uiSleep 10.3;
+private _instructions = [cl_classPerk] call client_fnc_getPerkInstructions;
+[_instructions select 0, _instructions select 1] call client_fnc_hint;

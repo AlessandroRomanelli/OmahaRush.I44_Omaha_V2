@@ -12,7 +12,7 @@ scriptName "fn_restrictedArea";
 player setVariable ["entryTime", diag_tickTime];
 
 private _fallBackTime = [] call client_fnc_getFallbackTime;;
-private _OOBTime = paramsArray#7;
+private _OOBTime = ["OutOfBoundsTime", 20] call BIS_fnc_getParamValue;
 private _outOfBoundsTimeout = if (player getVariable ["isFallingBack", false]) then [{_fallBackTime}, {_OOBTime;}];
 
 // Wait until time is out or were out again
@@ -22,7 +22,7 @@ waitUntil {((diag_tickTime - (player getVariable "entryTime")) > _outOfBoundsTim
 if ((diag_tickTime - (player getVariable "entryTime")) > _outOfBoundsTimeout && (player getVariable ["isAlive", false])) then {
 	player setDamage 1;
 	player setVariable ["isAlive", false];
-	["You have been killed for remaining in a restricted area"] spawn client_fnc_displayError;
+	["You have been killed for remaining in a restricted area"] call client_fnc_displayError;
 };
 
 // Delete myself ay!

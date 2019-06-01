@@ -16,7 +16,7 @@ private _oldStage = [] call {
 };
 
 // If it's the first objective, return the defined fallback time
-if (_oldStage isEqualTo "") exitWith {paramsArray#8};
+if (_oldStage isEqualTo "") exitWith {["InitialFallBack", 60] call BIS_fnc_getParamValue};
 
 // 4m/s speed of a player whilst sprinting
 private _playerSpeed = 6;

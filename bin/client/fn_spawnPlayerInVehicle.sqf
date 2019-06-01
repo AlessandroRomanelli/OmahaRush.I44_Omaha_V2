@@ -21,7 +21,7 @@ if (isNull _config) then {
 }; */
 
 // Equip
-[] spawn client_fnc_equipAll;
+[] call client_fnc_equipAll;
 
 /* private _pos = getArray(_config >> "positionATL");
 private _class = getText(_config >> "classname");
@@ -32,14 +32,14 @@ private _vehicle = _objects select 0; */
 
 private _vehicle = missionNamespace getVariable [_configName, objNull];
 
-if (isNull _vehicle) exitWith {["Vehicle unavailable"] spawn client_fnc_displayError;};
+if (isNull _vehicle) exitWith {["Vehicle unavailable"] call client_fnc_displayError;};
 
 // Put player into vehicle
 private _vehicleNoSpace = !([_vehicle] call client_fnc_moveUnitIntoVehicle);
 
 // Was the vehicle full?
 if (_vehicleNoSpace) exitWith {
-	["Vehicle full"] spawn client_fnc_displayError;
+	["Vehicle full"] call client_fnc_displayError;
 };
 
 // Close spawn dialog
@@ -66,11 +66,11 @@ if (getNumber(missionConfigFile >> "GeneralConfig" >> "PostProcessing") == 1) th
 	};
 };
 
-sleep 0.7;
+uiSleep 0.7;
 
 // Black fade out/in
 2000 cutRsc ["rr_spawnPlayer","PLAIN"];
-sleep 0.4;
+uiSleep 0.4;
 
 // Delete blurry effect
 if (getNumber(missionConfigFile >> "GeneralConfig" >> "PostProcessing") == 1) then {
@@ -92,14 +92,14 @@ if (getNumber(missionConfigFile >> "GeneralConfig" >> "PostProcessing") == 1) th
 0.3 fadeSound 1;
 
 // General success script
-[] spawn cl_spawn_succ;
+[] call cl_spawn_succ;
 
 cl_spawnmenu_cam cameraEffect ["TERMINATE","BACK"];
 camDestroy cl_spawnmenu_cam;
 player switchCamera "INTERNAL";
 
 // Launch GUI
-cl_gui_thread = [] spawn client_fnc_startIngameGUI;
+[] call client_fnc_startIngameGUI;
 
 // Display help hint
 if (player getVariable "gameSide" == "defenders") then {
@@ -109,8 +109,6 @@ if (player getVariable "gameSide" == "defenders") then {
 };
 
 // Display instructions hint for currently selected perk
-[] spawn {
-	sleep 10.3;
-	private _instructions = [cl_classPerk] call client_fnc_getPerkInstructions;
-	[_instructions select 0, _instructions select 1] spawn client_fnc_hint;
-};
+uiSleep 10.3;
+private _instructions = [cl_classPerk] call client_fnc_getPerkInstructions;
+[_instructions select 0, _instructions select 1] spawn client_fnc_hint;

@@ -18,7 +18,7 @@ private _isRefreshing = param[0, false, [false]];
 private _d = findDisplay 5000;
 private _l = _d displayCtrl 300;
 
-private _classRestrictionEnabled = [false, true] select (paramsArray#18);
+private _classRestrictionEnabled = (["ClassLimits", 1] call BIS_fnc_getParamValue) isEqualTo 1;
 
 private _countClassPlayers = {
 	private _class = param[0, "", [""]];
@@ -82,16 +82,16 @@ if (!_isRefreshing) then {
 		[] call client_fnc_populateSpawnMenu;
 		if (cl_spawnmenu_currentWeaponSelectionState == 1) then {
 			cl_spawnmenu_currentWeaponSelectionState = 0; // Nothing open
-			[] spawn client_fnc_spawnMenu_displayPrimaryWeaponSelection;
+			[] call client_fnc_spawnMenu_displayPrimaryWeaponSelection;
 		};
-		[] spawn client_fnc_populateSpawnMenu;
+		[] call client_fnc_populateSpawnMenu;
 	}];
 
 	((findDisplay 5000) displayCtrl 301) ctrlRemoveAllEventHandlers "ButtonDown";
 	// Allow our sweet sour dank memes so I learned how to bunny hop button to be able to open the menu depending on our selected class
 	((findDisplay 5000) displayCtrl 301) ctrlAddEventHandler ["ButtonDown", {
 		private _class = ((findDisplay 5000) displayCtrl 300) lbData (lbCurSel ((findDisplay 5000) displayCtrl 300));
-		[_class] spawn client_fnc_spawnMenu_displayClassCustomization;
+		[_class] call client_fnc_spawnMenu_displayClassCustomization;
 	}];
 
 	lbClear _l;
@@ -154,3 +154,4 @@ if (!_isRefreshing) then {
 		};
 	};
 };
+true

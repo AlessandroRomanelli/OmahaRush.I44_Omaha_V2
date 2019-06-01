@@ -85,14 +85,12 @@ class Maverick_Functions_Client {
 		class vehicleDisabled {};
 		class displayKeyBindingHint {};
 		class restrictedArea {};
-		class blockSpawn {};
 		class validatePointsEarned {};
 		class updateSpawnMenuCam {};
 		class revealFriendlyUnits {};
 		class onEachFramePreparation {};
 		class displaySpawnRestriction {};
 		class moveUnitIntoVehicle {};
-		class damageHandler {};
 		class teleport {};
 		class displayAds {};
 		class drawMapUnits {};
@@ -108,6 +106,8 @@ class Maverick_Functions_Client {
 		class moveWithinVehicle {};
 		class getObjectiveDistance {};
 		class initUserInterface {};
+		class meleeTakedown {};
+		class getUnitName {};
 		// Pointfeed
 		class pointfeed_add {};
 

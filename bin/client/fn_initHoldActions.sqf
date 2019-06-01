@@ -34,13 +34,13 @@ mg_conditionShowOnMyself = {
 
 private _mg_code = {
 	if (!isNull cl_lastActionTarget) then {
-		[player] remoteExec ["client_fnc_restoreAmmo", cl_lastActionTarget];
+		[player] remoteExecCall ["client_fnc_restoreAmmo", cl_lastActionTarget];
 	};
 
 	// Pointsssss
 	if (cl_lastActionTarget != player) then {
-		["<t size='1.3' color='#FFFFFF'>AMMUNITION REPLENISHED</t>", 30] spawn client_fnc_pointfeed_add;
-		[30] spawn client_fnc_addPoints;
+		["<t size='1.3' color='#FFFFFF'>AMMUNITION REPLENISHED</t>", 30] call client_fnc_pointfeed_add;
+		[30] call client_fnc_addPoints;
 	};
 
 	// Make sure we cant spam it
@@ -49,9 +49,9 @@ private _mg_code = {
 	[cl_lastActionTarget] spawn {
 		private _lastActionTarget = param[0, objNull, [objNull]];
 		if (_lastActionTarget isEqualTo player) then {
-			sleep 60;
+			uiSleep 60;
 		} else {
-			sleep 13;
+			uiSleep 13;
 		};
 
 		// allow us to restore ammo again
@@ -65,8 +65,8 @@ diag_log "Setting up handlers... 1";
 private _id = [
 /* 0 object */							player,
 /* 1 action title */					"Replenish Own Ammunition",
-/* 2 idle icon */						"pictures\support.paa",
-/* 3 progress icon */					"pictures\support.paa",
+/* 2 idle icon */						WWRUSH_ROOT+"pictures\support.paa",
+/* 3 progress icon */					WWRUSH_ROOT+"pictures\support.paa",
 /* 4 condition to show */				"cl_classPerk == 'ammo' && [] call mg_conditionShowOnMyself ",
 /* 5 condition for action */			"true",
 /* 6 code executed on start */			{cl_lastActionTarget = player;},
@@ -88,8 +88,8 @@ diag_log "Setting up handlers... 2";
 private _id = [
 /* 0 object */							player,
 /* 1 action title */					"Replenish Ammunition",
-/* 2 idle icon */						"pictures\support.paa",
-/* 3 progress icon */					"pictures\support.paa",
+/* 2 idle icon */						WWRUSH_ROOT+"pictures\support.paa",
+/* 3 progress icon */					WWRUSH_ROOT+"pictures\support.paa",
 /* 4 condition to show */				"cl_classPerk == 'ammo' && {cursorTarget distance _this < 3} && {alive cursorTarget} && {!(cursorTarget getVariable ['ammo_restored',false])} && {(side cursorTarget) == playerSide} && {cursorTarget isKindOf 'Man'}",
 /* 5 condition for action */			"!(cursorTarget getVariable ['ammo_restored',false])",
 /* 6 code executed on start */			{cl_lastActionTarget = cursorTarget;},
@@ -104,64 +104,60 @@ private _id = [
 ] call BIS_fnc_holdActionAdd;
 cl_actionIDs pushBack _id;
 
-for "_i" from 1 to 4  do {
-	private _objective = missionNamespace getVariable [format ["sv_stage%1_obj", _i], objNull];
-
-	// Planting and defusing objectives
-	private _icon = MISSION_ROOT+"pictures\";
-	private _cond = "";
-	private _text = "";
-	private _completion = {};
-	private _interruption = {};
-	private _duration = if (cl_classPerk == "saboteur") then {1} else {4};
-	if ((player getVariable "gameSide") == "defenders") then {
-		_icon = _icon + "bombDefuse.paa";
-		_text = "Disarm Explosives";
-		_cond = "_target isEqualTo sv_cur_obj && {(_this distance2D _target) < ceil(([_target] call client_fnc_getObjectiveDistance) + 2)} && {(_target getVariable ['status',-1] == 1) || (_target getVariable ['status', -1] == 0 && (_this isEqualTo player))}";
-		_completion = {if (sv_cur_obj distance2D player < ceil(([_target] call client_fnc_getObjectiveDistance) + 2)) then {[] spawn client_fnc_disarmMCOM;};};
-		_interruption = {sv_cur_obj setVariable ["status", 1, true]};
-	} else {
-		_icon = _icon + "bombPlant.paa";
-		_text = "Plant Explosives";
-		_cond = "_target isEqualTo sv_cur_obj && {(_this distance2D _target) < ceil(([_target] call client_fnc_getObjectiveDistance) + 2)} && {(_target getVariable ['status',-1] == -1) || (_target getVariable ['status', -1] == 2) || ((_target getVariable ['status', -1] == 0) && (_this isEqualTo player))}";
-		_completion = {if (sv_cur_obj distance2D player < ceil(([_target] call client_fnc_getObjectiveDistance) + 2)) then {[] spawn client_fnc_armMCOM;};};
-		_interruption = {sv_cur_obj setVariable ["status", -1, true]};
-	};
-
-	// Add action to objectives
-	private _id = [
-	/* 0 object */							_objective,
-	/* 1 action title */					_text,
-	/* 2 idle icon */						_icon,
-	/* 3 progress icon */					_icon,
-	/* 4 condition to show */				_cond,
-	/* 5 condition for action */			"_caller distance2D _target < ceil(([_target] call client_fnc_getObjectiveDistance) + 2)",
-	/* 6 code executed on start */			{playSound3D[MISSION_ROOT + "sounds\arm.ogg", sv_cur_obj]; sv_cur_obj setVariable ["status", 0, true];},
-	/* 7 code executed per tick */			{},
-	/* 8 code executed on completion */		_completion,
-	/* 9 code executed on interruption */	_interruption,
-	/* 10 arguments */						[],
-	/* 11 action duration */				_duration,
-	/* 12 priority */						10000,
-	/* 13 remove on completion */			false,
-	/* 14 show unconscious */				false
-	] call bis_fnc_holdActionAdd;
-	cl_actionIDs pushBack _id;
+// Planting and defusing objectives
+private _icon = WWRUSH_ROOT+"pictures\";
+private _cond = "";
+private _text = "";
+private _completion = {};
+private _interruption = {};
+private _duration = if (cl_classPerk == "saboteur") then {1} else {4};
+if ((player getVariable "gameSide") == "defenders") then {
+	_icon = _icon + "bombDefuse.paa";
+	_text = "Disarm Explosives";
+	_cond = "((player getVariable 'gameSide') == 'defenders') && {(player distance sv_cur_obj) < ceil(([sv_cur_obj] call client_fnc_getObjectiveDistance) + 1.5)} && {(sv_cur_obj getVariable ['status',-1] == 1) || (sv_cur_obj getVariable ['status', -1] == 0 && (_this isEqualTo player))}";
+	_completion = {if ((sv_cur_obj distance player) < ceil(([sv_cur_obj] call client_fnc_getObjectiveDistance) + 1.5)) then {[] call client_fnc_disarmMCOM;};};
+	_interruption = {sv_cur_obj setVariable ["status", 1, true]};
+} else {
+	_icon = _icon + "bombPlant.paa";
+	_text = "Plant Explosives";
+	_cond = "((player getVariable 'gameSide') == 'attackers') && {(player distance sv_cur_obj) < ceil(([sv_cur_obj] call client_fnc_getObjectiveDistance) + 1.5)} && {(sv_cur_obj getVariable ['status',-1] == -1) || (sv_cur_obj getVariable ['status', -1] == 2) || ((sv_cur_obj getVariable ['status', -1] == 0) && (_this isEqualTo player))}";
+	_completion = {if ((sv_cur_obj distance player) < ceil(([sv_cur_obj] call client_fnc_getObjectiveDistance) + 1.5)) then {[] call client_fnc_armMCOM;};};
+	_interruption = {sv_cur_obj setVariable ["status", -1, true]};
 };
+
+// Add action to objectives
+private _id = [
+/* 0 object */							player,
+/* 1 action title */					_text,
+/* 2 idle icon */						_icon,
+/* 3 progress icon */					_icon,
+/* 4 condition to show */				_cond,
+/* 5 condition for action */			"player distance sv_cur_obj < ceil(([sv_cur_obj] call client_fnc_getObjectiveDistance) + 2)",
+/* 6 code executed on start */			{playSound3D[WWRUSH_ROOT + "sounds\arm.ogg", sv_cur_obj]; sv_cur_obj setVariable ["status", 0, true]; cl_action_obj = sv_cur_obj},
+/* 7 code executed per tick */			{},
+/* 8 code executed on completion */		_completion,
+/* 9 code executed on interruption */	_interruption,
+/* 10 arguments */						[],
+/* 11 action duration */				_duration,
+/* 12 priority */						10000,
+/* 13 remove on completion */			false,
+/* 14 show unconscious */				false
+] call bis_fnc_holdActionAdd;
+cl_actionIDs pushBack _id;
 
 
 // Vehicle ammunition
 private _completed = {
 	if (player distance cl_lastActionTarget > 5) exitWith {};
 
-	["<t size='1.3' color='#FFFFFF'>AMMUNITION REPLENISHED</t>", 50] spawn client_fnc_pointfeed_add;
-	[50] spawn client_fnc_addPoints;
+	["<t size='1.3' color='#FFFFFF'>AMMUNITION REPLENISHED</t>", 50] call client_fnc_pointfeed_add;
+	[50] call client_fnc_addPoints;
 
 	// Make sure we cant spam it
 	cl_lastActionTarget setVariable ["ammo_restored",true];
 
 	[cl_lastActionTarget] spawn {
-		sleep 120;
+		uiSleep 120;
 		private _lastActionTarget = param[0, objNull, [objNull]];
 		// allow us to restore ammo again
 		_lastActionTarget setVariable ["ammo_restored",false];
@@ -172,8 +168,8 @@ cl_vehicleAmmoTypes = [] call client_fnc_getAllAmmoVehicles;
 
 private _completedEngineer = {
 	if (player distance cl_lastActionTarget > 5) exitWith {};
-	["<t size='1.3' color='#FFFFFF'>VEHICLE REPAIRED</t>", 50] spawn client_fnc_pointfeed_add;
-	[50] spawn client_fnc_addPoints;
+	["<t size='1.3' color='#FFFFFF'>VEHICLE REPAIRED</t>", 50] call client_fnc_pointfeed_add;
+	[50] call client_fnc_addPoints;
 	cl_lastActionTarget setVariable ["vehDmg", 0];
 	// Make sure we cant spam it
 	cl_lastActionTarget setVariable ["repaired",true];
@@ -181,7 +177,7 @@ private _completedEngineer = {
 	cl_lastActionTarget setFuel 1;
 
 	[cl_lastActionTarget] spawn {
-		sleep 120;
+		uiSleep 120;
 		private _lastActionTarget = param[0, objNull, [objNull]];
 		// allow us to restore ammo again
 		_lastActionTarget setVariable ["repaired",false];
@@ -193,8 +189,8 @@ diag_log "Setting up handlers... 6";
 private _id = [
 /* 0 object */							player,
 /* 1 action title */					"Replenish Vehicle Ammunition",
-/* 2 idle icon */						"pictures\support.paa",
-/* 3 progress icon */					"pictures\support.paa",
+/* 2 idle icon */						WWRUSH_ROOT+"pictures\support.paa",
+/* 3 progress icon */					WWRUSH_ROOT+"pictures\support.paa",
 /* 4 condition to show */				"cl_classPerk == 'ammo' && (cursorTarget distance _this) < 3 && alive cursorTarget && !(cursorTarget getVariable ['ammo_restored',false]) && ((typeOf cursorTarget) in cl_vehicleAmmoTypes)",
 /* 5 condition for action */			"!(cursorTarget getVariable ['ammo_restored',false])",
 /* 6 code executed on start */			{cl_lastActionTarget = cursorTarget;},
@@ -215,8 +211,8 @@ diag_log "Setting up handlers... 7";
 private _id = [
 	player,
 	"Repair Vehicle",
-	"pictures\engineer.paa",
-	"pictures\engineer.paa",
+	WWRUSH_ROOT+"pictures\engineer.paa",
+	WWRUSH_ROOT+"pictures\engineer.paa",
 	"cl_class == 'engineer' && (cursorTarget distance player) < 5 && alive cursorTarget && !(cursorTarget getVariable ['repaired',false]) && (cursorTarget isKindOf 'Air' || cursorTarget isKindOf 'LandVehicle' || cursorTarget isKindOf 'Ship')",
 	"!(cursorTarget getVariable ['repaired',false])",
 	{cl_lastActionTarget = cursorTarget;},
@@ -237,8 +233,8 @@ diag_log "Setting up handlers... 8";
 private _id = [
 /* 0 object */							player,
 /* 1 action title */					"Rearm at Ammobox",
-/* 2 idle icon */						"pictures\support.paa",
-/* 3 progress icon */					"pictures\support.paa",
+/* 2 idle icon */						WWRUSH_ROOT+"pictures\support.paa",
+/* 3 progress icon */					WWRUSH_ROOT+"pictures\support.paa",
 /* 4 condition to show */				"(typeOf cursorTarget) isEqualTo 'LIB_AmmoCrates_NoInteractive_Large' && (cursorTarget distance player) < 5",
 /* 5 condition for action */			"true",
 /* 6 code executed on start */			{},
@@ -254,3 +250,5 @@ private _id = [
 cl_actionIDs pushBack _id;
 
 diag_log "Setting up handlers... 9";
+
+true

@@ -27,7 +27,7 @@ private _getUnitsThatLastJoined = {
 sv_autoTeamBalancerWarning = false;
 
 while {sv_gameStatus == 2} do {
-	sleep 60;
+	uiSleep 60;
 
 	private _attackersSide = [WEST, independent] select (sv_gameCycle % 2 == 0);
 	private _defendersSide = [WEST, independent] select (sv_gameCycle % 2 != 0);
@@ -36,7 +36,7 @@ while {sv_gameStatus == 2} do {
 	private _defendersTeam = {(_x getVariable ["gameSide", "defenders"]) isEqualTo "defenders"} count allPlayers;
 
 	private _diff = _attackersTeam - _defendersTeam;
-	private _maxDiff = paramsArray#14;
+	private _maxDiff = ["AutoTeamBalanceAtDifference", 3] call BIS_fnc_getParamValue;
 	private _sideWithMoreUnits = if (_attackersTeam >= _defendersTeam) then {_attackersSide} else {_defendersSide};
 
 	if (_diff < 0 || _diff > _maxDiff) then {
@@ -51,7 +51,7 @@ while {sv_gameStatus == 2} do {
 			for "_i" from 1 to _toMove step 1 do
 			{
 				private _unit = [_sideWithMoreUnits] call _getUnitsThatLastJoined;
-				[format["Player %1 has been kicked due to team balance", _unit getVariable ["name", "ERROR: No Name"]]] call server_fnc_log;
+				[format["Player %1 has been kicked due to team balance", [_unit] call client_fnc_getUnitName]] call server_fnc_log;
 
 				if (_sideWithMoreUnits == _attackersSide) then {
 					[_defendersSide] remoteExec ["client_fnc_teamBalanceKick", _unit];
@@ -60,7 +60,7 @@ while {sv_gameStatus == 2} do {
 				};
 
 				// Make sure this unit will be gone until next evaluation
-				sleep 5;
+				uiSleep 5;
 			};
 		};
 	} else {

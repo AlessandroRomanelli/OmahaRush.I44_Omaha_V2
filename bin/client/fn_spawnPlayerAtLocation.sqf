@@ -1,13 +1,13 @@
-scriptName "fn_spawnPlayerAtHQ";
+scriptName "fn_spawnPlayerAtLocation";
 /*--------------------------------------------------------------------
 	Author: Maverick (ofpectag: MAV)
-    File: fn_spawnPlayerAtHQ.sqf
+    File: fn_spawnPlayerAtLocation.sqf
 
 	<Maverick Applications>
     Written by Maverick Applications (www.maverick-apps.de)
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
-#define __filename "fn_spawnPlayerAtHQ.sqf"
+#define __filename "fn_spawnPlayerAtLocation.sqf"
 if (isServer && !hasInterface) exitWith {};
 
 // Close spawn dialog
@@ -22,10 +22,10 @@ private _pos = getArray(_spawnConfig >> "positionATL");
 
 private _spawnPos = _pos findEmptyPosition [0,20];
 
-[] spawn client_fnc_equipAll;
+private _idx = (_spawnPos nearEntities ["Man", 25]) findIf {(_x getVariable "gameSide") != _side};
+if !(_idx isEqualTo -1) exitWith {["Enemies nearby this spawn point!"] call client_fnc_displayError};
 
-private _idx = (_spawnPos nearEntities ["Man", 25]) findIf {(_x getVariable "gameSide") isEqualTo _side};
-if !(_idx isEqualTo -1) exitWith {[] spawn client_fnc_spawnPlayerAtLocation;};
+[] call client_fnc_equipAll;
 
 // Move player to spawn location
 player setPos _spawnPos;
@@ -35,7 +35,7 @@ private _dir = _spawnPos getDir (getPos sv_cur_obj);
 player setDir _dir;
 
 // Move camera down to player, then delete it
-cl_spawnmenu_cam camPreparePos (ASLToATL (eyePos player));
+cl_spawnmenu_cam camPreparePos (_spawnPos vectorAdd [0,0,2]);
 cl_spawnmenu_cam camPrepareTarget sv_cur_obj;
 cl_spawnmenu_cam camCommitPrepared 1;
 
@@ -56,11 +56,11 @@ if (_PPon) then {
 	};
 };
 
-sleep 0.7;
+uiSleep 0.7;
 
 // Black fade out/in
 2000 cutRsc ["rr_spawnPlayer","PLAIN"];
-sleep 0.4;
+uiSleep 0.4;
 
 // Delete blurry effect
 if (_PPon) then {
@@ -86,10 +86,10 @@ camDestroy cl_spawnmenu_cam;
 player switchCamera "INTERNAL";
 
 // Launch GUI
-cl_gui_thread = [] spawn client_fnc_startIngameGUI;
+[] call client_fnc_startIngameGUI;
 
 // General success script
-[] spawn cl_spawn_succ;
+[] call cl_spawn_succ;
 
 // Display help hint
 if (player getVariable "gameSide" == "defenders") then {
@@ -102,8 +102,6 @@ if (player getVariable "gameSide" == "defenders") then {
 cl_spawn_tick = diag_tickTime;
 
 // Display instructions hint for currently selected perk
-[] spawn {
-	sleep 10.3;
-	private _instructions = [cl_classPerk] call client_fnc_getPerkInstructions;
-	[_instructions select 0, _instructions select 1] spawn client_fnc_hint;
-};
+uiSleep 10.3;
+private _instructions = [cl_classPerk] call client_fnc_getPerkInstructions;
+[_instructions select 0, _instructions select 1] call client_fnc_hint;

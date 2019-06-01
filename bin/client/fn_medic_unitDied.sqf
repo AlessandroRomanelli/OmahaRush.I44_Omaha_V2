@@ -13,15 +13,20 @@ if (isServer && !hasInterface) exitWith {};
 private _unit = param[0,objNull,[objNull]];
 private _killer = param[1,objNull,[objNull]];
 private _assistsInfo = param[2,[],[[]]];
+private _grenade = param[3,"",[""]];
+private _wasMelee = param[4, false, [false]];
+
 
 // Make sure this doesnt get run before the init
 if (isNil "cl_equipClassnames") exitWith {};
 
 // Add this death to our killfeed
-[_unit, _killer] spawn client_fnc_displayKillfeed;
+[_unit, _killer, _grenade, _wasMelee] spawn client_fnc_displayKillfeed;
 
 // Evaluate assist info
-[_assistsInfo, _killer] spawn client_fnc_evaluateAssistInfo;
+if (!isNull _killer) then {
+	[_assistsInfo, _killer] spawn client_fnc_evaluateAssistInfo;
+};
 
 // Is this unit on our side?
 if ((_unit getVariable ["side",civilian]) != playerSide) exitWith {};

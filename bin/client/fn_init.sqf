@@ -14,13 +14,6 @@ if (!isNil "cl_init_ran") exitWith {};
 cl_init_ran = true;
 cl_init_done = false;
 
-
-// Player name
-player setVariable ["name", name player, true];
-
-// Time played to make sure the auto team balancer knows our jointime
-player setVariable ["joinServerTime", serverTime, true];
-
 // Wait for the client to be ready for deployment
 waitUntil {(!isNull (findDisplay 46)) AND (isNull (findDisplay 101)) AND (!isNull player) AND (alive player) AND !dialog};
 
@@ -38,6 +31,12 @@ if (isNil "sv_serverReady") then {
 waitUntil {sv_serverReady && !isNil "sv_usingDatabase"};
 
 [] call client_fnc_initGlobalVars;
+
+// Player name
+player setVariable ["name", name player, true];
+
+// Time played to make sure the auto team balancer knows our jointime
+player setVariable ["joinServerTime", serverTime, true];
 
 // Used for determining if a player is on our side since side _x returns civilian if someone is dead
 player setVariable ["side", playerSide, true];
@@ -67,7 +66,7 @@ cl_safePos = getPos player;
 cl_revived = false;
 
 // Init event handlers
-[] spawn client_fnc_setupEventHandlers;
+[] call client_fnc_setupEventHandlers;
 
 // Get initial view and object view distance
 cl_objViewDistance = getObjectViewDistance;
@@ -75,10 +74,10 @@ cl_viewDistance = viewDistance;
 
 
 // Do all the cool stuff!
-[] spawn client_fnc_resetVariables;
+[] call client_fnc_resetVariables;
 
 // Give onEachFrame data
-[] spawn client_fnc_onEachFramePreparation;
+[] call client_fnc_onEachFramePreparation;
 
 // Init group client
 ["InitializePlayer", [player]] call BIS_fnc_dynamicGroups;
@@ -142,7 +141,7 @@ private _safeMarker2 = createMarkerLocal ["respawn_attackers", cl_safePos]; */
 CHBN_adjustBrightness = 0.5;
 
 // Keyhandler
-[] spawn client_fnc_initKeyHandler;
+[] call client_fnc_initKeyHandler;
 
 // Fuck off?
 player enableStamina false;
@@ -153,13 +152,13 @@ cl_init_done = true;
 // Jump to client cycle position via sv_gameStatus
 if (sv_gameStatus == 1) exitWith {
 	// Map is being selected / prepared
-	[] spawn client_fnc_waitForServer;
+	[] call client_fnc_waitForServer;
 };
 if (sv_gameStatus == 2) exitWith {
 	// The game is ongoing
-	[] spawn client_fnc_spawn;
+	[] call client_fnc_spawn;
 };
 if (sv_gameStatus in [3,4]) exitWith {
 	// The game has been finished, just wait I guess
-	[] spawn client_fnc_waitingForMatchToEnd;
+	[] call client_fnc_waitingForMatchToEnd;
 };

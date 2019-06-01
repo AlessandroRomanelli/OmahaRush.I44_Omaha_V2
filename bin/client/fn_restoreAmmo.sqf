@@ -16,10 +16,10 @@ private _side = player getVariable "gameSide";
 if (isNull _unit || _unit == player) then {
 	["AMMUNITION REPLENISHED"] spawn client_fnc_displayInfo;
 } else {
-	[format["%1 HAS REPLENISHED YOUR AMMUNITION", _unit getVariable ["name", "ERROR: No Name"]]] spawn client_fnc_displayInfo;
+	[format["%1 HAS REPLENISHED YOUR AMMUNITION", [_unit] call client_fnc_getUnitName]] spawn client_fnc_displayInfo;
 };
 
-playSound3D [MISSION_ROOT+"\sounds\reload.ogg", player];
+playSound3D [WWRUSH_ROOT+"sounds\reload.ogg", player];
 
 private _rearmMagazines = {
 	private _magName = param[0, "", [""]];
@@ -123,7 +123,15 @@ if (cl_class == "medic" && cl_classPerk == "smoke_grenades") then {
 
 if (cl_class == "engineer" && cl_classPerk == "perkAT") then {
 	private _ammo = getText(missionConfigFile >> "Soldiers" >> _side >> "Launcher" >> "ammoType");
-	player addMagazines [_ammo, 1];
+	private _max = getNumber(missionConfigFile >> "Soldiers" >> _side >> "Launcher" >> "ammoCount");
+	private _currentRockets = {(_x select 0) isEqualTo _ammo} count (magazinesAmmo player);
+	if (_currentRockets == 0) then {
+		player addMagazines [_ammo, 1];
+	} else {
+		if (("expl" in cl_squadPerks) && {_currentRockets < _max}) then {
+			player addMagazines [_ammo, 1];
+		};
+	};
 };
 
 if ("frag" in cl_squadPerks) then {
@@ -133,3 +141,5 @@ if ("frag" in cl_squadPerks) then {
 		player addItem _handGrenade;
 	};
 };
+
+true

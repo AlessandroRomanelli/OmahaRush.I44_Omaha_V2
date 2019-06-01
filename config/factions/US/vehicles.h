@@ -3,7 +3,7 @@ marker = "LIB_Faction_US_ARMY";
 
 class Plane_CAP: Plane {
   displayName = "P-39 'Airacobra'";
-  className = "LIB_US_P39_2";
+  className = "LIB_P39";
 };
 
 class Plane_CAS: Plane {

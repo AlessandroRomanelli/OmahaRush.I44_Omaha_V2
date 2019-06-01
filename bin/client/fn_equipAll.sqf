@@ -33,10 +33,12 @@ if ((count _backpacks > 0) && {(backpack player) isEqualTo ""}) then {removeBack
 }; */
 
 // Give weapons
-[_isRespawning] spawn client_fnc_equipWeapons;
+[_isRespawning] call client_fnc_equipWeapons;
 
 // Shared items
 player addItem "ItemMap";
 player assignITem "ItemMap";
 player addItem "ItemCompass";
 player assignItem "ItemCompass";
+
+true

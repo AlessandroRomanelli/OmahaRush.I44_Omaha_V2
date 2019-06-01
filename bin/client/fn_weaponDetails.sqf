@@ -11,7 +11,14 @@ scriptName "fn_weaponDetails";
 if (isServer && !hasInterface) exitWith {};
 
 private _classname = param[0,"",[""]];
-private _displayName = getText(configFile >> "CfgWeapons" >> _classname >> "displayName");
-private _picture = getText(configFile >> "CfgWeapons" >> _classname >> "picture");
+private ["_displayName", "_picture"];
+if (isClass (configFile >> "CfgWeapons" >> _classname)) then {
+  _displayName = getText(configFile >> "CfgWeapons" >> _classname >> "displayName");
+  _picture = getText(configFile >> "CfgWeapons" >> _classname >> "picture");
+} else {
+  _displayName = getText(configFile >> "CfgMagazines" >> _classname >> "displayName");
+  _picture = getText(configFile >> "CfgMagazines" >> _classname >> "picture");
+};
+
 
 [_classname, _displayName, _picture]

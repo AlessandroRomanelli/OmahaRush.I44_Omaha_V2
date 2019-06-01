@@ -101,3 +101,5 @@ if ((_progress select 1) != 0) then {
 	(_d displayCtrl 103) ctrlSetText "NO UPCOMING UNLOCKS";
 	(_d displayCtrl 102) ctrlSetStructuredText parseText _text;
 };
+
+true

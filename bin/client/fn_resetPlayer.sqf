@@ -17,7 +17,7 @@ if (missionNamespace getVariable ["cl_resetPlayerRunning", false]) exitWith {};
 cl_resetPlayerRunning = true;
 
 // Start a countdown until the next match starts
-private _time = paramsArray#9;
+private _time = ["LobbyTime", 60] call BIS_fnc_getParamValue;
 
 // Enable global voice
 0 enableChannel [true, true];
@@ -36,7 +36,7 @@ if (true) then {
 
 	// Fill data from objects
 	{
-		private _name = _x getVariable ["name", "ERROR: No Name"];
+		private _name = [_x] call client_fnc_getUnitName;
 		if ((_x getVariable "gameSide") == "defenders") then {
 			_allInfoDefenders pushBack [_x getVariable ["points", 0], _x getVariable ["kills", 0], _x getVariable ["deaths", 0], _name];
 		} else {
@@ -75,16 +75,17 @@ if (true) then {
 
 
 // If we have OnTenRestart enabled, WARN THE PLAYER
-if ((sv_gameCycle >= ((paramsArray#11) - 1)) && sv_dedicatedEnvironment) then {
+if ((sv_gameCycle >= ((["RotationsPerMatch", 2] call BIS_fnc_getParamValue) - 1)) && sv_dedicatedEnvironment) then {
 	(_d displayCtrl 0) ctrlSetStructuredText parseText "<t size='2' color='#FE4629' shadow='2' align='center'>THE SERVER IS CHANGING MAP</t>";
-	sleep 30;
+	uiSleep 30;
 } else {
 // While loop
-	while {_time > 0} do {
-		sleep 1;
-		_time = _time - 1;
-
-		(_d displayCtrl 0) ctrlSetStructuredText parseText format ["<t size='2' color='#FFFFFF' shadow='2' align='center'>Next match begins in %1</t>", [_time, "MM:SS"] call bis_fnc_secondsToString];
+private _restartTime = diag_tickTime + _time;
+private _timeLeft = _time;
+	while {_timeLeft > 0 && (sv_gameStatus in [3,4])} do {
+		uiSleep 1;
+		_timeLeft = round (_restartTime - diag_tickTime);
+		(_d displayCtrl 0) ctrlSetStructuredText parseText format ["<t size='2' color='#FFFFFF' shadow='2' align='center'>Next match begins in %1</t>", [_timeLeft, "MM:SS"] call bis_fnc_secondsToString];
 	};
 };
 
@@ -114,7 +115,7 @@ if (sv_gameCycle % 2 == 0) then {
 
 cl_statisticsLoaded = false;
 [] call client_fnc_loadStatistics;
-waitUntil {cl_statisticsLoaded};
+waitUntil {cl_statisticsLoaded && {sv_gameStatus isEqualTo 2}};
 
 // Reset everything
 [] spawn client_fnc_resetVariables;
@@ -122,15 +123,12 @@ waitUntil {cl_statisticsLoaded};
 // Restart!
 [] spawn client_fnc_spawn;
 
-// Restart match timer
-private _roundTime = ceil (paramsArray#3 * 60);
-
 // Give us points for playing :)
 [] spawn {
 	private _fallBackTime = [] call client_fnc_getFallbackTime;
-	sleep 3;
+	uiSleep 3;
 	// Message about preparation phase
-	[format ["DEFENDERS HAVE %1 SECONDS TO PREPARE", _fallBackTime]] spawn client_fnc_displayObjectiveMessage;
+	[format ["DEFENDERS HAVE %1 SECONDS TO PREPARE", _fallBackTime]] call client_fnc_displayObjectiveMessage;
 };
 
 cl_resetPlayerRunning = false;

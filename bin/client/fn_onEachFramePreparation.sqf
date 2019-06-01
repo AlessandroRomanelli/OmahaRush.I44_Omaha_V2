@@ -12,11 +12,11 @@ scriptName "fn_onEachFramePreparation";
 // Inline function to determine icon
 private _getIcon = {
 	private _unit = param[0,objNull,[objNull]];
-	if (_unit getVariable ["class",""] == "medic") exitWith {"pictures\medic.paa"};
-	if (_unit getVariable ["class",""] == "engineer") exitWith {"pictures\engineer.paa"};
-	if (_unit getVariable ["class",""] == "support") exitWith {"pictures\support.paa"};
-	if (_unit getVariable ["class",""] == "recon") exitWith {"pictures\recon.paa"};
-	"pictures\assault.paa";
+	if (_unit getVariable ["class",""] == "medic") exitWith {WWRUSH_ROOT+"pictures\medic.paa"};
+	if (_unit getVariable ["class",""] == "engineer") exitWith {WWRUSH_ROOT+"pictures\engineer.paa"};
+	if (_unit getVariable ["class",""] == "support") exitWith {WWRUSH_ROOT+"pictures\support.paa"};
+	if (_unit getVariable ["class",""] == "recon") exitWith {WWRUSH_ROOT+"pictures\recon.paa"};
+	WWRUSH_ROOT+"pictures\assault.paa";
 };
 
 // Variables
@@ -37,7 +37,7 @@ cl_onEachFramePreparationID = addMissionEventHandler["EachFrame", {
 
 	// Fill with data
 	{
-		private _name = (_x getVariable ["name", "ERROR: No Name"]);
+		private _name = ([_x] call client_fnc_getUnitName);
 		if (_x != player) then {
 			if (side (group _x) == side (group player)) then {
 				if ((group _x) == (group player)) then {
@@ -55,17 +55,17 @@ cl_onEachFramePreparationID = addMissionEventHandler["EachFrame", {
 						if (_x distance cl_safePos > 200) then {
 							private _alpha = [0.75, 0.55] select (_x distance player > 50);
 							private _icon = [_x] call _getIcon;
-							_squad_members pushBack [_x, _name, (MISSION_ROOT+_icon), _alpha];
+							_squad_members pushBack [_x, _name, (WWRUSH_ROOT+_icon), _alpha];
 						};
 					};
 				} else {
 					if (_x distance cl_safePos > 200 && alive _x) then {
 						if (cl_inSpawnMenu || ((vehicle player) isKindOf "Air")) then {
-							_team_members pushBack [_x, _name, (MISSION_ROOT+"pictures\teammate.paa")];
+							_team_members pushBack [_x, _name, (WWRUSH_ROOT+"pictures\teammate.paa")];
 						} else {
 							// Only teammates within 100 meters
 							if (_x distance player < 100 || _x == (driver vehicle cursorTarget) || _x == (driver vehicle cursorTarget)) then {
-								_team_members pushBack [_x, _name, (MISSION_ROOT+"pictures\teammate.paa")];
+								_team_members pushBack [_x, _name, (WWRUSH_ROOT+"pictures\teammate.paa")];
 							};
 						};
 					};
@@ -82,7 +82,7 @@ cl_onEachFramePreparationID = addMissionEventHandler["EachFrame", {
 	if (cl_inSpawnMenu) then {
 		private _myBeacon = player getVariable ["assault_beacon_obj", objNull];
 		if (!isNull _myBeacon) then {
-			_squad_beacons pushBack [(getPosATLVisual _myBeacon), format["%1's Spawnbeacon", (player getVariable ["name", "ERROR: No Name"])]];
+			_squad_beacons pushBack [(getPosATLVisual _myBeacon), format["%1's Spawnbeacon", [player] call client_fnc_getUnitName]];
 		};
 	};
 
@@ -104,3 +104,5 @@ cl_onEachFramePreparationID = addMissionEventHandler["EachFrame", {
 	cl_onEachFrame_team_reviveable = _toBeRevived;
 	cl_onEachFrame_spotted_enemies = _spottedTargets;
 }];
+
+true

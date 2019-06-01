@@ -46,10 +46,10 @@ while {sv_gameStatus == 2} do {
 	_adsArray deleteAt _idx;
 
 	// Display for 15s (+1s for fade in)
-	sleep 16;
+	uiSleep 16;
 	// Fade out 1s and 30s wait
 	14 cutFadeout 1;
-	sleep 31;
+	uiSleep 31;
 };
 
 // We're done displaying ads for this round!
