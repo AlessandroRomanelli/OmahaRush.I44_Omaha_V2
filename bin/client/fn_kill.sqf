@@ -20,6 +20,7 @@ cl_kills = cl_kills + 1;
 cl_total_kills = cl_total_kills + 1;
 
 player setVariable ["kills",cl_kills,true];
+_victim setVariable ["killed", (_victim getVariable ["killed", 0]) + 1];
 
 // Get seat in vehicle
 private _seat = -2;
@@ -106,5 +107,6 @@ if ((player distance sv_cur_obj) < 25 || (_victim distance sv_cur_obj) < 25) the
 };
 
 // We've done good! Give me points
-["<t size='1.3'>[" + _reason + "] <t color='#FE251B'>" + [_victim] call client_fnc_getUnitName + "</t></t>" + _meleeTakedown + _HSkill + _distanceKill + _objectiveKill, _points] call client_fnc_pointfeed_add;
+private _killInfo = format["<t size='1.3'>[%1] <t color='#FE251B'>%2</t></t>", _reason, [_victim] call client_fnc_getUnitName];
+[_killInfo + _meleeTakedown + _HSkill + _distanceKill + _objectiveKill, _points] call client_fnc_pointfeed_add;
 [_points] call client_fnc_addPoints;

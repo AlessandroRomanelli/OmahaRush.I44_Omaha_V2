@@ -1,9 +1,8 @@
 scriptName "fn_setupEventHandlers";
 /*--------------------------------------------------------------------
-	Author: Maverick (ofpectag: MAV) & A. Roman
+	Author:  A. Roman
     File: fn_setupEventHandlers.sqf
 
-    Written by both authors
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_setupEventHandlers.sqf"
@@ -79,7 +78,7 @@ cl_eventObserverID = addMissionEventHandler["EachFrame", {
 			cl_playerSwimming = _data;
 		};
 
-		private _enemiesNearby = ((getPosATL player) nearEntities ["Man", 10]) select {alive _x && {(_x getVariable ["gameSide", ""]) != (player getVariable ["gameSide", ""])}};
+		private _enemiesNearby = (player nearEntities ["Man", 10]) select {alive _x && {(_x getVariable ["gameSide", ""]) != (player getVariable ["gameSide", ""])}};
 		_data =  count _enemiesNearby;
 		if !(_data isEqualTo cl_enemiesNearby) then {
 			[missionNamespace, "newEnemiesNearby", [_enemiesNearby]] call BIS_fnc_callScriptedEventHandler;
@@ -253,6 +252,16 @@ player addEventHandler ["Killed", {
 			_killer = _instigator;
 		};
 
+		if (_killer != player) then {
+			_killer setVariable ["killed_by", (_killer getVariable ["killed_by", 0]) + 1];
+			_killer setVariable ["health", 1 - (damage _killer)];
+			private _weapon = _killer getVariable ["lastWeaponFired", ""];
+			if (_weapon isEqualTo "") then {
+				_weapon = currentWeapon _killer;
+			};
+			_killer setVariable ["weapon", _weapon];
+		};
+
 		[format ["You have been killed by killer %1", str _killer]] call server_fnc_log;
 		[format ["You have been killed by instigator %1", str _instigator]] call server_fnc_log;
 
@@ -283,6 +292,9 @@ player addEventHandler ["Killed", {
 		["rr_spawn_bottom_right_hud_renderer", "onEachFrame"] call BIS_fnc_removeStackedEventHandler;
 		300 cutRsc ["default","PLAIN"];
 
+		if (!isNil "rr_respawn_thread") then {
+			terminate rr_respawn_thread;
+		};
 		rr_respawn_thread = [_killer] spawn client_fnc_killed;
 
 		_victim setVariable ["isAlive", false];
