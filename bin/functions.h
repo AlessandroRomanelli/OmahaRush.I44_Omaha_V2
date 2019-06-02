@@ -110,6 +110,7 @@ class Maverick_Functions_Client {
 		class getUnitName {};
 		// Pointfeed
 		class pointfeed_add {};
+		class displayKillcam {};
 
 		// Spawn menu
 		class spawnMenu_displayPrimaryWeaponSelection {};
