@@ -20,6 +20,7 @@ cl_kills = cl_kills + 1;
 cl_total_kills = cl_total_kills + 1;
 
 player setVariable ["kills",cl_kills,true];
+_victim setVariable ["killed", (_victim getVariable ["killed", 0]) + 1];
 
 // Get seat in vehicle
 private _seat = -2;

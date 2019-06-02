@@ -1,3 +1,8 @@
+#define BG_COLOR {0.12,0.14,0.16,0.8}
+#define TEAM_COLOR {0.18,0.51,0.95, 1}
+#define ENEMY_COLOR {0.4,0,0,1}
+#define ACCENT_COLOR {0.96,0.65,0.12,0.8}
+
 class default
 {
 	idd = -1;
@@ -105,7 +110,7 @@ class rr_timer
 			y = 0.346 * safezoneH + safezoneY;
 			w = 0.249562 * safezoneW;
 			h = 0.022 * safezoneH;
-			colorBackground[] = {0.18,0.51,0.95};
+			colorBackground[] = TEAM_COLOR;
 		};
 		class RscStructuredText_1002: RscStructuredText
 		{
@@ -124,7 +129,7 @@ class rr_timer
 			y = 0.3702 * safezoneH + safezoneY;
 			w = 0.249563 * safezoneW;
 			h = 0.4378 * safezoneH;
-			colorBackground[] = {0.12,0.14,0.16,0.8};
+			colorBackground[] = BG_COLOR;
 			shadow = 2;
 		};
 		class RscText_10024: RscText
@@ -134,7 +139,7 @@ class rr_timer
 			y = 0.3702 * safezoneH + safezoneY;
 			w = 0.249563 * safezoneW;
 			h = 0.4378 * safezoneH;
-			colorBackground[] = {0.12,0.14,0.16,0.8};
+			colorBackground[] = BG_COLOR;
 			shadow = 2;
 		};
 		class RscText_1003: RscListNBox
@@ -145,7 +150,7 @@ class rr_timer
 			w = 0.249563 * safezoneW;
 			h = 0.4378 * safezoneH;
 
-			colorBackground[] = {0.18,0.51,0.95};
+			colorBackground[] = TEAM_COLOR;
 			columns[] = {0.001, 0.06, 0.6, 0.7, 0.8};
 			color[] = {1, 1, 1, 1};
 			colorScrollbar[] = {0.95, 0.95, 0.95, 1};
@@ -171,7 +176,7 @@ class rr_timer
 			w = 0.249563 * safezoneW;
 			h = 0.4378 * safezoneH;
 
-			colorBackground[] = {0.96,0.65,0.12,0.8};
+			colorBackground[] = ACCENT_COLOR;
 			columns[] = {0.001, 0.06, 0.6, 0.7, 0.8};
 			color[] = {1, 1, 1, 1};
 			colorScrollbar[] = {0.95, 0.95, 0.95, 1};
@@ -243,7 +248,7 @@ class rr_scoreboard
 			y = 0.346 * safezoneH + safezoneY;
 			w = 0.249562 * safezoneW;
 			h = 0.022 * safezoneH;
-			colorBackground[] = {0.18,0.51,0.95};
+			colorBackground[] = TEAM_COLOR;
 		};
 		class RscStructuredText_1002: RscStructuredText
 		{
@@ -262,7 +267,7 @@ class rr_scoreboard
 			y = 0.3702 * safezoneH + safezoneY;
 			w = 0.249563 * safezoneW;
 			h = 0.4378 * safezoneH;
-			colorBackground[] = {0.12,0.14,0.16,0.8};
+			colorBackground[] = BG_COLOR;
 			shadow = 2;
 		};
 		class RscText_10024: RscText
@@ -272,7 +277,7 @@ class rr_scoreboard
 			y = 0.3702 * safezoneH + safezoneY;
 			w = 0.249563 * safezoneW;
 			h = 0.4378 * safezoneH;
-			colorBackground[] = {0.12,0.14,0.16,0.8};
+			colorBackground[] = BG_COLOR;
 			shadow = 2;
 		};
 		class RscText_1003: RscListNBox
@@ -283,7 +288,7 @@ class rr_scoreboard
 			w = 0.249563 * safezoneW;
 			h = 0.4378 * safezoneH;
 
-			colorBackground[] = {0.18,0.51,0.95};
+			colorBackground[] = TEAM_COLOR;
 			columns[] = {0.001, 0.06, 0.6, 0.7, 0.8};
 			color[] = {1, 1, 1, 1};
 			colorScrollbar[] = {0.95, 0.95, 0.95, 1};
@@ -309,7 +314,7 @@ class rr_scoreboard
 			w = 0.249563 * safezoneW;
 			h = 0.4378 * safezoneH;
 
-			colorBackground[] = {0.96,0.65,0.12,0.8};
+			colorBackground[] = ACCENT_COLOR;
 			columns[] = {0.001, 0.06, 0.6, 0.7, 0.8};
 			color[] = {1, 1, 1, 1};
 			colorScrollbar[] = {0.95, 0.95, 0.95, 1};
@@ -451,7 +456,7 @@ class rr_keyBindingHint
 			y = 0.643 * safezoneH + safezoneY;
 			w = 0.226875 * safezoneW;
 			h = 0.025 * safezoneH;
-			colorBackground[] = {0.12,0.14,0.16,0.8};
+			colorBackground[] = BG_COLOR;
 		};
 		class text: RscStructuredText
 		{
@@ -487,7 +492,7 @@ class rr_keyBindingHintPermanent
 			y = 0.643 * safezoneH + safezoneY;
 			w = 0.226875 * safezoneW;
 			h = 0.025 * safezoneH;
-			colorBackground[] = {0.12,0.14,0.16,0.8};
+			colorBackground[] = BG_COLOR;
 		};
 		class text: RscStructuredText
 		{
@@ -722,7 +727,7 @@ class rr_hint
 			w = 0.190781 * safezoneW;
 			h = 0.143 * safezoneH;
 			colorText[] = {1,1,1,0.8};
-			colorBackground[] = {0.12,0.14,0.16,0.8};
+			colorBackground[] = BG_COLOR;
 		};
 		class RscText_1001: RscStructuredText
 		{
@@ -767,9 +772,9 @@ class rr_objective_gui
 			y = 0.027 * safezoneH + safezoneY;
 			w = 0.0825 * safezoneW;
 			h = 0.022 * safezoneH;
-			colorBackground[] = {0.12,0.14,0.16,0.8};
+			colorBackground[] = BG_COLOR;
 		};
-		class image: RscPicture
+		class image: RscPictureKeepAspect
 		{
 			idc = 0;
 			text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\objective_attacker.paa";
@@ -785,7 +790,7 @@ class rr_objective_gui
 			y = 0.027 * safezoneH + safezoneY;
 			w = 0.0825 * safezoneW;
 			h = 0.022 * safezoneH;
-			colorBackground[] = {0.12,0.14,0.16,0.8};
+			colorBackground[] = BG_COLOR;
 		};
 		class RscText_1002: RscProgress
 		{
@@ -889,7 +894,7 @@ class rr_reloadingFlares {
 			y = 0.643 * safezoneH + safezoneY;
 			w = 0.4125 * safezoneW;
 			h = 0.011 * safezoneH;
-			colorBackground[] = {0.12,0.14,0.16,0.8};
+			colorBackground[] = BG_COLOR;
 		};
 		class RscText_1001: RscProgress
 		{
@@ -907,604 +912,894 @@ class rr_reloadingFlares {
 
 
 
-	class playerHUD {
-		idd = 5100;
-		name= "playerHUD";
-		movingEnable = 1;
-		enableSimulation = 1;
-		fadeout=0;
-		fadein=0;
-		duration = 86400;
-		onLoad="uiNamespace setVariable ['playerHUD',_this select 0]";
+class playerHUD {
+	idd = 5100;
+	name= "playerHUD";
+	movingEnable = 1;
+	enableSimulation = 1;
+	fadeout=0;
+	fadein=0;
+	duration = 86400;
+	onLoad="uiNamespace setVariable ['playerHUD',_this select 0]";
 
-		class controlsBackground {};
+	class controlsBackground {};
 
-		class controls {
-			class RscText_1000: RscText
-			{
-				idc = -1;
-				x = 0.863 * safezoneW + safezoneX;
-				y = 0.896 * safezoneH + safezoneY;
-				w = 0.135093 * safezoneW;
-				h = 0.1012 * safezoneH;
-				colorBackground[] = {0.12,0.14,0.16,0.8};
-				shadow = 2;
+	class controls {
+		class RscText_1000: RscText
+		{
+			idc = -1;
+			x = 0.863 * safezoneW + safezoneX;
+			y = 0.896 * safezoneH + safezoneY;
+			w = 0.135093 * safezoneW;
+			h = 0.1012 * safezoneH;
+			colorBackground[] = BG_COLOR;
+			shadow = 2;
+		};
+		class currentAmmo: RscText
+		{
+			idc = 100;
+			text = "000"; //--- ToDo: Localize;
+			x = 0.865064 * safezoneW + safezoneX;
+			y = 0.894 * safezoneH + safezoneY;
+			w = 0.0711564 * safezoneW;
+			h = 0.055 * safezoneH;
+			//sizeEx = 3.8 * GUI_GRID_H;
+			sizeEx = "(1.75*(pixelH * pixelGridNoUIScale * 2.9))";
+			shadow = 2;
+		};
+		class reserveAmmo: RscText
+		{
+			idc = 101;
+			text = "000"; //--- ToDo: Localize;
+			x = 0.952714 * safezoneW + safezoneX;
+			y = 0.8982 * safezoneH + safezoneY;
+			w = 0.0515625 * safezoneW;
+			h = 0.033 * safezoneH;
+			//sizeEx = 1.9 * GUI_GRID_H;
+			sizeEx = "(0.95*(pixelH * pixelGridNoUIScale * 2.9))";
+			shadow = 2;
+		};
+		class RscText_1002: RscText
+		{
+			idc = 106;
+			text = "/"; //--- ToDo: Localize;
+			x = 0.940341 * safezoneW + safezoneX;
+			y = 0.8982 * safezoneH + safezoneY;
+			w = 0.0113438 * safezoneW;
+			h = 0.0374 * safezoneH;
+			//sizeEx = 1.5 * GUI_GRID_H;
+			sizeEx = "(0.75*(pixelH * pixelGridNoUIScale * 2.9))";
+			shadow = 2;
+		};
+		class firemode: RscStructuredText
+		{
+			idc = 102;
+			text = "[  AUTO  ]"; //--- ToDo: Localize;
+			x = 0.93969 * safezoneW + safezoneX;
+			y = 0.934852 * safezoneH + safezoneY;
+			w = 0.0495002 * safezoneW;
+			h = 0.0185 * safezoneH;
+			//sizeEx = 1 * GUI_GRID_H;
+			//sizeEx = /*safezoNeW/*/(1*0.04);
+			shadow = 2;
+		};
+		class RscText_1004: RscText
+		{
+			idc = 103;
+			text = "+"; //--- ToDo: Localize;
+			x = 0.936218 * safezoneW + safezoneX;
+			y = 0.9525 * safezoneH + safezoneY;
+			w = 0.02 * safezoneW;
+			h = 0.033 * safezoneH;
+			//sizeEx = 3 * GUI_GRID_H;
+			font = "PuristaBold";
+			sizeEx = "(1.5*(pixelH * pixelGridNoUIScale * 2.9))";
+			shadow = 2;
+		};
+		class healthpoints: RscText
+		{
+			idc = 104;
+			text = "000"; //--- ToDo: Localize;
+			x = 0.952719 * safezoneW + safezoneX;
+			y = 0.955 * safezoneH + safezoneY;
+			w = 0.0515625 * safezoneW;
+			h = 0.0352 * safezoneH;
+			//sizeEx = 1.9 * GUI_GRID_H;
+			sizeEx = "(0.95*(pixelH * pixelGridNoUIScale * 2.9))";
+			shadow = 2;
+		};
+		class zeroing: RscText
+		{
+			idc = 105;
+			text = "Gx01"; //--- ToDo: Localize;
+			x = 0.86714 * safezoneW + safezoneX;
+			y = 0.955 * safezoneH + safezoneY;
+			w = 0.0615625 * safezoneW;
+			h = 0.0352 * safezoneH;
+			//sizeEx = 1.9 * GUI_GRID_H;
+			sizeEx = "(0.95*(pixelH * pixelGridNoUIScale * 2.9))";
+			shadow = 2;
+		};
+		class typeGranade: RscPictureKeepAspect
+		{
+			text = "";
+			idc = 108;
+			x = 0.83 * safezoneW + safezoneX;
+			y = 0.94 * safezoneH + safezoneY;
+			w = 0.0360937 * safezoneW;
+			h = 0.066 * safezoneH;
+		};
+		class granades: RscText
+		{
+			idc = 107;
+			text = "0"; //--- ToDo: Localize;
+			x = 0.823282 * safezoneW + safezoneX;
+			y = 0.946593 * safezoneH + safezoneY;
+			w = 0.0154688 * safezoneW;
+			h = 0.055 * safezoneH;
+			/* sizeEx = 2 * GUI_GRID_H; */
+			sizeEx = "(0.95*(pixelH * pixelGridNoUIScale * 2.9))";
+			shadow = 2;
+		};
+		class RscText_1100: RscText
+		{
+		  idc = 1100;
+		  text = ""; //--- ToDo: Localize;
+		  x = 0.86575 * safezoneW + safezoneX;
+		  y = 0.8704 * safezoneH + safezoneY;
+		  w = 0.130208 * safezoneW;
+		  h = 0.0224076 * safezoneH;
+		  colorBackground[] = {-1,-1,-1,0};
+			shadow = 2;
+			font = "PuristaBold";
+			align = "right";
+		};
+
+		class teammate_1: RscStructuredText
+		{
+			idc = 2100;
+			text = ""; //--- ToDo: Localize;
+			x = 0.861382 * safezoneW + safezoneX;
+			y = 0.838541 * safezoneH + safezoneY;
+			w = 0.114584 * safezoneW;
+			h = 0.0282118 * safezoneH;
+			colorBackground[] = {-1,-1,-1, 0};
+			sizeEx = "(0.95*(pixelH * pixelGridNoUIScale * 2.9))";
+		};
+		class teammate_2: RscStructuredText
+		{
+			idc = 2101;
+			text = ""; //--- ToDo: Localize;
+			x = 0.861382 * safezoneW + safezoneX;
+			y = 0.800926 * safezoneH + safezoneY;
+			w = 0.114584 * safezoneW;
+			h = 0.0282118 * safezoneH;
+			colorBackground[] = {-1,-1,-1,0};
+			sizeEx = "(0.95*(pixelH * pixelGridNoUIScale * 2.9))";
+		};
+		class teammate_3: RscStructuredText
+		{
+			idc = 2102;
+			text = ""; //--- ToDo: Localize;
+			x = 0.861382 * safezoneW + safezoneX;
+			y = 0.76331 * safezoneH + safezoneY;
+			w = 0.114584 * safezoneW;
+			h = 0.0282118 * safezoneH;
+			colorBackground[] = {-1,-1,-1,0};
+			sizeEx = "(0.95*(pixelH * pixelGridNoUIScale * 2.9))";
+		};
+		class teammate_4: RscStructuredText
+		{
+			idc = 2103;
+			text = ""; //--- ToDo: Localize;
+			x = 0.861382 * safezoneW + safezoneX;
+			y = 0.725694 * safezoneH + safezoneY;
+			w = 0.114584 * safezoneW;
+			h = 0.0282118 * safezoneH;
+			colorBackground[] = {-1,-1,-1,0};
+			sizeEx = "(0.95*(pixelH * pixelGridNoUIScale * 2.9))";
+		};
+		class teammate_5: RscStructuredText
+		{
+			idc = 2104;
+			text = ""; //--- ToDo: Localize;
+			x = 0.861382 * safezoneW + safezoneX;
+			y = 0.688079 * safezoneH + safezoneY;
+			w = 0.114584 * safezoneW;
+			h = 0.0282118 * safezoneH;
+			colorBackground[] = {-1,-1,-1,0};
+			sizeEx = "(0.95*(pixelH * pixelGridNoUIScale * 2.9))";
+		};
+		class teammate_1_perk: RscPictureKeepAspect
+		{
+			idc = 2200;
+			text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\assault.paa";
+			x = 0.971294 * safezoneW + safezoneX;
+			y = 0.828009 * safezoneH + safezoneY;
+			w = 0.0264426 * safezoneW;
+			h = 0.0470196 * safezoneH;
+			colorText[] = {0.66, 1, 0.66, 1};
+		};
+		class teammate_2_perk: RscPictureKeepAspect
+		{
+			idc = 2201;
+			text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\assault.paa";
+			x = 0.971559 * safezoneW + safezoneX;
+			y = 0.791522 * safezoneH + safezoneY;
+			w = 0.0264426 * safezoneW;
+			h = 0.0470196 * safezoneH;
+			colorText[] = {0.66, 1, 0.66, 1};
+		};
+		class teammate_3_perk: RscPictureKeepAspect
+		{
+			idc = 2202;
+			text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\assault.paa";
+			x = 0.971559 * safezoneW + safezoneX;
+			y = 0.753906 * safezoneH + safezoneY;
+			w = 0.0264426 * safezoneW;
+			h = 0.0470196 * safezoneH;
+			colorText[] = {0.66, 1, 0.66, 1};
+		};
+		class teammate_4_perk: RscPictureKeepAspect
+		{
+			idc = 2203;
+			text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\assault.paa";
+			x = 0.971559 * safezoneW + safezoneX;
+			y = 0.71629 * safezoneH + safezoneY;
+			w = 0.0264426 * safezoneW;
+			h = 0.0470196 * safezoneH;
+			colorText[] = {0.66, 1, 0.66, 1};
+		};
+		class teammate_5_perk: RscPictureKeepAspect
+		{
+			idc = 2204;
+			text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\assault.paa";
+			x = 0.971559 * safezoneW + safezoneX;
+			y = 0.678675 * safezoneH + safezoneY;
+			w = 0.0264426 * safezoneW;
+			h = 0.0470196 * safezoneH;
+			colorText[] = {0.66, 1, 0.66, 1};
+		};
+		class teammate_1_lead: RscPictureKeepAspect
+		{
+			idc = 2300;
+			text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\star.paa";
+			x = 0.856974 * safezoneW + safezoneX;
+			y = 0.829137 * safezoneH + safezoneY;
+			w = 0.0264426 * safezoneW;
+			h = 0.0470196 * safezoneH;
+		};
+		class teammate_2_lead: RscPictureKeepAspect
+		{
+			idc = 2301;
+			text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\star.paa";
+			x = 0.856974 * safezoneW + safezoneX;
+			y = 0.791522 * safezoneH + safezoneY;
+			w = 0.0264426 * safezoneW;
+			h = 0.0470196 * safezoneH;
+		};
+		class teammate_3_lead: RscPictureKeepAspect
+		{
+			idc = 2302;
+			text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\star.paa";
+			x = 0.856974 * safezoneW + safezoneX;
+			y = 0.753906 * safezoneH + safezoneY;
+			w = 0.0264426 * safezoneW;
+			h = 0.0470196 * safezoneH;
+		};
+		class teammate_4_lead: RscPictureKeepAspect
+		{
+			idc = 2303;
+			text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\star.paa";
+			x = 0.856974 * safezoneW + safezoneX;
+			y = 0.71629 * safezoneH + safezoneY;
+			w = 0.0264426 * safezoneW;
+			h = 0.0470196 * safezoneH;
+		};
+		class teammate_5_lead: RscPictureKeepAspect
+		{
+			idc = 2304;
+			text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\star.paa";
+			x = 0.856974 * safezoneW + safezoneX;
+			y = 0.678675 * safezoneH + safezoneY;
+			w = 0.0264426 * safezoneW;
+			h = 0.0470196 * safezoneH;
+		};
+		class MinimapBackground: RscText
+		{
+			idc = 1799;
+			x = 0.863144 * safezoneW + safezoneX;
+			y = 0.00347277 * safezoneH + safezoneY;
+			w = 0.135093 * safezoneW;
+			h = 0.206886 * safezoneH;
+			colorBackground[] = BG_COLOR;
+		};
+		class Minimap: RscMapControl
+		{
+			idc = 1800;
+			x = 0.863145 * safezoneW + safezoneX;
+			y = 0.00347277 * safezoneH + safezoneY;
+			w = 0.135093 * safezoneW;
+			h = 0.206886 * safezoneH;
+      font = "RobotoCondensed";
+      sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 0.75)";
+			sizeExLabel = "1.00 *     (pixelH * pixelGridNoUIScale * 1.4)";
+			sizeExUnits = "1.00 *     (pixelH * pixelGridNoUIScale * 1.4)";
+			sizeExNames = "1.00 *     (pixelH * pixelGridNoUIScale * 1.4)";
+			sizeExInfo = "1.00 *     (pixelH * pixelGridNoUIScale * 1.4)";
+			sizeExLevel = "1.00 *     (pixelH * pixelGridNoUIScale * 1.4)";
+			colorCountlines[] = {0,0,0,0};
+			colorMainCountlines[] = {0,0,0,0};
+			colorCountlinesWater[] = {0,0,0,0};
+			colorMainCountlinesWater[] = {0,0,0,0};
+			colorGrid[] = {0,0,0,0};
+			colorGridMap[] = {0,0,0,0};
+			widthRailWay = 1;
+		};
+		class Direction: RscStructuredText
+		{
+			idc = 1801;
+			text = ""; //--- ToDo: Localize;
+			x = 0.864907 * safezoneW + safezoneX;
+			y = 0.214121 * safezoneH + safezoneY;
+			w = 0.131332 * safezoneW;
+			h = 0.0282118 * safezoneH;
+			sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 1.8)";
+			class Attributes {
+				font = "PuristaMedium";
+				color = "#FFFFFF";
+				align = "center";
+				valign = "middle";
 			};
-			class currentAmmo: RscText
-			{
-				idc = 100;
-				text = "000"; //--- ToDo: Localize;
-				x = 0.865064 * safezoneW + safezoneX;
-				y = 0.894 * safezoneH + safezoneY;
-				w = 0.0711564 * safezoneW;
-				h = 0.055 * safezoneH;
-				//sizeEx = 3.8 * GUI_GRID_H;
-				sizeEx = "(1.75*(pixelH * pixelGridNoUIScale * 2.9))";
-				shadow = 2;
+		};
+	};
+};
+
+// HIT DIRECTION INDICATORS
+class cu
+{
+	idd = -1;
+	name= "cu";
+	movingEnable = 1;
+	enableSimulation = 1;
+	fadeout=0;
+	fadein=0;
+	duration = 0.5;
+	onLoad="uiNamespace setVariable ['cu',_this select 0]";
+
+	class controlsBackground {};
+
+	class controls {
+		class RscText211000: RscPicture
+		{
+			idc = 1101;
+			text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\cu.paa"; //--- ToDo: Localize;
+			x = 0 * safezoneW + safezoneX;
+			y = 0 * safezoneH + safezoneY;
+			w = 1 * safezoneW;
+			h = 1 * safezoneH;
+		};
+	};
+};
+
+class cr
+{
+	idd = -1;
+	name= "cr";
+	movingEnable = 1;
+	enableSimulation = 1;
+	fadeout=0;
+	fadein=0;
+	duration = 0.5;
+	onLoad="uiNamespace setVariable ['cr',_this select 0]";
+
+	class controlsBackground {};
+
+	class controls {
+		class RscText211000: RscPicture
+		{
+			idc = 1101;
+			text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\cr.paa"; //--- ToDo: Localize;
+			x = 0 * safezoneW + safezoneX;
+			y = 0 * safezoneH + safezoneY;
+			w = 1 * safezoneW;
+			h = 1 * safezoneH;
+		};
+	};
+};
+
+class cl
+{
+	idd = -1;
+	name= "cl";
+	movingEnable = 1;
+	enableSimulation = 1;
+	fadeout=0;
+	fadein=0;
+	duration = 0.5;
+	onLoad="uiNamespace setVariable ['cl',_this select 0]";
+
+	class controlsBackground {};
+
+	class controls {
+		class RscText211000: RscPicture
+		{
+			idc = 1101;
+			text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\cl.paa"; //--- ToDo: Localize;
+			x = 0 * safezoneW + safezoneX;
+			y = 0 * safezoneH + safezoneY;
+			w = 1 * safezoneW;
+			h = 1 * safezoneH;
+		};
+	};
+};
+
+class cd
+{
+	idd = -1;
+	name= "cd";
+	movingEnable = 1;
+	enableSimulation = 1;
+	fadeout=0;
+	fadein=0;
+	duration = 0.5;
+	onLoad="uiNamespace setVariable ['cd',_this select 0]";
+
+	class controlsBackground {};
+
+	class controls {
+		class RscText211000: RscPicture
+		{
+			idc = 1101;
+			text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\cd.paa"; //--- ToDo: Localize;
+			x = 0 * safezoneW + safezoneX;
+			y = 0 * safezoneH + safezoneY;
+			w = 1 * safezoneW;
+			h = 1 * safezoneH;
+		};
+	};
+};
+
+class hm_kill
+{
+	idd = -1;
+	movingEnable = 1;
+	enableSimulation = 1;
+	fadeout=0;
+	fadein=0;
+	duration = 0.3;
+
+	class controlsBackground {};
+
+	class controls {
+
+		class RscText2131000: RscPicture
+		{
+			idc = -1;
+			x = 0.455656 * safezoneW + safezoneX;
+			y = 0.422 * safezoneH + safezoneY;
+			w = 0.0886877 * safezoneW;
+			h = 0.154 * safezoneH;
+			text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\hm_kill.paa";
+		};
+	};
+};
+
+class hm_headshot
+{
+	idd = -1;
+	movingEnable = 1;
+	enableSimulation = 1;
+	fadeout=0.0;
+	fadein=0;
+	duration = 0.3;
+
+	class controlsBackground {};
+
+	class controls {
+
+		class RscText2131000: RscPicture
+		{
+			idc = -1;
+			x = 0.455656 * safezoneW + safezoneX;
+			y = 0.422 * safezoneH + safezoneY;
+			w = 0.0886877 * safezoneW;
+			h = 0.154 * safezoneH;
+			text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\hm_headshot.paa";
+		};
+	};
+};
+
+class hm_hit
+{
+	idd = -1;
+	movingEnable = 1;
+	enableSimulation = 1;
+	fadeout=0.0;
+	fadein=0;
+	duration = 0.3;
+
+	class controlsBackground {};
+
+	class controls {
+
+		class RscText2131000: RscPicture
+		{
+			idc = -1;
+			x = 0.455656 * safezoneW + safezoneX;
+			y = 0.422 * safezoneH + safezoneY;
+			w = 0.0886877 * safezoneW;
+			h = 0.154 * safezoneH;
+			text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\hm_hit.paa";
+		};
+	};
+};
+
+class waitingForPlayers
+{
+	idd = -1;
+	movingEnable = 1;
+	enableSimulation = 1;
+	fadeout=1.0;
+	fadein=0;
+	duration = 9999999;
+	onLoad = "uiNamespace setVariable ['waitingForPlayers', _this select 0];";
+	class controlsBackground {};
+
+	class controls {
+		class blackbackground: RscText
+		{
+			idc = 0;
+			x = 0 * safezoneW + safezoneX;
+			y = 0 * safezoneH + safezoneY;
+			w = 1 * safezoneW;
+			h = 1 * safezoneH;
+			colorBackground[] = {0,0,0,1};
+		};
+		class title: RscStructuredText
+		{
+			idc = 1100;
+			text = "WAITING FOR PLAYERS";
+			x = 0.323716 * safezoneW + safezoneX;
+			y = 0.45298 * safezoneH + safezoneY;
+			w = 0.352567 * safezoneW;
+			h = 0.0752314 * safezoneH;
+			colorBackground[] = {-1,-1,-1,0};
+			sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 1.0)";
+			shadow = 2;
+			class Attributes {
+				size = "4";
+				font = "PuristaMedium";
+				color = "#FFFFFF";
+				align = "center";
+				valign = "middle";
 			};
-			class reserveAmmo: RscText
-			{
-				idc = 101;
-				text = "000"; //--- ToDo: Localize;
-				x = 0.952714 * safezoneW + safezoneX;
-				y = 0.8982 * safezoneH + safezoneY;
-				w = 0.0515625 * safezoneW;
-				h = 0.033 * safezoneH;
-				//sizeEx = 1.9 * GUI_GRID_H;
-				sizeEx = "(0.95*(pixelH * pixelGridNoUIScale * 2.9))";
-				shadow = 2;
+		};
+		class subtitle_1: RscStructuredText
+		{
+			idc = 1101;
+			text = "";
+			x = 0.323716 * safezoneW + safezoneX;
+			y = 0.53 * safezoneH + safezoneY;
+			w = 0.352567 * safezoneW;
+			h = 0.0188079 * safezoneH;
+			colorBackground[] = {-1,-1,-1,0};
+			sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 1.8)";
+			shadow = 2;
+			class Attributes {
+				size = "1";
+				font = "PuristaMedium";
+				color = "#FFFFFF";
+				align = "left";
 			};
-			class RscText_1002: RscText
-			{
-				idc = 106;
-				text = "/"; //--- ToDo: Localize;
-				x = 0.940341 * safezoneW + safezoneX;
-				y = 0.8982 * safezoneH + safezoneY;
-				w = 0.0113438 * safezoneW;
-				h = 0.0374 * safezoneH;
-				//sizeEx = 1.5 * GUI_GRID_H;
-				sizeEx = "(0.75*(pixelH * pixelGridNoUIScale * 2.9))";
-				shadow = 2;
-			};
-			class firemode: RscStructuredText
-			{
-				idc = 102;
-				text = "[  AUTO  ]"; //--- ToDo: Localize;
-				x = 0.93969 * safezoneW + safezoneX;
-				y = 0.934852 * safezoneH + safezoneY;
-				w = 0.0495002 * safezoneW;
-				h = 0.0185 * safezoneH;
-				//sizeEx = 1 * GUI_GRID_H;
-				//sizeEx = /*safezoNeW/*/(1*0.04);
-				shadow = 2;
-			};
-			class RscText_1004: RscText
-			{
-				idc = 103;
-				text = "+"; //--- ToDo: Localize;
-				x = 0.936218 * safezoneW + safezoneX;
-				y = 0.9525 * safezoneH + safezoneY;
-				w = 0.02 * safezoneW;
-				h = 0.033 * safezoneH;
-				//sizeEx = 3 * GUI_GRID_H;
-				font = "PuristaBold";
-				sizeEx = "(1.5*(pixelH * pixelGridNoUIScale * 2.9))";
-				shadow = 2;
-			};
-			class healthpoints: RscText
-			{
-				idc = 104;
-				text = "000"; //--- ToDo: Localize;
-				x = 0.952719 * safezoneW + safezoneX;
-				y = 0.955 * safezoneH + safezoneY;
-				w = 0.0515625 * safezoneW;
-				h = 0.0352 * safezoneH;
-				//sizeEx = 1.9 * GUI_GRID_H;
-				sizeEx = "(0.95*(pixelH * pixelGridNoUIScale * 2.9))";
-				shadow = 2;
-			};
-			class zeroing: RscText
-			{
-				idc = 105;
-				text = "Gx01"; //--- ToDo: Localize;
-				x = 0.86714 * safezoneW + safezoneX;
-				y = 0.955 * safezoneH + safezoneY;
-				w = 0.0615625 * safezoneW;
-				h = 0.0352 * safezoneH;
-				//sizeEx = 1.9 * GUI_GRID_H;
-				sizeEx = "(0.95*(pixelH * pixelGridNoUIScale * 2.9))";
-				shadow = 2;
-			};
-			class typeGranade: RscPicture
-			{
-				text = "";
-				idc = 108;
-				x = 0.83 * safezoneW + safezoneX;
-				y = 0.94 * safezoneH + safezoneY;
-				w = 0.0360937 * safezoneW;
-				h = 0.066 * safezoneH;
-			};
-			class granades: RscText
-			{
-				idc = 107;
-				text = "0"; //--- ToDo: Localize;
-				x = 0.823282 * safezoneW + safezoneX;
-				y = 0.946593 * safezoneH + safezoneY;
-				w = 0.0154688 * safezoneW;
-				h = 0.055 * safezoneH;
-				/* sizeEx = 2 * GUI_GRID_H; */
-				sizeEx = "(0.95*(pixelH * pixelGridNoUIScale * 2.9))";
-				shadow = 2;
-			};
-			class RscText_1100: RscText
-			{
-			  idc = 1100;
-			  text = ""; //--- ToDo: Localize;
-			  x = 0.86575 * safezoneW + safezoneX;
-			  y = 0.8704 * safezoneH + safezoneY;
-			  w = 0.130208 * safezoneW;
-			  h = 0.0224076 * safezoneH;
-			  colorBackground[] = {-1,-1,-1,0};
-				shadow = 2;
-				font = "PuristaBold";
+		};
+		class subtitle_2: RscStructuredText
+		{
+			idc = 1102;
+			text = "";
+			x = 0.323716 * safezoneW + safezoneX;
+			y = 0.53 * safezoneH + safezoneY;
+			w = 0.352567 * safezoneW;
+			h = 0.0188079 * safezoneH;
+			colorBackground[] = {-1,-1,-1,0};
+			sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 1.8)";
+			shadow = 2;
+			class Attributes {
+				size = "1";
+				font = "PuristaMedium";
+				color = "#FFFFFF";
 				align = "right";
 			};
-
-			class teammate_1: RscStructuredText
-			{
-				idc = 2100;
-				text = ""; //--- ToDo: Localize;
-				x = 0.861382 * safezoneW + safezoneX;
-				y = 0.838541 * safezoneH + safezoneY;
-				w = 0.114584 * safezoneW;
-				h = 0.0282118 * safezoneH;
-				colorBackground[] = {-1,-1,-1, 0};
-				sizeEx = "(0.95*(pixelH * pixelGridNoUIScale * 2.9))";
-			};
-			class teammate_2: RscStructuredText
-			{
-				idc = 2101;
-				text = ""; //--- ToDo: Localize;
-				x = 0.861382 * safezoneW + safezoneX;
-				y = 0.800926 * safezoneH + safezoneY;
-				w = 0.114584 * safezoneW;
-				h = 0.0282118 * safezoneH;
-				colorBackground[] = {-1,-1,-1,0};
-				sizeEx = "(0.95*(pixelH * pixelGridNoUIScale * 2.9))";
-			};
-			class teammate_3: RscStructuredText
-			{
-				idc = 2102;
-				text = ""; //--- ToDo: Localize;
-				x = 0.861382 * safezoneW + safezoneX;
-				y = 0.76331 * safezoneH + safezoneY;
-				w = 0.114584 * safezoneW;
-				h = 0.0282118 * safezoneH;
-				colorBackground[] = {-1,-1,-1,0};
-				sizeEx = "(0.95*(pixelH * pixelGridNoUIScale * 2.9))";
-			};
-			class teammate_4: RscStructuredText
-			{
-				idc = 2103;
-				text = ""; //--- ToDo: Localize;
-				x = 0.861382 * safezoneW + safezoneX;
-				y = 0.725694 * safezoneH + safezoneY;
-				w = 0.114584 * safezoneW;
-				h = 0.0282118 * safezoneH;
-				colorBackground[] = {-1,-1,-1,0};
-				sizeEx = "(0.95*(pixelH * pixelGridNoUIScale * 2.9))";
-			};
-			class teammate_5: RscStructuredText
-			{
-				idc = 2104;
-				text = ""; //--- ToDo: Localize;
-				x = 0.861382 * safezoneW + safezoneX;
-				y = 0.688079 * safezoneH + safezoneY;
-				w = 0.114584 * safezoneW;
-				h = 0.0282118 * safezoneH;
-				colorBackground[] = {-1,-1,-1,0};
-				sizeEx = "(0.95*(pixelH * pixelGridNoUIScale * 2.9))";
-			};
-			class teammate_1_perk: RscPicture
-			{
-				idc = 2200;
-				text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\assault.paa";
-				x = 0.971294 * safezoneW + safezoneX;
-				y = 0.828009 * safezoneH + safezoneY;
-				w = 0.0264426 * safezoneW;
-				h = 0.0470196 * safezoneH;
-				colorText[] = {0.66, 1, 0.66, 1};
-			};
-			class teammate_2_perk: RscPicture
-			{
-				idc = 2201;
-				text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\assault.paa";
-				x = 0.971559 * safezoneW + safezoneX;
-				y = 0.791522 * safezoneH + safezoneY;
-				w = 0.0264426 * safezoneW;
-				h = 0.0470196 * safezoneH;
-				colorText[] = {0.66, 1, 0.66, 1};
-			};
-			class teammate_3_perk: RscPicture
-			{
-				idc = 2202;
-				text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\assault.paa";
-				x = 0.971559 * safezoneW + safezoneX;
-				y = 0.753906 * safezoneH + safezoneY;
-				w = 0.0264426 * safezoneW;
-				h = 0.0470196 * safezoneH;
-				colorText[] = {0.66, 1, 0.66, 1};
-			};
-			class teammate_4_perk: RscPicture
-			{
-				idc = 2203;
-				text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\assault.paa";
-				x = 0.971559 * safezoneW + safezoneX;
-				y = 0.71629 * safezoneH + safezoneY;
-				w = 0.0264426 * safezoneW;
-				h = 0.0470196 * safezoneH;
-				colorText[] = {0.66, 1, 0.66, 1};
-			};
-			class teammate_5_perk: RscPicture
-			{
-				idc = 2204;
-				text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\assault.paa";
-				x = 0.971559 * safezoneW + safezoneX;
-				y = 0.678675 * safezoneH + safezoneY;
-				w = 0.0264426 * safezoneW;
-				h = 0.0470196 * safezoneH;
-				colorText[] = {0.66, 1, 0.66, 1};
-			};
-			class teammate_1_lead: RscPicture
-			{
-				idc = 2300;
-				text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\star.paa";
-				x = 0.856974 * safezoneW + safezoneX;
-				y = 0.829137 * safezoneH + safezoneY;
-				w = 0.0264426 * safezoneW;
-				h = 0.0470196 * safezoneH;
-			};
-			class teammate_2_lead: RscPicture
-			{
-				idc = 2301;
-				text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\star.paa";
-				x = 0.856974 * safezoneW + safezoneX;
-				y = 0.791522 * safezoneH + safezoneY;
-				w = 0.0264426 * safezoneW;
-				h = 0.0470196 * safezoneH;
-			};
-			class teammate_3_lead: RscPicture
-			{
-				idc = 2302;
-				text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\star.paa";
-				x = 0.856974 * safezoneW + safezoneX;
-				y = 0.753906 * safezoneH + safezoneY;
-				w = 0.0264426 * safezoneW;
-				h = 0.0470196 * safezoneH;
-			};
-			class teammate_4_lead: RscPicture
-			{
-				idc = 2303;
-				text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\star.paa";
-				x = 0.856974 * safezoneW + safezoneX;
-				y = 0.71629 * safezoneH + safezoneY;
-				w = 0.0264426 * safezoneW;
-				h = 0.0470196 * safezoneH;
-			};
-			class teammate_5_lead: RscPicture
-			{
-				idc = 2304;
-				text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\star.paa";
-				x = 0.856974 * safezoneW + safezoneX;
-				y = 0.678675 * safezoneH + safezoneY;
-				w = 0.0264426 * safezoneW;
-				h = 0.0470196 * safezoneH;
-			};
-			class MinimapBackground: RscText
-			{
-				idc = 1799;
-				x = 0.863144 * safezoneW + safezoneX;
-				y = 0.00347277 * safezoneH + safezoneY;
-				w = 0.135093 * safezoneW;
-				h = 0.206886 * safezoneH;
-				colorBackground[] = {0.12,0.14,0.16,0.8};
-			};
-			class Minimap: RscMapControl
-			{
-				idc = 1800;
-				x = 0.863145 * safezoneW + safezoneX;
-				y = 0.00347277 * safezoneH + safezoneY;
-				w = 0.135093 * safezoneW;
-				h = 0.206886 * safezoneH;
-	      font = "RobotoCondensed";
-	      sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 0.75)";
-				sizeExLabel = "1.00 *     (pixelH * pixelGridNoUIScale * 1.4)";
-				sizeExUnits = "1.00 *     (pixelH * pixelGridNoUIScale * 1.4)";
-				sizeExNames = "1.00 *     (pixelH * pixelGridNoUIScale * 1.4)";
-				sizeExInfo = "1.00 *     (pixelH * pixelGridNoUIScale * 1.4)";
-				sizeExLevel = "1.00 *     (pixelH * pixelGridNoUIScale * 1.4)";
-				colorCountlines[] = {0,0,0,0};
-				colorMainCountlines[] = {0,0,0,0};
-				colorCountlinesWater[] = {0,0,0,0};
-				colorMainCountlinesWater[] = {0,0,0,0};
-				colorGrid[] = {0,0,0,0};
-				colorGridMap[] = {0,0,0,0};
-				widthRailWay = 1;
-			};
-			class Direction: RscStructuredText
-			{
-				idc = 1801;
-				text = ""; //--- ToDo: Localize;
-				x = 0.864907 * safezoneW + safezoneX;
-				y = 0.214121 * safezoneH + safezoneY;
-				w = 0.131332 * safezoneW;
-				h = 0.0282118 * safezoneH;
-				sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 1.8)";
-				class Attributes {
-					font = "PuristaMedium";
-					color = "#FFFFFF";
-					align = "center";
-					valign = "middle";
-				};
-			};
 		};
 	};
+};
 
-	// HIT DIRECTION INDICATORS
-	class cu
+class killcam_info {
+	idd = -1;
+	movingEnable = 1;
+	enableSimulation = 1;
+	fadeout=0;
+	fadein=1.0;
+	duration = 999999;
+	onLoad = "uiNamespace setVariable ['killcam_info', _this select 0];";
+	class ControlsBackground
 	{
-		idd = -1;
-		name= "cu";
-		movingEnable = 1;
-		enableSimulation = 1;
-		fadeout=0;
-		fadein=0;
-		duration = 0.5;
-		onLoad="uiNamespace setVariable ['cu',_this select 0]";
+		class Control_BG_1
+		{
+			type = 0;
+			idc = 0;
+			x = safeZoneX + safeZoneW * 0.643125;
+			y = safeZoneY + safeZoneH * 0.87777778;
+			w = safeZoneW * 0.1125;
+			h = safeZoneH * 0.03;
+			style = 0;
+			text = "";
+			colorBackground[] = BG_COLOR;
+			colorText[] = {0.0706,0.9294,0.4941,1};
+			font = "PuristaMedium";
+			sizeEx = (((((safezoneW / safezoneH) min 1.2) / 1.2) / 25) * 1);
 
-		class controlsBackground {};
-
-		class controls {
-			class RscText211000: RscPicture
-			{
-				idc = 1101;
-				text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\cu.paa"; //--- ToDo: Localize;
-				x = 0 * safezoneW + safezoneX;
-				y = 0 * safezoneH + safezoneY;
-				w = 1 * safezoneW;
-				h = 1 * safezoneH;
-			};
 		};
-	};
+		class Control_BG_2
+		{
+			type = 0;
+			idc = 0;
+			x = safeZoneX + safeZoneW * 0.643125;
+			y = safeZoneY + safeZoneH * 0.69333334;
+			w = safeZoneW * 0.1125;
+			h = safeZoneH * 0.18;
+			style = 0;
+			text = "";
+			colorBackground[] = BG_COLOR;
+			colorText[] = {0.0706,0.9294,0.4941,1};
+			font = "PuristaMedium";
+			sizeEx = (((((safezoneW / safezoneH) min 1.2) / 1.2) / 25) * 1);
 
-	class cr
+		};
+		class Control_BG_3
+		{
+			type = 0;
+			idc = 0;
+			x = safeZoneX + safeZoneW * 0.475;
+			y = safeZoneY + safeZoneH * 0.65888889;
+			w = safeZoneW * 0.280625;
+			h = safeZoneH * 0.03;
+			style = 0;
+			text = "";
+			colorBackground[] = ACCENT_COLOR;
+			colorText[] = {0.0706,0.9294,0.4941,1};
+			font = "PuristaMedium";
+			sizeEx = (((((safezoneW / safezoneH) min 1.2) / 1.2) / 25) * 1);
+
+		};
+		class Control_BG_4
+		{
+			type = 0;
+			idc = 0;
+			x = safeZoneX + safeZoneW * 0.243125;
+			y = safeZoneY + safeZoneH * 0.69333334;
+			w = safeZoneW * 0.1125;
+			h = safeZoneH * 0.18;
+			style = 0;
+			text = "";
+			colorBackground[] = BG_COLOR;
+			colorText[] = {0.0706,0.9294,0.4941,1};
+			font = "PuristaMedium";
+			sizeEx = (((((safezoneW / safezoneH) min 1.2) / 1.2) / 25) * 1);
+
+		};
+		class Control_BG_5
+		{
+			type = 0;
+			idc = 0;
+			x = safeZoneX + safeZoneW * 0.474375;
+			y = safeZoneY + safeZoneH * 0.69333334;
+			w = safeZoneW * 0.16625;
+			h = safeZoneH * 0.18;
+			style = 0;
+			text = "";
+			colorBackground[] = BG_COLOR;
+			colorText[] = {0.0706,0.9294,0.4941,1};
+			font = "PuristaMedium";
+			sizeEx = (((((safezoneW / safezoneH) min 1.2) / 1.2) / 25) * 1);
+
+		};
+		class Control_BG_6
+		{
+			type = 0;
+			idc = 0;
+			x = safeZoneX + safeZoneW * 0.35875;
+			y = safeZoneY + safeZoneH * 0.69333334;
+			w = safeZoneW * 0.1125;
+			h = safeZoneH * 0.18;
+			style = 0;
+			text = "";
+			colorBackground[] = BG_COLOR;
+			colorText[] = {0.0706,0.9294,0.4941,1};
+			font = "PuristaMedium";
+			sizeEx = (((((safezoneW / safezoneH) min 1.2) / 1.2) / 25) * 1);
+
+		};
+		class Control_BG_7
+		{
+			type = 0;
+			idc = 0;
+			x = safeZoneX + safeZoneW * 0.243125;
+			y = safeZoneY + safeZoneH * 0.87777778;
+			w = safeZoneW * 0.228125;
+			h = safeZoneH * 0.03;
+			style = 0;
+			text = "";
+			colorBackground[] = BG_COLOR;
+			colorText[] = {0.0706,0.9294,0.4941,1};
+			font = "PuristaMedium";
+			sizeEx = (((((safezoneW / safezoneH) min 1.2) / 1.2) / 25) * 1);
+
+		};
+		class Control_BG_8
+		{
+			type = 0;
+			idc = 0;
+			x = safeZoneX + safeZoneW * 0.474375;
+			y = safeZoneY + safeZoneH * 0.87777778;
+			w = safeZoneW * 0.16625;
+			h = safeZoneH * 0.03;
+			style = 0;
+			text = "";
+			colorBackground[] = BG_COLOR;
+			colorText[] = {0.0706,0.9294,0.4941,1};
+			font = "PuristaMedium";
+			sizeEx = (((((safezoneW / safezoneH) min 1.2) / 1.2) / 25) * 1);
+
+		};
+		class Control_BG_9
+		{
+			type = 0;
+			idc = 0;
+			x = safeZoneX + safeZoneW * 0.243125;
+			y = safeZoneY + safeZoneH * 0.65888889;
+			w = safeZoneW * 0.228125;
+			h = safeZoneH * 0.03;
+			style = 0;
+			text = "";
+			colorBackground[] = ACCENT_COLOR;
+			colorText[] = {0.0706,0.9294,0.4941,1};
+			font = "PuristaMedium";
+			sizeEx = (((((safezoneW / safezoneH) min 1.2) / 1.2) / 25) * 1);
+		};
+
+	};
+	class Controls
 	{
-		idd = -1;
-		name= "cr";
-		movingEnable = 1;
-		enableSimulation = 1;
-		fadeout=0;
-		fadein=0;
-		duration = 0.5;
-		onLoad="uiNamespace setVariable ['cr',_this select 0]";
-
-		class controlsBackground {};
-
-		class controls {
-			class RscText211000: RscPicture
-			{
-				idc = 1101;
-				text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\cr.paa"; //--- ToDo: Localize;
-				x = 0 * safezoneW + safezoneX;
-				y = 0 * safezoneH + safezoneY;
-				w = 1 * safezoneW;
-				h = 1 * safezoneH;
-			};
+		class RscStructuredText_1100: RscStructuredText
+		{
+			idc = -1;
+			text = "<t size='1.25' shadow=0 font='PuristaMedium' valign='center'>KILLED BY:</t>"; //--- ToDo: Localize;
+			x = 0.243805 * safezoneW + safezoneX;
+			y = 0.660619 * safezoneH + safezoneY;
+			w = 0.0705286 * safezoneW;
+			h = 0.0282118 * safezoneH;
+			colorText[] = {0,0,0,1};
+			colorBackground[] = {-1,-1,-1,0};
+			sizeEx = (((((safezoneW / safezoneH) min 1.2) / 1.2) / 25) * 1);
+		};
+		class killer_name: RscStructuredText
+		{
+			idc = 1100;
+			text = "<t size='1.25' shadow=2 font='PuristaBold' valign='center'></t>"; //--- ToDo: Localize;
+			x = 0.30252 * safezoneW + safezoneX;
+			y = 0.660807 * safezoneH + safezoneY;
+			w = 0.169671 * safezoneW;
+			h = 0.0272855 * safezoneH;
+			colorBackground[] = {-1,-1,-1,0};
+			sizeEx = (((((safezoneW / safezoneH) min 1.2) / 1.2) / 25) * 1);
+		};
+		class RscStructuredText_1102: RscStructuredText
+		{
+			idc = -1;
+			text = "<t size='1.5' shadow=2 font='PuristaBold' align='center' valign='center'>HEALTH</t>"; //--- ToDo: Localize;
+			x = 0.248742 * safezoneW + safezoneX;
+			y = 0.744502 * safezoneH + safezoneY;
+			w = 0.101385 * safezoneW;
+			h = 0.0282118 * safezoneH;
+			colorBackground[] = {-1,-1,-1,0};
+			sizeEx = (((((safezoneW / safezoneH) min 1.2) / 1.2) / 25) * 1);
+		};
+		class hp_indicator: RscStructuredText
+		{
+			idc = 1102;
+			text = "<t size='3' shadow=2 font='PuristaBold' align='center' valign='center'>100</t>"; //--- ToDo: Localize;
+			x = 0.270782 * safezoneW + safezoneX;
+			y = 0.76331 * safezoneH + safezoneY;
+			w = 0.0573045 * safezoneW;
+			h = 0.0658275 * safezoneH;
+			colorBackground[] = {-1,-1,-1,0};
+			sizeEx = (((((safezoneW / safezoneH) min 1.2) / 1.2) / 25) * 1);
+		};
+		class RscStructuredText_1104: RscStructuredText
+		{
+			idc = -1;
+			text = "<t size='1.5' shadow=2 font='PuristaBold' align='center' valign='center'><t color='#0000ff'>YOU</t>  -  <t color='#ff0000'>FOE</t></t>"; //--- ToDo: Localize;
+			x = 0.306046 * safezoneW + safezoneX;
+			y = 0.876157 * safezoneH + safezoneY;
+			w = 0.101385 * safezoneW;
+			h = 0.0376157 * safezoneH;
+			colorBackground[] = {-1,-1,-1,0};
+			sizeEx = (((((safezoneW / safezoneH) min 1.2) / 1.2) / 25) * 1);
+		};
+		class weapon_name: RscStructuredText
+		{
+			idc = 1103;
+			text = "<t size='1.25' shadow=2 font='PuristaMedium' align='center' valign='center'>SUPER POWER WEAPON</t>"; //--- ToDo: Localize;
+			x = 0.473552 * safezoneW + safezoneX;
+			y = 0.878038 * safezoneH + safezoneY;
+			w = 0.167505 * safezoneW;
+			h = 0.0282118 * safezoneH;
+			colorBackground[] = {-1,-1,-1,0};
+			sizeEx = (((((safezoneW / safezoneH) min 1.2) / 1.2) / 25) * 1);
+		};
+		class killer_class: RscStructuredText
+		{
+			idc = 1104;
+			text = "<t size='1.25' shadow=2 font='PuristaMedium' align='center' valign='center'>ENGINEER</t>"; //--- ToDo: Localize;
+			x = 0.645465 * safezoneW + safezoneX;
+			y = 0.878038 * safezoneH + safezoneY;
+			w = 0.110201 * safezoneW;
+			h = 0.0282118 * safezoneH;
+			colorBackground[] = {-1,-1,-1,0};
+			sizeEx = (((((safezoneW / safezoneH) min 1.2) / 1.2) / 25) * 1);
+		};
+		class victim_score: RscStructuredText
+		{
+			idc = 1105;
+			text = "<t size='1.5' shadow=2 font='PuristaBold' align='right' valign='center'>0</t>"; //--- ToDo: Localize;
+			x = 0.239044 * safezoneW + safezoneX;
+			y = 0.876157 * safezoneH + safezoneY;
+			w = 0.0793447 * safezoneW;
+			h = 0.0282118 * safezoneH;
+			colorBackground[] = {-1,-1,-1,0};
+			sizeEx = (((((safezoneW / safezoneH) min 1.2) / 1.2) / 25) * 1);
+		};
+		class killer_score: RscStructuredText
+		{
+			idc = 1106;
+			text = "<t size='1.5' shadow=2 font='PuristaBold' align='left' valign='center'>0</t>"; //--- ToDo: Localize;
+			x = 0.39597 * safezoneW + safezoneX;
+			y = 0.876157 * safezoneH + safezoneY;
+			w = 0.0793447 * safezoneW;
+			h = 0.0282118 * safezoneH;
+			colorBackground[] = {-1,-1,-1,0};
+			sizeEx = (((((safezoneW / safezoneH) min 1.2) / 1.2) / 25) * 1);
+		};
+		class killer_faction: RscPictureKeepAspect
+		{
+			idc = 1200;
+			text = "#(argb,8,8,3)color(1,1,1,1)";
+			x = 0.360748 * safezoneW + safezoneX;
+			y = 0.697482 * safezoneH + safezoneY;
+			w = 0.108397 * safezoneW;
+			h = 0.17205 * safezoneH;
+			sizeEx = (((((safezoneW / safezoneH) min 1.2) / 1.2) / 25) * 1);
+		};
+		class weapon_image: RscPictureKeepAspect
+		{
+			idc = 1201;
+			text = "#(argb,8,8,3)color(1,1,1,1)";
+			x = 0.47796 * safezoneW + safezoneX;
+			y = 0.71629 * safezoneH + safezoneY;
+			w = 0.158689 * safezoneW;
+			h = 0.141059 * safezoneH;
+			sizeEx = (((((safezoneW / safezoneH) min 1.2) / 1.2) / 25) * 1);
+		};
+		class class_icon: RscPictureKeepAspect
+		{
+			idc = 1202;
+			text = "#(argb,8,8,3)color(1,1,1,1)";
+			x = 0.645465 * safezoneW + safezoneX;
+			y = 0.698409 * safezoneH + safezoneY;
+			w = 0.107876 * safezoneW;
+			h = 0.170197 * safezoneH;
+			sizeEx = (((((safezoneW / safezoneH) min 1.2) / 1.2) / 25) * 1);
 		};
 	};
-
-	class cl
-	{
-		idd = -1;
-		name= "cl";
-		movingEnable = 1;
-		enableSimulation = 1;
-		fadeout=0;
-		fadein=0;
-		duration = 0.5;
-		onLoad="uiNamespace setVariable ['cl',_this select 0]";
-
-		class controlsBackground {};
-
-		class controls {
-			class RscText211000: RscPicture
-			{
-				idc = 1101;
-				text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\cl.paa"; //--- ToDo: Localize;
-				x = 0 * safezoneW + safezoneX;
-				y = 0 * safezoneH + safezoneY;
-				w = 1 * safezoneW;
-				h = 1 * safezoneH;
-			};
-		};
-	};
-
-	class cd
-	{
-		idd = -1;
-		name= "cd";
-		movingEnable = 1;
-		enableSimulation = 1;
-		fadeout=0;
-		fadein=0;
-		duration = 0.5;
-		onLoad="uiNamespace setVariable ['cd',_this select 0]";
-
-		class controlsBackground {};
-
-		class controls {
-			class RscText211000: RscPicture
-			{
-				idc = 1101;
-				text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\cd.paa"; //--- ToDo: Localize;
-				x = 0 * safezoneW + safezoneX;
-				y = 0 * safezoneH + safezoneY;
-				w = 1 * safezoneW;
-				h = 1 * safezoneH;
-			};
-		};
-	};
-
-	class hm_kill
-	{
-		idd = -1;
-		movingEnable = 1;
-		enableSimulation = 1;
-		fadeout=0;
-		fadein=0;
-		duration = 0.3;
-
-		class controlsBackground {};
-
-		class controls {
-
-			class RscText2131000: RscPicture
-			{
-				idc = -1;
-				x = 0.455656 * safezoneW + safezoneX;
-				y = 0.422 * safezoneH + safezoneY;
-				w = 0.0886877 * safezoneW;
-				h = 0.154 * safezoneH;
-				text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\hm_kill.paa";
-			};
-		};
-	};
-
-	class hm_headshot
-	{
-		idd = -1;
-		movingEnable = 1;
-		enableSimulation = 1;
-		fadeout=0.0;
-		fadein=0;
-		duration = 0.3;
-
-		class controlsBackground {};
-
-		class controls {
-
-			class RscText2131000: RscPicture
-			{
-				idc = -1;
-				x = 0.455656 * safezoneW + safezoneX;
-				y = 0.422 * safezoneH + safezoneY;
-				w = 0.0886877 * safezoneW;
-				h = 0.154 * safezoneH;
-				text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\hm_headshot.paa";
-			};
-		};
-	};
-
-	class hm_hit
-	{
-		idd = -1;
-		movingEnable = 1;
-		enableSimulation = 1;
-		fadeout=0.0;
-		fadein=0;
-		duration = 0.3;
-
-		class controlsBackground {};
-
-		class controls {
-
-			class RscText2131000: RscPicture
-			{
-				idc = -1;
-				x = 0.455656 * safezoneW + safezoneX;
-				y = 0.422 * safezoneH + safezoneY;
-				w = 0.0886877 * safezoneW;
-				h = 0.154 * safezoneH;
-				text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\hm_hit.paa";
-			};
-		};
-	};
-
-	class waitingForPlayers
-	{
-		idd = -1;
-		movingEnable = 1;
-		enableSimulation = 1;
-		fadeout=1.0;
-		fadein=0;
-		duration = 9999999;
-		onLoad = "uiNamespace setVariable ['waitingForPlayers', _this select 0];";
-		class controlsBackground {};
-
-		class controls {
-			class blackbackground: RscText
-			{
-				idc = 0;
-				x = 0 * safezoneW + safezoneX;
-				y = 0 * safezoneH + safezoneY;
-				w = 1 * safezoneW;
-				h = 1 * safezoneH;
-				colorBackground[] = {0,0,0,1};
-			};
-			class title: RscStructuredText
-			{
-				idc = 1100;
-				text = "WAITING FOR PLAYERS";
-				x = 0.323716 * safezoneW + safezoneX;
-				y = 0.45298 * safezoneH + safezoneY;
-				w = 0.352567 * safezoneW;
-				h = 0.0752314 * safezoneH;
-				colorBackground[] = {-1,-1,-1,0};
-				sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 1.0)";
-				shadow = 2;
-				class Attributes {
-					size = "4";
-					font = "PuristaMedium";
-					color = "#FFFFFF";
-					align = "center";
-					valign = "middle";
-				};
-			};
-			class subtitle_1: RscStructuredText
-			{
-				idc = 1101;
-				text = "";
-				x = 0.323716 * safezoneW + safezoneX;
-				y = 0.53 * safezoneH + safezoneY;
-				w = 0.352567 * safezoneW;
-				h = 0.0188079 * safezoneH;
-				colorBackground[] = {-1,-1,-1,0};
-				sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 1.8)";
-				shadow = 2;
-				class Attributes {
-					size = "1";
-					font = "PuristaMedium";
-					color = "#FFFFFF";
-					align = "left";
-				};
-			};
-			class subtitle_2: RscStructuredText
-			{
-				idc = 1102;
-				text = "";
-				x = 0.323716 * safezoneW + safezoneX;
-				y = 0.53 * safezoneH + safezoneY;
-				w = 0.352567 * safezoneW;
-				h = 0.0188079 * safezoneH;
-				colorBackground[] = {-1,-1,-1,0};
-				sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 1.8)";
-				shadow = 2;
-				class Attributes {
-					size = "1";
-					font = "PuristaMedium";
-					color = "#FFFFFF";
-					align = "right";
-				};
-			};
-		};
-	};
+};

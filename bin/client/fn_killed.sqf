@@ -32,18 +32,31 @@ cl_killcam_thread = [_killer] spawn {
 	cameraEffectEnableHUD true;
 
 	// From body pos to dead cam pos
-	cl_spawnmenu_cam camSetRelPos [pm_random(CAM_DIST), pm_random(CAM_DIST),4];
+	private _vector = [pm_random(CAM_DIST), pm_random(CAM_DIST), 0];
+	private _intersections = lineIntersectsSurfaces [getPosASL player, ((getPosASL cl_spawnmenu_cam) vectorAdd _vector), player];
+	while {(vectorMagnitude _vector < 5) && {(count _intersections) == 0}} do {
+		_vector = _vector vectorAdd [0,0,0.25];
+		_intersections = lineIntersectsSurfaces [getPosASL player, ((getPosASL cl_spawnmenu_cam) vectorAdd _vector), player];
+	};
+	cl_spawnmenu_cam camSetRelPos _vector;
 	cl_spawnmenu_cam camCommit 2;
 	uiSleep 3;
 
 	if (isNull _killer || {_killer isEqualTo player}) exitWith {
 		cl_spawnmenu_cam camSetRelPos [0,0,50];
 		cl_spawnmenu_cam camCommit 13;
+		399 cutText ["", "BLACK OUT", 10];
+		waitUntil { cl_inSpawnMenu || {camCommitted cl_spawnmenu_cam} || {player getVariable ["isAlive", false]} };
+		399 cutText ["","PLAIN", 0];
 	};
+
+	[_killer] spawn client_fnc_displayKillcam;
 
 	cl_spawnmenu_cam camSetTarget _killer;
 	cl_spawnmenu_cam camCommit 2;
 	waitUntil { camCommitted cl_spawnmenu_cam };
+
+	systemChat (format ["Health: %1%, Foe: %2, You: %3", (_killer getVariable ["health", 1])*100, _killer getVariable ["killed_by", 1], _killer getVariable ["killed", 0]]);
 
 	while {!cl_inSpawnMenu || !dialog} do {
 		private _dist = player distance _killer;
@@ -54,8 +67,9 @@ cl_killcam_thread = [_killer] spawn {
 		waitUntil { camCommitted cl_spawnmenu_cam };
 	};
 	cl_spawnmenu_cam camSetFov .9;
+	cl_spawnmenu_cam camSetFocus [2,2];
 	cl_spawnmenu_cam camCommit 0.25;
-	
+
 	cl_killcam_thread = nil;
 };
 
@@ -116,3 +130,5 @@ if (player getVariable "gameSide" == "attackers") then {
 		};
 	};
 };
+
+rr_respawn_thread = nil;
