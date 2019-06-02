@@ -42,7 +42,7 @@ cl_killcam_thread = [_killer] spawn {
 	cl_spawnmenu_cam camCommit 2;
 	uiSleep 3;
 
-	if (isNull _killer || {_killer isEqualTo player}) exitWith {
+	private _fnc_zoomAway = {
 		cl_spawnmenu_cam camSetRelPos [0,0,50];
 		cl_spawnmenu_cam camCommit 13;
 		399 cutText ["", "BLACK OUT", 10];
@@ -50,7 +50,18 @@ cl_killcam_thread = [_killer] spawn {
 		399 cutText ["","PLAIN", 0];
 	};
 
-	[_killer] spawn client_fnc_displayKillcam;
+	if (isNull _killer || {_killer isEqualTo player}) exitWith {
+		[] call _fnc_zoomAway;
+	};
+
+	if ((["FoeStatsEnabled", 1] call BIS_fnc_getParamValue) == 1) then {
+		[_killer] spawn client_fnc_displayKillcam;
+	};
+
+
+	if ((["KillcamEnabled", 1] call BIS_fnc_getParamValue) == 0) then {
+		[] call _fnc_zoomAway;
+	};
 
 	cl_spawnmenu_cam camSetTarget _killer;
 	cl_spawnmenu_cam camCommit 2;

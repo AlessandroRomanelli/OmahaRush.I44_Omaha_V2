@@ -320,4 +320,19 @@ class Params {
     texts[] = {"0%", "10%", "20%", "30%", "40%", "50%", "60%", "70%", "80%", "90%", "100%"};
     default = 1;
   };
+  class header_10: header {
+    title = "========== KILLCAM RESTRICTIONS =====================================";
+  };
+  class FoeStatsEnabled {
+    title = "Enable killer stats: ";
+    values[] = {0,1};
+    texts[] = {"OFF", "ON"};
+    default = 1;
+  };
+  class KillcamEnabled {
+    title = "Enable killcam: ";
+    values[] = {0,1};
+    texts[] = {"OFF", "ON"};
+    default = 1;
+  };
 };
