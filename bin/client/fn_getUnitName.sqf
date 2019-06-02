@@ -14,7 +14,7 @@ if (isRemoteExecuted && remoteExecutedOwner != clientOwner) exitWith {
 };
 
 private _unit = param [0, objNull, [objNull]];
-if (player == _unit) exitWith {name player};
+if (player == _unit || local _unit) exitWith {name _unit};
 if (isNull _unit || !isPlayer _unit) exitWith {"ERROR: NULL UNIT"};
 systemChat str (format["Getting the name of: ", name _unit]);
 private _name = _unit getVariable ["name", ""];

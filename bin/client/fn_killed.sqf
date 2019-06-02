@@ -53,6 +53,9 @@ cl_killcam_thread = [_killer] spawn {
 		cl_spawnmenu_cam camCommit 0.25;
 		waitUntil { camCommitted cl_spawnmenu_cam };
 	};
+	cl_spawnmenu_cam camSetFov .9;
+	cl_spawnmenu_cam camCommit 0.25;
+	
 	cl_killcam_thread = nil;
 };
 

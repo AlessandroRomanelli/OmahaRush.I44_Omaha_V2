@@ -32,6 +32,9 @@ waitUntil {sv_serverReady && !isNil "sv_usingDatabase"};
 
 [] call client_fnc_initGlobalVars;
 
+// Disable raytracing
+disableRemoteSensors true;
+
 // Player name
 player setVariable ["name", name player, true];
 
