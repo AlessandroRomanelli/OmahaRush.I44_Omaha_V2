@@ -370,22 +370,46 @@ disableSerialization;
 	20,21,22,25,23,24,26,27,28,29
 ];
 
-[] call client_fnc_loadSpawnpoints;
-[false] call client_fnc_spawnMenu_loadClasses;
-private _display = findDisplay 5000;
-private _spawnCtrl = _display displayCtrl 8;
-waitUntil {(lbSize _spawnCtrl) > 0};
-_spawnCtrl lbSetCurSel 0;
+[false] spawn client_fnc_spawnMenu_loadClasses;
+[] spawn {
+	[] call client_fnc_loadSpawnpoints;
+	private _display = findDisplay 5000;
+	private _spawnCtrl = _display displayCtrl 8;
+	waitUntil {(lbSize _spawnCtrl) > 0};
+	_spawnCtrl lbSetCurSel 0;
+};
 
 private _spawnCtrl = _menuDisplay displayCtrl 8;
 _spawnCtrl ctrlAddEventHandler ["MouseButtonClick", {
+	params ["_control"];
 	private _spawnDisplay = findDisplay 5000;
+	private _spawnName = _control lbData (lbCurSel _control);
+	private _stage = [] call client_fnc_getCurrentStageString;
+	private _side = player getVariable ["gameSide", ""];
+	if (_side == "" || _stage == "") exitWith {};
+	private _newPos = getArray(missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> _stage >> "Spawns" >> _side >> _spawnName >> "positionATL");
+	private _targetPos = [_newPos, getPos sv_cur_obj] call client_fnc_getSectionCenter;
+	private _height = round (100*log(_newPos distance2D sv_cur_obj))+50;
+	_newPos set [2, _height];
+	cl_spawnmenu_cam camSetPos _newPos;
+	cl_spawnmenu_cam camSetTarget _targetPos;
+	cl_spawnmenu_cam camCommit 1;
 	(_spawnDisplay displayCtrl 9) lbSetCurSel -1;
 }];
 
 private _vehiclesCtrl = _menuDisplay displayCtrl 9;
 _vehiclesCtrl ctrlAddEventHandler ["MouseButtonClick", {
+	params ["_control"];
 	private _spawnDisplay = findDisplay 5000;
+	private _vehName = _control lbData (lbCurSel _control);
+	private _newPos = getPosATL (missionNamespace getVariable [_vehName, objNull]);
+	private _height = round (100*log(_newPos distance2D sv_cur_obj))+50;
+	private _targetPos = [_newPos, getPos sv_cur_obj] call client_fnc_getSectionCenter;
+	_newPos set [2, _height];
+	cl_spawnmenu_cam camSetPos _newPos;
+	cl_spawnmenu_cam camSetTarget _targetPos;
+	cl_spawnmenu_cam camCommit 1;
+	/* [_spawnName] spawn cl_fnc_mvCamSelSpawn; */
 	(_spawnDisplay displayCtrl 8) lbSetCurSel -1;
 }];
 
@@ -408,7 +432,9 @@ player enableStamina false;
 player forceWalk false;
 player setSpeaker "NoVoice";
 
-[true] spawn client_fnc_drawMapUnits;
+if (isNil "unitMarkers_running") then {
+	[] spawn client_fnc_drawMapUnits;
+};
 
 private _registeredGroups = ["GetAllGroupsOfSide", [playerSide]] call BIS_fnc_dynamicGroups;
 if !((group player) in _registeredGroups) then {

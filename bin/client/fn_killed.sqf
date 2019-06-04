@@ -41,7 +41,9 @@ cl_killcam_thread = [_killer] spawn {
 	cl_spawnmenu_cam camSetRelPos _vector;
 	cl_spawnmenu_cam camCommit 2;
 	uiSleep 3;
-
+	if (cl_inSpawnMenu) exitWith {
+		cl_killcam_thread = nil;
+	};
 	private _fnc_zoomAway = {
 		cl_spawnmenu_cam camSetRelPos [0,0,50];
 		cl_spawnmenu_cam camCommit 13;
@@ -66,7 +68,9 @@ cl_killcam_thread = [_killer] spawn {
 	cl_spawnmenu_cam camSetTarget _killer;
 	cl_spawnmenu_cam camCommit 2;
 	waitUntil { camCommitted cl_spawnmenu_cam };
-
+	if (cl_inSpawnMenu) exitWith {
+		cl_killcam_thread = nil;
+	};
 	while {!cl_inSpawnMenu || !dialog} do {
 		private _dist = player distance _killer;
 		private _fov = if (_dist > 10) then {(750/(_dist^3)) max 0.025} else {0.75};
@@ -74,6 +78,9 @@ cl_killcam_thread = [_killer] spawn {
 		cl_spawnmenu_cam camSetFocus [round _dist, 0];
 		cl_spawnmenu_cam camCommit 0.25;
 		waitUntil { camCommitted cl_spawnmenu_cam };
+	};
+	if (cl_inSpawnMenu) exitWith {
+		cl_killcam_thread = nil;
 	};
 	cl_spawnmenu_cam camSetFov .9;
 	cl_spawnmenu_cam camSetFocus [2,2];
