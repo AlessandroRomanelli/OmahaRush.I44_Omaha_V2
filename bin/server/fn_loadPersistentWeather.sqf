@@ -10,7 +10,13 @@ scriptName "fn_loadPersistentWeather";
 #define __filename "fn_loadPersistentWeather.sqf"
 
 // Time
-private _time = [1944,6,23,round random [4, 12, 20],round random 60];
+private _night = (round random 1) == 1;
+
+private _time = if (_night) then {
+  [1944,6,23, (19 + (floor (random 10))) % 24,0]
+} else {
+  [1944,6,23, (5 + (floor (random 14))),0]
+};
 setDate _time;
 private _fog = (round random [0, 0, 20])/100;
 
@@ -20,7 +26,7 @@ skipTime -24;
 skipTime 24;
 
 // Slow down ingame time
-setTimeMultiplier 10;
+setTimeMultiplier 4;
 
 // Set rain and fog
 0 setRain ((floor random [0,0,10])/10);
