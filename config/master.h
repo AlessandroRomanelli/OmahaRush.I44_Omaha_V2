@@ -2,7 +2,7 @@ class GeneralConfig {
 	// Debugging
 	debug = 1;
 
-	serverKey = "changeme";
+	serverKey = "v1";
 
 	// ServerCommandPassword
 	commandPassword = "viper12";
@@ -14,9 +14,7 @@ class GeneralConfig {
 
 	adsMessages[] = {
 		// Top of the text % Bottom of the text
-		"PLAY WITH US, JOIN OUR TEAMSPEAK % ts3.no4commando.com",
-		"Brought to you by: % NO.4 CDO WW2 MILSIM UNIT",
-		"Learn more about the commandos: % WWW.NO4COMMANDO.COM",
+		"CLOSED TESTING: % REPORT ANY BUGS TO THE AUTHOR",
 		"A gamemode developed by: % A. ROMAN [NO.4]",
 		"From the original idea of: % RushRedux by f(OPTiX)"
 	};
@@ -24,8 +22,7 @@ class GeneralConfig {
 	mapsPool[] = {
 		"WW2Rush.I44_Merderet_V3",
 		"WW2Rush.I44_Omaha_V2",
-		"WW2Rush.MCN_Neaville_Winter",
+		"WW2Rush.iron_excelsior_Tobruk",
 		"WW2Rush.StaszowWinter",
-		"WW2Rush.SWU_Aachen_Outskirts"
 	};
 };
