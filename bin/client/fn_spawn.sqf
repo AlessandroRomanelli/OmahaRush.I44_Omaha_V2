@@ -379,21 +379,45 @@ disableSerialization;
 	_spawnCtrl lbSetCurSel 0;
 };
 
+cl_fnc_follow_unit = {
+	params ["_unit"];
+	while {cl_inSpawnMenu && {!isNull _unit} && {alive _unit}} do {
+		private _newPos = getPosATL _unit;
+		private _height = round (100*log(_newPos distance2D sv_cur_obj))+50;
+		private _targetPos = [_newPos, getPos sv_cur_obj] call client_fnc_getSectionCenter;
+		_newPos set [2, _height];
+		cl_spawnmenu_cam camSetPos _newPos;
+		cl_spawnmenu_cam camSetTarget _targetPos;
+		cl_spawnmenu_cam camCommit 1;
+		waitUntil {camCommitted cl_spawnmenu_cam};
+	};
+
+};
+
 private _spawnCtrl = _menuDisplay displayCtrl 8;
 _spawnCtrl ctrlAddEventHandler ["MouseButtonClick", {
 	params ["_control"];
 	private _spawnDisplay = findDisplay 5000;
 	private _spawnName = _control lbData (lbCurSel _control);
-	private _stage = [] call client_fnc_getCurrentStageString;
-	private _side = player getVariable ["gameSide", ""];
-	if (_side == "" || _stage == "") exitWith {};
-	private _newPos = getArray(missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> _stage >> "Spawns" >> _side >> _spawnName >> "positionATL");
-	private _targetPos = [_newPos, getPos sv_cur_obj] call client_fnc_getSectionCenter;
-	private _height = round (100*log(_newPos distance2D sv_cur_obj))+50;
-	_newPos set [2, _height];
-	cl_spawnmenu_cam camSetPos _newPos;
-	cl_spawnmenu_cam camSetTarget _targetPos;
-	cl_spawnmenu_cam camCommit 1;
+	if ((_control lbValue (lbCurSel _control)) == -1) then {
+		private _stage = [] call client_fnc_getCurrentStageString;
+		private _side = player getVariable ["gameSide", ""];
+		if (_side == "" || _stage == "") exitWith {};
+		private _newPos = getArray(missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> _stage >> "Spawns" >> _side >> _spawnName >> "positionATL");
+		private _targetPos = [_newPos, getPos sv_cur_obj] call client_fnc_getSectionCenter;
+		private _height = round (100*log(_newPos distance2D sv_cur_obj))+50;
+		_newPos set [2, _height];
+		cl_spawnmenu_cam camSetPos _newPos;
+		cl_spawnmenu_cam camSetTarget _targetPos;
+		cl_spawnmenu_cam camCommit 1;
+	} else {
+		private _unit = objectFromNetId _spawnName;
+		if (!isNil "cl_cam_follow_unit") then {
+			terminate cl_cam_follow_unit;
+		};
+		cl_cam_follow_unit = [_unit] spawn cl_fnc_follow_unit;
+	};
+
 	(_spawnDisplay displayCtrl 9) lbSetCurSel -1;
 }];
 
@@ -409,7 +433,6 @@ _vehiclesCtrl ctrlAddEventHandler ["MouseButtonClick", {
 	cl_spawnmenu_cam camSetPos _newPos;
 	cl_spawnmenu_cam camSetTarget _targetPos;
 	cl_spawnmenu_cam camCommit 1;
-	/* [_spawnName] spawn cl_fnc_mvCamSelSpawn; */
 	(_spawnDisplay displayCtrl 8) lbSetCurSel -1;
 }];
 
