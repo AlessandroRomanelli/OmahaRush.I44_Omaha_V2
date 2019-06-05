@@ -37,7 +37,7 @@ private _fnc_getIcon = {
 };
 
 private _killer = param[0,objNull,[objNull]];
-private _killerName = [_killer] call client_fnc_getUnitName;
+private _killerName = _killer getVariable ["name", "ERROR: NO NAME"];
 if (count _killerName > MAX_NAME_LEN) then {
   _killerName = [_killerName, MAX_NAME_LEN] call _fnc_trimString;
 };

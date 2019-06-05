@@ -22,7 +22,7 @@ if (isRemoteExecuted && {local _unit}) exitWith {
 if (isNull _unit || !isPlayer _unit) exitWith {"ERROR: NULL UNIT"};
 private _name = _unit getVariable ["name", ""];
 if (_name isEqualTo "") then {
-  if ((diag_tickTime - (_unit getVariable ["last_query", diag_tickTime])) > 10) then {
+  if ((diag_tickTime - (_unit getVariable ["last_query", diag_tickTime])) > 30) then {
     _unit setVariable ["last_query", diag_tickTime];
     [_unit] remoteExec ["client_fnc_getUnitName", _unit];
   };

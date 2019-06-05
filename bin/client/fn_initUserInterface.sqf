@@ -75,7 +75,7 @@ private _event = addMissionEventHandler["EachFrame", {
       };
       private _unit = objectFromNetId _data;
       private _pos = _unit modelToWorldVisual [0,0,1];
-      private _name = [_unit] call client_fnc_getUnitName;
+      private _name = _unit getVariable ["name", "ERROR: NO NAME"];
       [_pos, _name] call _makeCurrentSpawn;
     };
 
@@ -283,7 +283,7 @@ private _event = addMissionEventHandler["EachFrame", {
     if (_i < count _groupUnits) then {
       private _unit = _groupUnits select _i;
       private _colors = [_unit] call _getHUDTextColor;
-      private _name = [_unit] call client_fnc_getUnitName;
+      private _name = _unit getVariable ["name", "ERROR: NO NAME"];
       _teamMateName ctrlSetStructuredText parseText (format ["<t size='1.15' shadow='1' shadowColor='%1' color='%2' font='PuristaLight' align='right'>%3</t>", _colors select 1, _colors select 0, _name]);
       private _arrayColors = [_unit] call _getHUDArrayColor;
       _teamMateIcon ctrlSetText ([_unit] call _getTeamIcon);
