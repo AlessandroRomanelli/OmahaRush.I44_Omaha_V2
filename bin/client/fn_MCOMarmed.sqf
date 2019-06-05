@@ -14,10 +14,10 @@ private _planter = param[0,objNull,[objNull]];
 
 // Display warning
 ["EXPLOSIVES HAVE BEEN SET"] call client_fnc_displayObjectiveMessage;
-
-
 // Info
 ["EXPLOSIVES ARMED","The objective has been armed. Attackers will not lose tickets while it is."] spawn client_fnc_hint;
+
+if (player != _planter) exitWith {};
 
 // Start sound loop if we are the server
 if (isServer) then {
@@ -36,33 +36,30 @@ if (isServer) then {
 		private _obj = sv_cur_obj;
 		// If the objective is armed and there's still time on the clock
 		playSound3D [_beep, _obj, false, getPosATL _obj, 10, 1, 300];
-		while {((_status == 1) || (_status == 0)) && _time >= 0} do {
-			_status = _obj getVariable ["status", -1];
+		while {(_status in [0,1]) && _time >= 0} do {
 			// Freeze time if the objective is being armed
-			if (_status == 0) then {
-				_time = _time;
-			} else {
+			if (_status == 1) then {
 				_time = _time - 1;
 			};
-			_soundTime = _soundTime - 1;
 			if (_time > 20) then {
 				if (_soundTime % 3 == 0) then {
-					playSound3D [_beep, _obj, false, getPosATL _obj, 5, 1, 300];
+					playSound3D [_beep, _obj, false, getPosATL _obj, 2, 1, 500];
 				};
 			};
 			if (_time >= 10 && _time <= 20) then {
 				if (_soundTime % 2 == 0) then {
-					playSound3D [_beep, _obj, false, getPosATL _obj, 6, 1, 300];
+					playSound3D [_beep, _obj, false, getPosATL _obj, 2, 1, 500];
 				};
 			};
 			if (_time < 10) then {
 				if (_soundTime % 1 == 0) then {
-					playSound3D [_beep, _obj, false, getPosATL _obj, 10, 1, 300];
+					playSound3D [_beep, _obj, false, getPosATL _obj, 2, 1, 500];
 				};
 			};
+			_soundTime = _soundTime - 1;
 			uiSleep 1;
+			_status = _obj getVariable ["status", -1];
 		};
-
 		_status = _obj getVariable ["status", -1];
 		// was the mcom disarmed? If yes, just exit here, players will get a text displayed by the player who disarmed
 		if (_status == 2) exitWith {

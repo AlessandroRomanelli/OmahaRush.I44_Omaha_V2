@@ -115,7 +115,11 @@ if ((player getVariable "gameSide") == "defenders") then {
 	_icon = _icon + "bombDefuse.paa";
 	_text = "Disarm Explosives";
 	_cond = "((player getVariable 'gameSide') == 'defenders') && {(player distance sv_cur_obj) < ceil(([sv_cur_obj] call client_fnc_getObjectiveDistance) + 1.5)} && {(sv_cur_obj getVariable ['status',-1] == 1) || (sv_cur_obj getVariable ['status', -1] == 0 && (_this isEqualTo player))}";
-	_completion = {if ((sv_cur_obj distance player) < ceil(([sv_cur_obj] call client_fnc_getObjectiveDistance) + 1.5)) then {[] call client_fnc_disarmMCOM;};};
+	_completion = {
+		if ((player distance sv_cur_obj) < ceil(([sv_cur_obj] call client_fnc_getObjectiveDistance) + 1.5)) then {
+			[] call client_fnc_disarmMCOM;
+		};
+	};
 	_interruption = {sv_cur_obj setVariable ["status", 1, true]};
 } else {
 	_icon = _icon + "bombPlant.paa";
@@ -133,7 +137,11 @@ private _id = [
 /* 3 progress icon */					_icon,
 /* 4 condition to show */				_cond,
 /* 5 condition for action */			"player distance sv_cur_obj < ceil(([sv_cur_obj] call client_fnc_getObjectiveDistance) + 2)",
-/* 6 code executed on start */			{playSound3D[WWRUSH_ROOT + "sounds\arm.ogg", sv_cur_obj]; sv_cur_obj setVariable ["status", 0, true]; cl_action_obj = sv_cur_obj},
+/* 6 code executed on start */			{
+	playSound3D[WWRUSH_ROOT + "sounds\arm.ogg", sv_cur_obj];
+	sv_cur_obj setVariable ["status", 0, true];
+	cl_action_obj = sv_cur_obj;
+},
 /* 7 code executed per tick */			{},
 /* 8 code executed on completion */		_completion,
 /* 9 code executed on interruption */	_interruption,

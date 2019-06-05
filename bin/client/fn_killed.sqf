@@ -74,18 +74,16 @@ cl_killcam_thread = [_killer] spawn {
 	while {!cl_inSpawnMenu || !dialog} do {
 		private _dist = player distance _killer;
 		private _fov = if (_dist > 10) then {(750/(_dist^3)) max 0.025} else {0.75};
+		private _targetPos = getPos _killer;
+		cl_spawnmenu_cam camSetTarget _targetPos;
 		cl_spawnmenu_cam camSetFOV _fov;
 		cl_spawnmenu_cam camSetFocus [round _dist, 0];
 		cl_spawnmenu_cam camCommit 0.25;
 		waitUntil { camCommitted cl_spawnmenu_cam };
 	};
-	if (cl_inSpawnMenu) exitWith {
-		cl_killcam_thread = nil;
-	};
 	cl_spawnmenu_cam camSetFov .9;
-	cl_spawnmenu_cam camSetFocus [2,2];
+	cl_spawnmenu_cam camSetFocus [150, 1];
 	cl_spawnmenu_cam camCommit 0.25;
-
 	cl_killcam_thread = nil;
 };
 

@@ -8,7 +8,11 @@ scriptName "fn_getObjectiveDistance";
 --------------------------------------------------------------------*/
 #define __filename "fn_getObjectiveDistance.sqf"
 
-private ["_getObjectSize", "_obj", "_sizes", "_width", "_length", "_dir", "_max", "_x", "_y"];
+private _obj = param[0,objNull,[objNull]];
+private _distance = _obj getVariable ["action_dist", -1];
+if (_distance > -1) exitWith {_distance};
+
+private ["_getObjectSize", "_sizes", "_width", "_length", "_dir", "_max", "_x", "_y"];
 
 _getObjectSize = {
   private ["_obj", "_bbr", "_p1", "_p2", "_width", "_length"];
@@ -21,7 +25,6 @@ _getObjectSize = {
   [_width/2, _length/2]
 };
 
-_obj = param[0,objNull,[objNull]];
 _sizes = [_obj] call _getObjectSize;
 _width = 0;
 _length = 0;
@@ -36,4 +39,7 @@ _dir = _obj getRelDir player;
 _max = sqrt(_width^2 + _length^2);
 _x = abs(_max * sin(_dir)) min _width;
 _y = abs(_max * cos(_dir)) min _length;
-sqrt((_x^2) + (_y^2))
+_distance = sqrt((_x^2) + (_y^2));
+_obj setVariable ["action_dist", _distance];
+
+_distance

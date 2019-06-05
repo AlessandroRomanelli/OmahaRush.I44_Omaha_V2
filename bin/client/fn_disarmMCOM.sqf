@@ -11,10 +11,12 @@ scriptName "fn_disarmMCOM";
 if (isServer && !hasInterface) exitWith {};
 
 // If it wasn't armed, there's nothing to disarm!
-if (sv_cur_obj getVariable ["status", -1] != 1 || {!alive player} || {cl_action_obj != sv_cur_obj}) exitWith {};
+private _status = sv_cur_obj getVariable ["status", -1];
+if (_status == -1 || _status > 1) exitWith {};
+if (!alive player || {cl_action_obj != sv_cur_obj}) exitWith {};
 
 // Set disarmed
-sv_cur_obj setVariable ["status", -1, true];
+sv_cur_obj setVariable ["status", 2, true];
 
 // Send message to everyone
 ["THE EXPLOSIVES HAVE BEEN DEFUSED"] remoteExecCall ["client_fnc_displayObjectiveMessage", -2];

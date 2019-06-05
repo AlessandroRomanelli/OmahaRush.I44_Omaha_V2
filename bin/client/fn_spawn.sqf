@@ -163,6 +163,9 @@ if (isNil "cl_spawnmenu_cam") then {
 		_created = true;
 	} else {
 		diag_log "SPAWNMENU_CAM WAS NEITHER";
+		cl_spawnmenu_cam camSetFOV .90;
+		cl_spawnmenu_cam camSetFocus [150, 1];
+		cl_spawnmenu_cam camCommit 0.5;
 	};
 };
 uiSleep 0.05;
