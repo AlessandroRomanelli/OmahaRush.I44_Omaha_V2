@@ -57,6 +57,7 @@ for "_i" from 1 to 4 do {
 // No damage
 player allowDamage false;
 player setVariable ["isAlive", false];
+player setVariable ["name", name player, true];
 
 // black out
 60000 cutRsc ["rr_black", "PLAIN"];

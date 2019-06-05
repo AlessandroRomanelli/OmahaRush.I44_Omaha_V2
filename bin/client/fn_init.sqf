@@ -21,7 +21,7 @@ waitUntil {(!isNull (findDisplay 46)) AND (isNull (findDisplay 101)) AND (!isNul
 enableSaving [false, false];
 
 // Check if this player should be able to join the team
-[] call client_fnc_instantTeamBalanceCheck;
+[] spawn client_fnc_instantTeamBalanceCheck;
 
 // Wait for the server to be ready
 if (isNil "sv_serverReady") then {
@@ -69,7 +69,7 @@ cl_safePos = getPos player;
 cl_revived = false;
 
 // Init event handlers
-[] call client_fnc_setupEventHandlers;
+[] spawn client_fnc_setupEventHandlers;
 
 // Get initial view and object view distance
 cl_objViewDistance = getObjectViewDistance;
@@ -144,7 +144,7 @@ private _safeMarker2 = createMarkerLocal ["respawn_attackers", cl_safePos]; */
 CHBN_adjustBrightness = 0.5;
 
 // Keyhandler
-[] call client_fnc_initKeyHandler;
+[] spawn client_fnc_initKeyHandler;
 
 // Fuck off?
 player enableStamina false;
