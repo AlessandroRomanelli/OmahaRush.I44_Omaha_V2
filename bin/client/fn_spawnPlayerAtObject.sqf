@@ -19,14 +19,18 @@ private _inVehicle = param[2,false,[false]];
 
 private _nearbyEnemies = {player getVariable ["gameSide", ""] != _x getVariable ["gameSide", ""]} count (_unit nearEntities ["Man", 25]) > 0;
 
-if !(_unit in playArea) then {
-	["Unit is too far away from the battlefield"] call client_fnc_displayError;
-};
-
 // Invalid spawnpoint check (spawnpoint is not within the playable area)
-if ((!alive _unit) || (_unit distance sv_cur_obj) > 5000 || _nearbyEnemies) exitWith {
+if (isNull _unit || {!alive _unit} || {_unit distance sv_cur_obj > 5000}) exitWith {
 	// The spawnpoint is unavailable, do not spawn the player here
 	["Spawnpoint unavailable"] call client_fnc_displayError;
+};
+
+if (_nearbyEnemies) exitWith {
+	["Unsafe to spawn, enemies nearby"] call client_fnc_displayError;
+};
+
+if !(_unit in playArea) exitWith {
+	["Unit is too far away from the battlefield"] call client_fnc_displayError;
 };
 
 private _vehicleNoSpace = false;
