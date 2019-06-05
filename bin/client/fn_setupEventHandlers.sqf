@@ -282,7 +282,7 @@ player addEventHandler ["Killed", {
 				_victim setVariable ["isAlive", false];
 			};
 			// you have been killed by message
-			[format ["You have been killed by<br/>%1", [_killer] call client_fnc_getUnitName]] call client_fnc_displayInfo;
+			[format ["You have been killed by<br/>%1", _killer getVariable ["name", "ERROR: NO NAME"]]] call client_fnc_displayInfo;
 
 		};
 		// Send message to all units that we are reviveable

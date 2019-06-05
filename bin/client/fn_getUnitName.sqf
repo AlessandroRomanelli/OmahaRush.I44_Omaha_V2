@@ -7,26 +7,24 @@ scriptName "fn_getUnitName";
 --------------------------------------------------------------------*/
 #define __filename "fn_getUnitName.sqf"
 
-diag_log ("DEBUG: " + "("+__filename+"):" + str [isRemoteExecuted, remoteExecutedOwner, clientOwner]);
+private _unit = param [0, objNull, [objNull]];
 
-if (isRemoteExecuted) exitWith {
-  if (remoteExecutedOwner isEqualTo 0 || remoteExecutedOwner == clientOwner) exitWith {};
-  player setVariable ["name", name player, remoteExecutedOwner];
-  diag_log "Setting player name";
+if (local _unit) exitWith {
+  name _unit
 };
 
-private _unit = param [0, objNull, [objNull]];
+if (isRemoteExecuted && {local _unit}) exitWith {
+  diag_log ("DEBUG: Remote execution for name of: " + name _unit);
+  if (remoteExecutedOwner isEqualTo 0 || remoteExecutedOwner == clientOwner) exitWith {};
+  _unit setVariable ["name", name _unit, remoteExecutedOwner];
+};
+
 if (isNull _unit || !isPlayer _unit) exitWith {"ERROR: NULL UNIT"};
 private _name = _unit getVariable ["name", ""];
 if (_name isEqualTo "") then {
-  if (local _unit) exitWith {
-    _unit setVariable ["name", name _unit];
-    name _unit
-  };
-  if (diag_tickTime - (_unit getVariable ["last_query", diag_tickTime]) > 10) then {
+  if ((diag_tickTime - (_unit getVariable ["last_query", diag_tickTime])) > 10) then {
     _unit setVariable ["last_query", diag_tickTime];
-    [] remoteExec ["client_fnc_getUnitName", _unit];
-    diag_log ("Sending request to:" + str _unit);
+    [_unit] remoteExec ["client_fnc_getUnitName", _unit];
   };
   _name = "WARNING: Name Pending";
 };

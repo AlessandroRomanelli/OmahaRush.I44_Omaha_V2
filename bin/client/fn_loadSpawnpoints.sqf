@@ -65,7 +65,7 @@ private _index = -1;
 		if (_add) then {
 			if (!isNull _beacon) then {
 				// Spawn beacon
-				_spawnCtrl lbAdd ([_x] call client_fnc_getUnitName + "'s Beacon");
+				_spawnCtrl lbAdd ((_x getVariable ["name", "ERROR: NO NAME"]) + "'s Beacon");
 				_spawnCtrl lbSetData [(lbSize _spawnCtrl) - 1, "beacon"];
 				_spawnCtrl lbSetValue [(lbSize _spawnCtrl) - 1, _index];
 				_spawnCtrl lbSetPicture [(lbSize _spawnCtrl) - 1, "\a3\ui_f\data\Map\MapControl\bunker_CA.paa"];
@@ -78,13 +78,13 @@ private _index = -1;
 				private _nearbyEnemies = {(_unit getVariable "gameSide") != (_x getVariable "gameSide")} count (_x nearEntities ["Man", 25]);
 				// If the unit was hit or is nearby enemies
 				if (_x getVariable ["inCombat", false] || {_nearbyEnemies > 0}) then {
-					_spawnCtrl lbAdd (([_x] call client_fnc_getUnitName) + " (IN COMBAT)");
+					_spawnCtrl lbAdd ((_x getVariable ["name", "ERROR: NO NAME"]) + " (IN COMBAT)");
 					_spawnCtrl lbSetValue [(lbSize _spawnCtrl) - 1, _index];
 					_spawnCtrl lbSetData [(lbSize _spawnCtrl) - 1, "inCombat"];
 					_spawnCtrl lbSetPicture [(lbSize _spawnCtrl) - 1, _icon];
 					_spawnCtrl lbSetPictureColor [(lbSize _spawnCtrl) - 1, [0.51,0,0,1]];
 				} else {
-					_spawnCtrl lbAdd ([_x] call client_fnc_getUnitName);
+					_spawnCtrl lbAdd (_x getVariable ["name", "ERROR: NO NAME"]);
 					_spawnCtrl lbSetValue [(lbSize _spawnCtrl) - 1, _index];
 					_spawnCtrl lbSetData [(lbSize _spawnCtrl) - 1, netID _unit];
 					_spawnCtrl lbSetPicture [(lbSize _spawnCtrl) - 1, _icon];

@@ -16,7 +16,7 @@ private _side = player getVariable "gameSide";
 if (isNull _unit || _unit == player) then {
 	["AMMUNITION REPLENISHED"] spawn client_fnc_displayInfo;
 } else {
-	[format["%1 HAS REPLENISHED YOUR AMMUNITION", [_unit] call client_fnc_getUnitName]] spawn client_fnc_displayInfo;
+	[format["%1 HAS REPLENISHED YOUR AMMUNITION", _unit getVariable ["name", "ERROR: NO NAME"]]] spawn client_fnc_displayInfo;
 };
 
 playSound3D [WWRUSH_ROOT+"sounds\reload.ogg", player];

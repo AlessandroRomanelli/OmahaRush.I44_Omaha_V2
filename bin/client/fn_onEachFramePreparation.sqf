@@ -37,7 +37,7 @@ cl_onEachFramePreparationID = addMissionEventHandler["EachFrame", {
 
 	// Fill with data
 	{
-		private _name = ([_x] call client_fnc_getUnitName);
+		private _name = (_x getVariable ["name", "ERROR: NO NAME"]);
 		if (_x != player) then {
 			if (side (group _x) == side (group player)) then {
 				if ((group _x) == (group player)) then {
@@ -82,7 +82,7 @@ cl_onEachFramePreparationID = addMissionEventHandler["EachFrame", {
 	if (cl_inSpawnMenu) then {
 		private _myBeacon = player getVariable ["assault_beacon_obj", objNull];
 		if (!isNull _myBeacon) then {
-			_squad_beacons pushBack [(getPosATLVisual _myBeacon), format["%1's Spawnbeacon", [player] call client_fnc_getUnitName]];
+			_squad_beacons pushBack [(getPosATLVisual _myBeacon), format["%1's Spawnbeacon", name player]];
 		};
 	};
 
