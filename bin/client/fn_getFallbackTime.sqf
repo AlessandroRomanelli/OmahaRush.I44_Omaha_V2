@@ -8,12 +8,7 @@ scriptName "fn_getFallbackTime";
 --------------------------------------------------------------------*/
 #define __filename "fn_getFallbackTime.sqf"
 
-private _oldStage = [] call {
-  if ((str sv_cur_obj) isEqualTo (str sv_stage1_obj)) exitWith {""};
-  if ((str sv_cur_obj) isEqualTo (str sv_stage2_obj)) exitWith {"Stage1"};
-  if ((str sv_cur_obj) isEqualTo (str sv_stage3_obj)) exitWith {"Stage2"};
-  if ((str sv_cur_obj) isEqualTo (str sv_stage4_obj)) exitWith {"Stage3"};
-};
+private _oldStage = sv_cur_obj getVariable ["pre_stage", ""];
 
 // If it's the first objective, return the defined fallback time
 if (_oldStage isEqualTo "") exitWith {["InitialFallBack", 60] call BIS_fnc_getParamValue};
@@ -21,10 +16,9 @@ if (_oldStage isEqualTo "") exitWith {["InitialFallBack", 60] call BIS_fnc_getPa
 // 4m/s speed of a player whilst sprinting
 private _playerSpeed = 6;
 
-_oldStage = ""+_oldStage;
 private _oldSpawnPos = getArray(missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> _oldStage >> "Spawns" >> "defenders" >> "HQSpawn" >> "positionATL");
 private _oldObjPos = getArray(missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> _oldStage >> "Objective" >> "positionATL");
-private _newObjPos = getArray(missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Objective" >> "positionATL");
+private _newObjPos = getArray(missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> (sv_cur_obj getVariable ["cur_stage", "Stage1"]) >> "Objective" >> "positionATL");
 
 
 private _avgOldPos = [_oldSpawnPos, _oldObjPos] call client_fnc_getSectionCenter;

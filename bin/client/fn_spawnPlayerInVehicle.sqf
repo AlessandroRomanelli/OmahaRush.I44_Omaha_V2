@@ -17,7 +17,7 @@ private _configName = param[0,"",[""]];
 
 // If the config is null its most likely a stage vehicle
 if (isNull _config) then {
-	_config = (missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Vehicles" >> _side >> _configName);
+	_config = (missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> (sv_cur_obj getVariable ["cur_stage", "Stage1"]) >> "Vehicles" >> _side >> _configName);
 }; */
 
 // Equip

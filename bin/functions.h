@@ -7,7 +7,6 @@ class Maverick_Functions_Client {
 		class preInit {preInit = 1;};
 		class waitForServer {};
 		class spawn {};
-		class getCurrentStageString {};
 		class getSectionCenter {};
 		class populateSpawnMenu {};
 		class loadStatistics {};

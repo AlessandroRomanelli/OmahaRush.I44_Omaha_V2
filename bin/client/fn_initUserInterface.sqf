@@ -7,7 +7,7 @@ private _event = addMissionEventHandler["EachFrame", {
 
   if (visibleMap) exitWith {};
   private _side = player getVariable ["gameSide", "defenders"];
-  private _HQPos = getArray(missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Spawns" >> _side >> "HQSpawn" >> "positionATL");
+  private _HQPos = getArray(missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> (sv_cur_obj getVariable ["cur_stage", "Stage1"]) >> "Spawns" >> _side >> "HQSpawn" >> "positionATL");
   private _vehiclePlayer = vehicle player;
   private _posPlayer = getPosATL player;
   // Display the currently selected spawn if in spawn menu
@@ -46,7 +46,7 @@ private _event = addMissionEventHandler["EachFrame", {
     [] call {
       if (_data isEqualTo "") exitWith {};
       if (_value isEqualTo -1) exitWith {
-        private _spawnConfig = missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> [] call client_fnc_getCurrentStageString >> "Spawns" >> _side >> _data;
+        private _spawnConfig = missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> sv_cur_obj getVariable ["cur_stage", "Stage1"] >> "Spawns" >> _side >> _data;
         private _pos = getArray(_spawnConfig >> "positionATL");
         private _name = getText(_spawnConfig >> "name");
         [_pos, _name] call _makeCurrentSpawn;

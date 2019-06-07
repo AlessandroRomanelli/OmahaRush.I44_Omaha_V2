@@ -135,7 +135,7 @@ private _objectives = [sv_stage1_obj, sv_stage2_obj, sv_stage3_obj, sv_stage4_ob
 // Get cam pos for spawn menu cam
 private _stage = "";
 while {_stage == ""} do {
-	_stage = [] call client_fnc_getCurrentStageString;
+	_stage = sv_cur_obj getVariable ["cur_stage", "Stage1"];
 };
 private _side = player getVariable "gameSide";
 private _pos = getArray(missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> _stage >> "Spawns" >> _side >> "HQSpawn" >> "positionATL");
@@ -414,7 +414,7 @@ _spawnCtrl ctrlAddEventHandler ["MouseButtonClick", {
 	private _spawnDisplay = findDisplay 5000;
 	private _spawnName = _control lbData (lbCurSel _control);
 	if ((_control lbValue (lbCurSel _control)) == -1) then {
-		private _stage = [] call client_fnc_getCurrentStageString;
+		private _stage = sv_cur_obj getVariable ["cur_stage", "Stage1"];
 		private _side = player getVariable ["gameSide", ""];
 		if (_side == "" || _stage == "") exitWith {};
 		private _newPos = getArray(missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> _stage >> "Spawns" >> _side >> _spawnName >> "positionATL");

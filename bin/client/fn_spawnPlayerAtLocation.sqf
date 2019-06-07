@@ -15,7 +15,7 @@ closeDialog 0;
 
 private _side = player getVariable ["gameSide", "defenders"];
 private _spawnName = param [0, "HQSpawn", [""]];
-private _spawnConfig = missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> [] call client_fnc_getCurrentStageString >> "Spawns" >> _side >> _spawnName;
+private _spawnConfig = missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> sv_cur_obj getVariable ["cur_stage", "Stage1"] >> "Spawns" >> _side >> _spawnName;
 
 // Get spawn position
 private _pos = getArray(_spawnConfig >> "positionATL");

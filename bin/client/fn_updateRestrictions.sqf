@@ -15,7 +15,7 @@ private _transitionTime = param[1, 0, [0]];
 if (isNull _trigger) exitWith {};
 
 // Get the current stage
-private _currentStage = [] call client_fnc_getCurrentStageString;
+private _currentStage = sv_cur_obj getVariable ["cur_stage", "Stage1"];
 
 // Check if the player is attacking
 private _isPlayerAttacking = (player getVariable "gameSide" == "attackers");
