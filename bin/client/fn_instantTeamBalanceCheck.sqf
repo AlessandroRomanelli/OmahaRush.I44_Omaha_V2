@@ -20,8 +20,8 @@ private _attackersSide = [WEST, independent] select (sv_gameCycle % 2 == 0);
 private _defendersSide = [WEST, independent] select (sv_gameCycle % 2 != 0);
 
 // Run side checks
-private _attackersTeam = {(_x getVariable ["gameSide", "attackers"]) isEqualTo "attackers"} count allPlayers;
-private _defendersTeam = {(_x getVariable ["gameSide", "defenders"]) isEqualTo "defenders"} count allPlayers;
+private _attackersTeam = {(_x getVariable ["gameSide", "attackers"]) isEqualTo "attackers"} count (allPlayers - [player]);
+private _defendersTeam = {(_x getVariable ["gameSide", "defenders"]) isEqualTo "defenders"} count (allPlayers - [player]);
 diag_log format["DEBUG: TeamBalanceCheck.. Attackers' count: %1, Defenders' count: %2", _attackersTeam, _defendersTeam];
 
 private _diff = _attackersTeam - _defendersTeam;

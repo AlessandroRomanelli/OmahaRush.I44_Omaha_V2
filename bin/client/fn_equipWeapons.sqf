@@ -126,6 +126,11 @@ if (_primary != "") then {
 	};
 	// Give weapon
 	player addWeaponGlobal _primary;
+	private _compatibles = getArray(configfile >> "CfgWeapons" >> _primary >> "WeaponSlotsInfo" >> "MuzzleSlot" >> "compatibleItems");
+	private _idx = _compatibles findIf {["bayo", _x] call BIS_fnc_inString};
+	if (_idx > -1) then {
+		player addPrimaryWeaponItem (_compatibles select _idx);
+	};
 };
 
 if (_secondary != "") then {
@@ -150,5 +155,6 @@ if ("frag" in cl_squadPerks) then {
 		player addMagazine _grenade;
 	};
 };
+
 
 true
