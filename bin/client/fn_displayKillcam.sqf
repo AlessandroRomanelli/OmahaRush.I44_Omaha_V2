@@ -12,11 +12,11 @@ if (isServer && !hasInterface) exitWith {};
 
 private _fnc_trimString = {
   private _string = param [0, "", [""]];
-  private _length = param [1, 0, [0]];
-  private _result = _string splitString "";
-  _result resize _length;
-  _result = (_result joinString "")+"...";
-  _result
+  private _maxLen = param [1, 0, [0]];
+  if (count _string > _maxLen) exitWith {
+    (_string select [0,_maxLen])+"..."
+  };
+  _string
 };
 
 private _fnc_getFactionTexture = {
@@ -29,11 +29,8 @@ private _fnc_getFactionTexture = {
 
 private _fnc_getIcon = {
 	private _unit = param[0,objNull,[objNull]];
-	if (_unit getVariable ["class",""] == "medic") exitWith {WWRUSH_ROOT+"pictures\medic.paa"};
-	if (_unit getVariable ["class",""] == "engineer") exitWith {WWRUSH_ROOT+"pictures\engineer.paa"};
-	if (_unit getVariable ["class",""] == "support") exitWith {WWRUSH_ROOT+"pictures\support.paa"};
-	if (_unit getVariable ["class",""] == "recon") exitWith {WWRUSH_ROOT+"pictures\recon.paa"};
-	WWRUSH_ROOT+"pictures\assault.paa";
+  private _class = _unit getVariable ["class","assault"];
+  WWRUSH_ROOT+"pictures\" + _class + ".paa"
 };
 
 private _killer = param[0,objNull,[objNull]];

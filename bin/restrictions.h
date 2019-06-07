@@ -3,7 +3,6 @@
 // 2 = ONLY SERVER
 
 class client_fnc_MCOMarmed 					{allowedTargets = 0;};
-class client_fnc_getUnitName 					{allowedTargets = 1;};
 class client_fnc_displayError 				{allowedTargets = 1;};
 class client_fnc_displayObjectiveMessage 	{allowedTargets = 1;};
 class client_fnc_restoreAmmo 				{allowedTargets = 1;};

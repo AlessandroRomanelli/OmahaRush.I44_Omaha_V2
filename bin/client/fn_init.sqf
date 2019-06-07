@@ -44,19 +44,12 @@ player setVariable ["joinServerTime", serverTime, true];
 // Used for determining if a player is on our side since side _x returns civilian if someone is dead
 player setVariable ["side", playerSide, true];
 
-if (sv_gameCycle % 2 == 0) then {
-  if (playerSide == WEST) then {
-    player setVariable ["gameSide", "defenders", true];
-  } else {
-    player setVariable ["gameSide", "attackers", true];
-  };
-} else {
-  if (playerSide == WEST) then {
-    player setVariable ["gameSide", "attackers", true];
-  } else {
-    player setVariable ["gameSide", "defenders", true];
-  };
-};
+player setVariable ["gameSide", (
+	[
+		["defenders", "attackers"],
+		["attackers", "defenders"]
+	] select (sv_gameCycle % 2 == 0)
+) select (playerSide == WEST), true];
 
 cl_statisticsLoaded = false;
 [] call client_fnc_loadStatistics;

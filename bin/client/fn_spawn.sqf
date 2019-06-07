@@ -121,6 +121,17 @@ removeBackpack player;
 // Wait until the objectives are available
 waitUntil {!isNil "sv_stage1_obj" && !isNil "sv_stage2_obj" && !isNil "sv_stage3_obj" && !isNil "sv_stage4_obj"};
 
+private _objectives = [sv_stage1_obj, sv_stage2_obj, sv_stage3_obj, sv_stage4_obj];
+{
+	if (_forEachIndex > 0) then {
+		_x setVariable ["pre_stage", format["Stage%1", _forEachIndex]];
+	};
+	_x setVariable ["cur_stage", format["Stage%1", _forEachIndex + 1]];
+	if (_forEachIndex != (count _objectives - 1)) then {
+		_x setVariable ["nex_stage", format["Stage%1", _forEachIndex + 2]];
+	};
+} forEach _objectives;
+
 // Get cam pos for spawn menu cam
 private _stage = "";
 while {_stage == ""} do {

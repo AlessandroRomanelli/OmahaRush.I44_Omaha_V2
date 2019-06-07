@@ -41,20 +41,9 @@ if (isServer) then {
 			if (_status == 1) then {
 				_time = _time - 1;
 			};
-			if (_time > 20) then {
-				if (_soundTime % 3 == 0) then {
-					playSound3D [_beep, _obj, false, getPosATL _obj, 2, 1, 500];
-				};
-			};
-			if (_time >= 10 && _time <= 20) then {
-				if (_soundTime % 2 == 0) then {
-					playSound3D [_beep, _obj, false, getPosATL _obj, 2, 1, 500];
-				};
-			};
-			if (_time < 10) then {
-				if (_soundTime % 1 == 0) then {
-					playSound3D [_beep, _obj, false, getPosATL _obj, 2, 1, 500];
-				};
+			private _timeFrame = (((floor (_time / 10)) min 2) + 1) max 1;
+			if (_soundTime % _timeFrame == 0) then {
+				playSound3D [_beep, _obj, false, getPosATL _obj, 2, 1, 500];
 			};
 			_soundTime = _soundTime - 1;
 			uiSleep 1;
@@ -90,34 +79,25 @@ if (isServer) then {
 			};
 		} forEach _killZone;
 
-		if (_obj == sv_stage4_obj) then {
-			// Trigger win
+		private _nextObj = sv_cur_obj getVariable ["next_obj", objNull];
+		// Trigger win
+		if (isNull _nextObj) exitWith {
 			[] call server_fnc_endRound;
-		} else {
-			// Move onto next objective
-			if (_obj == sv_stage1_obj) then {
-				sv_cur_obj = sv_stage2_obj;
-			} else {
-			if (_obj == sv_stage2_obj) then {
-				sv_cur_obj = sv_stage3_obj;
-			} else {
-				sv_cur_obj = sv_stage4_obj;
-				};
-			};
-			// Reset the time
-			if (!isNil "sv_matchTimer_thread") then {
-				terminate sv_matchTimer_thread;
-			};
-			// Start the timer again with additional time counting in the fallback phase
-			private _fallBackTime = [] call client_fnc_getFallbackTime;
-			sv_matchTimer_thread = [false, _fallBackTime] spawn server_fnc_matchTimer;
-
-			// refresh tickets
-			[] call server_fnc_refreshTickets;
-
-			// Update everyones variable
-			[["sv_cur_obj"]] call server_fnc_updateVars;
 		};
+		sv_cur_obj = _nextObj;
+		// Reset the time
+		if (!isNil "sv_matchTimer_thread") then {
+			terminate sv_matchTimer_thread;
+		};
+		// Start the timer again with additional time counting in the fallback phase
+		private _fallBackTime = [] call client_fnc_getFallbackTime;
+		sv_matchTimer_thread = [false, _fallBackTime] spawn server_fnc_matchTimer;
+
+		// refresh tickets
+		[] call server_fnc_refreshTickets;
+
+		// Update everyones variable
+		[["sv_cur_obj"]] call server_fnc_updateVars;
 	};
 };
 
