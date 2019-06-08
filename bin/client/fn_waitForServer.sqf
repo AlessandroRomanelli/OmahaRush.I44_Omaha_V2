@@ -7,6 +7,11 @@ scriptName "fn_waitForServer";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_waitForServer.sqf"
+
+#define HEX_GREEN "#00FF00"
+#define HEX_YELLOW "#FFFF00"
+#define HEX_RED "#FF0000"
+
 if (isServer && !hasInterface) exitWith {};
 
 player setVariable ["playerInitOK", true, true];
@@ -26,12 +31,12 @@ cl_waitingThread = addMissionEventHandler["EachFrame", {
   private _players = playersNumber west + playersNumber independent;
   private _readyPlayers = {_x getVariable ["playerInitOK", false]} count allPlayers;
   if (_readyPlayers < round(_players*0.4)) then {
-    _color = "#FF0000";
+    _color = HEX_RED;
   } else {
     if (_readyPlayers >= round(_players*0.4) && _readyPlayers < round(_players*0.8)) then {
-      _color = "#FFFF00";
+      _color = HEX_YELLOW;
     } else {
-      _color = "#00FF00";
+      _color = HEX_GREEN;
     };
   };
   _connectedCtrl ctrlSetStructuredText (parseText (format ["CONNECTED: %1", _players]));

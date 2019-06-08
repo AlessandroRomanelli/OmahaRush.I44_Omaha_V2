@@ -63,6 +63,6 @@ private _display = uiNamespace getVariable ["killcam_info", displayNull];
 (_display displayCtrl 1201) ctrlSetText (_killerWeapon select 2);
 (_display displayCtrl 1202) ctrlSetText ([_killer] call _fnc_getIcon);
 
-waitUntil { cl_inSpawnMenu || player getVariable ["isAlive", false]};
+waitUntil { cl_inSpawnMenu || {player getVariable ["isAlive", false]}};
 
 401 cutFadeOut 0;

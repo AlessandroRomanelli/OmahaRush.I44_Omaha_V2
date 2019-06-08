@@ -17,6 +17,17 @@ private _swapItems = {
 	_currentLoadout;
 };
 
+private _fnc_equipBayo = {
+    private _result = false;
+	private _compatibles = getArray(configFile >> "CfgWeapons" >> _primary >> "WeaponSlotsInfo" >> "MuzzleSlot" >> "compatibleItems");
+	private _idx = _compatibles findIf {["bayo", _x] call BIS_fnc_inString};
+	if (_idx > -1) then {
+		player addPrimaryWeaponItem (_compatibles select _idx);
+		_result = true;
+	};
+	_result
+};
+
 // Get equip
 private _equipInfo = [] call client_fnc_getLoadedEquipment;
 
@@ -65,6 +76,8 @@ if ((cl_class isEqualTo "assault") && (cl_classPerk isEqualTo "grenadier")) then
 		if (!_isBeingRevived) then {
 			for "_i" from 1 to _count do {player addItem (getText(_cfgRifleGrenade >> "rifleGrenade"))};
 		};
+	} else {
+	    [] call _fnc_equipBayo;
 	};
 
 	//Give the grenadier some grenades, right?
@@ -72,6 +85,8 @@ if ((cl_class isEqualTo "assault") && (cl_classPerk isEqualTo "grenadier")) then
 	if (!_isBeingRevived) then {
 		for "_i" from 1 to _count do {player addItem _grenade};
 	};
+} else {
+	[] call _fnc_equipBayo;
 };
 
 // If the player is a demo engineer
@@ -98,10 +113,10 @@ if ((cl_class isEqualTo "engineer") && (cl_classPerk isEqualTo "perkAT")) then {
 	private _launcher = getText(_cfgLauncher >> "weapon");
 	private _ammoName = getText(_cfgLauncher >> "ammoType");
 	private _ammoCount = getNumber(_cfgLauncher >> "ammoCount");
-	removeBackpackGlobal player;
+	removeBackpack player;
 	// Give him a rocket launcher backpack
 	player addBackpack _backpack;
-	{player removeItemFromBackpack _x} forEach backpackItems player;
+	{player removeItemFromBackpack _x} forEach (backpackItems player);
 	// Give him 1 rounds first, the weapon and then the rest of the rounds (so that it doesn't have to reload it)
 	if (!_isBeingRevived) then {
 		player addMagazine _ammoName;
@@ -114,7 +129,7 @@ if ((cl_class isEqualTo "engineer") && (cl_classPerk isEqualTo "perkAT")) then {
 
 if (_primary != "") then {
 	// Primary
-	private _primaryAmmo = getText(missionConfigFile >> "Unlocks" >> format["%1", player getVariable "gameSide"] >> _primary >> "ammo");
+	private _primaryAmmo = getText(missionConfigFile >> "Unlocks" >> format["%1", player getVariable ["gameSide", "attackers"]] >> _primary >> "ammo");
 	// Give ammo
 	if (!_isBeingRevived) then {
 		// Extended ammo perk
@@ -125,16 +140,12 @@ if (_primary != "") then {
 		};
 	};
 	// Give weapon
-	player addWeaponGlobal _primary;
-	private _compatibles = getArray(configfile >> "CfgWeapons" >> _primary >> "WeaponSlotsInfo" >> "MuzzleSlot" >> "compatibleItems");
-	private _idx = _compatibles findIf {["bayo", _x] call BIS_fnc_inString};
-	if (_idx > -1) then {
-		player addPrimaryWeaponItem (_compatibles select _idx);
-	};
+	player removeWeapon (primaryWeapon player);
+	player addWeapon _primary;
 };
 
 if (_secondary != "") then {
-	private _secondaryAmmo = getText(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> _secondary >> "ammo");
+	private _secondaryAmmo = getText(missionConfigFile >> "Unlocks" >> (player getVariable ["gameSide", "attackers"]) >> _secondary >> "ammo");
 	// Give ammo
 	if (!_isBeingRevived) then {
 		// Extended ammo perk
@@ -145,7 +156,8 @@ if (_secondary != "") then {
 		};
 	};
 	// Give weapon
-	player addWeaponGlobal _secondary;
+	player removeWeapon (secondaryWeapon player);
+	player addWeapon _secondary;
 };
 
 // If someone in the squad has the frag perk, give out a grenade
