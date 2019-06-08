@@ -13,12 +13,17 @@ player setVariable ["playerInitOK", true, true];
 player enableSimulation false;
 // Apparently the server isnt done selecting a map yet
 60000 cutRsc ["waitingForPlayers", "PLAIN"];
+
+if (!isNil "cl_waitingThread") then {
+    terminate cl_waitingThread;
+};
+
 cl_waitingThread = addMissionEventHandler["EachFrame", {
   private _display = uiNamespace getVariable ["waitingForPlayers", displayNull];
   private _connectedCtrl = _display displayCtrl 1101;
   private _readyCtrl = _display displayCtrl 1102;
   private "_color";
-  private _players = playersNumber WEST + playersNumber INDEPENDENT;
+  private _players = playersNumber west + playersNumber independent;
   private _readyPlayers = {_x getVariable ["playerInitOK", false]} count allPlayers;
   if (_readyPlayers < round(_players*0.4)) then {
     _color = "#FF0000";
@@ -35,6 +40,8 @@ cl_waitingThread = addMissionEventHandler["EachFrame", {
 
 waitUntil{sv_gameStatus isEqualTo 2};
 removeMissionEventHandler ["EachFrame", cl_waitingThread];
+
+cl_waitingThread = nil;
 
 player enableSimulation true;
 // Cycle..

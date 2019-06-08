@@ -139,7 +139,7 @@ private _event = addMissionEventHandler["EachFrame", {
     _pos set [2, (_pos select 2) + 0.5];
     private _distance = player distance _x;
     private _alpha = if (_distance < 5) then {1} else {1-(1/2*_distance)+2.5};
-    drawIcon3D [WWRUSH_ROOT+"pictures\support.paa", [1,1,1,_alpha], ASLtoAGL _pos, 1.5, 1.5, 0, format["Rearm (%1m)", round _distance], 2, 0.04, "PuristaLight", "center", true];
+    drawIcon3D [WWRUSH_ROOT+"pictures\support.paa", [1,1,1,_alpha], ASLToAGL _pos, 1.5, 1.5, 0, format["Rearm (%1m)", round _distance], 2, 0.04, "PuristaLight", "center", true];
   } forEach _ammoBoxes;
 
   // Squad icons
@@ -232,7 +232,7 @@ private _event = addMissionEventHandler["EachFrame", {
   };
 
   // MERGE OF INGAME GUI
-  private _hud = uiNameSpace getVariable ["playerHUD",displayNull];
+  private _hud = uiNamespace getVariable ["playerHUD",displayNull];
   private _HUD_currentAmmo = _hud displayCtrl 100;
   private _HUD_reserveAmmo = _hud displayCtrl 101;
   private _HUD_firemode = _hud displayCtrl 102;
@@ -260,7 +260,7 @@ private _event = addMissionEventHandler["EachFrame", {
     if (_unit getVariable ["inCombat", false]) exitWith {
       [[1, 0.8, 0.6, 1], [0.4, 0.32, 0.24]]
     };
-    if (alive _unit && (_unit distance2D sv_cur_obj < 1000)) exitWith {
+    if (alive _unit && {_unit in playArea}) exitWith {
       [[0.66, 1, 0.66, 1], [0.26, 0.4, 0.26, 1]]
     };
     [[1, 0.66, 0.66, 1], [0.4, 0.26, 0.26, 1]]
@@ -310,16 +310,16 @@ private _event = addMissionEventHandler["EachFrame", {
   if (_mode isEqualType "STRING") then {
     if (_mode == "Single") then {_fireMode = "SNGL"};
     if (_mode in ["Burst","Burst2rnd"]) then {_fireMode = "BRST"};
-    if (_mode == "FullAuto" OR _mode == "manual") then {_fireMode = "AUTO"};
+    if (_mode == "FullAuto" || _mode == "manual") then {_fireMode = "AUTO"};
   } else {_fireMode = "---"};
 
   if ((isNull objectParent player) || {(assignedVehicleRole player select 0) isEqualTo "cargo"}) then {
     {
-      if ((_x select 0) == (currentMagazine player) AND (_x select 2)) then
+      if ((_x select 0) == (currentMagazine player) && (_x select 2)) then
       {
         _currentAmmo = (_x select 1);
       };
-      if ((_x select 0) == (currentMagazine player) AND !(_x select 2)) then
+      if ((_x select 0) == (currentMagazine player) && !(_x select 2)) then
       {
         _reserveAmmo = _reserveAmmo + (_x select 1);
       };
@@ -337,7 +337,7 @@ private _event = addMissionEventHandler["EachFrame", {
       _currentAmmo = _vehiclePlayer ammo (currentWeapon _vehiclePlayer);
       _reserveAmmo = [] call {
         private _ammoLeft = 0 - (_vehiclePlayer ammo (currentWeapon _vehiclePlayer));
-        {if ((_x select 0) isEqualto (currentMagazine _vehiclePlayer)) then {_ammoLeft = _ammoLeft + (_x select 1)}} forEach magazinesAmmo _vehiclePlayer;
+        {if ((_x select 0) isEqualTo (currentMagazine _vehiclePlayer)) then {_ammoLeft = _ammoLeft + (_x select 1)}} forEach magazinesAmmo _vehiclePlayer;
         _ammoLeft
       };
     };
@@ -419,8 +419,8 @@ private _event = addMissionEventHandler["EachFrame", {
         player setVariable ["fallBackTime", _fallBackTime];
       };
       private _outOfBoundsTimeout = if (player getVariable ["isFallingBack", false]) then [{_fallBackTime}, {["OutOfBoundsTime", 20] call BIS_fnc_getParamValue}];
-      if (diag_tickTime - (player getVariable "entryTime") < _outOfBoundsTimeout) then {
-        if (!_isPlayerAttacking && player getVariable "isFallingBack") then {
+      if ((diag_tickTime - (player getVariable "entryTime")) < _outOfBoundsTimeout) then {
+        if (!(_isPlayerAttacking) && {player getVariable "isFallingBack"}) then {
           (_display displayCtrl 0) ctrlSetStructuredText parseText "<t size='3.5' color='#FFFFFF' shadow='2' align='center' font='PuristaBold'>FALL BACK</t><br/><t size='2' color='#FFFFFF' shadow='2' align='center'>YOU ARE BEYOND OUR LAST DEFENCE</t>";
         };
         (_display displayCtrl 1101) ctrlSetStructuredText parseText format ["<t size='5' color='#FFFFFF' shadow='2' align='center' font='PuristaBold'>%1s</t>", ([(_outOfBoundsTimeout + (player getVariable "entryTime")) - diag_tickTime, "MM:SS", true] call bis_fnc_secondsToString) select 1];
