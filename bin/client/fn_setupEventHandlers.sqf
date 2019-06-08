@@ -220,10 +220,10 @@ cl_hit_hp_regen_eh = player addEventHandler ["Hit", {
 		terminate client_hpregeneration_thread;
 	};
 
-	// In combat
-	if !(player getVariable ["inCombat", false]) then {
+	// In combat (DISABLED FOR NETWORK PERFORMANCE)
+	/* if !(player getVariable ["inCombat", false]) then {
 		player setVariable ["inCombat",true,true];
-	};
+	}; */
 
 	// Did we get hit by a player? Add it to our assist-array
 	private _causedBy = _this select 1;

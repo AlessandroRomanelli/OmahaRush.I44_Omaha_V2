@@ -925,20 +925,6 @@ class playerHUD {
 	class controlsBackground {};
 
 	class controls {
-	    class LIB_Rsc_RifleGrenade_Zeroing: RscWeaponZeroing
-        {
-            idd=3945;
-            onLoad="_this call ww2_fnc_rifleGrenade_AmmoCheck;";
-        };
-        class LIB_Rsc_Bayonet_Zeroing: LIB_Rsc_RifleGrenade_Zeroing
-        {
-            onLoad="_this call ww2_fnc_bayonetPostInit;";
-            onUnload="_this call ww2_fnc_bayonetOnUnload;";
-        };
-        class LIB_Rsc_DisposableLauncher_Zeroing: LIB_Rsc_RifleGrenade_Zeroing
-        {
-            onLoad="_this call ww2_fnc_disposable_load;";
-        };
 		class RscText_1000: RscText
 		{
 			idc = -1;

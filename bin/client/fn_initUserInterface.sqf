@@ -1,3 +1,16 @@
+scriptName "fn_initUserInterface";
+/*--------------------------------------------------------------------
+	Author: A. Roman
+    File: fn_initUserInterface.sqf
+
+    Written by A.Roman
+    You're not allowed to use this file without permission from the author!
+--------------------------------------------------------------------*/
+#define __filename "fn_initUserInterface.sqf"
+#define COLOR_RED [[[1, 0.66, 0.66, 1], [0.4, 0.26, 0.26, 1]], ["#ffaaaa", "#664444"]]
+#define COLOR_YELLOW [[[1, 0.8, 0.6, 1], [0.4, 0.32, 0.24]], ["#ffcc99", "#66513d"]]
+#define COLOR_GREEN [[[0.66, 1, 0.66, 1], [0.26, 0.4, 0.26, 1]], ["#aaffaa", "#446644"]]
+
 private _event = addMissionEventHandler["EachFrame", {
 
   private _d = uiNamespace getVariable ["rr_objective_gui", displayNull];
@@ -244,26 +257,16 @@ private _event = addMissionEventHandler["EachFrame", {
 
   private _groupUnits = units (group player);
 
-  private _getHUDTextColor = {
+  private _getHUDColor = {
     private _unit = param [0, objNull, [objNull]];
-    if (_unit getVariable ["inCombat", false]) exitWith {
-      ["#ffcc99", "#66513d"]
+    private _textFormat = param [1, false, [false]];
+    if (damage _unit > 0.1) exitWith {
+      COLOR_YELLOW select _textFormat
     };
-    if (alive _unit && (_unit distance2D sv_cur_obj < 1000)) exitWith {
-      ["#aaffaa", "#446644"]
+    if (alive _unit && {_unit inArea playArea}) exitWith {
+      COLOR_GREEN select _textFormat
     };
-    ["#ffaaaa", "#664444"]
-  };
-
-  private _getHUDArrayColor = {
-    private _unit = param [0, objNull, [objNull]];
-    if (_unit getVariable ["inCombat", false]) exitWith {
-      [[1, 0.8, 0.6, 1], [0.4, 0.32, 0.24]]
-    };
-    if (alive _unit && {_unit in playArea}) exitWith {
-      [[0.66, 1, 0.66, 1], [0.26, 0.4, 0.26, 1]]
-    };
-    [[1, 0.66, 0.66, 1], [0.4, 0.26, 0.26, 1]]
+    COLOR_RED select _textFormat
   };
 
   private _getTeamIcon = {
@@ -282,10 +285,10 @@ private _event = addMissionEventHandler["EachFrame", {
     private _teamMateLeader = _hud displayCtrl (2300 + _i);
     if (_i < count _groupUnits) then {
       private _unit = _groupUnits select _i;
-      private _colors = [_unit] call _getHUDTextColor;
+      private _colors = [_unit, true] call _getHUDColor;
       private _name = _unit getVariable ["name", "ERROR: NO NAME"];
       _teamMateName ctrlSetStructuredText parseText (format ["<t size='1.15' shadow='1' shadowColor='%1' color='%2' font='PuristaLight' align='right'>%3</t>", _colors select 1, _colors select 0, _name]);
-      private _arrayColors = [_unit] call _getHUDArrayColor;
+      private _arrayColors = [_unit, false] call _getHUDColor;
       _teamMateIcon ctrlSetText ([_unit] call _getTeamIcon);
       _teamMateIcon ctrlSetTextColor (_arrayColors select 0);
       if (_unit isEqualTo (leader (group player))) then {

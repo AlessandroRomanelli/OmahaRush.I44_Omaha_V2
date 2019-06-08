@@ -29,7 +29,7 @@ if (_nearbyEnemies) exitWith {
 	["Unsafe to spawn, enemies nearby"] call client_fnc_displayError;
 };
 
-if !(_unit in playArea) exitWith {
+if !(_unit inArea playArea) exitWith {
 	["Unit is too far away from the battlefield"] call client_fnc_displayError;
 };
 

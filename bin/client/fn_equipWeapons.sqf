@@ -18,7 +18,9 @@ private _swapItems = {
 };
 
 private _fnc_equipBayo = {
-    private _result = false;
+	private _primary = param [0, "", [""]];
+	if (_primary == "") exitWith {false};
+  private _result = false;
 	private _compatibles = getArray(configFile >> "CfgWeapons" >> _primary >> "WeaponSlotsInfo" >> "MuzzleSlot" >> "compatibleItems");
 	private _idx = _compatibles findIf {["bayo", _x] call BIS_fnc_inString};
 	if (_idx > -1) then {
@@ -65,28 +67,12 @@ if (cl_class isEqualTo "medic") then {
 
 // If the player is a grenadier
 if ((cl_class isEqualTo "assault") && (cl_classPerk isEqualTo "grenadier")) then {
-	private _cfgRifleGrenade = (missionConfigFile >> "Soldiers" >> _side >> "Grenade" >> "RifleGrenade");
-	private _rifles = getArray(_cfgRifleGrenade >> "rifles");
 	private _count = if ("expl" in cl_squadPerks) then {2} else {1};
-
-	// If the rifle is grenade launcher capable
-	if (_primary in _rifles) then {
-		// Add the attachment and give ammo
-		player addPrimaryWeaponItem (getText(_cfgRifleGrenade >> "attachment"));
-		if (!_isBeingRevived) then {
-			for "_i" from 1 to _count do {player addItem (getText(_cfgRifleGrenade >> "rifleGrenade"))};
-		};
-	} else {
-	    [] call _fnc_equipBayo;
-	};
-
 	//Give the grenadier some grenades, right?
 	private _grenade = getText(missionConfigFile >> "Soldiers" >> _side >> "Grenade" >> "weapon");
 	if (!_isBeingRevived) then {
 		for "_i" from 1 to _count do {player addItem _grenade};
 	};
-} else {
-	[] call _fnc_equipBayo;
 };
 
 // If the player is a demo engineer
@@ -142,6 +128,25 @@ if (_primary != "") then {
 	// Give weapon
 	player removeWeapon (primaryWeapon player);
 	player addWeapon _primary;
+};
+
+if ((cl_class isEqualTo "assault") && (cl_classPerk isEqualTo "grenadier")) then {
+	private _cfgRifleGrenade = (missionConfigFile >> "Soldiers" >> _side >> "Grenade" >> "RifleGrenade");
+	private _rifles = getArray(_cfgRifleGrenade >> "rifles");
+	private _count = if ("expl" in cl_squadPerks) then {2} else {1};
+
+	// If the rifle is grenade launcher capable
+	if (_primary in _rifles) then {
+		// Add the attachment and give ammo
+		player addPrimaryWeaponItem (getText(_cfgRifleGrenade >> "attachment"));
+		if (!_isBeingRevived) then {
+			for "_i" from 1 to _count do {player addItem (getText(_cfgRifleGrenade >> "rifleGrenade"))};
+		};
+	} else {
+		[_primary] call _fnc_equipBayo;
+	};
+} else {
+	[_primary] call _fnc_equipBayo;
 };
 
 if (_secondary != "") then {

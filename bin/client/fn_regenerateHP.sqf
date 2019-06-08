@@ -13,12 +13,16 @@ if (isServer && !hasInterface) exitWith {};
 // Lets regenerate HP after 5 seconds of not taking damage
 uiSleep 5;
 
-// Not in combat anymore
-player setVariable ["inCombat",nil,true];
+// Not in combat anymore (DISABLED FOR NETWORK PERFORMANCE)
+/* player setVariable ["inCombat",nil,true]; */
 
 // Regenerate HP
 while {damage player > 0} do {
-	player setDamage ((damage player) - 0.01);
+	player setDamage ((damage player) - 0.02);
+	// Set overall damage but don't allow damage to unwanted selections
+	{
+			player setHit [_x, 0];
+	} forEach ((getAllHitPointsDamage player) select 1);
 	uiSleep 0.2;
 };
 

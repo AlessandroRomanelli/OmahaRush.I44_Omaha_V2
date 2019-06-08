@@ -77,7 +77,7 @@ private _index = -1;
 				// Find enemies within 20m radius
 				private _nearbyEnemies = {(_unit getVariable "gameSide") != (_x getVariable "gameSide")} count (_x nearEntities ["Man", 25]);
 				// If the unit was hit or is nearby enemies
-				if (_x getVariable ["inCombat", false] || {_nearbyEnemies > 0}) then {
+				if (damage _x > 0.1 || {_nearbyEnemies > 0}) then {
 					_spawnCtrl lbAdd ((_x getVariable ["name", "ERROR: NO NAME"]) + " (IN COMBAT)");
 					_spawnCtrl lbSetValue [(lbSize _spawnCtrl) - 1, _index];
 					_spawnCtrl lbSetData [(lbSize _spawnCtrl) - 1, "inCombat"];
