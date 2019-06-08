@@ -9,14 +9,6 @@ scriptName "fn_setupEventHandlers";
 if (isServer && !hasInterface) exitWith {};
 
 // Remove all handlers
-player removeAllEventHandlers "Take";
-player removeAllEventHandlers "InventoryOpened";
-player removeAllEventHandlers "Fired";
-player removeAllEventHandlers "Hit";
-player removeAllEventHandlers "HitPart";
-player removeAllEventHandlers "Killed";
-player removeAllEventHandlers "Respawn";
-player removeAllEventHandlers "HandleDamage";
 [missionNamespace, "groupPlayerChanged"] call BIS_fnc_removeAllScriptedEventHandlers;
 [missionNamespace, "switchedToExtCamera"] call BIS_fnc_removeAllScriptedEventHandlers;
 [missionNamespace, "playAreaChanged"] call BIS_fnc_removeAllScriptedEventHandlers;
@@ -163,7 +155,10 @@ cl_eventObserverID = addMissionEventHandler["EachFrame", {
 }] call bis_fnc_addScriptedEventHandler;
 
 // Automatic magazine recombination
-player addEventHandler ["Take", {
+if (!isNil "cl_take_eh") then {
+	player removeEventHandler ["Take", cl_take_eh];
+};
+cl_take_eh = player addEventHandler ["Take", {
 	private _magInfo = magazinesAmmoFull player;
 	private _curMag = currentMagazine player;
 	private _bulletCount = 0;
@@ -192,9 +187,16 @@ player addEventHandler ["Take", {
 }];
 
 // Direction indicators and inventory blocker
-player addEventHandler ["InventoryOpened", {closeDialog 0;true;}];
+if (!isNil "cl_inv_open_eh") then {
+	player removeEventHandler ["InventoryOpened", cl_inv_open_eh];
+};
+cl_inv_open_eh = player addEventHandler ["InventoryOpened", {closeDialog 0;true;}];
 
-player addEventHandler ["Hit",{
+
+if (!isNil "cl_hit_dir_eh") then {
+	player removeEventHandler ["Hit", cl_hit_dir_eh];
+};
+cl_hit_dir_eh = player addEventHandler ["Hit",{
 	private _d = [_this select 0, _this select 1] call BIS_fnc_relativeDirTo;
 	if (_d >= 315 || _d <= 45) then {351 cutRsc ["cu","PLAIN"];};
 	if (_d >= 45 AND _d <= 135) then {352 cutRsc ["cr","PLAIN"];};
@@ -209,8 +211,10 @@ player addEventHandler ["Hit",{
 }];
 
 // Hit
-player addEventHandler ["Hit",
-{
+if (!isNil "cl_hit_hp_regen_eh") then {
+	player removeEventHandler ["Hit", cl_hit_hp_regen_eh];
+};
+cl_hit_hp_regen_eh = player addEventHandler ["Hit", {
 	// Stop any hp regeneration thread
 	if (!isNil "client_hpregeneration_thread") then {
 		terminate client_hpregeneration_thread;
@@ -233,7 +237,10 @@ player addEventHandler ["Hit",
 }];
 
 // Killed
-player addEventHandler ["Killed", {
+if (!isNil "cl_killed_eh") then {
+	player removeEventHandler ["Killed", cl_killed_eh];
+};
+cl_killed_eh = player addEventHandler ["Killed", {
 	private _victim = _this select 0;
 	private _lastDeath = _victim getVariable ["lastDeath", 0];
 	//Avoiding more than one time each 1/10 of a second
@@ -320,7 +327,10 @@ player addEventHandler ["Killed", {
 }];
 
 // Assign current weapon to player when firing (to avoid PUT and THROW)
-player addEventHandler ["Fired", {
+if (!isNil "cl_fired_eh") then {
+	player removeEventHandler ["Fired", cl_fired_eh];
+};
+cl_fired_eh = player addEventHandler ["Fired", {
   params ["_unit", "_weapon"];
   private _lastWepon = _unit getVariable ["lastWeaponFired", ""];
   if !(_weapon isEqualTo _lastWepon) then
@@ -399,7 +409,10 @@ player addEventHandler ["HandleDamage", {
 }];
 
 // Getin Eventhandler for vehicles
-player addEventHandler ["GetInMan", {
+if (!isNil "cl_get_in_man_eh") then {
+	player removeEventHandler ["GetInMan", cl_get_in_man_eh];
+};
+cl_get_in_man_eh = player addEventHandler ["GetInMan", {
 	private _unit = param[0, objNull, [objNull]];
 	private _vehicle = param[2, objNull, [objNull]];
 	_vehicle allowDamage true;
@@ -517,7 +530,10 @@ player addEventHandler ["GetInMan", {
 	};
 }];
 
-player addEventHandler ["GetOutMan", {
+if (!isNil "cl_get_out_man") then {
+	player removeEventHandler ["GetOutMan", cl_get_out_man];
+};
+cl_get_out_man = player addEventHandler ["GetOutMan", {
 	private _vehicle = param[2, objNull, [objNull]];
 	if (count (crew _vehicle) == 0) then {
 		_vehicle setVariable ["last_man", player, true];
