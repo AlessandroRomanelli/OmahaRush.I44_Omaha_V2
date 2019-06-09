@@ -175,7 +175,7 @@ cl_eventObserverID = addMissionEventHandler["EachFrame", {
 		/* 10 arguments */						[],
 		/* 11 action duration */				0.5,
 		/* 12 priority */						500,
-		/* 13 remove on completion */			true,
+		/* 13 remove on completion */			false,
 		/* 14 show unconscious */				false
 		] call BIS_fnc_holdActionAdd;
 		_x setVariable ["melee_action", _id];
