@@ -100,6 +100,25 @@ private _event = addMissionEventHandler["EachFrame", {
     [true] call client_fnc_spawnMenu_loadClasses;
   };
 
+  if (player getVariable ["bayo_equipped", false]) then {
+    [] call LIB_bayonetPerFrame;
+  };
+
+  if (player getVariable ["gl_equipped", false]) then {
+    private _unit = (call ww2_fnc_findPlayer);
+    private _magazines = primaryWeaponMagazine _unit;
+    private _weaponState = weaponState _unit;
+    if (!alive _unit) exitwith {};
+    if (count _magazines > 1 && (_weaponState select 1 == primaryWeapon _unit)) then {
+      _unit removePrimaryWeaponItem (_magazines select 1);
+      _unit addMagazine (_magazines select 1);
+      private _boltAction = [(configFile >> "cfgWeapons" >>  (primaryWeapon _unit)),"LIB_boltActionAnim",""] call BIS_fnc_returnConfigEntry;
+      if !(_boltAction isEqualTo "") then {
+        [_unit,primaryWeapon _unit,primaryWeapon _unit] call LIB_fnc_handleBoltAction;
+      };
+    };
+  };
+
   // Objectives
   private _pos = sv_cur_obj getVariable ["positionAGL", []];
   if (count _pos == 0) then {

@@ -95,7 +95,7 @@ class Maverick_Functions_Client {
 		class drawMapUnits {};
 		class getCurrentSideLoadout {};
 		class initGlobalVars {};
-		class brightNight {postInit = 1;};
+		class brightNight {};
 		class getSquadPerks {};
 		class setSquadPerks {};
 		class checkClassRestriction {};

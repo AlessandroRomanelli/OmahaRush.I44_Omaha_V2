@@ -15,6 +15,7 @@ if (isServer && !hasInterface) exitWith {};
 [missionNamespace, "objStatusChanged"] call BIS_fnc_removeAllScriptedEventHandlers;
 [missionNamespace, "playerSwimChanged"] call BIS_fnc_removeAllScriptedEventHandlers;
 [missionNamespace, "newEnemiesNearby"] call BIS_fnc_removeAllScriptedEventHandlers;
+[missionNamespace, "weaponChanged"] call BIS_fnc_removeAllScriptedEventHandlers;
 
 // Custom Event Handler for Group Change
 cl_groupSize = -1;
@@ -22,6 +23,8 @@ cl_playAreaPos = [0,0,0];
 cl_obj_status = -1;
 cl_playerSwimming = !(isTouchingGround player) && (surfaceIsWater (getPosATL player));
 cl_enemiesNearby = 0;
+cl_currentWeapon = "";
+cl_currentWeaponMode = "";
 removeMissionEventHandler["Map", cl_mapObserverID];
 cl_mapObserverID = addMissionEventHandler["Map", {
 		params ["_mapIsOpened"];
@@ -76,6 +79,18 @@ cl_eventObserverID = addMissionEventHandler["EachFrame", {
 			[missionNamespace, "newEnemiesNearby", [_enemiesNearby]] call BIS_fnc_callScriptedEventHandler;
 			cl_enemiesNearby = _data;
 		};
+
+		private _data = currentWeaponMode player;
+		if !(_data isEqualTo cl_currentWeaponMode) then {
+			[missionNamespace, "weaponChanged"] call BIS_fnc_callScriptedEventHandler;
+			cl_currentWeaponMode = _data;
+		};
+
+		private _data = currentWeapon player;
+		if !(_data isEqualTo cl_currentWeapon) then {
+			[missionNamespace, "weaponChanged"] call BIS_fnc_callScriptedEventHandler;
+			cl_currentWeapon = _data;
+		};
 }];
 
 // If the group size changes (either we left or some other people joined) update the perks
@@ -107,6 +122,19 @@ cl_eventObserverID = addMissionEventHandler["EachFrame", {
 			// Make the UI at the top blink
 			[] spawn client_fnc_objectiveArmedGUIAnimation;
 		};
+}] call bis_fnc_addScriptedEventHandler;
+
+[missionNamespace, "weaponChanged", {
+	if (!isNull(objectParent player) || {!((currentWeapon player) isEqualTo (primaryWeapon player))}) exitWith {
+		player setVariable ["bayo_equipped", false];
+		player setVariable ["gl_equipped", false];
+	};
+
+	player setVariable ["bayo_equipped", (currentWeaponMode player) isEqualTo "LIB_Bayonet_Muzzle"];
+
+	private _gl = ["LIB_ACC_GW_SB_Empty", "LIB_ACC_GL_Enfield_CUP_Empty", "LIB_ACC_GL_M7", "LIB_ACC_GL_DYAKONOV_Empty"];
+	private _hasGL = (primaryWeaponItems player select 0) in _gl;
+	player setVariable ["gl_equipped", _hasGL];
 }] call bis_fnc_addScriptedEventHandler;
 
 [missionNamespace, "switchedToExtCamera", {
