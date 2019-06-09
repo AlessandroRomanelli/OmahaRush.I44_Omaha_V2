@@ -8,7 +8,7 @@ scriptName "fn_equipAll";
 #define __filename "fn_equipAll.sqf"
 if (isServer && !hasInterface) exitWith {};
 
-private _isRespawning = param[0, false, [false]];
+private _isBeingRevived = param[0, false, [false]];
 
 // Give player loadout
 private _side = player getVariable "gameSide";
@@ -33,7 +33,7 @@ if ((count _backpacks > 0) && {(backpack player) isEqualTo ""}) then {removeBack
 }; */
 
 // Give weapons
-[_isRespawning] call client_fnc_equipWeapons;
+[_isBeingRevived] call client_fnc_equipWeapons;
 
 // Shared items
 player addItem "ItemMap";

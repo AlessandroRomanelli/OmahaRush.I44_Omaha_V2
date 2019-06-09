@@ -38,8 +38,14 @@ class CfgPerks {
 			class smoke_grenades {
 				displayName = "Smoke Screen";
 				picture = "";
-				description = "Deploys you with two smoke grenades for concealing your friendlies";
+				description = "Deploys you with two smoke grenades to conceal your allies";
 				instructions[] = {"SMOKE SCREEN","Deploys you with two smoke grenades to create dynamic cover and avoid enemy fire or conceal movements."};
+			};
+			class spawnbeacon {
+				displayName = "Rally points";
+				picture = "";
+				description = "Allows you to create spawn points for your squad to deploy at more efficient locations";
+				instructions[] = {"RALLYPOINT", "Press H to deploy your spawn beacon. Only one spawnbeacon is allowed per squad. Squad members will then be able to spawn on it."};
 			};
 		};
 		class Support {
@@ -69,6 +75,12 @@ class CfgPerks {
 				description = "Allows you to plant or defuse explosives at a greatly faster speed than normal";
 				instructions[] = {"QUICK HANDS", "The time taken to plant or defuse explosives is going to be less than a second: a perfect chance to clutch the situation."};
 			};
+			class smoke_grenades {
+				displayName = "Smoke Screen";
+				picture = "";
+				description = "Deploys you with two smoke grenades to conceal your allies";
+				instructions[] = {"SMOKE SCREEN","Deploys you with two smoke grenades to create dynamic cover and avoid enemy fire or conceal movements."};
+			};
 		};
 		class Engineer {
 			class perkAT {
@@ -90,6 +102,12 @@ class CfgPerks {
 				picture = "";
 				description = "Allows you to create spawn points for your squad to deploy at more efficient locations";
 				instructions[] = {"RALLYPOINT", "Press H to deploy your spawn beacon. Only one spawn beacon is allowed per squad. Squad members will then be able to spawn on it."};
+			};
+			class smoke_grenades {
+				displayName = "Smoke Screen";
+				picture = "";
+				description = "Deploys you with two smoke grenades to conceal your allies";
+				instructions[] = {"SMOKE SCREEN","Deploys you with two smoke grenades to create dynamic cover and avoid enemy fire or conceal movements."};
 			};
 		};
 	};

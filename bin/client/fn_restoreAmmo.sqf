@@ -113,7 +113,7 @@ if (cl_classPerk == "demolition") then {
 	};
 };
 
-if (cl_class == "medic" && cl_classPerk == "smoke_grenades") then {
+if (cl_classPerk == "smoke_grenades") then {
 	private _smokeName = "SmokeShell";
 	private _currentSmokes = {_x isEqualTo _smokeName} count _items;
 	if (_currentSmokes < 2) then {

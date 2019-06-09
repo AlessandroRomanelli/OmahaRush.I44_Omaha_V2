@@ -58,58 +58,51 @@ if (cl_class isEqualTo "medic") then {
 	if (count _medic_backpacks > 0) then {_newLoadout = [_currentLoadout, _medic_backpacks, 5, 0] call _swapItems};
 	if (count _medic_headgears > 0) then {_newLoadout set [6, selectRandom _medic_headgears]};
 	player setUnitLoadout _newLoadout;
-
-	// If he has the smoke grenades perk, equip them
-	if ((cl_classPerk isEqualTo "smoke_grenades") && (!_isBeingRevived)) then {
-		for "_i" from 1 to 2 do {player addItem "SmokeShell"};
-	};
 };
 
-// If the player is a grenadier
-if ((cl_class isEqualTo "assault") && (cl_classPerk isEqualTo "grenadier")) then {
-	private _count = if ("expl" in cl_squadPerks) then {2} else {1};
-	//Give the grenadier some grenades, right?
-	private _grenade = getText(missionConfigFile >> "Soldiers" >> _side >> "Grenade" >> "weapon");
-	if (!_isBeingRevived) then {
-		for "_i" from 1 to _count do {player addItem _grenade};
-	};
+// Smoke grenades to those who have the class perk
+if ((cl_classPerk isEqualTo "smoke_grenades") && (!_isBeingRevived)) then {
+	for "_i" from 1 to 2 do {player addItem "SmokeShell"};
 };
 
-// If the player is a demo engineer
-if ((cl_class isEqualTo "engineer") && (cl_classPerk isEqualTo "demolition")) then {
-	private _backpack = getText(missionConfigFile >> "Soldiers" >> _side >> "ExplosiveCharge" >> "backpack");
-	private _explCharge = getText(missionConfigFile >> "Soldiers" >> _side >> "ExplosiveCharge" >> "weapon");
-	// Give a bigger backpack
-	if !(_backpack isEqualTo "") then {
-		removeBackpackGlobal player;
+// Engineer
+if (cl_class isEqualTo "engineer") then {
+	// Demo Engineer Loadout
+	if (cl_classPerk isEqualTo "demolition") then {
+		private _backpack = getText(missionConfigFile >> "Soldiers" >> _side >> "ExplosiveCharge" >> "backpack");
+		private _explCharge = getText(missionConfigFile >> "Soldiers" >> _side >> "ExplosiveCharge" >> "weapon");
+		// Give a bigger backpack
+		if !(_backpack isEqualTo "") then {
+			removeBackpackGlobal player;
+			player addBackpack _backpack;
+		};
+		// Give him his explosives charges
+		private _count = if ("expl" in cl_squadPerks) then {2} else {1};
+		if (!_isBeingRevived) then {
+			for "_i" from 1 to _count do {player addItemToBackpack _explCharge};
+		};
+	};
+
+	// AT Engineer loadout
+	if ((cl_classPerk isEqualTo "perkAT")) then {
+		// Fetch the launcher data
+		private _cfgLauncher = (missionConfigFile >> "Soldiers" >> _side >> "Launcher");
+		private _backpack = getText(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "ATbackpack");
+		private _launcher = getText(_cfgLauncher >> "weapon");
+		private _ammoName = getText(_cfgLauncher >> "ammoType");
+		private _ammoCount = getNumber(_cfgLauncher >> "ammoCount");
+		removeBackpack player;
+		// Give him a rocket launcher backpack
 		player addBackpack _backpack;
-	};
-	// Give him his explosives charges
-	private _count = if ("expl" in cl_squadPerks) then {3} else {1};
-	if (!_isBeingRevived) then {
-		for "_i" from 1 to _count do {player addItemToBackpack _explCharge};
-	};
-};
-
-// If the player is a AT engineer
-if ((cl_class isEqualTo "engineer") && (cl_classPerk isEqualTo "perkAT")) then {
-	// Fetch the launcher data
-	private _cfgLauncher = (missionConfigFile >> "Soldiers" >> _side >> "Launcher");
-	private _backpack = getText(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "ATbackpack");
-	private _launcher = getText(_cfgLauncher >> "weapon");
-	private _ammoName = getText(_cfgLauncher >> "ammoType");
-	private _ammoCount = getNumber(_cfgLauncher >> "ammoCount");
-	removeBackpack player;
-	// Give him a rocket launcher backpack
-	player addBackpack _backpack;
-	{player removeItemFromBackpack _x} forEach (backpackItems player);
-	// Give him 1 rounds first, the weapon and then the rest of the rounds (so that it doesn't have to reload it)
-	if (!_isBeingRevived) then {
-		player addMagazine _ammoName;
-	};
-	player addWeaponGlobal _launcher;
-	if (("expl" in cl_squadPerks) && (!_isBeingRevived)) then {
-		for "_i" from 2 to _ammoCount do {player addMagazine _ammoName};
+		{player removeItemFromBackpack _x} forEach (backpackItems player);
+		// Give him 1 rounds first, the weapon and then the rest of the rounds (so that it doesn't have to reload it)
+		if (!_isBeingRevived) then {
+			player addMagazine _ammoName;
+		};
+		player addWeaponGlobal _launcher;
+		if (("expl" in cl_squadPerks) && (!_isBeingRevived)) then {
+			for "_i" from 2 to _ammoCount do {player addMagazine _ammoName};
+		};
 	};
 };
 
@@ -165,13 +158,12 @@ if (_secondary != "") then {
 	player addWeapon _secondary;
 };
 
-// If someone in the squad has the frag perk, give out a grenade
-if ("frag" in cl_squadPerks) then {
-	private _grenade = getText(missionConfigFile >> "Soldiers" >> _side >> "Grenade" >> "weapon");
-	if (!_isBeingRevived) then {
-		player addMagazine _grenade;
-	};
+if (!(cl_classPerk isEqualTo "grenadier" || {"frag" in cl_squadPerks}) || _isBeingRevived) exitWith {};
+private _count = if (cl_classPerk isEqualTo "grenadier" && {"frag" in cl_squadPerks}) then {2} else {1};
+private _grenade = getText(missionConfigFile >> "Soldiers" >> _side >> "Grenade" >> "weapon");
+private _currentNades = count ((itemsWithMagazines player) select {_x isEqualTo _grenade});
+for "_i" from _currentNades to _count do {
+	player addItem _grenade
 };
-
 
 true
