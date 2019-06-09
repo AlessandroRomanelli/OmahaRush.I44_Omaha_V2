@@ -16,7 +16,7 @@ if (_DIKcode < 59 || _DIKcode > 68) exitWith {};
 
 private _fnc_indexToRole = {
   params [["_index", 0, [0]], ["_vehicle", objNull, [objNull]]];
-  if (_vehicle isEqualTo objNull) exitWith {""};
+  if (isNull _vehicle) exitWith {""};
   private _count = 0;
   private _gunnerCount = count fullCrew [_vehicle, "gunner", true];
   private _commanderCount = count fullCrew [_vehicle, "commander", true];

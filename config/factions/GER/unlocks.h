@@ -119,7 +119,7 @@ class LIB_MP44 {
 
 class LIB_K98ZF39 {
   ammo = "LIB_5Rnd_792x57";
-  exp = 10000;
+  exp = 0;
   type = "primary";
   roles[] = {"recon"};
   damageMultiplier = 2;
