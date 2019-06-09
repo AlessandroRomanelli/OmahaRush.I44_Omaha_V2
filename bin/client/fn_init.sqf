@@ -134,8 +134,7 @@ missionNamespace setVariable ["playArea", _trigger];
 /* private _safeMarker1 = createMarkerLocal ["respawn_defenders", cl_safePos];
 private _safeMarker2 = createMarkerLocal ["respawn_attackers", cl_safePos]; */
 
-CHBN_adjustBrightness = 0.75;
-[] spawn client_fnc_brightNight;
+CHBN_adjustBrightness = 0.66;
 
 // Keyhandler
 [] spawn client_fnc_initKeyHandler;

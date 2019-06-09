@@ -133,10 +133,7 @@ private _objectives = [sv_stage1_obj, sv_stage2_obj, sv_stage3_obj, sv_stage4_ob
 } forEach _objectives;
 
 // Get cam pos for spawn menu cam
-private _stage = "";
-while {_stage == ""} do {
-	_stage = sv_cur_obj getVariable ["cur_stage", "Stage1"];
-};
+private _stage = sv_cur_obj getVariable ["cur_stage", "Stage1"];
 private _side = player getVariable "gameSide";
 private _pos = getArray(missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> _stage >> "Spawns" >> _side >> "HQSpawn" >> "positionATL");
 
