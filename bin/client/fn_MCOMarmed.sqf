@@ -17,8 +17,6 @@ private _planter = param[0,objNull,[objNull]];
 // Info
 ["EXPLOSIVES ARMED","The objective has been armed. Attackers will not lose tickets while it is."] spawn client_fnc_hint;
 
-if (player != _planter) exitWith {};
-
 // Start sound loop if we are the server
 if (isServer) then {
 
@@ -98,6 +96,7 @@ if (isServer) then {
 
 		// Update everyones variable
 		[["sv_cur_obj"]] call server_fnc_updateVars;
+		sv_mcom_thread = nil;
 	};
 };
 

@@ -8,6 +8,10 @@ scriptName "fn_loadSpawnpoints";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_loadSpawnpoints.sqf"
+
+#define COLOR_RED [0.51,0,0,1]
+#define COLOR_BLUE [0,0.3,0.6,1]
+
 if (isServer && !hasInterface) exitWith {};
 
 disableSerialization;
@@ -43,56 +47,54 @@ private _getIconPlayer = {
   if (_class isEqualTo "recon") exitWith {"\a3\ui_f\data\Map\VehicleIcons\iconManLeader_ca.paa"};
 };
 
+private _fnc_appendBeacon = {
+  params [["_unit", objNull, [objNull]], ["_index", -1, [0]]];
+  private _ctrlIdx = (lbSize _spawnCtrl) - 1;
+  _spawnCtrl lbAdd ((_unit getVariable ["name", "ERROR: NO NAME"]) + "'s Beacon");
+  _spawnCtrl lbSetData [_ctrlIdx, "beacon"];
+  _spawnCtrl lbSetValue [_ctrlIdx, _index];
+  _spawnCtrl lbSetPicture [_ctrlIdx, "\a3\ui_f\data\Map\MapControl\bunker_CA.paa"];
+  _spawnCtrl lbSetPictureColor [_ctrlIdx, COLOR_BLUE];
+  true
+};
+
+private _fnc_appendUnit = {
+  params [["_unit", objNull, [objNull]], ["_index", -1, [0]]];
+  private _icon = [_unit] call _getIconPlayer;
+  // Find enemies within 25m radius
+  private _nearbyEnemies = {(_unit getVariable "gameSide") != (_x getVariable "gameSide")} count (_unit nearEntities ["Man", 25]);
+  private _ctrlIdx = (lbSize _spawnCtrl) - 1;
+  // If the unit was hit or is nearby enemies
+  if (damage _unit > 0.1 || {_nearbyEnemies > 0}) then {
+    _spawnCtrl lbAdd ((_unit getVariable ["name", "ERROR: NO NAME"]) + " (IN COMBAT)");
+    _spawnCtrl lbSetColor [_ctrlIdx, COLOR_RED];
+    _spawnCtrl lbSetValue [_ctrlIdx, _index];
+    _spawnCtrl lbSetData [_ctrlIdx, "inCombat"];
+    _spawnCtrl lbSetPicture [_ctrlIdx, _icon];
+    _spawnCtrl lbSetPictureColor [_ctrlIdx, COLOR_RED];
+  } else {
+    _spawnCtrl lbAdd (_unit getVariable ["name", "ERROR: NO NAME"]);
+    _spawnCtrl lbSetValue [_ctrlIdx, _index];
+    _spawnCtrl lbSetData [_ctrlIdx, netID _unit];
+    _spawnCtrl lbSetPicture [_ctrlIdx, _icon];
+    _spawnCtrl lbSetPictureColor [_ctrlIdx, COLOR_BLUE];
+  };
+  true
+};
+
 // Load squad members
-private _index = -1;
 {
-	_index = _index + 1;
-
-	if ((isPlayer _x && {_x distance sv_cur_obj < 1500} && {alive _x}) || {_x == player} || {!isNull (_x getVariable ["assault_beacon_obj", objNUll])}) then {
-		private _add = false;
-
-		// If unit is alive AND is not the player AND (player NOT defending OR the unit is the leader OR player is the leader)
-		// If the player is attacking, he can spawn on any group member, whereas if he's defending, he can only spawn on the leader
-		if (alive _x && {_x != player} && {!_playerIsDefending || (_x == (leader group player)) || ((leader group player) == player)}) then {
-			_add = true;
-		};
-
-		private _beacon = _x getVariable ["assault_beacon_obj", objNull];
-		if (!isNull _beacon) then {
-			_add = true;
-		};
-
-		if (_add) then {
-			if (!isNull _beacon) then {
-				// Spawn beacon
-				_spawnCtrl lbAdd ((_x getVariable ["name", "ERROR: NO NAME"]) + "'s Beacon");
-				_spawnCtrl lbSetData [(lbSize _spawnCtrl) - 1, "beacon"];
-				_spawnCtrl lbSetValue [(lbSize _spawnCtrl) - 1, _index];
-				_spawnCtrl lbSetPicture [(lbSize _spawnCtrl) - 1, "\a3\ui_f\data\Map\MapControl\bunker_CA.paa"];
-				_spawnCtrl lbSetPictureColor [(lbSize _spawnCtrl) - 1, [0,0.3,0.6,1]];
-			} else {
-				// Player
-				private _unit = _x;
-        private _icon = [_x] call _getIconPlayer;
-				// Find enemies within 20m radius
-				private _nearbyEnemies = {(_unit getVariable "gameSide") != (_x getVariable "gameSide")} count (_x nearEntities ["Man", 25]);
-				// If the unit was hit or is nearby enemies
-				if (damage _x > 0.1 || {_nearbyEnemies > 0}) then {
-					_spawnCtrl lbAdd ((_x getVariable ["name", "ERROR: NO NAME"]) + " (IN COMBAT)");
-					_spawnCtrl lbSetValue [(lbSize _spawnCtrl) - 1, _index];
-					_spawnCtrl lbSetData [(lbSize _spawnCtrl) - 1, "inCombat"];
-					_spawnCtrl lbSetPicture [(lbSize _spawnCtrl) - 1, _icon];
-					_spawnCtrl lbSetPictureColor [(lbSize _spawnCtrl) - 1, [0.51,0,0,1]];
-				} else {
-					_spawnCtrl lbAdd (_x getVariable ["name", "ERROR: NO NAME"]);
-					_spawnCtrl lbSetValue [(lbSize _spawnCtrl) - 1, _index];
-					_spawnCtrl lbSetData [(lbSize _spawnCtrl) - 1, netID _unit];
-					_spawnCtrl lbSetPicture [(lbSize _spawnCtrl) - 1, _icon];
-					_spawnCtrl lbSetPictureColor [(lbSize _spawnCtrl) - 1, [0,0.3,0.6,1]];
-				};
-			};
-		};
-	};
+  // If unit is alive AND is not the player AND (player NOT defending OR the unit is the leader OR player is the leader)
+  // If the player is attacking, he can spawn on any group member, whereas if he's defending, he can only spawn on the leader
+  if (alive _x && {_x inArea playArea} && {_x != player} && {!_playerIsDefending || (_x == (leader group player)) || ((leader group player) == player)}) then {
+    [_x, _forEachIndex] call _fnc_appendUnit;
+  };
+   
+  private _beacon = _x getVariable ["assault_beacon_obj", objNull];
+  // If there is a valid beacon
+  if (!isNull _beacon && {_beacon inArea playArea}) then {
+    [_x, _forEachIndex] call _fnc_appendBeacon;
+  };
 } forEach (units group player);
 
 
