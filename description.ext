@@ -168,6 +168,18 @@ class CfgDebriefing
 
 class Params {
   class header {
+    title = "========== MATCH SETTINGS =======================================";
+    values[] = {0};
+    default = 0;
+    texts[] = {""};
+  };
+  class MinPlayers {
+    title = "Minimum players for the match to start:";
+    values[] = {0, 2, 4, 8, 16, 32};
+    default = 4;
+    texts[] = {"No players", "2 players", "4 players", "8 players", "16 players", "32 players"};
+  };
+  class header_11: header {
     title = "========== TICKETS SETTINGS =======================================";
     values[] = {0};
     default = 0;
