@@ -42,11 +42,14 @@ private _actionID = [
 	"Revive",
 	"\a3\ui_f\data\IGUI\Cfg\holdactions\holdAction_revive_ca.paa",
 	"\a3\ui_f\data\IGUI\Cfg\holdactions\holdAction_revive_ca.paa",
-	"(_target distance _this) < 3.5 && !alive _target && !isNull _target",
-	"(_target distance _caller) < 3.5 && ((speed _caller) <= 0.1)",
+	"(_target distance _this) < 3.5 && {!alive _target} && {!isNull _target} && {_target inArea playArea}",
+	"(_target distance _caller) < 3.5 && {(speed _caller) <= 0.1} && {_target inArea playArea}",
 	{},
 	{},
-	{[_target] spawn client_fnc_medic_reviveUnit},
+	{
+		params ["_target"];
+		[_target] spawn client_fnc_medic_reviveUnit
+	},
 	{},
 	[],
 	_time,
@@ -55,11 +58,25 @@ private _actionID = [
 	false
 ] call bis_fnc_holdActionAdd;
 
+if (!isNil "cl_delete_revive") then {
+	terminate cl_delete_revive;
+};
+
+cl_delete_revive = [_unit, _actionID] spawn {
+	params ["_unit", "_actionID"];
+	sleep 15;
+	[_unit, _actionID] call BIS_fnc_holdActionRemove;
+	cl_delete_revive = nil;
+};
+
 // Set action id locally on object if we need to remove it later on
 _unit setVariable ["revive_actionID",_actionID];
 
 // Make sure the action gets deleted once the person respawns
 _unit addEventHandler ["Respawn",{
+	if (!isNil "cl_delete_revive") then {
+		terminate cl_delete_revive;
+	};
 	(_this select 0) removeAllEventHandlers "Respawn";
 	{
 		[_x, _x getVariable ["revive_actionID", -1]] call BIS_fnc_holdActionRemove;

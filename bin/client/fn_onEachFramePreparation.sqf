@@ -89,10 +89,13 @@ cl_onEachFramePreparationID = addMissionEventHandler["EachFrame", {
 	// Medics
 	if (cl_class == "medic") then {
 		{
-			if (alive player && {_x distance player < 50} && {isPlayer _x}) then {
-				if (_x getVariable ["side", sideUnknown] == playerSide) then {
-					_toBeRevived pushBack _x;
-				};
+			if (alive player &&
+				{isPlayer _x} &&
+				{!alive _x} &&
+				{(_x distance player) < 50} &&
+				{(_x getVariable ["side", sideUnknown]) == playerSide} &&
+				{_x inArea playArea}) then {
+				_toBeRevived pushBack _x;
 			};
 		} forEach AllDeadMen;
 	};
