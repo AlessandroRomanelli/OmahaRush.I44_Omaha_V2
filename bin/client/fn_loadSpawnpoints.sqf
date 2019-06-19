@@ -30,9 +30,10 @@ private _configs = configProperties [missionConfigFile >> "MapSettings" >> sv_ma
 
 {
   _spawnCtrl lbAdd (getText(_x >> "name"));
-	_spawnCtrl lbSetPicture [(lbSize _spawnCtrl) - 1, WWRUSH_ROOT+"pictures\teammate.paa"];
-	_spawnCtrl lbSetValue [(lbSize _spawnCtrl) - 1, -1];
-	_spawnCtrl lbSetData [(lbSize _spawnCtrl) - 1, configName _x];
+  private _ctrlIdx = (lbSize _spawnCtrl) - 1;
+	_spawnCtrl lbSetPicture [_ctrlIdx, WWRUSH_ROOT+"pictures\teammate.paa"];
+	_spawnCtrl lbSetValue [_ctrlIdx, -1];
+	_spawnCtrl lbSetData [_ctrlIdx, configName _x];
 } forEach _configs;
 
 private _getIconPlayer = {
@@ -49,8 +50,8 @@ private _getIconPlayer = {
 
 private _fnc_appendBeacon = {
   params [["_unit", objNull, [objNull]], ["_index", -1, [0]]];
-  private _ctrlIdx = (lbSize _spawnCtrl) - 1;
   _spawnCtrl lbAdd ((_unit getVariable ["name", "ERROR: NO NAME"]) + "'s Beacon");
+  private _ctrlIdx = (lbSize _spawnCtrl) - 1;
   _spawnCtrl lbSetData [_ctrlIdx, "beacon"];
   _spawnCtrl lbSetValue [_ctrlIdx, _index];
   _spawnCtrl lbSetPicture [_ctrlIdx, "\a3\ui_f\data\Map\MapControl\bunker_CA.paa"];
@@ -63,22 +64,29 @@ private _fnc_appendUnit = {
   private _icon = [_unit] call _getIconPlayer;
   // Find enemies within 25m radius
   private _nearbyEnemies = {(_unit getVariable "gameSide") != (_x getVariable "gameSide")} count (_unit nearEntities ["Man", 25]);
-  private _ctrlIdx = (lbSize _spawnCtrl) - 1;
   // If the unit was hit or is nearby enemies
-  if (damage _unit > 0.1 || {_nearbyEnemies > 0}) then {
-    _spawnCtrl lbAdd ((_unit getVariable ["name", "ERROR: NO NAME"]) + " (IN COMBAT)");
+  if (damage _unit > 0.1 || {_nearbyEnemies > 0} || {!(_unit inArea playArea)}) exitWith {
+    if !(_unit inArea playArea) then {
+      _spawnCtrl lbAdd ((_unit getVariable ["name", "ERROR: NO NAME"]) + " (TOO FAR)");
+    } else {
+      _spawnCtrl lbAdd ((_unit getVariable ["name", "ERROR: NO NAME"]) + " (IN COMBAT)");
+    };
+    private _ctrlIdx = (lbSize _spawnCtrl) - 1;
     _spawnCtrl lbSetColor [_ctrlIdx, COLOR_RED];
     _spawnCtrl lbSetValue [_ctrlIdx, _index];
     _spawnCtrl lbSetData [_ctrlIdx, "inCombat"];
     _spawnCtrl lbSetPicture [_ctrlIdx, _icon];
     _spawnCtrl lbSetPictureColor [_ctrlIdx, COLOR_RED];
-  } else {
-    _spawnCtrl lbAdd (_unit getVariable ["name", "ERROR: NO NAME"]);
-    _spawnCtrl lbSetValue [_ctrlIdx, _index];
-    _spawnCtrl lbSetData [_ctrlIdx, netID _unit];
-    _spawnCtrl lbSetPicture [_ctrlIdx, _icon];
-    _spawnCtrl lbSetPictureColor [_ctrlIdx, COLOR_BLUE];
+    true
   };
+
+
+  _spawnCtrl lbAdd (_unit getVariable ["name", "ERROR: NO NAME"]);
+  private _ctrlIdx = (lbSize _spawnCtrl) - 1;
+  _spawnCtrl lbSetValue [_ctrlIdx, _index];
+  _spawnCtrl lbSetData [_ctrlIdx, netID _unit];
+  _spawnCtrl lbSetPicture [_ctrlIdx, _icon];
+  _spawnCtrl lbSetPictureColor [_ctrlIdx, COLOR_BLUE];
   true
 };
 
@@ -89,7 +97,7 @@ private _fnc_appendUnit = {
   if (alive _x && {_x inArea playArea} && {_x != player} && {!_playerIsDefending || (_x == (leader group player)) || ((leader group player) == player)}) then {
     [_x, _forEachIndex] call _fnc_appendUnit;
   };
-   
+
   private _beacon = _x getVariable ["assault_beacon_obj", objNull];
   // If there is a valid beacon
   if (!isNull _beacon && {_beacon inArea playArea}) then {
@@ -115,11 +123,12 @@ _configs append ("true" configClasses (missionConfigFile >> "MapSettings" >> sv_
   private _seats = count _crew;
   private _occupants = {!isNull (_x select 0)} count _crew;
 	// Check whether this array of found vehicles actually containers our vehicle
-	if (!isNull _vehicle && {(_seats - _occupants) > 0} && {(_vehicle distance2D _initialPos) < 50}) then {
+	if (!isNull _vehicle && {(_seats - _occupants) > 0} && {(_vehicle distance2D _initialPos) < 50} && {_vehicle inArea playArea}) then {
 		_vehiclesCtrl lbAdd (format ["%1 (%2/%3)",_displayName, _occupants, _seats]);
-		_vehiclesCtrl lbSetData [(lbSize _vehiclesCtrl) - 1, _configName];
-		_vehiclesCtrl lbSetValue [(lbSize _vehiclesCtrl) - 1, -2];
-		_vehiclesCtrl lbSetPicture [(lbSize _vehiclesCtrl) - 1, getText(configFile >> "CfgVehicles" >> _className >> "Icon")];
+    private _ctrlIdx = (lbSize _vehiclesCtrl) - 1;
+		_vehiclesCtrl lbSetData [_ctrlIdx, _configName];
+		_vehiclesCtrl lbSetValue [_ctrlIdx, -2];
+		_vehiclesCtrl lbSetPicture [_ctrlIdx, getText(configFile >> "CfgVehicles" >> _className >> "Icon")];
 	};
 } forEach _configs;
 true
