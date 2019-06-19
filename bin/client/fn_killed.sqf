@@ -71,10 +71,20 @@ cl_killcam_thread = [_killer] spawn {
 	if (cl_inSpawnMenu) exitWith {
 		cl_killcam_thread = nil;
 	};
+
+	private _fnc_computeOffset = {
+		params ["_unit"];
+		private _stance = stance _unit;
+		if (_stance isEqualTo "STAND") exitWith {1.5};
+		if (_stance isEqualTo "CROUCH") exitWith {0.75};
+		if (_stance isEqualTo "PRONE") exitWith {0.25};
+		0
+	};
+
 	while {!cl_inSpawnMenu || !dialog} do {
 		private _dist = player distance _killer;
 		private _fov = if (_dist > 10) then {(750/(_dist^3)) max 0.025} else {0.75};
-		private _targetPos = getPos _killer;
+		private _targetPos = (getPosASL _killer) vectorAdd [0,0, [_killer] call _fnc_computeOffset];
 		cl_spawnmenu_cam camSetTarget _targetPos;
 		cl_spawnmenu_cam camSetFOV _fov;
 		cl_spawnmenu_cam camSetFocus [round _dist, 0];
