@@ -67,15 +67,8 @@ while {true} do {
 	[] call server_fnc_refreshTickets;
 	["Tickets have been reset"] call server_fnc_log;
 
-	private _isDebug = (["Debug", 0] call BIS_fnc_getParamValue) == 1;
 
-	if (!_isDebug && sv_gameCycle == 0) then {
-		private _minPlayers = ["MinPlayers", 4] call BIS_fnc_getParamValue;
-		waitUntil{(playersNumber WEST + playersNumber INDEPENDENT) >= _minPlayers};
-		private _then = diag_tickTime;
-		waitUntil{(diag_tickTime - _then >= 60) || ({_x getVariable ["playerInitOK", false]} count allPlayers > round ((playersNumber WEST + playersNumber INDEPENDENT)*0.8))};
-		uiSleep 1;
-	};
+	[] call server_fnc_waitForPlayers;
 
 	// Make a new matchtimer with matchStart param true so it gets broadcasted to all clients
 	sv_matchTimer_thread = [true, _fallBackTime] spawn server_fnc_matchTimer;

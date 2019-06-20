@@ -145,6 +145,7 @@ class Maverick_Functions_Server {
 		class scriptMonitoring {};
 		class autoTeamBalancer {};
 		class monitorVehicle {};
+		class waitForPlayers {};
 
 		// Database
 		class db_getPlayer {};
