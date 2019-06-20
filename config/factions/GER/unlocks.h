@@ -14,7 +14,7 @@ class LIB_K98 {
   exp = 0;
   type = "primary";
   roles[] = {"assault", "recon"};
-  damageMultiplier = 2;
+  damageMultiplier = 5;
   class attachments {};
 };
 
@@ -32,7 +32,7 @@ class LIB_G3340 {
   exp = 7500;
   type = "primary";
   roles[] = {"assault","medic"};
-  damageMultiplier = 2;
+  damageMultiplier = 5;
   class attachments {};
 };
 
@@ -122,6 +122,6 @@ class LIB_K98ZF39 {
   exp = 0;
   type = "primary";
   roles[] = {"recon"};
-  damageMultiplier = 2;
+  damageMultiplier = 5;
   class attachments {};
 };

@@ -15,7 +15,7 @@ class LIB_M38 {
   exp = 0;
   type = "primary";
   roles[] = {"recon"};
-  damageMultiplier = 2;
+  damageMultiplier = 5;
   class attachments {};
 };
 
@@ -78,6 +78,6 @@ class LIB_M9130PU {
   exp = 0;
   type = "primary";
   roles[] = {"recon"};
-  damageMultiplier = 2;
+  damageMultiplier = 5;
   class attachments {};
 };

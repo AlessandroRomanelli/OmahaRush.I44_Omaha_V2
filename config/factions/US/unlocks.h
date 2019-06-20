@@ -104,7 +104,7 @@ class LIB_M1903A3_Springfield {
   exp = 0;
   type = "primary";
   roles[] = {"recon"};
-  damageMultiplier = 2;
+  damageMultiplier = 5;
   class attachments {};
 };
 
@@ -113,6 +113,6 @@ class LIB_M1903A4_Springfield {
   exp = 0;
   type = "primary";
   roles[] = {"recon"};
-  damageMultiplier = 2;
+  damageMultiplier = 5;
   class attachments {};
 };
