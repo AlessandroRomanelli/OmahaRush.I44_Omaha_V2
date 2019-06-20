@@ -25,16 +25,17 @@ if (isServer) then {
 	};
 
 	sv_mcom_thread = [] spawn {
+		// Countdown of 60 seconds
 		private _time = 60;
 		private _soundTime = 60;
-		// Countdown of 60 seconds
-		private _status = sv_cur_obj getVariable ["status", -1];
+		waitUntil {(sv_cur_obj getVariable ["status", -1]) == 1};
+		private _status = 1;
 		private _beep = WWRUSH_ROOT + "sounds\beep.ogg";
 
 		private _obj = sv_cur_obj;
 		// If the objective is armed and there's still time on the clock
-		playSound3D [_beep, _obj, false, getPosATL _obj, 10, 1, 300];
-		while {(_status in [0,1]) && _time >= 0} do {
+		playSound3D [_beep, _obj, false, getPosATL _obj, 3, 1, 500];
+		while {_status = sv_cur_obj getVariable ["status", -1]; (_status in [0,1]) && _time >= 0} do {
 			// Freeze time if the objective is being armed
 			if (_status == 1) then {
 				_time = _time - 1;
@@ -45,11 +46,9 @@ if (isServer) then {
 			};
 			_soundTime = _soundTime - 1;
 			uiSleep 1;
-			_status = _obj getVariable ["status", -1];
 		};
-		_status = _obj getVariable ["status", -1];
 		// was the mcom disarmed? If yes, just exit here, players will get a text displayed by the player who disarmed
-		if (_status == 2) exitWith {
+		if (_status != 1) exitWith {
 			uiSleep 1;
 			_obj setVariable ["status",-1,true];
 		};
