@@ -39,7 +39,7 @@ private _event = addMissionEventHandler["EachFrame", {
       private _leader = leader group player;
       if (player isEqualTo _leader) then {
         {
-          if (alive _x && (_x distance2D sv_cur_obj < 1000)) then {
+          if (alive _x && {_x inArea playArea}) then {
             private _unitPos = _x modelToWorldVisual [0,0,1];
             drawLine3D [_pos, _unitPos, [1,1,1,0.5]];
           };
@@ -47,7 +47,7 @@ private _event = addMissionEventHandler["EachFrame", {
       } else {
         private _leaderPos = _leader modelToWorldVisual [0,0,1];
         {
-          if (alive _x && (_x distance2D sv_cur_obj < 1000)) then {
+          if (alive _x && {_x inArea playArea}) then {
             private _unitPos = _x modelToWorldVisual [0,0,1];
             drawLine3D [_leaderPos, _unitPos, [1,1,1,0.5]];
           };
@@ -152,15 +152,15 @@ private _event = addMissionEventHandler["EachFrame", {
   private _origin = if (cl_inSpawnMenu) then {_HQPos} else {_posPlayer};
   if (_side isEqualTo "defenders") then {
     if (_objIsArmed) then {
-      drawIcon3D [WWRUSH_ROOT+"pictures\objective_defender_armed.paa",[1,1,1,_alpha],_pos,1.5,1.5,0,format["Defuse (%1m)", round(_origin distance2D sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
+      drawIcon3D [WWRUSH_ROOT+"pictures\objective_defender_armed.paa",[1,1,1,_alpha],_pos,1.5,1.5,0,format["Defuse (%1m)", round(_origin distance sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
     } else {
-      drawIcon3D [WWRUSH_ROOT+"pictures\objective_defender.paa",[1,1,1,_alpha],_pos,1.5,1.5,0,format["Defend (%1m)", round(_origin distance2D sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
+      drawIcon3D [WWRUSH_ROOT+"pictures\objective_defender.paa",[1,1,1,_alpha],_pos,1.5,1.5,0,format["Defend (%1m)", round(_origin distance sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
     };
   } else {
     if (_objIsArmed) then {
-      drawIcon3D [WWRUSH_ROOT+"pictures\objective_attacker_armed.paa",[1,1,1,_alpha],_pos,1.5,1.5,0,format["Protect (%1m)", round(_origin distance2D sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
+      drawIcon3D [WWRUSH_ROOT+"pictures\objective_attacker_armed.paa",[1,1,1,_alpha],_pos,1.5,1.5,0,format["Protect (%1m)", round(_origin distance sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
     } else {
-      drawIcon3D [WWRUSH_ROOT+"pictures\objective_attacker.paa",[1,1,1,_alpha],_pos,1.5,1.5,0,format["Attack (%1m)", round(_origin distance2D sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
+      drawIcon3D [WWRUSH_ROOT+"pictures\objective_attacker.paa",[1,1,1,_alpha],_pos,1.5,1.5,0,format["Attack (%1m)", round(_origin distance sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
     };
   };
 

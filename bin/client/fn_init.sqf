@@ -82,33 +82,23 @@ cl_viewDistance = viewDistance;
 /* if (getNumber(missionConfigFile >> "GeneralConfig" >> "debug") == 1) then {
 	cl_exp = 10000000000;
 }; */
-private ["_marker1", "_marker2", "_marker3", "_marker4", "_trigger"];
-if (player getVariable "gameSide" == "defenders") then {
-	_marker1 = createMarkerLocal ["mobile_respawn_defenders",[0,0]];
-	_marker1 setMarkerTypeLocal "b_unknown";
-	_marker1 setMarkerTextLocal " Defenders HQ";
 
-	_marker2 = createMarkerLocal ["mobile_respawn_attackers",[0,0]];
-	_marker2 setMarkerTypeLocal "o_unknown";
-	_marker2 setMarkerTextLocal " Attackers HQ";
-} else {
-	_marker1 = createMarkerLocal ["mobile_respawn_defenders",[0,0]];
-	_marker1 setMarkerTypeLocal "o_unknown";
-	_marker1 setMarkerTextLocal " Defenders HQ";
+private _marker1 = createMarkerLocal ["mobile_respawn_defenders",[0,0]];
+_marker1 setMarkerTypeLocal (["o_unknown","b_unknown"] select ((player getVariable "gameSide") == "defenders"));
+_marker1 setMarkerTextLocal " Defenders HQ";
 
-	_marker2 = createMarkerLocal ["mobile_respawn_attackers",[0,0]];
-	_marker2 setMarkerTypeLocal "b_unknown";
-	_marker2 setMarkerTextLocal " Attackers HQ";
-};
+private _marker2 = createMarkerLocal ["mobile_respawn_attackers",[0,0]];
+_marker1 setMarkerTypeLocal (["b_unknown","o_unknown"] select ((player getVariable "gameSide") == "defenders"));
+_marker2 setMarkerTextLocal " Attackers HQ";
 
 // Objective markers
-_marker3 = createMarkerLocal ["objective",[0,0]];
+private _marker3 = createMarkerLocal ["objective",[0,0]];
 _marker3 setMarkerTypeLocal "mil_objective";
 _marker3 setMarkerTextLocal " Objective";
 _marker3 setMarkerColorLocal "ColorBlack";
 
 // Trigger restricted area
-_marker4 = createMarkerLocal ["playArea", [0,0]];
+private _marker4 = createMarkerLocal ["playArea", [0,0]];
 _marker4 setMarkerTypeLocal "Empty";
 _marker4 setMarkerTextLocal "";
 _marker4 setMarkerShapeLocal "RECTANGLE";
@@ -122,7 +112,7 @@ createMarkerLocal ["respawn_guerrila", [50,0]];
 createMarkerLocal ["respawn_west", [0,50]];
 createMarkerLocal ["respawn_east", [50,50]];
 
-_trigger = createTrigger ["EmptyDetector", [0,0,0], false];
+private _trigger = createTrigger ["EmptyDetector", [0,0,0], false];
 _trigger setTriggerArea [1, 1, 0, true, -1];
 _trigger setTriggerActivation ["ANYPLAYER", "PRESENT", true];
 _trigger setTriggerStatements ['(player getVariable ["isAlive", false]) && this', "", ""];

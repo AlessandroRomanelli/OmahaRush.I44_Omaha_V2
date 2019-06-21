@@ -76,22 +76,15 @@ if (sv_gameCycle % 2 == 0) then {
 	};
 };
 
-private ["_marker1", "_marker2"];
-if (player getVariable "gameSide" == "defenders") then {
-	_marker1 = createMarkerLocal ["mobile_respawn_defenders",[0,0]];
-	_marker1 setMarkerTypeLocal "b_unknown";
+private _marker1 = createMarkerLocal ["mobile_respawn_defenders",[0,0]];
+if (_marker1 != "") then {
+	_marker1 setMarkerTypeLocal (["o_unknown","b_unknown"] select ((player getVariable "gameSide") == "defenders"));
 	_marker1 setMarkerTextLocal " Defenders HQ";
+};
 
-	_marker2 = createMarkerLocal ["mobile_respawn_attackers",[0,0]];
-	_marker2 setMarkerTypeLocal "o_unknown";
-	_marker2 setMarkerTextLocal " Attackers HQ";
-} else {
-	_marker1 = createMarkerLocal ["mobile_respawn_defenders",[0,0]];
-	_marker1 setMarkerTypeLocal "o_unknown";
-	_marker1 setMarkerTextLocal " Defenders HQ";
-
-	_marker2 = createMarkerLocal ["mobile_respawn_attackers",[0,0]];
-	_marker2 setMarkerTypeLocal "b_unknown";
+private _marker2 = createMarkerLocal ["mobile_respawn_attackers",[0,0]];
+if (_marker2 != "") then {
+	_marker1 setMarkerTypeLocal (["b_unknown","o_unknown"] select ((player getVariable "gameSide") == "defenders"));
 	_marker2 setMarkerTextLocal " Attackers HQ";
 };
 
