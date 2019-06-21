@@ -146,7 +146,7 @@ class Maverick_Functions_Server {
 		class autoTeamBalancer {};
 		class monitorVehicle {};
 		class waitForPlayers {};
-
+		class generateGroupName {};
 		// Database
 		class db_getPlayer {};
 		class db_setPlayer {};

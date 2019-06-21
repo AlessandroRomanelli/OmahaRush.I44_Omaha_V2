@@ -1,11 +1,10 @@
 scriptName "fn_spawn";
 /*--------------------------------------------------------------------
-	Author: Maverick (ofpectag: MAV)
+	Author: A. Roman
     File: fn_spawn.sqf
 
-	<Maverick Applications>
-    Written by Maverick Applications (www.maverick-apps.de)
-    You're not allowed to use this file without permission from the author!
+	Written by A.Roman
+	You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_spawn.sqf"
 if (isServer && !hasInterface) exitWith {};
@@ -463,9 +462,10 @@ if (isNil "unitMarkers_running") then {
 	[] spawn client_fnc_drawMapUnits;
 };
 
+private _group = group player;
 private _registeredGroups = ["GetAllGroupsOfSide", [playerSide]] call BIS_fnc_dynamicGroups;
-if !((group player) in _registeredGroups) then {
-	if !(count _registeredGroups isEqualTo 0) then {
+if !(_group in _registeredGroups) then {
+	if ((count _registeredGroups) > 0) then {
 	  {
 	    private _privateGroup = _x getVariable ["bis_dg_pri", false];
 	    if ((count units _x > 0) && (count units _x < 5) && !_privateGroup) exitWith {
@@ -473,6 +473,7 @@ if !((group player) in _registeredGroups) then {
 	    };
 	  } forEach _registeredGroups;
 	} else {
-	  ["RegisterGroup", [group player, player]] remoteExec ["BIS_fnc_dynamicGroups", 2];
+	  ["RegisterGroup", [_group, player]] remoteExec ["BIS_fnc_dynamicGroups", 2];
+		[_group, getText(missionconfigfile >> "Soldiers" >> (player getVariable ["gameSide", "attackers"]) >> "faction")] remoteExec ["server_fnc_generateGroupName", 2];
 	};
 };

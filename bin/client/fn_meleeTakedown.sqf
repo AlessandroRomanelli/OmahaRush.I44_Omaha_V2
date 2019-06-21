@@ -3,7 +3,7 @@ scriptName "fn_meleeTakedown";
 	Author: A. Roman
     File: fn_meleeTakedown.sqf
 
-    Written by both authors
+    Written by A.Roman
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_meleeTakedown.sqf"

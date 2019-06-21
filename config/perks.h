@@ -45,7 +45,7 @@ class CfgPerks {
 				displayName = "Rally points";
 				picture = "";
 				description = "Allows you to create spawn points for your squad to deploy at more efficient locations";
-				instructions[] = {"RALLYPOINT", "Press H to deploy your spawn beacon. Only one spawnbeacon is allowed per squad. Squad members will then be able to spawn on it."};
+				instructions[] = {"RALLYPOINT", "Press [H] to deploy your spawn beacon. Only one spawnbeacon is allowed per squad. Squad members will then be able to spawn on it."};
 			};
 		};
 		class Support {

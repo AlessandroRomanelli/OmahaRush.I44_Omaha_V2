@@ -35,7 +35,10 @@ if (!isNil "sv_persistentVehicles") then {
 
 // Delete all objects that are not players
 {
-	if (_x getVariable ["isPersistent", false]) exitWith {};
+	if (_x getVariable ["isPersistent", false]) exitWith {
+		_x setVehicleAmmo 1;
+		_x setDamage 0;
+	};
 	if (!isPlayer _x) then {
 		deleteVehicle _x;
 	};
