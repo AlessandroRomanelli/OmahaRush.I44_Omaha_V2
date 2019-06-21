@@ -11,6 +11,7 @@ class Vehicle {
   dir = 0;
   script = "";
   populationReq = 0;
+  variant = "";
 };
 
 class Plane: Vehicle {

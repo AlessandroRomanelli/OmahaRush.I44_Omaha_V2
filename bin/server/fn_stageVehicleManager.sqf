@@ -77,9 +77,20 @@ private _sv_stage_spawnVehicle = {
 
 	// Run init script
 	private _script = getText(_config >> "script");
-	private _compiled = compile _script;
-	[_vehicle] call _compiled;
+	if (_script != "") then {
+		private _compiled = compile _script;
+		[_vehicle] call _compiled;
+	};
 
+	// Set texture
+	private _variant = getText(_config >> "variant");
+	if (_variant != "") then {
+		private _textures = getArray(configFile >> "CfgVehicles" >> _className >> "textureSources" >> _variant >> "textures");
+		{
+		    _vehicle setObjectTextureGlobal [_forEachIndex, _x];
+		} forEach _textures;
+	};
+	
 	missionNamespace setVariable [_className, _vehicle, true];
 
 	// Pushback into array that holds all vehicles
