@@ -48,7 +48,7 @@ if (isServer) then {
 			uiSleep 1;
 		};
 		// was the mcom disarmed? If yes, just exit here, players will get a text displayed by the player who disarmed
-		if (_status != 1) exitWith {
+		if (_time > 0 || {!(_status in [0,1])}) exitWith {
 			uiSleep 1;
 			_obj setVariable ["status",-1,true];
 		};
