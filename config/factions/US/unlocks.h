@@ -11,7 +11,7 @@ class LIB_M1_Garand {
 
 class LIB_Colt_M1911 {
   ammo = "LIB_7Rnd_45ACP";
-  exp = 5000;
+  exp = 2500;
   type = "secondary";
   roles[] = {"assault", "medic", "engineer", "support"};
   damageMultiplier = 1;
@@ -20,7 +20,7 @@ class LIB_Colt_M1911 {
 
 class LIB_DELISLE {
   ammo = "LIB_7Rnd_45ACP";
-  exp = 7500;
+  exp = 5000;
   type = "primary";
   roles[] = {"assault", "medic"};
   damageMultiplier = 1;
@@ -29,7 +29,7 @@ class LIB_DELISLE {
 
 class LIB_M1_Carbine {
   ammo = "LIB_15Rnd_762x33";
-  exp = 12500;
+  exp = 7500;
   type = "primary";
   roles[] = {"medic"};
   damageMultiplier = 1;
@@ -38,7 +38,7 @@ class LIB_M1_Carbine {
 
 class LIB_M1A1_Carbine {
   ammo = "LIB_15Rnd_762x33";
-  exp = 12500;
+  exp = 10000;
   type = "primary";
   roles[] = {"assault"};
   damageMultiplier = 1;
@@ -56,7 +56,7 @@ class LIB_M1918A2_BAR {
 
 class LIB_M1919A4 {
   ammo = "LIB_50Rnd_762x63";
-  exp = 7500;
+  exp = 3500;
   type = "primary";
   roles[] = {"support"};
   damageMultiplier = 0.25;
@@ -65,7 +65,7 @@ class LIB_M1919A4 {
 
 class LIB_M1919A6 {
   ammo = "LIB_50Rnd_762x63";
-  exp = 12500;
+  exp = 7000;
   type = "primary";
   roles[] = {"support"};
   damageMultiplier = 0.25;
