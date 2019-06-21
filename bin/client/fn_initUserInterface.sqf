@@ -23,6 +23,7 @@ private _event = addMissionEventHandler["EachFrame", {
   private _HQPos = getArray(missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> (sv_cur_obj getVariable ["cur_stage", "Stage1"]) >> "Spawns" >> _side >> "HQSpawn" >> "positionATL");
   private _vehiclePlayer = vehicle player;
   private _posPlayer = getPosATL player;
+  private _curSpawn = _HQPos;
   // Display the currently selected spawn if in spawn menu
   if (cl_inSpawnMenu) then {
     private _d = findDisplay 5000;
@@ -33,6 +34,7 @@ private _event = addMissionEventHandler["EachFrame", {
     private _makeCurrentSpawn = {
       params ["_pos", "_title"];
       private _progress = diag_tickTime % 1;
+      _curSpawn = _pos;
       drawIcon3D [WWRUSH_ROOT+"pictures\mark.paa", [0.66,1,0.66,0.5-(0.5*_progress)], _pos, 2+(1*_progress), 2+(1*_progress), 0, "", 0, 0.05, "PuristaMedium"];
       drawIcon3D [WWRUSH_ROOT+"pictures\mark.paa", [1,1,1,1], _pos, _iconSize, _iconSize, 0, _title, 0, 0.05, "PuristaMedium"];
       drawLine3D [_pos, getPos sv_cur_obj, [1,1,1,1]];
@@ -149,7 +151,7 @@ private _event = addMissionEventHandler["EachFrame", {
   };
 
   private _objIsArmed = sv_cur_obj getVariable ["status", -1] isEqualTo 1;
-  private _origin = if (cl_inSpawnMenu) then {_HQPos} else {_posPlayer};
+  private _origin = if (cl_inSpawnMenu) then {_curSpawn} else {_posPlayer};
   if (_side isEqualTo "defenders") then {
     if (_objIsArmed) then {
       drawIcon3D [WWRUSH_ROOT+"pictures\objective_defender_armed.paa",[1,1,1,_alpha],_pos,1.5,1.5,0,format["Defuse (%1m)", round(_origin distance sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
