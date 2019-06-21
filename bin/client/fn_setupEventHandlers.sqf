@@ -473,24 +473,35 @@ cl_get_in_man_eh = player addEventHandler ["GetInMan", {
 
 		if (isNull _killer) exitWith {};
 
+		private _isKindOfInArray = {
+			params ["_target", "_array"];
+			private _result = false;
+			{
+			  if (_target isKindOf _x) exitWith {
+					_result = true
+				};
+			} forEach _array;
+			_result
+		};
+
 		if ((local _vehicle) && {player getVariable ["side", sideUnknown] != _killer getVariable ["side", sideUnknown]}) exitWith {
 			private _vehType = typeOf _vehicle;
-			private _planes = getArray(missionConfigFile >> "Vehicles" >> "planes");
-			private _htanks = getArray(missionConfigFile >> "Vehicles" >> "htanks");
-			private _ltanks = getArray(missionConfigFile >> "Vehicles" >> "ltanks");
-			private _apc = getArray(missionConfigFile >> "Vehicles" >> "apc");
-			private _ifv = getArray(missionConfigFile >> "Vehicles" >> "ifv");
-			if (_vehType in _apc || _vehType in _ifv) exitWith {
+			private _isPlane = _vehType isKindOf "Air";
+			if (_isPlane) exitWith {
+				[500, true, "AIRPLANE"] remoteExec ["client_fnc_vehicleDisabled", _killer];
+			};
+			private _isAPC = _vehType isKindOf "Wheeled_APC_F" && {[_vehType, getArray(missionConfigFile >> "Vehicles" >> "apc")] call _isKindOfInArray};
+			private _isIFV = _vehType isKindOf "LIB_WheeledTracked_APC_base" && {[_vehType, getArray(missionConfigFile >> "Vehicles" >> "ifv")] call _isKindOfInArray};
+			if (_isAPC || _isIFV) exitWith {
 				[200, true, "ARMORED CAR"] remoteExec ["client_fnc_vehicleDisabled", _killer];
 			};
-			if (_vehType in _ltanks) exitWith {
+			private _isLight = _vehType isKindOf "LIB_Tank_base" && {[_vehType, getArray(missionConfigFile >> "Vehicles" >> "ltanks")] call _isKindOfInArray};
+			if (_isLight) exitWith {
 				[300, true, "LIGHT TANK"] remoteExec ["client_fnc_vehicleDisabled", _killer];
 			};
-			if (_vehType in _htanks) exitWith {
-				[500, true, "MEDIUM TANK"] remoteExec ["client_fnc_vehicleDisabled", _killer];
-			};
-			if (_vehType in _planes) exitWith {
-				[500, true, "AIRPLANE"] remoteExec ["client_fnc_vehicleDisabled", _killer];
+			private _isHeavy = _vehType isKindOf "LIB_Tank_base" && {[_vehType, getArray(missionConfigFile >> "Vehicles" >> "htanks")] call _isKindOfInArray};
+			if (_isHeavy) exitWith {
+				[500, true, "HEAVY TANK"] remoteExec ["client_fnc_vehicleDisabled", _killer];
 			};
 			[100, true, "VEHICLE"] remoteExec ["client_fnc_vehicleDisabled", _killer];
 		};

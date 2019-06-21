@@ -198,14 +198,6 @@ private _event = addMissionEventHandler["EachFrame", {
     };
   } forEach cl_onEachFrame_team_members;
 
-  private _tanks = [];
-  _tanks append (getArray(missionConfigFile >> "Vehicles" >> "htanks"));
-  _tanks append (getArray(missionConfigFile >> "Vehicles" >> "ltanks"));
-  private _planes = getArray(missionConfigFile >> "Vehicles" >> "planes");
-  private _apc = getArray(missionConfigFile >> "Vehicles" >> "apc");
-  private _ifv = getArray(missionConfigFile >> "Vehicles" >> "ifv");
-  private _trucks = getArray(missionConfigFile >> "Vehicles" >> "trucks");
-
   // 3D Spotted enemies
   {
     private _unit = _x select 0;
@@ -220,35 +212,7 @@ private _event = addMissionEventHandler["EachFrame", {
         if (_alpha < 0 || ([player, "VIEW", _unit] checkVisibility [eyePos player, eyePos _unit] < 0.2)) then {
           _alpha = 0;
         };
-        private _icon = [] call {
-          private _icon = "";
-          if (isNull (objectParent _unit)) then {
-            private _class = _unit getVariable ["class", "medic"];
-            _icon = "\a3\ui_f\data\Map\VehicleIcons\iconMan_ca.paa";
-            if (_class isEqualTo "medic") then {
-              _icon = "\a3\ui_f\data\Map\VehicleIcons\iconManMedic_ca.paa";
-            };
-            if ((leader group _unit) isEqualTo _unit) then {
-              _icon = "\a3\ui_f\data\Map\VehicleIcons\iconManCommander_ca.paa";
-            };
-          } else {
-            private _type = typeOf (vehicle _unit);
-            if (_type in _tanks) exitWith {
-              _icon = "\a3\ui_f\data\Map\VehicleIcons\iconTank_ca.paa";
-            };
-            if (_type in _apc || _type in _ifv) exitWith {
-              _icon = "\a3\ui_f\data\Map\VehicleIcons\iconAPC_ca.paa";
-            };
-            if (_type in _trucks) exitWith {
-              _icon = "\a3\ui_f\data\Map\VehicleIcons\iconTruck_ca.paa";
-            };
-            if (_type in _planes) exitWith {
-              _icon = "\a3\ui_f\data\Map\VehicleIcons\iconPlane_ca.paa";
-            };
-            _icon = "\a3\ui_f\data\Map\VehicleIcons\iconCar_ca.paa";
-          };
-          _icon
-        };
+        private _icon = [] call client_fnc_getUnitIcon;
         drawIcon3D [_icon, [0.968,0.423,0.353,_alpha], _pos, 0.8, 0.8, 0, "", 2, 0.03, "PuristaMedium", "center", false];
       };
     };

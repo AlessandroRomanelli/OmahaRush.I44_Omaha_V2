@@ -23,20 +23,20 @@ class Plane_CAP: Plane {
 };
 
 class Plane_CAS: Plane {
-  displayName = "P-47 'Thunderbolt'";
+  displayName = "P-47 Thunderbolt";
   className = "LIB_P47";
 };
 
 class H_Tank: Vehicle {
-  displayName = "M4A3 Sherman Firefly";
-  className = "LIB_M4A4_FIREFLY";
+  displayName = "Mk VII Churchill";
+  className = "LIB_Churchill_Mk7";
   respawnTime = 300;
   populationReq = 20;
 };
 
 class L_Tank: Vehicle {
-  displayName = "M3A3 Stuart";
-  className = "LIB_M3A3_Stuart";
+  displayName = "Mk III Crusader";
+  className = "LIB_Crusader_Mk3";
   respawnTime = 180;
   populationReq = 14;
 };
@@ -49,8 +49,8 @@ class APC: Vehicle {
 };
 
 class Car_HMG: Vehicle {
-  displayName = "M3 Scout Car";
-  className = "LIB_UK_M3_Halftrack";
+  displayName = "Bren Carrier";
+  className = "LIB_UniversalCarrier";
   respawnTime = 60;
   populationReq = 6;
 };
@@ -63,6 +63,6 @@ class Truck: Vehicle {
 
 class Car: Vehicle {
   displayName = "Willys Jeep";
-  className = "LIB_UK_Willys_MB";
+  className = "LIB_UK_Willys_MB_Hood";
   respawnTime = 15;
 };

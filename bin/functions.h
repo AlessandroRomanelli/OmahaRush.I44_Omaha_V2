@@ -106,6 +106,7 @@ class Maverick_Functions_Client {
 		class getObjectiveDistance {};
 		class initUserInterface {};
 		class meleeTakedown {};
+		class getUnitIcon {};
 		// Pointfeed
 		class pointfeed_add {};
 		class displayKillcam {};

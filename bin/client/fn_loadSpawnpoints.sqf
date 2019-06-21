@@ -36,18 +36,6 @@ private _configs = configProperties [missionConfigFile >> "MapSettings" >> sv_ma
 	_spawnCtrl lbSetData [_ctrlIdx, configName _x];
 } forEach _configs;
 
-private _getIconPlayer = {
-  private _unit = param [0, objNull, [objNull]];
-  private _class = _unit getVariable ["class", ""];
-  if (_class isEqualTo "") exitWith {"\a3\ui_f\data\Map\VehicleIcons\iconMan_ca.paa"};
-  if (_unit isEqualTo (leader group _unit)) exitWith {"\a3\ui_f\data\Map\VehicleIcons\iconManCommander_ca.paa"};
-  if (_class isEqualTo "medic") exitWith {"\a3\ui_f\data\Map\VehicleIcons\iconManMedic_ca.paa"};
-  if (_class isEqualTo "assault") exitWith {"\a3\ui_f\data\Map\VehicleIcons\iconManLeader_ca.paa"};
-  if (_class isEqualTo "engineer") exitWith {"\a3\ui_f\data\Map\VehicleIcons\iconManEngineer_ca.paa"};
-  if (_class isEqualTo "support") exitWith {"\a3\ui_f\data\Map\VehicleIcons\iconManMG_ca.paa"};
-  if (_class isEqualTo "recon") exitWith {"\a3\ui_f\data\Map\VehicleIcons\iconManLeader_ca.paa"};
-};
-
 private _fnc_appendBeacon = {
   params [["_unit", objNull, [objNull]], ["_index", -1, [0]]];
   _spawnCtrl lbAdd ((_unit getVariable ["name", "ERROR: NO NAME"]) + "'s Beacon");
@@ -61,7 +49,7 @@ private _fnc_appendBeacon = {
 
 private _fnc_appendUnit = {
   params [["_unit", objNull, [objNull]], ["_index", -1, [0]]];
-  private _icon = [_unit] call _getIconPlayer;
+  private _icon = [_unit] call client_fnc_getUnitIcon;
   // Find enemies within 25m radius
   private _nearbyEnemies = {(_unit getVariable "gameSide") != (_x getVariable "gameSide")} count (_unit nearEntities ["Man", 25]);
   // If the unit was hit or is nearby enemies
