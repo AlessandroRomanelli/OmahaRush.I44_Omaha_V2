@@ -39,7 +39,7 @@ class LIB_M1895 {
 
 class LIB_TT33 {
   ammo = "LIB_8Rnd_762x25";
-  exp = 10000;
+  exp = 6000;
   type = "secondary";
   roles[] = {"assault", "medic", "engineer", "support"};
   damageMultiplier = 1;
@@ -57,7 +57,7 @@ class LIB_DP28 {
 
 class LIB_DT {
   ammo = "LIB_63Rnd_762x54";
-  exp = 12500;
+  exp = 5000;
   type = "primary";
   roles[] = {"support"};
   damageMultiplier = 0.25;
