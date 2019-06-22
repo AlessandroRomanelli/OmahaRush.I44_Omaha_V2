@@ -55,7 +55,7 @@ if (player getVariable "gameSide" == "defenders") then {
 
 // If the server will restart after this round, display a visual warning at the top right
 if (sv_gameCycle >= ((["RotationsPerMatch", 2] call BIS_fnc_getParamValue) - 1)) then {
-	15 cutRsc ["rr_topRightWarning", "PLAIN"];
+	500 cutRsc ["rr_topRightWarning", "PLAIN"];
 	((uiNamespace getVariable ["rr_topRightWarning", displayNull]) displayCtrl 0) ctrlSetStructuredText parseText "<t size='1.2' color='#FE4629' shadow='2' align='right'>LAST ROUND BEFORE MAP CHANGE</t>"
 };
 
