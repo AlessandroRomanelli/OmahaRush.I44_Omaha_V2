@@ -20,6 +20,7 @@ class client_fnc_beaconSpawn		 		{allowedTargets = 1;};
 class client_fnc_squadSpawn			 		{allowedTargets = 1;};
 class client_fnc_vehicleDisabled			{allowedTargets = 0;};
 class server_fnc_endRound 					{allowedTargets = 2;};
+class server_fnc_generateGroupName 		{allowedTargets = 2;};
 class server_fnc_db_getPlayer 				{allowedTargets = 2;};
 class server_fnc_db_setPlayer 				{allowedTargets = 2;};
 class bis_fnc_execvm {allowedTargets = 0;};
