@@ -45,7 +45,12 @@ sv_cur_obj = sv_stage1_obj;
 
 private _objectives = [sv_stage1_obj, sv_stage2_obj, sv_stage3_obj, sv_stage4_obj];
 {
+	if (_forEachIndex > 0) then {
+		_x setVariable ["pre_stage", format["Stage%1", _forEachIndex]];
+	};
+	_x setVariable ["cur_stage", format["Stage%1", _forEachIndex + 1]];
 	if (_forEachIndex != (count _objectives - 1)) then {
+		_x setVariable ["nex_stage", format["Stage%1", _forEachIndex + 2]];
 		_x setVariable ["next_obj", _objectives select (_forEachIndex + 1)];
 	};
 } forEach _objectives;
