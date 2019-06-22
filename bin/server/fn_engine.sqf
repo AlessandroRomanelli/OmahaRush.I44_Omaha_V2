@@ -93,6 +93,24 @@ while {true} do {
 		sv_autoTeamBalancer_thread = [] spawn server_fnc_autoTeamBalancer;
 	};
 
+	if (!isNil "sv_corpseCleaner") then {
+		terminate sv_corpseCleaner;
+	};
+
+	sv_corpseCleaner = [] spawn {
+		while {sv_gameStatus == 2} do {
+			{
+					if (!isPlayer _x) then {
+						if (_x getVariable ["toClean", false]) then {
+							deleteVehicle _x;
+						};
+						_x setVariable ["toClean", true];
+					};
+			} forEach allDeadMen;
+			uiSleep 15;
+		};
+	};
+
 
 	waitUntil {sv_gameStatus == 4};
 	["Restarting engine..."] call server_fnc_log;

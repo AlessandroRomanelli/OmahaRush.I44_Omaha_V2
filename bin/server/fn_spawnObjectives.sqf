@@ -14,6 +14,12 @@ private _objects = [];
 private _walls = [];
 
 for "_i" from 1 to 4 do {
+	private _objective = missionNamespace getVariable [format["sv_stage%1_obj", _i], objNull];
+	if (!isNull _objective) then {
+		deleteVehicle _objective;
+	};
+
+
 	//Get data out of config
 	private _class = getText(missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> format["Stage%1", _i] >> "Objective" >> "classname");
 	private _posATL = getArray(missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> format["Stage%1", _i] >> "Objective" >> "positionATL");
@@ -28,7 +34,7 @@ for "_i" from 1 to 4 do {
 	_obj enableSimulation false;
 
 	missionNamespace setVariable [format["sv_stage%1_obj", _i], _obj];
-	private _objective = missionNamespace getVariable (format["sv_stage%1_obj", _i]);
+	_objective = missionNamespace getVariable (format["sv_stage%1_obj", _i]);
 	_objective setVariable ['status', -1, true];
 	_objects append (nearestTerrainObjects [_objective, [], 75, false]);
 	_walls append (nearestTerrainObjects [_objective, ["FENCE", "WALL"], 75, false]);

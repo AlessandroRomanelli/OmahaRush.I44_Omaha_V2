@@ -84,7 +84,7 @@ cl_killcam_thread = [_killer] spawn {
 	while {!cl_inSpawnMenu || !dialog} do {
 		private _dist = player distance _killer;
 		private _fov = if (_dist > 10) then {(750/(_dist^3)) max 0.025} else {0.75};
-		private _targetPos = (getPosASL _killer) vectorAdd [0,0, [_killer] call _fnc_computeOffset];
+		private _targetPos = (getPosATL _killer) vectorAdd [0,0, [_killer] call _fnc_computeOffset];
 		cl_spawnmenu_cam camSetTarget _targetPos;
 		cl_spawnmenu_cam camSetFOV _fov;
 		cl_spawnmenu_cam camSetFocus [round _dist, 0];
