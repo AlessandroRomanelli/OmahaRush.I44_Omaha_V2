@@ -448,11 +448,33 @@ cl_get_in_man_eh = player addEventHandler ["GetInMan", {
 	_vehicle enableSimulation true;
 
 	if (_vehicle isKindOf "Air") then {
-		private _fuelTime = getNumber(missionConfigFile >> "Vehicles" >> "Plane" >> "fuelTime");
-		[format["YOU HAVE %1 SECONDS WORTH OF FUEL, BE QUICK!", _fuelTime]] call client_fnc_displayInfo;
-		_vehicle setVectorUp [0,0,1];
-		private _velocity = (vectorDir _vehicle) vectorMultiply 50;
-		_vehicle setVelocity _velocity;
+		if ((typeOf _vehicle) isEqualTo "NonSteerable_Parachute_F") then {
+			[_vehicle] spawn {
+				private _vehicle = param[0, objNull, [objNull]];
+				waitUntil{(getPosATL _vehicle) select 2 < 3};
+				deleteVehicle _vehicle;
+			};
+		} else {
+			setObjectViewDistance 1500;
+			setViewDistance 3000;
+			if ((getPos _vehicle) select 2 > 5) then {
+				_vehicle setVectorUp [0,0,1];
+				_vehicle setVelocityModelSpace [0, 60, 10];
+			};
+			[_vehicle] spawn {
+				private _vehicle = param[0, objNull, [objNull]];
+				private _fuelTime = getNumber(missionConfigFile >> "Vehicles" >> "Plane" >> "fuelTime");
+				uiSleep (_fuelTime - 10);
+				private _timeLeft = diag_tickTime + 10;
+				while {_timeLeft > diag_tickTime && ((vehicle player) isEqualTo _vehicle)} do {
+					[format["YOU'LL RUN OUT OF FUEL IN %1 SECONDS<br /><t size='1.25'>PREPARE TO BAIL OUT!</t>", round (_timeLeft - diag_tickTime)]] call client_fnc_displayError;
+					uiSleep 1;
+				};
+				if (local _vehicle) then {
+					_vehicle setFuel 0;
+				};
+			};
+		};
 	};
 
 	/* if ((count (crew _vehicle) > 0) && {_vehicle getVariable ["last_man", objNull] != objNull}) then {
@@ -543,30 +565,6 @@ cl_get_in_man_eh = player addEventHandler ["GetInMan", {
 			};
 		};
 	}];
-
-	if (_vehicle isKindOf "Air") then {
-		if ((typeOf _vehicle) isEqualTo "NonSteerable_Parachute_F") then {
-			[_vehicle] spawn {
-				private _vehicle = param[0, objNull, [objNull]];
-				waitUntil{(getPosATL _vehicle) select 2 < 3};
-				deleteVehicle _vehicle;
-			};
-		} else {
-			[_vehicle] spawn {
-				private _vehicle = param[0, objNull, [objNull]];
-				private _fuelTime = getNumber(missionConfigFile >> "Vehicles" >> "Plane" >> "fuelTime");
-				uiSleep (_fuelTime - 10);
-				private _timeLeft = diag_tickTime + 10;
-				while {_timeLeft > diag_tickTime && ((vehicle player) isEqualTo _vehicle)} do {
-					[format["YOU'LL RUN OUT OF FUEL IN %1 SECONDS<br /><t size='1.25'>PREPARE TO BAIL OUT!</t>", round (_timeLeft - diag_tickTime)]] call client_fnc_displayError;
-					uiSleep 1;
-				};
-				if ((vehicle player) isEqualTo _vehicle) then {
-					_vehicle setFuel 0;
-				};
-			};
-		};
-	};
 }];
 
 if (!isNil "cl_get_out_man") then {
@@ -578,6 +576,10 @@ cl_get_out_man = player addEventHandler ["GetOutMan", {
 		_vehicle setVariable ["last_man", player, true];
 	};
 	private _pos = getPos player;
+	if (_vehicle isKindOf "Air") then {
+		setObjectViewDistance 1000;
+		setViewDistance 1250;
+	};
 	if ((_vehicle isKindOf "Air") && (_pos select 2 > 5)) then {
 		private _velPlayer = (velocity player) vectorMultiply 0.1;
 		player setVelocity _velPlayer;

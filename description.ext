@@ -173,6 +173,12 @@ class Params {
     default = 0;
     texts[] = {""};
   };
+  class DebugMode {
+    title = "Debugging:";
+    values[] = {0, 1};
+    default = 0;
+    texts[] = {"OFF", "ON"};
+  };
   class MinPlayers {
     title = "Minimum players for the match to start:";
     values[] = {0, 2, 4, 8, 16, 32};

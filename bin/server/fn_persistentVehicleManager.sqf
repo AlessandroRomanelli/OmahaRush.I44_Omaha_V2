@@ -96,10 +96,9 @@ private _sv_spawnVehicle = {
 		_vehicle = createVehicle [_className, [-200,-200,0], [], 200, "FLY"];
 		_dir = _posATL getDir (getPos sv_cur_obj);
 		/* diag_log format["DEBUG: Creating vehicle of class %1, at posATL: %2, dir: %3", _className, _posATL, _dir]; */
-		private _velocity = [(sin _dir)*55, (cos _dir)*55, 0];
 		_vehicle setDir _dir;
 		_vehicle setPosATL _posATL;
-		_vehicle setVelocity _velocity;
+		_vehicle setVelocityModelSpace [0, 60, 10];
 		_vehicle enableSimulationGlobal false;
 		/* diag_log format["DEBUG: Simulation for vehicle disabled, currently at: %1, should be at: %2", getPos _vehicle, _posATL]; */
 	} else {
