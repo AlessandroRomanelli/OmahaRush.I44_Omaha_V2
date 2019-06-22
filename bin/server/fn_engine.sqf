@@ -131,5 +131,7 @@ while {true} do {
 			private _missionsPool = _missions - _currentMission;
 			(getText(missionConfigFile >> "GeneralConfig" >> "commandPassword")) serverCommand format["#mission %1 custom", selectRandom _missionsPool];
 		};
+		uiSleep 5;
+		endMission "MatchEnd";
 	};
 };
