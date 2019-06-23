@@ -24,6 +24,7 @@ private _find = {
 };
 
 private _exp = missionNamespace getVariable [format["cl_exp_%1", cl_class], 0];
+private _isDebug = (["DebugMode", 0] call BIS_fnc_getParamValue) == 1;
 
 // Cycle through all unlocked weapons and check if they exit in the equip array, if not, add them
 if (count cl_equipConfigurations != 0) then {
@@ -31,18 +32,22 @@ if (count cl_equipConfigurations != 0) then {
 	private _configs = "true" configClasses (missionConfigFile >> "Unlocks" >> player getVariable "gameSide");
 	private _maxExp = selectMax [cl_exp_assault, cl_exp_medic, cl_exp_engineer, cl_exp_support, cl_exp_recon];
 	// Populate cl_equipConfigurations with all possible weapons
-	{
-		if ((getNumber(_x >> "exp") <= _exp) || ((getText(_x >> "type") isEqualTo "secondary") && (_maxExp > getNumber(_x >> "exp")))) then {
-			// Weapon has been unlocked, display it
-			/* _item = [
-				configName (_configs select _i), // Weapon classname
-				["","",""],	// No attachments equipped
-				[] // No attachments unlocked
-			]; */
-			// Pushback into configuration pool
-			cl_equipConfigurations pushBackUnique (configName _x);
-		};
-	} forEach _configs;
+	if (_isDebug) then {
+		cl_equipConfigurations = _configs apply {configName _x};
+	} else {
+		{
+			if ((getNumber(_x >> "exp") <= _exp) || ((getText(_x >> "type") isEqualTo "secondary") && (_maxExp > getNumber(_x >> "exp")))) then {
+				// Weapon has been unlocked, display it
+				/* _item = [
+					configName (_configs select _i), // Weapon classname
+					["","",""],	// No attachments equipped
+					[] // No attachments unlocked
+				]; */
+				// Pushback into configuration pool
+				cl_equipConfigurations pushBackUnique (configName _x);
+			};
+		} forEach _configs;
+	};
 };
 
 // Cycle through all unlocked weapons and check if they should be unlocked // This prevents users from having weapons which are pushed to a different exp level
@@ -55,7 +60,7 @@ if (true) then {
 		private _isUnlocked = (getNumber(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> _x >> "exp")) <= _exp;
 		private _isRightClass = cl_class in (getArray(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> _x >> "roles"));
 
-		if (_isConfig && _isUnlocked && _isRightClass) then {
+		if (_isDebug || {_isConfig && _isUnlocked && _isRightClass}) then {
 			_validatedArray pushBackUnique _x;
 		};
 	} forEach cl_equipConfigurations;

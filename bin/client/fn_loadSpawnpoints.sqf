@@ -111,7 +111,7 @@ _configs append ("true" configClasses (missionConfigFile >> "MapSettings" >> sv_
   private _seats = count _crew;
   private _occupants = {!isNull (_x select 0)} count _crew;
 	// Check whether this array of found vehicles actually containers our vehicle
-	if (!isNull _vehicle && {(_seats - _occupants) > 0} && {(_vehicle distance2D _initialPos) < 50} && {_vehicle inArea playArea}) then {
+	if (!isNull _vehicle && {(_seats - _occupants) > 0} && {(_vehicle distance2D _initialPos) < 50} && {_vehicle isKindOf "Air" || {_vehicle isKindOf "Land" && _vehicle inArea playArea}}) then {
 		_vehiclesCtrl lbAdd (format ["%1 (%2/%3)",_displayName, _occupants, _seats]);
     private _ctrlIdx = (lbSize _vehiclesCtrl) - 1;
 		_vehiclesCtrl lbSetData [_ctrlIdx, _configName];

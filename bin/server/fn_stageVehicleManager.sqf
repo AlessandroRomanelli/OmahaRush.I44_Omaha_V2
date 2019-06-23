@@ -36,7 +36,9 @@ private _sv_stage_spawnVehicle = {
 	private _currentPlayers = count allPlayers;
 	private _popReq = getNumber(_config >> "populationReq");
 
-	if (_currentPlayers < _popReq) exitWith {};
+	private _isDebug = (["DebugMode", 0] call BIS_fnc_getParamValue) == 1;
+
+	if (!_isDebug && {_currentPlayers < _popReq}) exitWith {};
 
 	// Vehicle is not being handled yet, handle it now
 	sv_stageVehiclesAwaitingRespawn pushBack (configName _config);

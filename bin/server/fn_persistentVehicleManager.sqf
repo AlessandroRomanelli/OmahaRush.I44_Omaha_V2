@@ -63,7 +63,7 @@ sv_tryRespawn = {
 	_v setVariable ["vehicle_getout_thread", _scriptHandler];
 };
 
-private _sv_spawnVehicle = {
+sv_spawnVehicle = {
 	private _config = param[0,configNull,[configNull]];
 	private _initialSpawn = param[1,false,[false]];
 	private _arrayToEdit = param[2,[],[[]]];
@@ -90,7 +90,7 @@ private _sv_spawnVehicle = {
 	// Create vehicle
 	private _posATL = getArray(_config >> "positionATL");
 	private _dir = getNumber(_config >> "dir");
-	private _className = getText(_config >> "classname");
+	private _className = getText(_config >> "className");
 	private _vehicle = objNull;
 	if (_className isKindOf "Air") then {
 		_vehicle = createVehicle [_className, [-200,-200,0], [], 200, "FLY"];
@@ -134,6 +134,8 @@ private _sv_spawnVehicle = {
 		} forEach _textures;
 	};
 
+	missionNamespace setVariable [configName _config, _vehicle, true];
+
 	// Pushback into array that holds all vehicles
 	sv_persistentVehicles pushBack _vehicle;
 
@@ -162,6 +164,7 @@ private _sv_spawnVehicle = {
 private _sv_deleteNullThreads = {
 	private _newList = sv_persistentVehicleRespawnThreads select {!isNull _x};
 	sv_persistentVehicleRespawnThreads = _newList;
+	true
 };
 
 // Main brain of this script
@@ -177,14 +180,16 @@ while {sv_gameStatus == 2} do {
 		if (!_isRespawning) then {
 			/* diag_log format["DEBUG: Attempting to spawn vehicle with ID: %1", configName _config]; */
 			// Vehicle isnt respawning, check if has been destroyed
-			private _v = [configName _config] call sv_getVehicleByID;
+			private _v = missionNamespace getVariable [configName _config, objNull];
 
 			if (isNull _v || !alive _v || !canMove _v) then {
 				private _populationReq = getNumber(_config >> "populationReq");
-				if (count allPlayers > _populationReq) then {
+				private _isDebug = (["DebugMode", 0] call BIS_fnc_getParamValue) == 1;
+
+				if (_isDebug || {count allPlayers > _populationReq}) then {
 					/* diag_log format["DEBUG: Enough more than %1 players were connected, spawn allowed", _populationReq]; */
 					// Vehicle was ingame destroyed
-					private _thread = [_config, _matchStart, _x] spawn _sv_spawnVehicle;
+					private _thread = [_config, _matchStart, _x] spawn sv_spawnVehicle;
 					_x set [1, true];
 					sv_persistentVehicleRespawnThreads pushBack _thread;
 				};
