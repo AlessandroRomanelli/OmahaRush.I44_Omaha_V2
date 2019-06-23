@@ -308,6 +308,7 @@ cl_killed_eh = player addEventHandler ["Killed", {
 		if (!isNull _meleeKiller) then {
 			_killer = _meleeKiller;
 			_wasMelee = true;
+			_victim setVariable ["melee_killer", nil];
 		};
 		// Send message to killer that he killed someone
 		if ((!isNull _victim) && {!isNull _killer} && {_victim != _killer}) then {
