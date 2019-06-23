@@ -39,6 +39,12 @@ while {true} do {
 	if (!isNil "sv_autoTeamBalancer_thread") then {terminate sv_autoTeamBalancer_thread};
 	["Old threads have been killed"] call server_fnc_log;
 
+	[] call server_fnc_waitForPlayers;
+
+	// Delete all objects off the map
+	[] call server_fnc_cleanUp;
+	["Map has been cleaned"] call server_fnc_log;
+
 	// Get random map from config
 	if (sv_gameCycle % 2 == 0) then {
 		sv_mapSize = [] call server_fnc_decideMapSize;
@@ -46,9 +52,6 @@ while {true} do {
 	};
 	/* ["Map has been selected"] spawn server_fnc_log; */
 
-	// Delete all objects off the map
-	[] call server_fnc_cleanUp;
-	["Map has been cleaned"] call server_fnc_log;
 
 	// Load weather
 	if (_mapWeather == 1) then {
@@ -66,9 +69,6 @@ while {true} do {
 	// Refresh tickets
 	[] call server_fnc_refreshTickets;
 	["Tickets have been reset"] call server_fnc_log;
-
-
-	[] call server_fnc_waitForPlayers;
 
 	// Make a new matchtimer with matchStart param true so it gets broadcasted to all clients
 	sv_matchTimer_thread = [true, _fallBackTime] spawn server_fnc_matchTimer;
