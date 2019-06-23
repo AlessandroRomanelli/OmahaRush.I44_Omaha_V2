@@ -5,7 +5,7 @@ class LIB_LeeEnfield_No1 {
   exp = 0;
   type = "primary";
   roles[] = {"assault", "medic", "recon"};
-  damageMultiplier = 5;
+  damageMultiplier = 10;
   class attachments {};
 };
 
@@ -23,7 +23,7 @@ class LIB_LeeEnfield_No4 {
   exp = 7500;
   type = "primary";
   roles[] = {"assault", "medic", "recon"};
-  damageMultiplier = 5;
+  damageMultiplier = 10;
   class attachments {};
 };
 
