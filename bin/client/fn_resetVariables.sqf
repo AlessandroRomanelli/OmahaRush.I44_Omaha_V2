@@ -42,7 +42,7 @@ if (player getVariable "gameSide" == "defenders") then {
 };
 
 // Wait until we have a ticket count
-waitUntil {!isNil "sv_tickets" && !isNil "sv_tickets_total"};
+/* waitUntil {!isNil "sv_tickets" && !isNil "sv_tickets_total"}; */
 
 // Display teammates and objective
 if (isNil "rr_iconrenderer_executed") then {

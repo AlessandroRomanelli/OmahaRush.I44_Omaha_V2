@@ -30,6 +30,28 @@ if (_mapWeather == 0) then {
 // Initial start, make sure units requesting time will also not be able to spawn for a certain amount of seconds
 /* sv_fallBack_timeLeft = diag_tickTime + _fallBackTime; */
 
+if (!isNil "sv_eventObserverID") then {
+	removeMissionEventHandler ["EachFrame", sv_eventObserverID];
+};
+sv_obj_status = -1;
+sv_eventObserverID = addMissionEventHandler ["EachFrame", {
+	private ["_data"];
+	if (!isNil "sv_cur_obj") then {
+		_data = sv_cur_obj getVariable ["status", -1];
+		if (_data != sv_obj_status) then {
+			sv_cur_obj setVariable ["prev_status", sv_obj_status];
+			if (_data == 0) then {
+				sv_cur_obj setVariable ["last_armed", diag_tickTime];
+			};
+			sv_obj_status = _data;
+		};
+		private _lastArmed = sv_cur_obj getVariable ["last_armed", diag_tickTime];
+		if (_data == 0 && (diag_tickTime - _lastArmed) > 5) then {
+			sv_cur_obj setVariable ["status", sv_cur_obj getVariable ["prev_status", -1], true];
+		};
+	};
+}];
+
 // Server engine loop
 while {true} do {
 	// Kill old threads
