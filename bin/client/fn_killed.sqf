@@ -47,9 +47,9 @@ cl_killcam_thread = [_killer] spawn {
 	private _fnc_zoomAway = {
 		cl_spawnmenu_cam camSetRelPos [0,0,50];
 		cl_spawnmenu_cam camCommit 13;
-		399 cutText ["", "BLACK OUT", 10];
-		waitUntil { cl_inSpawnMenu || {camCommitted cl_spawnmenu_cam} || {player getVariable ["isAlive", false]} };
-		399 cutText ["","PLAIN", 0];
+		// 399 cutText ["", "BLACK OUT", 10];
+		// waitUntil { cl_inSpawnMenu || {camCommitted cl_spawnmenu_cam} || {player getVariable ["isAlive", false]} };
+		// 399 cutText ["","PLAIN", 0];
 	};
 
 	if (isNull _killer || {_killer isEqualTo player}) exitWith {
