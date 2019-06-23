@@ -109,7 +109,7 @@ class LIB_M1928_Thompson {
 };
 
 class LIB_LeeEnfield_No4_Scoped {
-  ammo = "LIB_7Rnd_45ACP";
+  ammo = "LIB_10Rnd_770x56";
   exp = 0;
   type = "primary";
   roles[] = {"recon"};
