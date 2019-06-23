@@ -216,7 +216,7 @@ class Params {
     title = "Interval between rounds:";
     values[] = {10, 20, 30, 60, 120, 180, 240, 300};
     texts[] = {"10 Seconds", "20 Seconds", "30 Seconds", "60 Seconds", "120 Seconds", "180 Seconds", "240 Seconds", "300 Seconds"};
-    default = 60;
+    default = 30;
   };
   class RoundTime {
     title = "How many minutes per objective:";
