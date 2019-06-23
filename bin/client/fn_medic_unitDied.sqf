@@ -32,7 +32,7 @@ if (!isNull _killer) then {
 if ((_unit getVariable ["side",civilian]) != playerSide) exitWith {};
 
 // Are we a medic and do we have the defi perk?
-if (cl_equipClassnames select 2 != "medic") exitWith {};
+if (((cl_equipClassnames select 2) != "medic") || {isNull _killer}) exitWith {};
 
 private _time = if (cl_classPerk == "defibrillator") then {0.5} else {1.5};
 
