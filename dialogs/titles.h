@@ -1459,16 +1459,16 @@ class waitingForPlayers
 		class title: RscStructuredText
 		{
 			idc = 1100;
-			text = "WAITING FOR PLAYERS";
-			x = 0.323716 * safezoneW + safezoneX;
+			text = "";
+			x = 0.283716 * safezoneW + safezoneX;
 			y = 0.45298 * safezoneH + safezoneY;
-			w = 0.352567 * safezoneW;
+			w = 0.432567 * safezoneW;
 			h = 0.0752314 * safezoneH;
 			colorBackground[] = {-1,-1,-1,0};
 			sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 1.0)";
 			shadow = 2;
 			class Attributes {
-				size = "4";
+				size = "3";
 				font = "PuristaMedium";
 				color = "#FFFFFF";
 				align = "center";
@@ -1509,6 +1509,24 @@ class waitingForPlayers
 				font = "PuristaMedium";
 				color = "#FFFFFF";
 				align = "right";
+			};
+		};
+		class subtitle_3: RscStructuredText
+		{
+			idc = 1103;
+			text = "";
+			x = 0.323716 * safezoneW + safezoneX;
+			y = 0.53 * safezoneH + safezoneY;
+			w = 0.352567 * safezoneW;
+			h = 0.0188079 * safezoneH;
+			colorBackground[] = {-1,-1,-1,0};
+			sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 1.8)";
+			shadow = 2;
+			class Attributes {
+				size = "1";
+				font = "PuristaMedium";
+				color = "#FFFFFF";
+				align = "center";
 			};
 		};
 	};

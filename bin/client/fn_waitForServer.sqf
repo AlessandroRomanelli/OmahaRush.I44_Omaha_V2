@@ -25,11 +25,14 @@ if (!isNil "cl_waitingThread") then {
 
 cl_waitingThread = addMissionEventHandler["EachFrame", {
   private _display = uiNamespace getVariable ["waitingForPlayers", displayNull];
+  private _title = _display displayCtrl 1100;
   private _connectedCtrl = _display displayCtrl 1101;
   private _readyCtrl = _display displayCtrl 1102;
-  private "_color";
+  private _required = _display displayCtrl 1103;
   private _players = playersNumber west + playersNumber independent;
+  private _reqPlayers = ["MinPlayers", 4] call BIS_fnc_getParamValue;
   private _readyPlayers = {_x getVariable ["playerInitOK", false]} count allPlayers;
+  private "_color";
   if (_readyPlayers < round(_players*0.4)) then {
     _color = HEX_RED;
   } else {
@@ -39,8 +42,11 @@ cl_waitingThread = addMissionEventHandler["EachFrame", {
       _color = HEX_GREEN;
     };
   };
+  private _enoughPlayers = count allPlayers > _reqPlayers;
+  _title ctrlSetStructuredText (parseText (["WAITING FOR MORE PLAYERS", "WAITING FOR PLAYERS TO LOAD"] select _enoughPlayers));
   _connectedCtrl ctrlSetStructuredText (parseText (format ["CONNECTED: %1", _players]));
   _readyCtrl ctrlSetStructuredText (parseText (format ["READY: <t color='%2'>%1</t>", _readyPlayers, _color]));
+  _required ctrlSetStructuredText (parseText (format ["REQUIRED: <t color='%2'>%1</t>", _reqPlayers, [HEX_RED, HEX_GREEN] select _enoughPlayers]));
 }];
 
 waitUntil{sv_gameStatus isEqualTo 2};
