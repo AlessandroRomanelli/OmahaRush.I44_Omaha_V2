@@ -14,5 +14,5 @@ private _beacon = param[0,objNull,[objNull]];
 
 while {!isNull _beacon} do {
 	uiSleep 2;
-	_beacon say3D "tug_beep";
+	playSound3D ["tug_beep", _beacon];
 };
