@@ -20,7 +20,7 @@ player enableSimulation false;
 60000 cutRsc ["waitingForPlayers", "PLAIN"];
 
 if (!isNil "cl_waitingThread") then {
-    terminate cl_waitingThread;
+    removeMissionEventHandler["EachFrame", cl_waitingThread];
 };
 
 cl_waitingThread = addMissionEventHandler["EachFrame", {
