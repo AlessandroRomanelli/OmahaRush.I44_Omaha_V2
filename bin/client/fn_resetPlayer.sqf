@@ -118,7 +118,7 @@ cl_statisticsLoaded = false;
 waitUntil {cl_statisticsLoaded && {sv_gameStatus isEqualTo 2}};
 
 // Reset everything
-[] spawn client_fnc_resetVariables;
+[] call client_fnc_resetVariables;
 
 // Restart!
 [] spawn client_fnc_spawn;
