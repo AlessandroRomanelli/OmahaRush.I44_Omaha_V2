@@ -90,7 +90,7 @@ private _event = addMissionEventHandler["EachFrame", {
       };
       private _unit = objectFromNetId _data;
       private _pos = _unit modelToWorldVisual [0,0,1];
-      private _name = _unit getVariable ["name", "ERROR: NO NAME"];
+      private _name = _unit getVariable ["name", name _unit];
       [_pos, _name] call _makeCurrentSpawn;
     };
 
@@ -271,7 +271,7 @@ private _event = addMissionEventHandler["EachFrame", {
     if (_i < count _groupUnits) then {
       private _unit = _groupUnits select _i;
       private _colors = [_unit, true] call _getHUDColor;
-      private _name = _unit getVariable ["name", "ERROR: NO NAME"];
+      private _name = _unit getVariable ["name", name _unit];
       _teamMateName ctrlSetStructuredText parseText (format ["<t size='1.15' shadow='1' shadowColor='%1' color='%2' font='PuristaLight' align='right'>%3</t>", _colors select 1, _colors select 0, _name]);
       private _arrayColors = [_unit, false] call _getHUDColor;
       _teamMateIcon ctrlSetText ([_unit] call _getTeamIcon);

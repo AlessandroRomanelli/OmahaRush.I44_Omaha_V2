@@ -41,7 +41,7 @@ cl_allowActions = true;
 			// Fill data from objects
 			_h = true;
 			{
-				private _name = _x getVariable ["name", "ERROR: NO NAME"];
+				private _name = _x getVariable ["name", name _x];
 				private _classInitial = [_x getVariable ["class", ""]] call {
 					private _class = param [0, "", [""]];
 					if (_class isEqualTo "medic") exitWith {"M"};

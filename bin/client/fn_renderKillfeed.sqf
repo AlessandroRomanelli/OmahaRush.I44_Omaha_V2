@@ -33,9 +33,9 @@ private _fnc_getColorForObj = {
 private _out = "";
 {
 	private _killer = (_x select 0) call BIS_fnc_objectFromNetId;
-	private _kname = format["<t color='%1' shadow='2' font='PuristaMedium'>%2<t/>", [_killer] call _fnc_getColorForObj, _killer getVariable ["name", "ERROR: NO NAME"]];
+	private _kname = format["<t color='%1' shadow='2' font='PuristaMedium'>%2<t/>", [_killer] call _fnc_getColorForObj, _killer getVariable ["name", name _killer]];
 	private _victim = (_x select 2) call BIS_fnc_objectFromNetId;
-	private _vname = format["<t color='%1' shadow='2' font='PuristaMedium'>%2<t/>", [_victim] call _fnc_getColorForObj, _victim getVariable ["name", "ERROR: NO NAME"]];
+	private _vname = format["<t color='%1' shadow='2' font='PuristaMedium'>%2<t/>", [_victim] call _fnc_getColorForObj, _victim getVariable ["name", name _victim]];
 	private _weapon = if ((_x select 1) == "") then {"KILLED"} else {([_x select 1] call client_fnc_weaponDetails) select 1};
 
 	private _distance = format ["%1m", ceil (_killer distance _victim)];

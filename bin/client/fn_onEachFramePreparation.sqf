@@ -37,7 +37,7 @@ cl_onEachFramePreparationID = addMissionEventHandler["EachFrame", {
 
 	// Fill with data
 	{
-		private _name = (_x getVariable ["name", "ERROR: NO NAME"]);
+		private _name = (_x getVariable ["name", name _x]);
 		if (_x != player) then {
 			if (side (group _x) == side (group player)) then {
 				if ((group _x) == (group player)) then {

@@ -69,7 +69,7 @@ cl_map_draw = addMissionEventHandler ["EachFrame", {
 		private _pos = visiblePositionASL _x;
 		private _dir = getDirVisual _x;
 		private _icon = "mil_triangle";
-		private _name = _x getVariable ["name", "ERROR: NO NAME"];
+		private _name = _x getVariable ["name", name _x];
 		private _veh = {isPlayer _x || cl_map_showAI} count (crew vehicle _x);
 		private _color = [_x] call cl_map_fnc_getMarkerColor;
 		private _size = [1,1];
@@ -87,7 +87,7 @@ cl_map_draw = addMissionEventHandler ["EachFrame", {
 				_dir = 0;
 			} else {
 				if (!isNull objectParent _x) then {
-					_name = format ["%1: %2 %3", getText (configFile >> "cfgVehicles" >> typeOf vehicle _x >> "displayname"), _x getVariable ["name", "ERROR: NO NAME"], format [["+%1",""] select (_veh < 2), _veh -1]];
+					_name = format ["%1: %2 %3", getText (configFile >> "cfgVehicles" >> typeOf vehicle _x >> "displayname"), _x getVariable ["name", name _x], format [["+%1",""] select (_veh < 2), _veh -1]];
 					if (((crew vehicle _x) select {isPlayer _x || cl_map_showAI} select 0) isEqualTo _x) then {
 						_icon = "mil_box";
 					} else {

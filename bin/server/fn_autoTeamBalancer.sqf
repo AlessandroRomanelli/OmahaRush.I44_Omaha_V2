@@ -51,7 +51,7 @@ while {sv_gameStatus == 2} do {
 			for "_i" from 1 to _toMove step 1 do
 			{
 				private _unit = [_sideWithMoreUnits] call _getUnitsThatLastJoined;
-				[format["Player %1 has been kicked due to team balance", _unit getVariable ["name", "ERROR: NO NAME"]]] call server_fnc_log;
+				[format["Player %1 has been kicked due to team balance", _unit getVariable ["name", name _unit]]] call server_fnc_log;
 
 				if (_sideWithMoreUnits == _attackersSide) then {
 					[_defendersSide] remoteExec ["client_fnc_teamBalanceKick", _unit];

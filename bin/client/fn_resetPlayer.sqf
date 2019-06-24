@@ -36,7 +36,7 @@ if (true) then {
 
 	// Fill data from objects
 	{
-		private _name = _x getVariable ["name", "ERROR: NO NAME"];
+		private _name = _x getVariable ["name", name _x];
 		if ((_x getVariable "gameSide") == "defenders") then {
 			_allInfoDefenders pushBack [_x getVariable ["points", 0], _x getVariable ["kills", 0], _x getVariable ["deaths", 0], _name];
 		} else {

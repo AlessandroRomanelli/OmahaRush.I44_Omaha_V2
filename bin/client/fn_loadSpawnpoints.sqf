@@ -38,7 +38,7 @@ private _configs = configProperties [missionConfigFile >> "MapSettings" >> sv_ma
 
 private _fnc_appendBeacon = {
   params [["_unit", objNull, [objNull]], ["_index", -1, [0]]];
-  _spawnCtrl lbAdd ((_unit getVariable ["name", "ERROR: NO NAME"]) + "'s Beacon");
+  _spawnCtrl lbAdd ((_unit getVariable ["name", name _unit]) + "'s Beacon");
   private _ctrlIdx = (lbSize _spawnCtrl) - 1;
   _spawnCtrl lbSetData [_ctrlIdx, "beacon"];
   _spawnCtrl lbSetValue [_ctrlIdx, _index];
@@ -55,9 +55,9 @@ private _fnc_appendUnit = {
   // If the unit was hit or is nearby enemies
   if (damage _unit > 0.1 || {_nearbyEnemies > 0} || {!(_unit inArea playArea)}) exitWith {
     if !(_unit inArea playArea) then {
-      _spawnCtrl lbAdd ((_unit getVariable ["name", "ERROR: NO NAME"]) + " (TOO FAR)");
+      _spawnCtrl lbAdd ((_unit getVariable ["name", name _unit]) + " (TOO FAR)");
     } else {
-      _spawnCtrl lbAdd ((_unit getVariable ["name", "ERROR: NO NAME"]) + " (IN COMBAT)");
+      _spawnCtrl lbAdd ((_unit getVariable ["name", name _unit]) + " (IN COMBAT)");
     };
     private _ctrlIdx = (lbSize _spawnCtrl) - 1;
     _spawnCtrl lbSetColor [_ctrlIdx, COLOR_RED];
@@ -69,7 +69,7 @@ private _fnc_appendUnit = {
   };
 
 
-  _spawnCtrl lbAdd (_unit getVariable ["name", "ERROR: NO NAME"]);
+  _spawnCtrl lbAdd (_unit getVariable ["name", name _unit]);
   private _ctrlIdx = (lbSize _spawnCtrl) - 1;
   _spawnCtrl lbSetValue [_ctrlIdx, _index];
   _spawnCtrl lbSetData [_ctrlIdx, netID _unit];
