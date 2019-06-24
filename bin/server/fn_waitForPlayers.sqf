@@ -8,7 +8,7 @@ scriptName "fn_waitForPlayers";
 --------------------------------------------------------------------*/
 #define __filename "fn_waitForPlayers.sqf"
 
-private _isDebug = (["Debug", 0] call BIS_fnc_getParamValue) == 1;
+private _isDebug = (["DebugMode", 0] call BIS_fnc_getParamValue) == 1;
 
 if (!_isDebug && sv_gameCycle == 0) then {
   private _minPlayers = ["MinPlayers", 4] call BIS_fnc_getParamValue;
