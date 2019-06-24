@@ -30,3 +30,4 @@ class bis_fnc_curatorrespawn {allowedTargets = 0;};
 class bis_fnc_debugconsoleexec {allowedTargets = 0;};
 class sv_tryrespawn {allowedTargets = 0;};
 class lib_system_fnc_remoteSetShotParents  {allowedTargets = 0;};
+class switchmove {allowedTargets = 0;};
