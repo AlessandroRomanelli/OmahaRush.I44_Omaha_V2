@@ -10,7 +10,7 @@ scriptName "fn_generateGroupName";
 
 params ["_group","_faction"];
 
-waitUntil {isNil "sv_grpName_lock" || {sv_grpName_lock}};
+waitUntil {isNil "sv_grpName_lock" || {!sv_grpName_lock}};
 sv_grpName_lock = true;
 
 private _usNames =  ["Able","Baker","Charlie","Dog","Easy"];
