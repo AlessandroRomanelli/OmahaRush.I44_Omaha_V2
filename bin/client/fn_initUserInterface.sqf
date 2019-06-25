@@ -36,7 +36,8 @@ private _event = addMissionEventHandler["EachFrame", {
       private _progress = diag_tickTime % 1;
       _curSpawn = _pos;
       drawIcon3D [WWRUSH_ROOT+"pictures\mark.paa", [0.66,1,0.66,0.5-(0.5*_progress)], _pos, 2+(1*_progress), 2+(1*_progress), 0, "", 0, 0.05, "PuristaMedium"];
-      drawIcon3D [WWRUSH_ROOT+"pictures\mark.paa", [1,1,1,1], _pos, _iconSize, _iconSize, 0, _title, 0, 0.05, "PuristaMedium"];
+      drawIcon3D [WWRUSH_ROOT+"pictures\mark.paa", [1,1,1,1], _pos, _iconSize, _iconSize, 0, "", 0, 0.05, "PuristaMedium"];
+      drawIcon3D ["", [1,1,1,1], _pos, _iconSize, _iconSize, 0, _title, 2, 0.05, "PuristaMedium"];
       drawLine3D [_pos, getPos sv_cur_obj, [1,1,1,1]];
       private _leader = leader group player;
       if (player isEqualTo _leader) then {

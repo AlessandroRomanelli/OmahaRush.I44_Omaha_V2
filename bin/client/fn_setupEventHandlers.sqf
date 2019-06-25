@@ -317,8 +317,8 @@ cl_killed_eh = player addEventHandler ["Killed", {
 				[_victim, _wasHS, _grenade, _wasMelee] remoteExecCall ["client_fnc_kill", _killer];
 				_victim setVariable ["isAlive", false];
 			};
-			// you have been killed by message
-			[format ["You have been killed by<br/>%1", _killer getVariable ["name", name _killer]]] call client_fnc_displayInfo;
+			// you have been killed by message - DONE BY KILLCAM
+			// [format ["You have been killed by<br/>%1", _killer getVariable ["name", name _killer]]] call client_fnc_displayInfo;
 
 		};
 		// Send message to all units that we are reviveable
