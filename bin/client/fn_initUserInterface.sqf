@@ -147,20 +147,20 @@ private _event = addMissionEventHandler["EachFrame", {
     1
   };
 
-  if ((sv_cur_obj getVariable ["status", -1]) isEqualTo 1) then {
+  private _objStatus = sv_cur_obj getVariable ["status", -1];
+  if (_objStatus isEqualTo 1) then {
     _alpha = 2/3 + (1/3*cos(100*diag_tickTime*pi));
   };
 
-  private _objIsArmed = sv_cur_obj getVariable ["status", -1] isEqualTo 1;
   private _origin = if (cl_inSpawnMenu) then {_curSpawn} else {_posPlayer};
   if (_side isEqualTo "defenders") then {
-    if (_objIsArmed) then {
+    if (_objStatus in [0,1]) then {
       drawIcon3D [WWRUSH_ROOT+"pictures\objective_defender_armed.paa",[1,1,1,_alpha],_pos,1.5,1.5,0,format["Defuse (%1m)", round(_origin distance sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
     } else {
       drawIcon3D [WWRUSH_ROOT+"pictures\objective_defender.paa",[1,1,1,_alpha],_pos,1.5,1.5,0,format["Defend (%1m)", round(_origin distance sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
     };
   } else {
-    if (_objIsArmed) then {
+    if (_objStatus isEqualTo 1) then {
       drawIcon3D [WWRUSH_ROOT+"pictures\objective_attacker_armed.paa",[1,1,1,_alpha],_pos,1.5,1.5,0,format["Protect (%1m)", round(_origin distance sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
     } else {
       drawIcon3D [WWRUSH_ROOT+"pictures\objective_attacker.paa",[1,1,1,_alpha],_pos,1.5,1.5,0,format["Attack (%1m)", round(_origin distance sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
