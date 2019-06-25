@@ -416,6 +416,9 @@ player addEventHandler ["HandleDamage", {
 				if (_hitSelection isEqualTo "") then {
 					// Set the damage we are dealing according to the weapon that got us
 					_damage = (damage _unit) + (_damage * _damageMultiplier);
+					if (_damageMultiplier >= 10) then {
+						_damage = 1;
+					};
 					// If the damage is non fatal
 					if (_damage > 0 && _damage < 1) then {
 						// Display hit marker
