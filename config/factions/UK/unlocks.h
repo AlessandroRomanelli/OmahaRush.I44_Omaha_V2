@@ -113,6 +113,6 @@ class LIB_LeeEnfield_No4_Scoped {
   exp = 0;
   type = "primary";
   roles[] = {"recon"};
-  damageMultiplier = 5;
+  damageMultiplier = 10;
   class attachments {};
 };
