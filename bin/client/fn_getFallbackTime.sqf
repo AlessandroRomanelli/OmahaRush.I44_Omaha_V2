@@ -25,4 +25,4 @@ private _avgOldPos = [_oldSpawnPos, _oldObjPos] call client_fnc_getSectionCenter
 
 private _distance = _avgOldPos distance2D _newObjPos;
 private _time = _distance/_playerSpeed;
-floor _time
+(floor _time) max 30
