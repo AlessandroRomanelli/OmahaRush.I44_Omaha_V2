@@ -19,7 +19,7 @@ class LIB_Webley_mk6 {
 };
 
 class LIB_LeeEnfield_No4 {
-  ammo = "LIB_7Rnd_45ACP";
+  ammo = "LIB_10Rnd_770x56";
   exp = 7500;
   type = "primary";
   roles[] = {"assault", "medic", "recon"};
