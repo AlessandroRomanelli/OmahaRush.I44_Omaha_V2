@@ -25,9 +25,8 @@ private _countClassPlayers = {
 	private _sameSidePlayers = allPlayers select {if (playerSide isEqualTo (_x getVariable ["side", sideUnknown])) then {true}};
 	private _sameClassPlayers = _sameSidePlayers select {if (_x getVariable ["class", "medic"] isEqualTo _class) then {true}};
 	private _classLimit = ((format ["ClassLimits_%1", _class]) call bis_fnc_getParamValue)/10;
-	private _maxClassPlayers = if(_classLimit != 1) then {floor ((count _sameSidePlayers) * _classLimit)} else {-1};
-	private _playerOfClass = player in _sameClassPlayers;
-	[count _sameClassPlayers, _maxClassPlayers, _playerOfClass];
+	private _maxClassPlayers = if(_classLimit != 1) then {floor ((count allPlayers) * _classLimit)} else {-1};
+	[count _sameClassPlayers, _maxClassPlayers, player in _sameClassPlayers];
 };
 
 if (!_isRefreshing) then {

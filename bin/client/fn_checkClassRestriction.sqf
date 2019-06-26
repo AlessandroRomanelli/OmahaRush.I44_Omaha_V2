@@ -34,14 +34,14 @@ private _classLimitException = {
 private _sameSidePlayers = allPlayers select {if (playerSide isEqualTo (_x getVariable ["side", sideUnknown])) then {true}};
 
 // Count how many players are playing with our same class
-private _sameClassPlayers = count (_sameSidePlayers select {if (_x getVariable ["class", "medic"] isEqualTo _class) then {true}});
+private _sameClassPlayers = {if (_x getVariable ["class", "medic"] isEqualTo _class) then {true}} count _sameSidePlayers;
 // Get how much percentage of our side should be present as the given class (0 --> 1)
 private _classLimit = ((format ["ClassLimits_%1", _class]) call bis_fnc_getParamValue)/10;
 // Check if the player already had spawned with the same class (thus already counted) or not
 private _newClassMember = if !(player getVariable ["class", "medic"] isEqualTo _class) then {1} else {0};
 
 // If the ratio between players with the same restricted class and the players on the same side is beyond the limit, restrict
-if (_classLimit != 1 && {((_sameClassPlayers + _newClassMember)/(count _sameSidePlayers)) > _classLimit}) then {
+if (_classLimit != 1 && {((_sameClassPlayers + _newClassMember)/(count allPlayers)) > _classLimit}) then {
   [_class, _sameClassPlayers] call _classLimitException;
   _isRestricted = true;
 };
