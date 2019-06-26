@@ -380,8 +380,9 @@ player addEventHandler ["HandleDamage", {
 	private _shooterSide = _shooter getVariable ["gameSide", "attackers"];
 	private _unitSide = _unit getVariable ["gameSide", "defenders"];
 	private _grenades = ["lib_us_mk_2", "lib_shg24", "lib_rg42", "lib_millsbomb"];
+	_projectile = toLower _projectile;
 	// If the damage
-	if (_damage >= 1 && {isNil {_unit getVariable "grenade_kill"}} && {(toLower _projectile) in _grenades}) then {
+	if (_damage >= 1 && {isNil {_unit getVariable "grenade_kill"}} && {_projectile in _grenades}) then {
 		_unit setVariable ["grenade_kill", _projectile];
 		[_unit] spawn {
 			params ["_unit"];
@@ -418,6 +419,9 @@ player addEventHandler ["HandleDamage", {
 					private _dmgPrev = damage _unit;
 					private _hitDealt = _damage - _dmgPrev;
 					_damage = _dmgPrev + (_hitDealt * _damageMultiplier);
+					if (_projectile isEqualTo "lib_b_bayonet") then {
+						_damage = 1 + _damage;
+					};
 					// If the damage is non fatal
 					if (_damage > 0 && _damage < 1) then {
 						// Display hit marker
