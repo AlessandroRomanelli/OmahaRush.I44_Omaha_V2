@@ -8,10 +8,33 @@ scriptName "fn_restoreAmmo";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_restoreAmmo.sqf"
+#define TIMEOUT 15
 if (isServer && !hasInterface) exitWith {};
 
 private _unit = param[0,objNull,[objNull]];
-private _side = player getVariable "gameSide";
+private _side = player getVariable ["gameSide", ""];
+
+private _lastUsed = missionNamespace getVariable ["cl_last_rearm", diag_tickTime];
+private _timesUsed = missionNamespace getVariable ["cl_rearm_used", 0];
+
+if ((diag_tickTime - _lastUsed) < TIMEOUT) then {
+	_timesUsed = _timesUsed + 1;
+} else {
+	_timesUsed = 1;
+};
+
+if (_timesUsed > 3) exitWith {
+	if (!isNil "cl_rearm_reset") then {
+		terminate cl_rearm_reset;
+	};
+
+	cl_rearm_reset = [] spawn {
+		uiSleep 60;
+		cl_rearm_used = 0;
+	};
+
+	["SPAM PREVENTION - WAIT 30 SECONDS BEFORE NEXT REARM"] call client_fnc_displayError;
+};
 
 if (isNull _unit || _unit == player) then {
 	["AMMUNITION REPLENISHED"] spawn client_fnc_displayInfo;
@@ -140,6 +163,18 @@ if ("frag" in cl_squadPerks) then {
 	if (_currentHandGrenades < 1) then {
 		player addItem _handGrenade;
 	};
+};
+
+cl_rearm_used = _timesUsed;
+cl_last_rearm = diag_tickTime;
+
+if (!isNil "cl_rearm_reset") then {
+	terminate cl_rearm_reset;
+};
+
+cl_rearm_reset = [] spawn {
+	uiSleep TIMEOUT;
+	cl_rearm_used = 0;
 };
 
 true
