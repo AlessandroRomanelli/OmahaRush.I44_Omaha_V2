@@ -184,9 +184,11 @@ if (_created) then {
 };
 
 // Create spawn dialog
-createDialog "rr_spawnmenu";
-
 private _menuDisplay = (findDisplay 5000);
+if (isNull _menuDisplay) then {
+	createDialog "rr_spawnmenu";
+	_menuDisplay = (findDisplay 5000);
+};
 
 // Disable ESC
 _menuDisplay displayAddEventHandler ["KeyDown",{

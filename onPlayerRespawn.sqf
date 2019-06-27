@@ -15,9 +15,10 @@ if (!isNil "sv_gameStatus" && !isNil "cl_revived" && !isNil "cl_init_done" && {c
 		[format["sv_gameStatus %1 cl_revived %2", sv_gameStatus, cl_revived]] spawn server_fnc_log;
 		player setVariable ["grenade_kill", nil];
 		player setVariable ["wasHS", false];
-		
+
 
 		[] spawn client_fnc_spawn;
+		setPlayerRespawnTime 15;
 
 		player enableStamina false;
 		player forceWalk false;

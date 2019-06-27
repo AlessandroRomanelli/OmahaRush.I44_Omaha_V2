@@ -271,7 +271,11 @@ if (!isNil "cl_killed_eh") then {
 cl_killed_eh = player addEventHandler ["Killed", {
 	private _victim = _this select 0;
 	private _lastDeath = _victim getVariable ["lastDeath", 0];
-	//Avoiding more than one time each 1/10 of a second
+
+	if (cl_inSpawnMenu) exitWith {
+		setPlayerRespawnTime 0;
+	};
+ 	//Avoiding more than one time each 1/10 of a second
 	if (diag_tickTime - _lastDeath > 0.1) then {
 		_victim setVariable ["lastDeath", diag_tickTime];
 		_victim setVariable ["wwr_unit_loadout", getUnitLoadout _victim];
