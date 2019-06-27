@@ -41,7 +41,7 @@ private _classLimit = ((format ["ClassLimits_%1", _class]) call bis_fnc_getParam
 private _newClassMember = if !(player getVariable ["class", "medic"] isEqualTo _class) then {1} else {0};
 
 // If the ratio between players with the same restricted class and the players on the same side is beyond the limit, restrict
-if (_classLimit != 1 && {((_sameClassPlayers + _newClassMember)/(count allPlayers)) > _classLimit}) then {
+if (_classLimit != 1 && {((_sameClassPlayers + _newClassMember)/((count allPlayers)/2)) > _classLimit}) then {
   [_class, _sameClassPlayers] call _classLimitException;
   _isRestricted = true;
 };
