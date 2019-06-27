@@ -19,6 +19,7 @@ waitUntil {(!isNull (findDisplay 46)) AND (isNull (findDisplay 101)) AND (!isNul
 
 // Disable saving
 enableSaving [false, false];
+enableRadio false;
 
 // Check if this player should be able to join the team
 [] spawn client_fnc_instantTeamBalanceCheck;
