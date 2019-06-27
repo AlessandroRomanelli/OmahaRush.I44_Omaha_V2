@@ -10,5 +10,6 @@ private _size = "LargeSetting";
 private _threshold = ["MapPopulation", 12] call BIS_fnc_getParamValue;
 private _hasSmallSetting = count ("true" configClasses (missionConfigFile >> "MapSettings" >> "SmallSetting")) > 0;
 if (_threshold isEqualTo 0 || !_hasSmallSetting) exitWith {"LargeSetting"};
-if (_threshold isEqualTo 9999 || {count allPlayers < _threshold}) exitWith {"SmallSetting"};
+private _connectedPlayers = playersNumber west + playersNumber east + playersNumber independent + playersNumber civilian;
+if (_threshold isEqualTo 9999 || {_connectedPlayers < _threshold}) exitWith {"SmallSetting"};
 _size
