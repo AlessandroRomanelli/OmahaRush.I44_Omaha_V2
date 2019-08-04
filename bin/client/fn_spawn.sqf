@@ -464,18 +464,20 @@ if (isNil "unitMarkers_running") then {
 	[] spawn client_fnc_drawMapUnits;
 };
 
-private _group = group player;
 private _registeredGroups = ["GetAllGroupsOfSide", [playerSide]] call BIS_fnc_dynamicGroups;
-if !(_group in _registeredGroups) then {
-	if ((count _registeredGroups) > 0) then {
-	  {
-	    private _privateGroup = _x getVariable ["bis_dg_pri", false];
-	    if ((count units _x > 0) && (count units _x < 5) && !_privateGroup) exitWith {
-	      ["AddGroupMember", [_x, player]] remoteExec ["BIS_fnc_dynamicGroups", 2];
-	    };
-	  } forEach _registeredGroups;
-	} else {
-	  ["RegisterGroup", [_group, player]] remoteExec ["BIS_fnc_dynamicGroups", 2];
-		[_group, getText(missionconfigfile >> "Soldiers" >> (player getVariable ["gameSide", "attackers"]) >> "faction")] remoteExec ["server_fnc_generateGroupName", 2];
+if !((group player) in _registeredGroups) then {
+	private _joined = false;
+  {
+		if !(_x getVariable ["bis_dg_pri", false]) then {
+			private _members = count units _x;
+			if ((_members > 0) && (_members < 5)) exitWith {
+				["AddGroupMember", [_x, player]] remoteExec ["BIS_fnc_dynamicGroups", 2];
+			};
+		};
+  } forEach _registeredGroups;
+	if !(_joined) then {
+		["RegisterGroup", [(group player), player]] remoteExec ["BIS_fnc_dynamicGroups", 2];
+		private _faction = getText(missionconfigfile >> "Soldiers" >> (player getVariable ["gameSide", "attackers"]) >> "faction");
+		[group player, _faction] remoteExec ["server_fnc_generateGroupName", 2];
 	};
 };

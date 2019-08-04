@@ -59,7 +59,7 @@ if (!isNil "cl_map_draw") then {
 };
 
 cl_map_draw = addMissionEventHandler ["EachFrame", {
-	private _units = (entities "Man") select {
+	private _units = allUnits select {
 		if ((!isNull _x) && {isPlayer _x || cl_map_showAI} && {(_x distance sv_cur_obj) < 1000}) then {
 			true
 		}

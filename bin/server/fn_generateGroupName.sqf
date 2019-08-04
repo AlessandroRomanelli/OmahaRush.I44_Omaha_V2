@@ -27,21 +27,18 @@ private ["_currentName", "_size"];
 
 if (_faction == "US" || _faction == "UK") then {
   _size = count _usNames;
-  sv_grpName_idx_US;
   _currentName = format ["%1-%2", _usNames select (sv_grpName_idx_US % _size), floor(sv_grpName_idx_US / _size) + 1];
   sv_grpName_idx_US = sv_grpName_idx_US + 1;
 };
 
 if (_faction == "GER") then {
   _size = count _gerNames;
-  sv_grpName_idx_GER;
   _currentName = format ["%1-%2", _gerNames select (sv_grpName_idx_GER % _size), floor(sv_grpName_idx_GER / _size) + 1];
   sv_grpName_idx_GER = sv_grpName_idx_GER + 1;
 };
 
 if (_faction == "SOV") then {
   _size = count _sovNames;
-  sv_grpName_idx_SOV;
   _currentName = format ["%1-%2", _sovNames select (sv_grpName_idx_SOV % _size), floor(sv_grpName_idx_SOV / _size) + 1];
   sv_grpName_idx_SOV = sv_grpName_idx_SOV + 1;
 };
