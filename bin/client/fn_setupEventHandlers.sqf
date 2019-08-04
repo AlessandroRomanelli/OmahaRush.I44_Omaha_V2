@@ -73,7 +73,7 @@ cl_eventObserverID = addMissionEventHandler["EachFrame", {
 			cl_playerSwimming = _data;
 		};
 
-		private _enemiesNearby = (player nearEntities ["Man", 10]) select {alive _x && {(_x getVariable ["side", sideUnknown]) != playerSide}};
+		private _enemiesNearby = (player nearEntities ["Man", 10]) select {alive _x && {(_x getVariable ["side", side _x]) != playerSide}};
 		_data =  count _enemiesNearby;
 		if !(_data isEqualTo cl_enemiesNearby) then {
 			[missionNamespace, "newEnemiesNearby", [_enemiesNearby]] call BIS_fnc_callScriptedEventHandler;
@@ -163,8 +163,8 @@ cl_eventObserverID = addMissionEventHandler["EachFrame", {
 		/* 1 action title */					"Melee Kill",
 		/* 2 idle icon */						WWRUSH_ROOT+"pictures\support.paa",
 		/* 3 progress icon */					WWRUSH_ROOT+"pictures\support.paa",
-		/* 4 condition to show */				"(_this distance _target) < 2.5 && {alive _target} && {(_target getRelDir _this) > 90 && (_target getRelDir _this) < 270}",
-		/* 5 condition for action */			"(_this distance _target) < 2.5 && {alive _target} && {(_target getRelDir _this) > 90 && (_target getRelDir _this) < 270}",
+		/* 4 condition to show */				"(_this distance _target) < 2.5 && {alive _target} && {side _this != side _target} && {(_target getRelDir _this) > 90 && (_target getRelDir _this) < 270}",
+		/* 5 condition for action */			"(_this distance _target) < 2.5 && {alive _target} && {side _this != side _target} && {(_target getRelDir _this) > 90 && (_target getRelDir _this) < 270}",
 		/* 6 code executed on start */			{},
 		/* 7 code executed per tick */			{},
 		/* 8 code executed on completion */		{
