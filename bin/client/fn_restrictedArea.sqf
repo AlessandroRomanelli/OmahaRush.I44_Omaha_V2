@@ -1,30 +1,52 @@
 scriptName "fn_restrictedArea";
 /*--------------------------------------------------------------------
-	Author: Maverick (ofpectag: MAV)
+	Author: A.Roman (ofpectag: MAV)
     File: fn_restrictedArea.sqf
 
-	<Maverick Applications>
-    Written by Maverick Applications (www.maverick-apps.de)
+    Written by A.Roman
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_restrictedArea.sqf"
 
 player setVariable ["entryTime", diag_tickTime];
 
-private _fallBackTime = [] call client_fnc_getFallbackTime;;
-private _OOBTime = ["OutOfBoundsTime", 20] call BIS_fnc_getParamValue;
-private _outOfBoundsTimeout = if (player getVariable ["isFallingBack", false]) then [{_fallBackTime}, {_OOBTime;}];
 
-// Wait until time is out or were out again
-waitUntil {((diag_tickTime - (player getVariable "entryTime")) > _outOfBoundsTimeout) || {(vehicle player) inArea playArea} || {(vehicle player) isKindOf "Air"}};
+private _safeSpawnDistance = getNumber(missionConfigFile >> "MapSettings" >> sv_mapSize >> "safeSpawnDistance");
+private _isFallingBack = player getVariable ["isFallingBack", false];
+private _OOBTimeout = [["OutOfBoundsTime", 20] call BIS_fnc_getParamValue, [] call client_fnc_getFallbackTime] select _isFallingBack;
 
-// Evaluate
-if ((diag_tickTime - (player getVariable "entryTime")) > _outOfBoundsTimeout && (player getVariable ["isAlive", false])) then {
-	player setDamage 1;
-	player setVariable ["isAlive", false];
-	["You have been killed for remaining in a restricted area"] call client_fnc_displayError;
+"ColorCorrections" ppEffectEnable true;
+"ColorCorrections" ppEffectAdjust [1,1,0,[0,0,0,0.5],[1,1,1,0],[0.299,0.587,0.114,0]];
+"ColorCorrections" ppEffectCommit 1;
+"FilmGrain" ppEffectEnable true;
+"FilmGrain" ppEffectAdjust [0.75,1.5,1.7,0.2,1.0,true];
+"FilmGrain" ppEffectCommit 1;
+
+for "_i" from _OOBTimeout to 0 step -1 do {
+		private _message = [format ["YOU ARE LEAVING THE BATTLEFIELD: %1", _i], format ["FALLBACK TO THE OBJECTIVE: %1", _i]] select _isFallingBack;
+		if (player distance (getMarkerPos cl_enemySpawnMarker) < _safeSpawnDistance) then {
+			_message = format ["YOU ARE TOO CLOSE TO THE ENEMY HQ: %1", _i];
+		};
+		// Display error rsc
+		50 cutRsc ["rr_timeout","PLAIN", 0.25];
+		private _display = uiNamespace getVariable ["timeout", displayNull];
+		(_display displayCtrl 0) ctrlSetStructuredText parseText format ["<t size='1.5' align='center' shadow='2' font='PuristaMedium' color='#ff0000'>%1</t>", _message];
+		if ((vehicle player) inArea playArea) exitWith {};
+		uiSleep 1;
+		if (_i == 0) then {
+			forceRespawn player;
+			player setVariable ["isAlive", false];
+			["YOU HAVE BEEN KILLED FOR TRESPASSING"] call client_fnc_displayError;
+		};
 };
+
+50 cutFadeOut 1;
+
+"ColorCorrections" ppEffectAdjust [1,1,0,[0,0,0,0],[1,1,1,1],[0.299,0.587,0.114,0],[-1,-1,0,0,0,0,0]];
+"ColorCorrections" ppEffectCommit 1;
+"FilmGrain" ppEffectAdjust [0,1.5,1.7,0.2,1.0,true];
+"FilmGrain" ppEffectCommit 1;
+
 
 // Delete myself ay!
 cl_restrictedArea_thread = nil;
-player setVariable ["entryTime", nil];

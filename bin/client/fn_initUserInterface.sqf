@@ -378,45 +378,11 @@ private _event = addMissionEventHandler["EachFrame", {
   private _cameraDir = _posPlayer getDir (_posPlayer vectorAdd (getCameraViewDirection player));
   _dirCtrl ctrlSetText format ["%1°", round _cameraDir];
 
-
-
-  // warning if we are too close to the enemy spawn
-  if (alive player && {!(_vehiclePlayer isKindOf "Air")} && {player getVariable ["isAlive", false]}) then {
+  if (player getVariable ["isAlive", false] && !(_vehiclePlayer isKindOf "Air")) then {
     private _safeSpawnDistance = getNumber(missionConfigFile >> "MapSettings" >> sv_mapSize >> "safeSpawnDistance");
-    if (player distance (getMarkerPos cl_enemySpawnMarker) < _safeSpawnDistance) then {
-      30 cutRsc ["rr_restrictedAreaSpawn", "PLAIN"];
-      if (isNil "cl_restrictedArea_thread") then {
-        cl_restrictedArea_thread = [] spawn client_fnc_restrictedArea;
-      };
-    };
-  };
-
-  if (player getVariable ["isAlive", false]) then {
-    private _isPlayerAttacking = _side isEqualTo "attackers";
-    if !(
-        (_vehiclePlayer inArea playArea) ||
-        (_vehiclePlayer isKindOf "Air") ||
-        (
-          (player getVariable ["isFallingBack", false]) &&
-          ((_posPlayer distance2D (getMarkerPos "mobile_respawn_defenders")) < 300)
-        )) then {
-      30 cutRsc ["rr_restrictedArea", "PLAIN"];
-      private _display = uiNamespace getVariable ["rr_restrictedArea", displayNull];
-      private _fallBackTime = player getVariable ["fallBackTime", nil];
-      if (isNil "_fallBackTime") then {
-        _fallBackTime = [] call client_fnc_getFallbackTime;
-        player setVariable ["fallBackTime", _fallBackTime];
-      };
-      private _outOfBoundsTimeout = if (player getVariable ["isFallingBack", false]) then [{_fallBackTime}, {["OutOfBoundsTime", 20] call BIS_fnc_getParamValue}];
-      if ((diag_tickTime - (player getVariable "entryTime")) < _outOfBoundsTimeout) then {
-        if (!(_isPlayerAttacking) && {player getVariable "isFallingBack"}) then {
-          (_display displayCtrl 0) ctrlSetStructuredText parseText "<t size='3.5' color='#FFFFFF' shadow='2' align='center' font='PuristaBold'>FALL BACK</t><br/><t size='2' color='#FFFFFF' shadow='2' align='center'>YOU ARE BEYOND OUR LAST DEFENCE</t>";
-        };
-        (_display displayCtrl 1101) ctrlSetStructuredText parseText format ["<t size='5' color='#FFFFFF' shadow='2' align='center' font='PuristaBold'>%1s</t>", ([(_outOfBoundsTimeout + (player getVariable "entryTime")) - diag_tickTime, "MM:SS", true] call bis_fnc_secondsToString) select 1];
-      };
-      if (isNil "cl_restrictedArea_thread") then {
-        cl_restrictedArea_thread = [] spawn client_fnc_restrictedArea;
-      };
+    private _inPlayArea = _vehiclePlayer inArea playArea || {player getVariable ["isFallingBack", false] && player distance (getMarkerPos "mobile_respawn_defenders") < 300};
+    if (isNil "cl_restrictedArea_thread" && {!_inPlayArea || {player distance (getMarkerPos cl_enemySpawnMarker) < _safeSpawnDistance}}) then {
+      cl_restrictedArea_thread = [] spawn client_fnc_restrictedArea;
     };
   };
 }];

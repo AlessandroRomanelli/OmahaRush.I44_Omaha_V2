@@ -650,6 +650,31 @@ class rr_errorText
 	};
 };
 
+class rr_timeout
+{
+	idd = -1;
+	movingEnable = 1;
+	enableSimulation = 1;
+	fadeout=0;
+	fadein=0;
+	duration = 10;
+	onLoad = "uiNamespace setVariable ['timeout',_this select 0];";
+
+	class controlsBackground {};
+
+	class controls
+	{
+		class RscStructuredText_1100: RscStructuredText
+		{
+			idc = 0;
+			x = 0.200937 * safezoneW + safezoneX;
+			y = 0.475 * safezoneH + safezoneY;
+			w = 0.598125 * safezoneW;
+			h = 0.077 * safezoneH;
+		};
+	};
+};
+
 class rr_pointfeed
 {
 	idd = -1;
