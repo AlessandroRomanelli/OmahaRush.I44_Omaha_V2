@@ -20,7 +20,7 @@ cl_resetPlayerRunning = true;
 private _time = ["LobbyTime", 60] call BIS_fnc_getParamValue;
 
 // Enable global voice
-0 enableChannel [true, true];
+0 enableChannel [true, false];
 
 // Bring up ui for timer
 60001 cutRsc ["rr_timer", "PLAIN"];
@@ -95,7 +95,7 @@ camDestroy cl_exitcam_object;
 player switchCamera "INTERNAL";
 
 // Disable global voice
-0 enableChannel [false, false];
+0 enableChannel false;
 
 [] spawn client_fnc_saveStatistics;
 
