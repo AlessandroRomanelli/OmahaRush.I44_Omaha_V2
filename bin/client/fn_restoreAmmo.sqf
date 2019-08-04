@@ -8,32 +8,16 @@ scriptName "fn_restoreAmmo";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_restoreAmmo.sqf"
-#define TIMEOUT 15
+#define TIMEOUT 30
 if (isServer && !hasInterface) exitWith {};
 
 private _unit = param[0,objNull,[objNull]];
 private _side = player getVariable ["gameSide", ""];
 
-private _lastUsed = missionNamespace getVariable ["cl_last_rearm", diag_tickTime];
-private _timesUsed = missionNamespace getVariable ["cl_rearm_used", 0];
+private _lastUsed = missionNamespace getVariable ["cl_last_rearm", 0];
 
-if ((diag_tickTime - _lastUsed) < TIMEOUT) then {
-	_timesUsed = _timesUsed + 1;
-} else {
-	_timesUsed = 1;
-};
-
-if (_timesUsed > 3) exitWith {
-	if (!isNil "cl_rearm_reset") then {
-		terminate cl_rearm_reset;
-	};
-
-	cl_rearm_reset = [] spawn {
-		uiSleep 60;
-		cl_rearm_used = 0;
-	};
-
-	["SPAM PREVENTION - WAIT 30 SECONDS BEFORE NEXT REARM"] call client_fnc_displayError;
+if ((isNull _unit || _unit == player) && {(diag_tickTime - _lastUsed) < TIMEOUT}) exitWith {
+	["YOU CAN ONLY REARM YOURSELF ONCE EVERY " + str TIMEOUT + " SECONDS"] call client_fnc_displayError;
 };
 
 if (isNull _unit || _unit == player) then {
@@ -165,16 +149,6 @@ if ("frag" in cl_squadPerks) then {
 	};
 };
 
-cl_rearm_used = _timesUsed;
 cl_last_rearm = diag_tickTime;
-
-if (!isNil "cl_rearm_reset") then {
-	terminate cl_rearm_reset;
-};
-
-cl_rearm_reset = [] spawn {
-	uiSleep TIMEOUT;
-	cl_rearm_used = 0;
-};
 
 true
