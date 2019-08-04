@@ -14,7 +14,7 @@ if (isServer && !hasInterface) exitWith {};
 private _reason = param[0,"",[""]];
 
 // Kill me
-player setDamage 1;
+forceRespawn player;
 player setVariable ["isAlive", false];
 
 // Display the reason
