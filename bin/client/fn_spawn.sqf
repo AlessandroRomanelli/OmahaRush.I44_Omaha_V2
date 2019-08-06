@@ -7,6 +7,8 @@ scriptName "fn_spawn";
 	You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_spawn.sqf"
+#define KEY_ESC 1
+#include "..\utils.h"
 if (isServer && !hasInterface) exitWith {};
 
 
@@ -20,7 +22,7 @@ cl_inSpawnMenu = true;
 player setPos cl_safePos;
 
 player setVariable ["wasHS", false];
-
+player setVariable ["isAlive", false];
 
 // Strip player
 removeUniform player;
@@ -47,32 +49,14 @@ cl_assistsInfo = [];
 
 400 cutRsc ["rr_objective_gui","PLAIN"];
 // Setup the objective icon at the top
-if (player getVariable "gameSide" == "defenders") then {
-	disableSerialization;
-	private _d = uiNamespace getVariable ["rr_objective_gui", displayNull];
-	(_d displayCtrl 0) ctrlSetText WWRUSH_ROOT+"pictures\objective_defender.paa";
-};
+disableSerialization;
+private _d = uiNamespace getVariable ["rr_objective_gui", displayNull];
+(_d displayCtrl 0) ctrlSetText WWRUSH_ROOT+("pictures\objective_"+(["attacker", "defender"] select (player getVariable ["gameSide", ""] == "defenders"))+".paa");
 
 // If the server will restart after this round, display a visual warning at the top right
 if (sv_gameCycle >= ((["RotationsPerMatch", 2] call BIS_fnc_getParamValue) - 1)) then {
 	500 cutRsc ["rr_topRightWarning", "PLAIN"];
 	((uiNamespace getVariable ["rr_topRightWarning", displayNull]) displayCtrl 0) ctrlSetStructuredText parseText "<t size='1.2' color='#FE4629' shadow='2' align='right'>LAST ROUND BEFORE MAP CHANGE</t>";
-};
-
-
-//Keeping the role updated
-if (sv_gameCycle % 2 == 0) then {
-	if (playerSide == WEST) then {
-		player setVariable ["gameSide", "defenders", true];
-	} else {
-		player setVariable ["gameSide", "attackers", true];
-	};
-} else {
-	if (playerSide == WEST) then {
-		player setVariable ["gameSide", "attackers", true];
-	} else {
-		player setVariable ["gameSide", "defenders", true];
-	};
 };
 
 private _marker1 = createMarkerLocal ["mobile_respawn_defenders",[0,0]];
@@ -193,7 +177,7 @@ if (isNull _menuDisplay) then {
 // Disable ESC
 _menuDisplay displayAddEventHandler ["KeyDown",{
 	private _handled = false;
-	if ((_this select 1) == 1) then {
+	if ((_this select 1) == KEY_ESC) then {
 		_handled = true; // Block ESC
 	};
 	_handled;
@@ -289,18 +273,6 @@ updateObjectiveProgress = {
 	}];
 } forEach [1201,1202,1203,1204];
 
-// Enable spawn buttons // REDONE WITH LISTBOX UPDATE // SEE SPAWNMENU_LOADCLASSES
-(_menuDisplay displayCtrl 302) ctrlAddEventHandler ["ButtonDown",{
-	profileNamespace setVariable ["rr_class_preferred", cl_class];
-	[] call client_fnc_spawnMenu_getClassAndSpawn
-}];
-
-// Enable abort button
-(_menuDisplay displayCtrl 303) ctrlAddEventHandler ["ButtonDown",{
-	[] call client_fnc_saveStatistics;
-	endMission "MatchLeft";
-}];
-
 // Add eventhandlers to the dialog and hide the weapon selection
 cl_spawnmenu_currentWeaponSelectionState = 0; // Nothing open
 disableSerialization;
@@ -309,9 +281,9 @@ disableSerialization;
 
 // Event handlers for hover actions
 {
-	(_menuDisplay displayCtrl _x) ctrlRemoveAllEventHandlers "ButtonDown";
 	(_menuDisplay displayCtrl _x) ctrlRemoveAllEventHandlers "MouseEnter";
 	(_menuDisplay displayCtrl _x) ctrlRemoveAllEventHandlers "MouseExit";
+
 	(_menuDisplay displayCtrl _x) ctrlAddEventHandler ["MouseEnter", {
 		private _display = findDisplay 5000;
 		if ((_this select 0) isEqualTo (_display displayCtrl 15)) then {
@@ -336,17 +308,6 @@ disableSerialization;
 	}];
 } forEach [15,16];
 
-(_menuDisplay displayCtrl 15) ctrlAddEventHandler ["ButtonDown", {
-	[] call client_fnc_spawnMenu_displayPrimaryWeaponSelection;
-}];
-
-(_menuDisplay displayCtrl 16) ctrlAddEventHandler ["ButtonDown", {
-	private _secondaryWeapons = cl_equipConfigurations select {(getText(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> _x >> "type")) == "secondary"};
-	if (count _secondaryWeapons != 0) then {
-		[] call client_fnc_spawnMenu_displaySecondaryWeaponSelection;
-	};
-}];
-
 // Activate weapons' background event handler
 /* (_menuDisplay displayCtrl 2) ctrlEnable true; */
 
@@ -363,9 +324,6 @@ disableSerialization;
 
 /* (_menuDisplay displayCtrl 12) ctrlAddEventHandler ["ButtonDown",{[] spawn client_fnc_spawnMenu_displayPrimaryAttachmentSelection;}];
 (_menuDisplay displayCtrl 13) ctrlAddEventHandler ["ButtonDown",{[] spawn client_fnc_spawnMenu_displaySecondaryAttachmentSelection;}]; */
-(_menuDisplay displayCtrl 100) ctrlAddEventHandler ["ButtonDown",{
-	[] call client_fnc_spawnMenu_displayGroupManagement;
-}];
 
 // Hide the weapon selection listbox and its background + the attachment listboxes and their backgrounds
 {
@@ -417,9 +375,7 @@ _spawnCtrl ctrlAddEventHandler ["MouseButtonClick", {
 		cl_spawnmenu_cam camCommit 1;
 	} else {
 		private _unit = objectFromNetId _spawnName;
-		if (!isNil "cl_cam_follow_unit") then {
-			terminate cl_cam_follow_unit;
-		};
+		TERMINATE_SCRIPT(cl_cam_follow_unit);
 		cl_cam_follow_unit = [_unit] spawn cl_fnc_follow_unit;
 	};
 
@@ -464,7 +420,7 @@ if (isNil "unitMarkers_running") then {
 	[] spawn client_fnc_drawMapUnits;
 };
 
-private _registeredGroups = ["GetAllGroupsOfSide", [playerSide]] call BIS_fnc_dynamicGroups;
+private _registeredGroups = ["GetAllGroupsOfSide", [(player getVariable ["side", sideUnknown])]] call BIS_fnc_dynamicGroups;
 if !((group player) in _registeredGroups) then {
 	private _joined = false;
   {

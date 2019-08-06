@@ -8,6 +8,8 @@ scriptName "fn_medic_unitDied";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_medic_unitDied.sqf"
+#include "..\utils.h"
+
 if (isServer && !hasInterface) exitWith {};
 
 private _unit = param[0,objNull,[objNull]];
@@ -29,7 +31,7 @@ if (!isNull _killer) then {
 };
 
 // Is this unit on our side?
-if ((_unit getVariable ["side",civilian]) != playerSide) exitWith {};
+if ((_unit getVariable ["side", sideUnknown]) != (player getVariable ["side", sideUnknown])) exitWith {};
 
 // Are we a medic and do we have the defi perk?
 if (((cl_equipClassnames select 2) != "medic") || {isNull _killer}) exitWith {};
@@ -58,9 +60,7 @@ private _actionID = [
 	false
 ] call bis_fnc_holdActionAdd;
 
-if (!isNil "cl_delete_revive") then {
-	terminate cl_delete_revive;
-};
+TERMINATE_SCRIPT(cl_delete_revive);
 
 cl_delete_revive = [_unit, _actionID] spawn {
 	params ["_unit", "_actionID"];
@@ -74,9 +74,8 @@ _unit setVariable ["revive_actionID",_actionID];
 
 // Make sure the action gets deleted once the person respawns
 _unit addEventHandler ["Respawn",{
-	if (!isNil "cl_delete_revive") then {
-		terminate cl_delete_revive;
-	};
+	TERMINATE_SCRIPT(cl_delete_revive);
+
 	(_this select 0) removeAllEventHandlers "Respawn";
 	{
 		[_x, _x getVariable ["revive_actionID", -1]] call BIS_fnc_holdActionRemove;

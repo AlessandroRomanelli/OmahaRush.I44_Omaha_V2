@@ -8,6 +8,7 @@ scriptName "fn_MCOMarmed";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_MCOMarmed.sqf"
+#include "..\utils.h"
 
 // Planter
 private _planter = param[0,objNull,[objNull]];
@@ -19,10 +20,7 @@ private _planter = param[0,objNull,[objNull]];
 
 // Start sound loop if we are the server
 if (isServer) then {
-
-	if (!isNil "sv_mcom_thread") then {
-		terminate sv_mcom_thread;
-	};
+	TERMINATE_SCRIPT(sv_mcom_thread);
 
 	sv_mcom_thread = [] spawn {
 		// Countdown of 60 seconds
@@ -83,9 +81,7 @@ if (isServer) then {
 		};
 		sv_cur_obj = _nextObj;
 		// Reset the time
-		if (!isNil "sv_matchTimer_thread") then {
-			terminate sv_matchTimer_thread;
-		};
+		TERMINATE_SCRIPT(sv_matchTimer_thread);
 		// Start the timer again with additional time counting in the fallback phase
 		private _fallBackTime = [] call client_fnc_getFallbackTime;
 		sv_matchTimer_thread = [false, _fallBackTime] spawn server_fnc_matchTimer;

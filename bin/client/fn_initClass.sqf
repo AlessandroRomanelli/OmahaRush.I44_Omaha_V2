@@ -90,7 +90,7 @@ if (true) then {
 			if ((cursorObject isKindOf "LIB_SovRadio" || cursorObject isKindOf "LIB_GerRadio") && player distance cursorObject < 2) then {
 
 				// Our teams beacon
-				if ((([cursorObject] call client_fnc_getBeaconOwner) getVariable ["side", sideUnknown]) == playerSide || cursorObject == (player getVariable ["assault_beacon_obj", objNull])) then {
+				if ((([cursorObject] call client_fnc_getBeaconOwner) getVariable ["side", sideUnknown]) == (player getVariable ["side", sideUnknown]) || cursorObject == (player getVariable ["assault_beacon_obj", objNull])) then {
 					if (([cursorObject] call client_fnc_getBeaconOwner) == player) then {
 						// Were the owner, destroy it!
 						deleteVehicle cursorObject;

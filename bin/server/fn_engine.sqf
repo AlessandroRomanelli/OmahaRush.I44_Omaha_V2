@@ -8,6 +8,7 @@ scriptName "fn_engine";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_engine.sqf"
+#include "..\utils.h"
 
 ["Server engine has been started"] call server_fnc_log;
 
@@ -30,9 +31,7 @@ if (_mapWeather == 0) then {
 // Initial start, make sure units requesting time will also not be able to spawn for a certain amount of seconds
 /* sv_fallBack_timeLeft = diag_tickTime + _fallBackTime; */
 
-if (!isNil "sv_eventObserverID") then {
-	removeMissionEventHandler ["EachFrame", sv_eventObserverID];
-};
+REMOVE_EXISTING_MEH("EachFrame", sv_eventObserverID);
 sv_obj_status = -1;
 sv_eventObserverID = addMissionEventHandler ["EachFrame", {
 	private ["_data"];
@@ -52,13 +51,25 @@ sv_eventObserverID = addMissionEventHandler ["EachFrame", {
 	};
 }];
 
+if (!isNil "sv_east_group") then {
+	deleteGroup sv_east_group;
+};
+if (!isNil "sv_west_group") then {
+	deleteGroup sv_west_group;
+};
+
+sv_east_group = createGroup EAST;
+sv_east_group deleteGroupWhenEmpty false;
+sv_west_group = createGroup WEST;
+sv_west_group deleteGroupWhenEmpty false;
+
 // Server engine loop
 while {true} do {
 	// Kill old threads
-	if (!isNil "sv_persistentVehicleManager_thread") then {terminate sv_persistentVehicleManager_thread};
-	if (!isNil "sv_stageVehicleManager_thread") then {terminate sv_stageVehicleManager_thread};
-	if (!isNil "sv_matchTimer_thread") then {terminate sv_matchTimer_thread};
-	if (!isNil "sv_autoTeamBalancer_thread") then {terminate sv_autoTeamBalancer_thread};
+	TERMINATE_SCRIPT(sv_persistentVehicleManager_thread);
+	TERMINATE_SCRIPT(sv_stageVehicleManager_thread);
+	TERMINATE_SCRIPT(sv_matchTimer_thread);
+	TERMINATE_SCRIPT(sv_autoTeamBalancer_thread);
 	["Old threads have been killed"] call server_fnc_log;
 
 	[] call server_fnc_waitForPlayers;
@@ -115,11 +126,8 @@ while {true} do {
 		sv_autoTeamBalancer_thread = [] spawn server_fnc_autoTeamBalancer;
 	};
 
-	if (!isNil "sv_corpseCleaner") then {
-		terminate sv_corpseCleaner;
-	};
-
-	sv_corpseCleaner = [] spawn {
+	TERMINATE_SCRIPT(sv_corpse_cleaner);
+	sv_corpse_cleaner = [] spawn {
 		while {sv_gameStatus == 2} do {
 			{
 					if (!isPlayer _x) then {
@@ -144,15 +152,14 @@ while {true} do {
 
 	// If we have OnMatchEndRestart enabled, restart the mission rather than just keep running
 	private _maxMatchTime = ["MaxMatchDuration", 10800] call BIS_fnc_getParamValue;
+	private _missions = getArray(missionConfigFile >> "GeneralConfig" >> "mapsPool");
+	private _currentMission = [format["%1.%2", missionName, worldName]];
+	private _missionsPool = _missions - _currentMission;
 	if (((sv_gameCycle >= (["RotationsPerMatch", 2] call BIS_fnc_getParamValue)) || ((_maxMatchTime != -1) && (_maxMatchTime <= diag_tickTime))) && isDedicated) then {
 		["Attempting to restart mission...."] call server_fnc_log;
 		uiSleep 1;
-		with uiNamespace do {
-			private _missions = getArray(missionConfigFile >> "GeneralConfig" >> "mapsPool");
-			private _currentMission = [format["%1.%2", missionName, worldName]];
-			private _missionsPool = _missions - _currentMission;
-			(getText(missionConfigFile >> "GeneralConfig" >> "commandPassword")) serverCommand format["#mission %1 custom", selectRandom _missionsPool];
-		};
+		private _mission = if (!isNil "sv_nextMap") then {sv_nextMap} else {selectRandom _missionsPool};
+		(getText(missionConfigFile >> "GeneralConfig" >> "commandPassword")) serverCommand format["#mission %1 custom", _mission];
 		uiSleep 5;
 		endMission "MatchEnd";
 	};

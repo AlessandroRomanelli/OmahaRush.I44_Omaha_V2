@@ -5,6 +5,8 @@
 
 __________________________________________________________________*/
 
+#include "..\utils.h"
+
 if (isDedicated || missionNamespace getVariable ["unitMarkers_running", false]) exitWith {};
 unitMarkers_running = true;
 
@@ -54,9 +56,7 @@ cl_map_fnc_removeMarker = {
 
 cl_map_markers = [];
 
-if (!isNil "cl_map_draw") then {
-	removeMissionEventHandler ["EachFrame", cl_map_draw];
-};
+REMOVE_EXISTING_MEH("EachFrame", cl_map_draw);
 
 cl_map_draw = addMissionEventHandler ["EachFrame", {
 	private _units = allUnits select {
@@ -114,12 +114,9 @@ cl_map_draw = addMissionEventHandler ["EachFrame", {
 	} forEach _units;
 }];
 
-if (!isNil "cl_map_markers_check") then {
-	terminate cl_map_markers_check;
-};
+TERMINATE_SCRIPT(cl_map_markers_check);
 
 cl_map_markers_check = [] spawn {
-	private _i = 0;
 	while {true} do {
 		{
 			private _sub = _x splitString "_";
@@ -131,6 +128,5 @@ cl_map_markers_check = [] spawn {
 			}
 		} forEach allMapMarkers;
 		uiSleep 5;
-		_i = _i + 1;
 	};
 };

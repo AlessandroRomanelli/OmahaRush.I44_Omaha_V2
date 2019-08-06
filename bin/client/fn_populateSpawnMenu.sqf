@@ -17,7 +17,8 @@ disableSerialization;
 private _d = findDisplay 5000;
 
 // Get selected equip to be displayed
-private _equip = [] call client_fnc_getLoadedEquipment;
+[] call client_fnc_getLoadedEquipment;
+private _equip = player getVariable ["loaded_equipment", [cl_equipClassnames select 0, cl_equipClassnames select 1]];
 private _primary = _equip select 0;
 private _secondary = _equip select 1;
 if (_primary == "") then {
@@ -42,14 +43,17 @@ if (_secondary == "") then {
 [] call client_fnc_validateEquipment;
 
 // Display primary and secondary
+private _details = [];
 if (_primary != "") then {
-	(_d displayCtrl 5) ctrlSetStructuredText parseText ("<t align='center' shadow='2' size='5'><img image='" + (([_primary] call client_fnc_weaponDetails) select 2) + "'/></t>");
-	(_d displayCtrl 1001) ctrlSetStructuredText parseText format ["<t size='1.25' color='#FFFFFF' shadow='2' font='PuristaMedium' align='center'>%1</t>", (([_primary] call client_fnc_weaponDetails) select 1)];
+	_details = [_primary] call client_fnc_weaponDetails;
+	(_d displayCtrl 5) ctrlSetStructuredText parseText ("<t align='center' shadow='2' size='5'><img image='" + (_details select 2) + "'/></t>");
+	(_d displayCtrl 1001) ctrlSetStructuredText parseText format ["<t size='1.25' color='#FFFFFF' shadow='2' font='PuristaMedium' align='center'>%1</t>", _details select 1];
 };
 
 if (_secondary != "") then {
-	(_d displayCtrl 7) ctrlSetStructuredText parseText ("<t align='center' shadow='2' size='5'><img image='" + (([_secondary] call client_fnc_weaponDetails) select 2) + "'/></t>");
-	(_d displayCtrl 1004) ctrlSetStructuredText parseText format ["<t size='1.25' color='#FFFFFF' shadow='2' font='PuristaMedium' align='center'>%1</t>", (([_secondary] call client_fnc_weaponDetails) select 1)];
+	_details = [_secondary] call client_fnc_weaponDetails;
+	(_d displayCtrl 7) ctrlSetStructuredText parseText ("<t align='center' shadow='2' size='5'><img image='" + (_details select 2) + "'/></t>");
+	(_d displayCtrl 1004) ctrlSetStructuredText parseText format ["<t size='1.25' color='#FFFFFF' shadow='2' font='PuristaMedium' align='center'>%1</t>", _details select 1];
 };
 
 // Build primary attachments text and display
@@ -81,6 +85,11 @@ if (_secondary != "") then {
 
 	(_d displayCtrl 8) ctrlSetStructuredText parseText (_prefix + _center + _suffix);
 }; */
+
+// Change the faction flag
+private _flagCtrl = _d displayCtrl 1205;
+private _marker = getText(missionConfigFile >> "Vehicles" >> ["Attacker", "Defender"] select (player getVariable ["gameSide", "defenders"] == "defenders") >> "marker");
+_flagCtrl ctrlSetText (getText(configFile >> "CfgMarkers" >> _marker >> "texture"));
 
 // Get unlock progress
 private _progress = [] call client_fnc_getNextUnlockableWeapon;

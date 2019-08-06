@@ -66,7 +66,7 @@ _items append (vestItems player);
 _items append (uniformItems player);
 
 // Lets give us ammunition again :)
-private _equipInfo = [] call client_fnc_getLoadedEquipment;
+private _equipInfo = player getVariable ["loaded_equipment", [cl_equipClassnames select 0, cl_equipClassnames select 1]];
 
 private _primary = _equipInfo select 0;
 if (_primary != "") then {

@@ -17,7 +17,7 @@ private _owner = [_beacon] call client_fnc_getBeaconOwner;
 if (isNull _owner) exitWith {};
 
 // Check if this beacon is on our team
-if (_owner getVariable ["side", sideUnknown] == playerSide) exitWith {};
+if (_owner getVariable ["side", sideUnknown] == player getVariable ["side", sideUnknown]) exitWith {};
 
 _beacon addEventHandler ["HitPart", {
 	_beacon = _this select 0 select 0;

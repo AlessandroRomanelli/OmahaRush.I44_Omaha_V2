@@ -99,19 +99,12 @@ player switchCamera "INTERNAL";
 
 [] spawn client_fnc_saveStatistics;
 
-if (sv_gameCycle % 2 == 0) then {
-	if (playerSide == WEST) then {
-		player setVariable ["gameSide", "defenders", true];
-	} else {
-		player setVariable ["gameSide", "attackers", true];
-	};
-} else {
-	if (playerSide == WEST) then {
-		player setVariable ["gameSide", "attackers", true];
-	} else {
-		player setVariable ["gameSide", "defenders", true];
-	};
-};
+player setVariable ["gameSide", (
+  [
+    ["defenders", "attackers"],
+    ["attackers", "defenders"]
+  ] select (sv_gameCycle % 2 == 0)
+) select (side player == WEST), true];
 
 cl_statisticsLoaded = false;
 [] call client_fnc_loadStatistics;

@@ -8,6 +8,7 @@ scriptName "fn_startIngameGUI";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_startIngameGUI.sqf"
+#include "..\utils.h"
 if (isServer && !hasInterface) exitWith {};
 
 disableSerialization;
@@ -16,8 +17,6 @@ disableSerialization;
 300 cutRsc ["playerHUD","PLAIN"];
 disableSerialization;
 
-if (isNil "rr_spawn_bottom_right_hud_ran") then {
-	rr_spawn_bottom_right_hud_ran = true;
-};
+VARIABLE_DEFAULT(rr_spawn_bottom_right_hud_ran, true);
 
 true

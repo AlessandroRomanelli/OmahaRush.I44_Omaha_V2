@@ -22,7 +22,7 @@ private _classRestrictionEnabled = (["ClassLimits", 1] call BIS_fnc_getParamValu
 
 private _countClassPlayers = {
 	private _class = param[0, "", [""]];
-	private _sameSidePlayers = allPlayers select {if (playerSide isEqualTo (_x getVariable ["side", sideUnknown])) then {true}};
+	private _sameSidePlayers = allPlayers select {if ((player getVariable ["side", sideUnknown]) isEqualTo (_x getVariable ["side", sideUnknown])) then {true}};
 	private _sameClassPlayers = _sameSidePlayers select {if (_x getVariable ["class", "medic"] isEqualTo _class) then {true}};
 	private _classLimit = ((format ["ClassLimits_%1", _class]) call bis_fnc_getParamValue)/10;
 	private _maxClassPlayers = if(_classLimit != 1) then {floor (((count allPlayers)/2) * _classLimit)} else {-1};
@@ -84,13 +84,6 @@ if (!_isRefreshing) then {
 			[] call client_fnc_spawnMenu_displayPrimaryWeaponSelection;
 		};
 		[] call client_fnc_populateSpawnMenu;
-	}];
-
-	((findDisplay 5000) displayCtrl 301) ctrlRemoveAllEventHandlers "ButtonDown";
-	// Allow our sweet sour dank memes so I learned how to bunny hop button to be able to open the menu depending on our selected class
-	((findDisplay 5000) displayCtrl 301) ctrlAddEventHandler ["ButtonDown", {
-		private _class = ((findDisplay 5000) displayCtrl 300) lbData (lbCurSel ((findDisplay 5000) displayCtrl 300));
-		[_class] call client_fnc_spawnMenu_displayClassCustomization;
 	}];
 
 	lbClear _l;

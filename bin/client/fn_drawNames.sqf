@@ -10,7 +10,7 @@ if (isServer && !hasInterface) exitWith {};
 
 private _id = addMissionEventHandler ["Draw3D", {
   {
-    if (side _x == side player && {alive _x}) then {
+    if (((_x getVariable ["side", sideUnknown]) == (player getVariable ["side", sideUnknown])) && {alive _x}) then {
       private _dist = (player distance _x) / 15;
       private _color = getArray (configFile/'CfgInGameUI'/'SideColors'/'colorFriendly');
       if (cursorTarget != _x) then {

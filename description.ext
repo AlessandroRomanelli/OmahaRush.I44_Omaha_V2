@@ -135,7 +135,7 @@ class CfgDebriefing
         pictureColor[] = {0.96,0.65,0.12,0.8};
     };
 
-    class Joinindependent
+    class JoinEAST
     {
         title = "AUTO TEAM BALANCE";
         subtitle = "YOU HAVE BEEN AUTO TEAM BALANCED";
@@ -145,7 +145,7 @@ class CfgDebriefing
         pictureColor[] = {0.96,0.65,0.12,0.8};
     };
 
-    class teamFullindependent
+    class teamFullEAST
     {
         title = "AUTO TEAM BALANCE";
         subtitle = "THIS TEAM HAS TOO MANY PLAYERS";
@@ -164,6 +164,16 @@ class CfgDebriefing
         picture = "";
         pictureColor[] = {0.96,0.65,0.12,0.8};
     };
+
+	class Kicked
+	{
+		title = "KICKED OUT";
+		subtitle = "YOU HAVE BEEN REMOVED FROM THE GAME";
+		description = "An admin has kicked you from the game";
+		pictureBackground = "";
+		picture = "";
+		pictureColor[] = {0.96,0.65,0.12,0.8};
+	};
 };
 
 class Params {

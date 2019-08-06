@@ -31,7 +31,7 @@ private _fnc_equipBayo = {
 };
 
 // Get equip
-private _equipInfo = [] call client_fnc_getLoadedEquipment;
+private _equipInfo = player getVariable ["loaded_equipment", [cl_equipClassnames select 0, cl_equipClassnames select 1]];
 
 // Get primary and secondary classnames
 private _primary = _equipInfo select 0;

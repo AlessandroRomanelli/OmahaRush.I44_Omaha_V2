@@ -8,13 +8,21 @@ scriptName "fn_initKeyHandler";
     You're not allowed to use this file without permission from the authors!
 --------------------------------------------------------------------*/
 #define __filename "fn_initKeyHandler.sqf"
+#define KEY_ESC 1
+#define KEY_TAB 15
+#define KEY_T 20
+#define KEY_Y 21
+#define KEY_SPACE 57
+#define KEY_F1 58
+#define KEY_F10 69
+
 private _h = false;
 cl_scoreboardHidden = true;
 
 cl_soundLevel = 1;
 (findDisplay 46) displayAddEventHandler ["KeyUp", {
 	private _DIKcode = _this select 1;
-	if (_DIKcode == 15 && (sv_gameStatus in [1,2])) then {
+	if (_DIKcode == KEY_TAB && (sv_gameStatus in [1,2])) then {
 		60001 cutRsc ["default", "PLAIN"];
 	};
 }];
@@ -24,7 +32,7 @@ cl_spamCount = 0;
 cl_allowActions = true;
 (findDisplay 46) displayAddEventHandler ["KeyDown", {
 	private _DIKcode = _this select 1;
-	if (_DIKcode == 15 && (sv_gameStatus in [1,2])) then {
+	if (_DIKcode == KEY_TAB && (sv_gameStatus in [1,2])) then {
 		cl_scoreboardHidden = isNull (uiNamespace getVariable ["rr_scoreboard", displayNull]);
 		// Lets fill the scoreboard
 		if !(cl_scoreboardHidden) exitWith {};
@@ -87,7 +95,7 @@ cl_allowActions = true;
 	};
 
 	// Earplugs
-	if (_DIKcode == 21) then {
+	if (_DIKcode == KEY_Y) then {
 		_h = true;
 		switch (cl_soundLevel) do
 		{
@@ -113,7 +121,7 @@ cl_allowActions = true;
 	};
 
 	// Space bar to deploy parachute
-	if (_DIKcode == 57) then {
+	if (_DIKcode == KEY_SPACE) then {
 		if ((isNull (objectParent player)) && {((getPos player) select 2) > 30} && {!(isTouchingGround (vehicle player))} && {player getVariable ["hasChute", true]}) then {
 			_h = true;
 			private _posPlayer = position player;
@@ -146,14 +154,14 @@ cl_allowActions = true;
 		};
 	};
 
-	// F1 - OBJECTS DUMP
+	/* // F1 - OBJECTS DUMP
 	if (_DIKcode == 59 && (_this select 2) && (_this select 3)) then {
 		_h = true;
 		[] spawn client_fnc_dumpObjects;
-	};
+	}; */
 
 	// F1 to F10 - SEAT SWITCH
-	if (_DIKcode > 58 && _DIKcode < 69) then {
+	if (_DIKcode > KEY_F1 && _DIKcode < KEY_F10) then {
 		if (!isNull (objectParent player)) then {
 			[_DIKcode] call client_fnc_moveWithinVehicle;
 		};
@@ -162,7 +170,7 @@ cl_allowActions = true;
 
 
 	// T - SPOTTING TARGETS
-	if (_DIKcode == 20) then {
+	if (_DIKcode == KEY_T) then {
 		if (!cl_allowActions) exitWith {
 			private _text = format ["3D SPOTTING BLOCKED FOR %1 SECONDS", round (cl_lastKeyPressed + 5 - diag_tickTime)];
 			[_text] call client_fnc_displayError;

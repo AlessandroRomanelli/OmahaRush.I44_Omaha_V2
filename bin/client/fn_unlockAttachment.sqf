@@ -10,6 +10,8 @@ scriptName "fn_unlockAttachment";
 #define __filename "fn_unlockAttachment.sqf"
 if (isServer && !hasInterface) exitWith {};
 
+if (true) exitWith {};
+
 private _unlockedAttachments = [];
 
 private _unlockableAttachments = [] call client_fnc_getUnlockableAttachments;
@@ -25,7 +27,7 @@ private _unlockAttachmentClassname = selectRandom _unlockableAttachments;
 // Now lets edit the original array >_>
 _unlockedAttachments pushBack _unlockAttachmentClassname;
 
-private _curEquip = [] call client_fnc_getLoadedEquipment;
+private _curEquip = player getVariable ["loaded_equipment", [cl_equipClassnames select 0, cl_equipClassnames select 1]];
 private _weaponInfo = [];
 
 // Which of the two equipped weapons are we playing and what other info do we have about them?

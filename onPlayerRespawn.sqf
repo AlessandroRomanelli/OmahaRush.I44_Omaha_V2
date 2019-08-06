@@ -16,8 +16,9 @@ if (!isNil "sv_gameStatus" && !isNil "cl_revived" && !isNil "cl_init_done" && {c
 		player setVariable ["grenade_kill", nil];
 		player setVariable ["wasHS", false];
 
-
-		[] spawn client_fnc_spawn;
+		if !(missionNamespace getVariable ["cl_forceSwitch", false]) then {
+			[] spawn client_fnc_spawn;
+		};
 		setPlayerRespawnTime 15;
 
 		player enableStamina false;

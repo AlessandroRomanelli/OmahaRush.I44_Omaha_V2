@@ -107,6 +107,11 @@ class Maverick_Functions_Client {
 		class initUserInterface {};
 		class meleeTakedown {};
 		class getUnitIcon {};
+		class sideSwitch {};
+		class displayAdminArea {};
+		class populateAdminArea {};
+		class spawnModal {};
+
 		// Pointfeed
 		class pointfeed_add {};
 		class displayKillcam {};
@@ -148,11 +153,27 @@ class Maverick_Functions_Server {
 		class monitorVehicle {};
 		class waitForPlayers {};
 		class generateGroupName {};
+		class assignSide {};
+		class sideSwitch {};
+		class selectNextMap {};
+
 		// Database
 		class db_getPlayer {};
 		class db_setPlayer {};
 		class db_connect {};
 		class db_asyncCall {};
 		class db_prepareString {};
+	};
+};
+
+class Maverick_Functions_Admin {
+	tag = "admin";
+	class functions {
+		file = "bin\admin";
+		class kickPlayer {};
+		class killPlayer {};
+		class switchPlayer {};
+		class isAdmin {};
+		class spectate {};
 	};
 };

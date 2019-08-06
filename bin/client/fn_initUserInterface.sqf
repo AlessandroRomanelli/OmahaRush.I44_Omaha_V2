@@ -95,9 +95,7 @@ private _event = addMissionEventHandler["EachFrame", {
       [_pos, _name] call _makeCurrentSpawn;
     };
 
-    if (player getVariable ["gameSide", "attackers"] == "attackers") then {
-    	[] call client_fnc_displaySpawnRestriction;
-    };
+  	[] call client_fnc_displaySpawnRestriction;
 
     [] call client_fnc_loadSpawnpoints;
     [true] call client_fnc_spawnMenu_loadClasses;

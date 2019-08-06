@@ -14,7 +14,7 @@ private _unit = param[0,objNull,[objNull]];
 
 // Unit still dead?
 if (alive _unit) exitWith {};
-if (playerSide != (_unit getVariable ["side",civilian])) exitWith {};
+if ((player getVariable ["side", sideUnknown]) != (_unit getVariable ["side", sideUnknown])) exitWith {};
 
 
 // We've done good! Give me points and a dank animation!

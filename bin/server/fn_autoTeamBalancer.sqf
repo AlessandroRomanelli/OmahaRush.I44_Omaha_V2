@@ -10,18 +10,10 @@ scriptName "fn_autoTeamBalancer";
 #define __filename "fn_autoTeamBalancer.sqf"
 
 private _getUnitsThatLastJoined = {
-	private _side = param[0,sideUnknown,[sideUnknown]];
-	private _lastJoinTime = 0;
-	private _preferredUnit = objNull;
-	{
-		if (side _x == _side) then {
-			if ((_x getVariable ["joinServerTime", 0]) > _lastJoinTime) then {
-				_lastJoinTime = (_x getVariable ["joinServerTime", 0]);
-				_preferredUnit = _x;
-			};
-		};
-	} forEach AllPlayers;
-	_preferredUnit;
+	params [["_side",sideUnknown,[sideUnknown]], ["_amount", 0, [0]]];
+	private _sidePlayers = (allPlayers select {side _x == _side}) apply {[_x getVariable ["joinServerTime",0], _x]};
+	_sidePlayers sort false;
+	(_sidePlayers select [0,_amount]) apply {_x select 1};
 };
 
 sv_autoTeamBalancerWarning = false;
@@ -29,38 +21,28 @@ sv_autoTeamBalancerWarning = false;
 while {sv_gameStatus == 2} do {
 	uiSleep 60;
 
-	private _attackersSide = [WEST, independent] select (sv_gameCycle % 2 == 0);
-	private _defendersSide = [WEST, independent] select (sv_gameCycle % 2 != 0);
+	private _attackersSide = [WEST, EAST] select (sv_gameCycle % 2 == 0);
+	private _defendersSide = [EAST, WEST] select (sv_gameCycle % 2 == 0);
 	// Run side checks
-	private _attackersTeam = {(_x getVariable ["gameSide", "attackers"]) isEqualTo "attackers"} count allPlayers;
-	private _defendersTeam = {(_x getVariable ["gameSide", "defenders"]) isEqualTo "defenders"} count allPlayers;
+	private _attackers = _attackersSide countSide allPlayers;
+	private _defenders = _defendersSide countSide allPlayers;
 
-	private _diff = _attackersTeam - _defendersTeam;
+	private _diff = _attackers - _defenders;
 	private _maxDiff = ["AutoTeamBalanceAtDifference", 3] call BIS_fnc_getParamValue;
-	private _sideWithMoreUnits = if (_attackersTeam >= _defendersTeam) then {_attackersSide} else {_defendersSide};
+	private _sideWithMoreUnits = if (_attackers >= _defenders) then {_attackersSide} else {_defendersSide};
 
 	if (_diff < 0 || _diff > _maxDiff) then {
 		if (!sv_autoTeamBalancerWarning) then {
 			sv_autoTeamBalancerWarning = true;
-			["Auto team balance will commence in 60 seconds if teams stay unbalanced"] remoteExec ["client_fnc_displayError"];
+			["Auto team balance will commence in 60 seconds if teams stay unbalanced"] remoteExec ["client_fnc_displayError", 0];
 			[format["Players have been warned about team difference: %1", _diff]] call server_fnc_log;
 		} else {
-			sv_autoTeamBalancerWarning = true;
-
 			private _toMove = floor(_diff / 2);
-			for "_i" from 1 to _toMove step 1 do
-			{
-				private _unit = [_sideWithMoreUnits] call _getUnitsThatLastJoined;
-				[format["Player %1 has been kicked due to team balance", _unit getVariable ["name", name _unit]]] call server_fnc_log;
-
-				if (_sideWithMoreUnits == _attackersSide) then {
-					[_defendersSide] remoteExec ["client_fnc_teamBalanceKick", _unit];
-				} else {
-					[_attackersSide] remoteExec ["client_fnc_teamBalanceKick", _unit];
-				};
-
-				// Make sure this unit will be gone until next evaluation
-				uiSleep 5;
+			for "_i" from 1 to _toMove step 1 do {
+				private _units = [_sideWithMoreUnits, _toMove] call _getUnitsThatLastJoined;
+				[format["Players %1 have been switched due to team balance", _units apply {_x getVariable ["name", name _x]}]] call server_fnc_log;
+				[] remoteExec ["client_fnc_teamBalanceKick", _units];
+				{ _x setVariable ["joinServerTime", diag_tickTime] } forEach _units;
 			};
 		};
 	} else {

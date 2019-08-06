@@ -90,7 +90,7 @@ private _id = [
 /* 1 action title */					"Replenish Ammunition",
 /* 2 idle icon */						WWRUSH_ROOT+"pictures\support.paa",
 /* 3 progress icon */					WWRUSH_ROOT+"pictures\support.paa",
-/* 4 condition to show */				"cl_classPerk == 'ammo' && {cursorTarget distance _this < 3} && {alive cursorTarget} && {!(cursorTarget getVariable ['ammo_restored',false])} && {(side cursorTarget) == playerSide} && {cursorTarget isKindOf 'Man'}",
+/* 4 condition to show */				"cl_classPerk == 'ammo' && {cursorTarget distance _this < 3} && {alive cursorTarget} && {!(cursorTarget getVariable ['ammo_restored',false])} && {(side cursorTarget) == (player getVariable ['side', sideUnknown])} && {cursorTarget isKindOf 'Man'}",
 /* 5 condition for action */			"!(cursorTarget getVariable ['ammo_restored',false])",
 /* 6 code executed on start */			{cl_lastActionTarget = cursorTarget;},
 /* 7 code executed per tick */			{},

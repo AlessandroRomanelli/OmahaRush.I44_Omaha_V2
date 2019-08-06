@@ -6,6 +6,7 @@ scriptName "fn_setupEventHandlers";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_setupEventHandlers.sqf"
+#include "..\utils.h"
 if (isServer && !hasInterface) exitWith {};
 
 // Remove all handlers
@@ -25,7 +26,7 @@ cl_playerSwimming = !(isTouchingGround player) && (surfaceIsWater (getPosATL pla
 cl_enemiesNearby = 0;
 cl_currentWeapon = "";
 cl_currentWeaponMode = "";
-removeMissionEventHandler["Map", cl_mapObserverID];
+REMOVE_EXISTING_MEH("Map", cl_mapObserverID);
 cl_mapObserverID = addMissionEventHandler["Map", {
 		params ["_mapIsOpened"];
 		if (_mapIsOpened && !cl_mapSetup) then {
@@ -41,7 +42,7 @@ cl_mapObserverID = addMissionEventHandler["Map", {
 		};
 }];
 
-removeMissionEventHandler["EachFrame", cl_eventObserverID];
+REMOVE_EXISTING_MEH("EachFrame", cl_eventObserverID);
 cl_eventObserverID = addMissionEventHandler["EachFrame", {
 		private ["_data"];
 		_data = count (units group player);
@@ -73,7 +74,7 @@ cl_eventObserverID = addMissionEventHandler["EachFrame", {
 			cl_playerSwimming = _data;
 		};
 
-		private _enemiesNearby = (player nearEntities ["Man", 10]) select {alive _x && {(_x getVariable ["side", side _x]) != playerSide}};
+		private _enemiesNearby = (player nearEntities ["Man", 10]) select {alive _x && {(_x getVariable ["side", side _x]) != (player getVariable ["side", sideUnknown])}};
 		_data =  count _enemiesNearby;
 		if !(_data isEqualTo cl_enemiesNearby) then {
 			[missionNamespace, "newEnemiesNearby", [_enemiesNearby]] call BIS_fnc_callScriptedEventHandler;
@@ -183,9 +184,7 @@ cl_eventObserverID = addMissionEventHandler["EachFrame", {
 }] call bis_fnc_addScriptedEventHandler;
 
 // Automatic magazine recombination
-if (!isNil "cl_take_eh") then {
-	player removeEventHandler ["Take", cl_take_eh];
-};
+REMOVE_EXISTING_PEH("Take", cl_take_eh);
 cl_take_eh = player addEventHandler ["Take", {
 	private _magInfo = magazinesAmmoFull player;
 	private _curMag = currentMagazine player;
@@ -215,15 +214,10 @@ cl_take_eh = player addEventHandler ["Take", {
 }];
 
 // Direction indicators and inventory blocker
-if (!isNil "cl_inv_open_eh") then {
-	player removeEventHandler ["InventoryOpened", cl_inv_open_eh];
-};
+REMOVE_EXISTING_PEH("InventoryOpened", cl_inv_open_eh);
 cl_inv_open_eh = player addEventHandler ["InventoryOpened", {closeDialog 0;true;}];
 
-
-if (!isNil "cl_hit_dir_eh") then {
-	player removeEventHandler ["Hit", cl_hit_dir_eh];
-};
+REMOVE_EXISTING_PEH("Hit", cl_hit_dir_eh);
 cl_hit_dir_eh = player addEventHandler ["Hit",{
 	private _d = [_this select 0, _this select 1] call BIS_fnc_relativeDirTo;
 	if (_d >= 315 || _d <= 45) then {351 cutRsc ["cu","PLAIN"];};
@@ -239,19 +233,10 @@ cl_hit_dir_eh = player addEventHandler ["Hit",{
 }];
 
 // Hit
-if (!isNil "cl_hit_hp_regen_eh") then {
-	player removeEventHandler ["Hit", cl_hit_hp_regen_eh];
-};
+REMOVE_EXISTING_PEH("Hit", cl_hit_hp_regen_eh);
 cl_hit_hp_regen_eh = player addEventHandler ["Hit", {
 	// Stop any hp regeneration thread
-	if (!isNil "client_hpregeneration_thread") then {
-		terminate client_hpregeneration_thread;
-	};
-
-	// In combat (DISABLED FOR NETWORK PERFORMANCE)
-	/* if !(player getVariable ["inCombat", false]) then {
-		player setVariable ["inCombat",true,true];
-	}; */
+	TERMINATE_SCRIPT(client_hpregeneration_thread);
 
 	// Did we get hit by a player? Add it to our assist-array
 	private _causedBy = _this select 1;
@@ -265,14 +250,12 @@ cl_hit_hp_regen_eh = player addEventHandler ["Hit", {
 }];
 
 // Killed
-if (!isNil "cl_killed_eh") then {
-	player removeEventHandler ["Killed", cl_killed_eh];
-};
+REMOVE_EXISTING_PEH("Killed", cl_killed_eh);
 cl_killed_eh = player addEventHandler ["Killed", {
 	private _victim = _this select 0;
 	private _lastDeath = _victim getVariable ["lastDeath", 0];
 
-	if (cl_inSpawnMenu) exitWith {
+	if (cl_inSpawnMenu || missionNamespace getVariable ["cl_forceSwitch", false]) exitWith {
 		setPlayerRespawnTime 0;
 	};
  	//Avoiding more than one time each 1/10 of a second
@@ -332,9 +315,7 @@ cl_killed_eh = player addEventHandler ["Killed", {
 		["rr_spawn_bottom_right_hud_renderer", "onEachFrame"] call BIS_fnc_removeStackedEventHandler;
 		300 cutRsc ["default","PLAIN"];
 
-		if (!isNil "rr_respawn_thread") then {
-			terminate rr_respawn_thread;
-		};
+		TERMINATE_SCRIPT(rr_respawn_thread);
 		rr_respawn_thread = [_killer] spawn client_fnc_killed;
 
 		_victim setVariable ["isAlive", false];
@@ -360,9 +341,7 @@ cl_killed_eh = player addEventHandler ["Killed", {
 }];
 
 // Assign current weapon to player when firing (to avoid PUT and THROW)
-if (!isNil "cl_fired_eh") then {
-	player removeEventHandler ["Fired", cl_fired_eh];
-};
+REMOVE_EXISTING_PEH("Fired", cl_fired_eh);
 cl_fired_eh = player addEventHandler ["Fired", {
   params ["_unit", "_weapon"];
   private _lastWepon = _unit getVariable ["lastWeaponFired", ""];
@@ -373,7 +352,8 @@ cl_fired_eh = player addEventHandler ["Fired", {
 }];
 
 // Handledamage
-player addEventHandler ["HandleDamage", {
+REMOVE_EXISTING_PEH("HandleDamage", cl_handledmg_eh);
+cl_handledmg_eh = player addEventHandler ["HandleDamage", {
 	params ["_unit", "_hitSelection", "_damage", "_shooter", "_projectile", "_hitIndex", "_instigator", "_hitPoint"];
 	// Instigator is defined? If yes, it's more accurate than shooter
 	if (!isNull _instigator) then {
@@ -448,9 +428,7 @@ player addEventHandler ["HandleDamage", {
 }];
 
 // Getin Eventhandler for vehicles
-if (!isNil "cl_get_in_man_eh") then {
-	player removeEventHandler ["GetInMan", cl_get_in_man_eh];
-};
+REMOVE_EXISTING_PEH("GetInMan", cl_get_in_man_eh);
 cl_get_in_man_eh = player addEventHandler ["GetInMan", {
 	private _unit = param[0, objNull, [objNull]];
 	private _vehicle = param[2, objNull, [objNull]];
@@ -578,9 +556,7 @@ cl_get_in_man_eh = player addEventHandler ["GetInMan", {
 	}];
 }];
 
-if (!isNil "cl_get_out_man") then {
-	player removeEventHandler ["GetOutMan", cl_get_out_man];
-};
+REMOVE_EXISTING_PEH("GetOutMan", cl_get_out_man);
 cl_get_out_man = player addEventHandler ["GetOutMan", {
 	private _vehicle = param[2, objNull, [objNull]];
 	if (count (crew _vehicle) == 0) then {

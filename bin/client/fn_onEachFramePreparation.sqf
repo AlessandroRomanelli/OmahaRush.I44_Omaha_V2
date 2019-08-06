@@ -93,7 +93,7 @@ cl_onEachFramePreparationID = addMissionEventHandler["EachFrame", {
 				{isPlayer _x} &&
 				{!alive _x} &&
 				{(_x distance player) < 50} &&
-				{(_x getVariable ["side", sideUnknown]) == playerSide} &&
+				{(_x getVariable ["side", sideUnknown]) == (player getVariable ["side", sideUnknown])} &&
 				{_x inArea playArea}) then {
 				_toBeRevived pushBack _x;
 			};

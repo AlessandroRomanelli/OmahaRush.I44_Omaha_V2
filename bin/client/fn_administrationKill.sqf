@@ -13,6 +13,8 @@ if (isServer && !hasInterface) exitWith {};
 // Reason
 private _reason = param[0,"",[""]];
 
+if (cl_inSpawnMenu || !(player getVariable ["isAlive", false])) exitWith {};
+
 // Kill me
 forceRespawn player;
 player setVariable ["isAlive", false];

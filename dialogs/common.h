@@ -1,4 +1,6 @@
 #define ST_LEFT           0x00
+#define ST_RIGHT          0x01
+#define ST_CENTER         0x02
 #define ST_MULTI          0x10
 #define GUI_GRID_CENTER_WAbs        ((safezoneW / safezoneH) min 1.2)
 #define GUI_GRID_CENTER_HAbs        (GUI_GRID_CENTER_WAbs / 1.2)
@@ -593,7 +595,7 @@ class RscListBox
 
 class RscEdit {
     type = 2;
-    style = 0x00 + 0x40;
+    style = 0x10 + 0x40;
     font = "PuristaMedium";
     shadow = 2;
     sizeEx = "(((((safezoneW / safezoneH) min 1.2) / 1.2) / 25) * 1)";

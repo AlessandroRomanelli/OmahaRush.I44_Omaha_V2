@@ -9,6 +9,9 @@ scriptName "fn_instantTeamBalanceCheck";
 --------------------------------------------------------------------*/
 #define __filename "fn_instantTeamBalanceCheck.sqf"
 
+// Made obsolete by server-side assignment
+if (true) exitWith {};
+
 // Is this even enabled
 private _enableATB = ["AutoTeamBalancer", 1] call BIS_fnc_getParamValue;
 if (_enableATB != 1) exitWith {};
@@ -16,8 +19,8 @@ if (_enableATB != 1) exitWith {};
 // Check if server has been online for 300 seconds already
 if (serverTime < 300) exitWith {};
 
-private _attackersSide = [WEST, independent] select (sv_gameCycle % 2 == 0);
-private _defendersSide = [WEST, independent] select (sv_gameCycle % 2 != 0);
+private _attackersSide = [WEST, EAST] select (sv_gameCycle % 2 == 0);
+private _defendersSide = [WEST, EAST] select (sv_gameCycle % 2 != 0);
 
 // Run side checks
 private _attackersTeam = {(_x getVariable ["gameSide", "attackers"]) isEqualTo "attackers"} count (allPlayers - [player]);
@@ -28,9 +31,9 @@ private _diff = _attackersTeam - _defendersTeam;
 private _sideWithMoreUnits = if (_attackersTeam >= _defendersTeam) then {_attackersSide} else {_defendersSide};
 
 private _maxDiff = ["AutoTeamBalanceAtDifference", 3] call BIS_fnc_getParamValue;
-private _ending = ["teamFullWEST", "teamFullindependent"] select (playerSide isEqualTo WEST);
+private _ending = ["teamFullWEST", "teamFullEAST"] select ((player getVariable ["side", sideUnknown]) isEqualTo WEST);
 
-if ((playerSide isEqualTo _sideWithMoreUnits) && (_diff < 0 || _diff > _maxDiff)) then {
+if (((player getVariable ["side", sideUnknown]) isEqualTo _sideWithMoreUnits) && (_diff < 0 || _diff > _maxDiff)) then {
 	endMission _ending;
 };
 true

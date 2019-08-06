@@ -1,9 +1,16 @@
+#define PRIMARY_COLOR {0.96,0.65,0.12,0.8}
+#define DARK_COLOR {0.12,0.14,0.16,0.8}
+#define BRIGHT_COLOR {1,1,1,0.8}
+#define DISABLED_COLOR {0.52,0.54,0.56,1}
+#define DISABLED_BG
+
 class rr_spawnmenu {
     idd = 5000;
     movingEnable = 0;
     enableSimulation = 1;
     fadein=2;
     duration = 999999;
+	/* onLoad = "params ['_display']; if !(call BIS_fnc_admin > 0) then {(_display displayCtrl 1301) ctrlShow false}"; */
     class controls {
 		class RscText_1000: RscText
 		{
@@ -12,7 +19,7 @@ class rr_spawnmenu {
 			y = 0.291 * safezoneH + safezoneY;
 			w = 0.154687 * safezoneW;
 			h = 0.132 * safezoneH;
-			colorBackground[] = {0.12,0.14,0.16,0.8};
+			colorBackground[] = DARK_COLOR;
 		};
 		class primary_description: RscStructuredText
 		{
@@ -21,7 +28,7 @@ class rr_spawnmenu {
 			y = 0.4252 * safezoneH + safezoneY;
 			w = 0.154687 * safezoneW;
 			h = 0.066 * safezoneH;
-			colorBackground[] = {0.12,0.14,0.16,0.8};
+			colorBackground[] = DARK_COLOR;
 		};
 		class RscText_1002: RscText
 		{
@@ -30,7 +37,7 @@ class rr_spawnmenu {
 			y = 0.4945 * safezoneH + safezoneY;
 			w = 0.154687 * safezoneW;
 			h = 0.0044 * safezoneH;
-			colorBackground[] = {1,1,1,0.8};
+			colorBackground[] = BRIGHT_COLOR;
 		};
 		class RscText_1003: RscText
 		{
@@ -39,7 +46,7 @@ class rr_spawnmenu {
 			y = 0.5022 * safezoneH + safezoneY;
 			w = 0.154687 * safezoneW;
 			h = 0.132 * safezoneH;
-			colorBackground[] = {0.12,0.14,0.16,0.8};
+			colorBackground[] = DARK_COLOR;
 		};
 		class secondary_description: RscStructuredText
 		{
@@ -48,7 +55,7 @@ class rr_spawnmenu {
 			y = 0.6364 * safezoneH + safezoneY;
 			w = 0.154687 * safezoneW;
 			h = 0.066 * safezoneH;
-			colorBackground[] = {0.12,0.14,0.16,0.8};
+			colorBackground[] = DARK_COLOR;
 		};
 		class weaponSelectionBackground: RscText
 		{
@@ -57,7 +64,7 @@ class rr_spawnmenu {
 			y = 0.291 * safezoneH + safezoneY;
 			w = 0.259844 * safezoneW;
 			h = 0.4114 * safezoneH;
-			colorBackground[] = {0.12,0.14,0.16,0.8};
+			colorBackground[] = DARK_COLOR;
 		};
 		class weaponSelectionListbox: RscListbox
 		{
@@ -66,15 +73,15 @@ class rr_spawnmenu {
 			y = 0.2954 * safezoneH + safezoneY;
 			w = 0.255718 * safezoneW;
 			h = 0.4026 * safezoneH;
-      sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 2)";
-      rowHeight = "1.00 *     (pixelH * pixelGridNoUIScale * 5)";
-      wholeHeight = "1.00 *     (pixelH * pixelGridNoUIScale * 5)";
+			sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 2)";
+			rowHeight = "1.00 *     (pixelH * pixelGridNoUIScale * 5)";
+			wholeHeight = "1.00 *     (pixelH * pixelGridNoUIScale * 5)";
 			colorBackground[] = {0,0,0,0};
 			colorSelect[] = {1, 1, 1, 1};
-	    colorText[] = {1, 1, 1, 0.5};
-	    colorSelect2[] = {1, 1, 1, 1};
-	    colorSelectBackground[] = {0.96,0.65,0.12,0.8};
-	    colorSelectBackground2[] = {0.96,0.65,0.12,0.8};
+			colorText[] = {1, 1, 1, 0.5};
+			colorSelect2[] = {1, 1, 1, 1};
+			colorSelectBackground[] = PRIMARY_COLOR;
+			colorSelectBackground2[] = PRIMARY_COLOR;
 		};
 		class textPrimary: RscStructuredText
 		{
@@ -110,6 +117,7 @@ class rr_spawnmenu {
 		}; */
 		class primaryWeaponSelectionActivator: RscButtonMenu
 		{
+			action = "[] call client_fnc_spawnMenu_displayPrimaryWeaponSelection;";
 			idc = 15;
 			text = ""; //--- ToDo: Localize;
 			x = 0.00706247 * safezoneW + safezoneX;
@@ -117,22 +125,23 @@ class rr_spawnmenu {
 			w = 0.149531 * safezoneW;
 			h = 0.101 * safezoneH;
 			animTextureNormal = "#(argb,8,8,3)color(1,1,1,0)";
-	    animTextureDisabled = "#(argb,8,8,3)color(1,1,1,0)";
-	    animTextureOver = "#(argb,8,8,3)color(1,1,1,0)";
-	    animTextureFocused = "#(argb,8,8,3)color(1,1,1,0)";
-	    animTexturePressed = "#(argb,8,8,3)color(1,1,1,0)";
-	    animTextureDefault = "#(argb,8,8,3)color(1,1,1,0)";
-	    colorBackground[] = {0,0,0,0};
-	    colorBackgroundFocused[] = {1,1,1,0};
-	    colorBackground2[] = {0.75,0.75,0.75,0};
-	    color[] = {1,1,1,0};
-	    colorFocused[] = {0,0,0,0};
-	    color2[] = {0,0,0,0};
-	    colorText[] = {1,1,1,0};
-	    colorDisabled[] = {1,1,1,0};
+			animTextureDisabled = "#(argb,8,8,3)color(1,1,1,0)";
+			animTextureOver = "#(argb,8,8,3)color(1,1,1,0)";
+			animTextureFocused = "#(argb,8,8,3)color(1,1,1,0)";
+			animTexturePressed = "#(argb,8,8,3)color(1,1,1,0)";
+			animTextureDefault = "#(argb,8,8,3)color(1,1,1,0)";
+			colorBackground[] = {0,0,0,0};
+			colorBackgroundFocused[] = {1,1,1,0};
+			colorBackground2[] = {0.75,0.75,0.75,0};
+			color[] = {1,1,1,0};
+			colorFocused[] = {0,0,0,0};
+			color2[] = {0,0,0,0};
+			colorText[] = {1,1,1,0};
+			colorDisabled[] = {1,1,1,0};
 		};
 		class secondaryWeaponSelectionActivator: RscButtonMenu
 		{
+			action = "private _secondaryWeapons = cl_equipConfigurations select {(getText(missionConfigFile >> 'Unlocks' >> player getVariable 'gameSide' >> _x >> 'type')) == 'secondary'};if (count _secondaryWeapons != 0) then {[] call client_fnc_spawnMenu_displaySecondaryWeaponSelection;};";
 			idc = 16;
 			text = ""; //--- ToDo: Localize;
 			x = 0.00706247 * safezoneW + safezoneX;
@@ -140,19 +149,19 @@ class rr_spawnmenu {
 			w = 0.149531 * safezoneW;
 			h = 0.101 * safezoneH;
 			animTextureNormal = "#(argb,8,8,3)color(1,1,1,0)";
-	    animTextureDisabled = "#(argb,8,8,3)color(1,1,1,0)";
-	    animTextureOver = "#(argb,8,8,3)color(1,1,1,0)";
-	    animTextureFocused = "#(argb,8,8,3)color(1,1,1,0)";
-	    animTexturePressed = "#(argb,8,8,3)color(1,1,1,0)";
-	    animTextureDefault = "#(argb,8,8,3)color(1,1,1,0)";
-	    colorBackground[] = {0,0,0,0};
-	    colorBackgroundFocused[] = {1,1,1,0};
-	    colorBackground2[] = {0.75,0.75,0.75,0};
-	    color[] = {1,1,1,0};
-	    colorFocused[] = {0,0,0,0};
-	    color2[] = {0,0,0,0};
-	    colorText[] = {1,1,1,0};
-	    colorDisabled[] = {1,1,1,0};
+			animTextureDisabled = "#(argb,8,8,3)color(1,1,1,0)";
+			animTextureOver = "#(argb,8,8,3)color(1,1,1,0)";
+			animTextureFocused = "#(argb,8,8,3)color(1,1,1,0)";
+			animTexturePressed = "#(argb,8,8,3)color(1,1,1,0)";
+			animTextureDefault = "#(argb,8,8,3)color(1,1,1,0)";
+			colorBackground[] = {0,0,0,0};
+			colorBackgroundFocused[] = {1,1,1,0};
+			colorBackground2[] = {0.75,0.75,0.75,0};
+			color[] = {1,1,1,0};
+			colorFocused[] = {0,0,0,0};
+			color2[] = {0,0,0,0};
+			colorText[] = {1,1,1,0};
+			colorDisabled[] = {1,1,1,0};
 		};
 
 		/* new ui */
@@ -163,7 +172,7 @@ class rr_spawnmenu {
 			y = 0.951 * safezoneH + safezoneY;
 			w = 0.237187 * safezoneW;
 			h = 0.022 * safezoneH;
-			colorBackground[] = {0.12,0.14,0.16,0.8};
+			colorBackground[] = DARK_COLOR;
 		};
 		class RscText_1001573: RscText
 		{
@@ -172,7 +181,7 @@ class rr_spawnmenu {
 			y = 0.929 * safezoneH + safezoneY;
 			w = 0.237187 * safezoneW;
 			h = 0.022 * safezoneH;
-			colorBackground[] = {1,1,1,0.8};
+			colorBackground[] = BRIGHT_COLOR;
 		};
 		class exppoints: RscText
 		{
@@ -193,7 +202,7 @@ class rr_spawnmenu {
 			y = 0.8564 * safezoneH + safezoneY;
 			w = 0.004125 * safezoneW;
 			h = 0.132 * safezoneH;
-			colorBackground[] = {1,1,1,0.8};
+			colorBackground[] = BRIGHT_COLOR;
 		};
 		class RscText_100412213: RscText
 		{
@@ -202,7 +211,7 @@ class rr_spawnmenu {
 			y = 0.8564 * safezoneH + safezoneY;
 			w = 0.134062 * safezoneW;
 			h = 0.132 * safezoneH;
-			colorBackground[] = {0.12,0.14,0.16,0.8};
+			colorBackground[] = DARK_COLOR;
 		};
 		class RscText_1019635243: RscProgress
 		{
@@ -226,6 +235,7 @@ class rr_spawnmenu {
 
     class GroupsButton: RscButtonMenu
     {
+      action = "(findDisplay 5000) createDisplay 'RscDisplayDynamicGroups'";
     	idc = 100;
       size = "1.00 *		 (pixelH * pixelGridNoUIScale * 2.5)";
       font = "PuristaBold";
@@ -236,37 +246,38 @@ class rr_spawnmenu {
     	h = 0.044 * safezoneH;
       color[] = {0,0,0,1};
       colorText[] = {0,0,0,1};
-    	colorBackground[] = {0.96,0.65,0.12,0.8};
+    	colorBackground[] = PRIMARY_COLOR;
     };
 		class RscText_24056776: RscText
 		{
 			idc = 104;
 			text = "WEAPONS SELECTION";
-      x = 0.00499997 * safezoneW + safezoneX;
-      y = 0.247 * safezoneH + safezoneY;
-      w = 0.154687 * safezoneW;
+			x = 0.00499997 * safezoneW + safezoneX;
+			y = 0.247 * safezoneH + safezoneY;
+			w = 0.154687 * safezoneW;
 			h = 0.044 * safezoneH;
-      color[] = {1,1,1,1};
+			color[] = {1,1,1,1};
 			colorText[] = {1,1,1,1};
 			colorBackground[] = {0.84,0.57,0.1,0.8};
-      size = "1.00 *     (pixelH * pixelGridNoUIScale * 1)";
+			size = "1.00 *     (pixelH * pixelGridNoUIScale * 1)";
       /* sizeEx = 0.04; */
 		};
     class customizeClassButton: RscButtonMenu
     {
     	idc = 301;
     	style = "0x02 + 0x0c";
-
+		action = "private _list = (findDisplay 5000) displayCtrl 300; private _class = _list lbData (lbCurSel _list);[_class] call client_fnc_spawnMenu_displayClassCustomization;"
     	text = "CUSTOMIZE CLASS ABILITIES"; //--- ToDo: Localize;
     	x = 0.835115 * safezoneW + safezoneX;
     	y = 0.664757 * safezoneH + safezoneY;
     	w = 0.159844 * safezoneW;
     	h = 0.0219999 * safezoneH;
     	colorText[] = {1,1,1,1};
-    	colorBackground[] = {0.12,0.14,0.16,0.8};
+    	colorBackground[] = DARK_COLOR;
     };
     class deploybutton: RscButtonMenu
     {
+      action = "profileNamespace setVariable ['rr_class_preferred', cl_class];[] call client_fnc_spawnMenu_getClassAndSpawn";
     	idc = 302;
     	color[] = {0,0,0,1};
     	font = "PuristaBold";
@@ -277,12 +288,13 @@ class rr_spawnmenu {
     	w = 0.159844 * safezoneW;
     	h = 0.044 * safezoneH;
     	colorText[] = {0,0,0,1};
-    	colorBackground[] = {0.96,0.65,0.12,0.8};
-      colorDisabled[] = {0.52,0.54,0.56,1};
-      colorBackgroundDisabled[] = {0.12,0.14,0.16,0.8};
+    	colorBackground[] = PRIMARY_COLOR;
+      colorDisabled[] = DISABLED_COLOR;
+      colorBackgroundDisabled[] = DARK_COLOR;
     };
     class AbortButton: RscButtonMenu
     {
+      action = "[] call client_fnc_saveStatistics; endMission 'MatchLeft';";
       idc = 303;
       color[] = {1,1,1,1};
       font = "PuristaBold";
@@ -294,7 +306,7 @@ class rr_spawnmenu {
       w = 0.154556 * safezoneW;
       h = 0.044 * safezoneH;
       colorText[] = {1,1,1,1};
-      colorBackground[] = {0.12,0.14,0.16,0.8};
+      colorBackground[] = DARK_COLOR;
     };
     class timeLeft: RscStructuredText
     {
@@ -317,7 +329,7 @@ class rr_spawnmenu {
     	y = 0.54702 * safezoneH + safezoneY;
     	w = 0.158655 * safezoneW;
     	h = 0.0188079 * safezoneH;
-      colorBackground[] = {0.96,0.65,0.12,0.8};
+      colorBackground[] = PRIMARY_COLOR;
     };
     class Classes: RscListBox
     {
@@ -329,12 +341,12 @@ class rr_spawnmenu {
     	y = 0.565828 * safezoneH + safezoneY;
     	w = 0.159844 * safezoneW;
     	h = 0.099 * safezoneH;
-      colorBackground[] = {0.12,0.14,0.16,0.8};
+      colorBackground[] = DARK_COLOR;
       colorSelect[] = {1, 1, 1, 1};
       colorText[] = {1, 1, 1, 0.5};
       colorSelect2[] = {1, 1, 1, 1};
-      colorSelectBackground[] = {0.96,0.65,0.12,0.8};
-      colorSelectBackground2[] = {0.96,0.65,0.12,0.8};
+      colorSelectBackground[] = PRIMARY_COLOR;
+      colorSelectBackground2[] = PRIMARY_COLOR;
     };
     class RscStructuredText_1105: RscStructuredText
     {
@@ -363,7 +375,7 @@ class rr_spawnmenu {
       y = 0.082 * safezoneH + safezoneY;
       w = 0.190781 * safezoneW;
       h = 0.066 * safezoneH;
-      colorBackground[] = {0.12,0.14,0.16,0.8};
+      colorBackground[] = DARK_COLOR;
     };
     class RscPicture_1201: RscPicture
     {
@@ -410,7 +422,7 @@ class rr_spawnmenu {
     	y = 0.246094 * safezoneH + safezoneY;
     	w = 0.158655 * safezoneW;
     	h = 0.0188079 * safezoneH;
-    	colorBackground[] = {0.96,0.65,0.12,0.8};
+    	colorBackground[] = PRIMARY_COLOR;
     };
     class VehiclesHeader: RscText
     {
@@ -421,7 +433,7 @@ class rr_spawnmenu {
     	y = 0.396557 * safezoneH + safezoneY;
     	w = 0.158655 * safezoneW;
     	h = 0.0188079 * safezoneH;
-    	colorBackground[] = {0.96,0.65,0.12,0.8};
+    	colorBackground[] = PRIMARY_COLOR;
     };
     class Spawnpoints: RscListBox
     {
@@ -433,12 +445,12 @@ class rr_spawnmenu {
       sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 1.75)";
       rowHeight = "0.60 *     (pixelH * pixelGridNoUIScale * 2.5)";
       wholeHeight = "0.60 *     (pixelH * pixelGridNoUIScale * 2.5)";
-      colorBackground[] = {0.12,0.14,0.16,0.8};
+      colorBackground[] = DARK_COLOR;
       colorSelect[] = {1, 1, 1, 1};
       colorText[] = {1, 1, 1, 0.5};
       colorSelect2[] = {1, 1, 1, 1};
-      colorSelectBackground[] = {0.96,0.65,0.12,0.8};
-      colorSelectBackground2[] = {0.96,0.65,0.12,0.8};
+      colorSelectBackground[] = PRIMARY_COLOR;
+      colorSelectBackground2[] = PRIMARY_COLOR;
     };
     class Vehicles: RscListBox
     {
@@ -450,13 +462,57 @@ class rr_spawnmenu {
       sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 1.75)";
       rowHeight = "0.60 *     (pixelH * pixelGridNoUIScale * 2.5)";
       wholeHeight = "0.60 *     (pixelH * pixelGridNoUIScale * 2.5)";
-      colorBackground[] = {0.12,0.14,0.16,0.8};
+      colorBackground[] = DARK_COLOR;
       colorSelect[] = {1, 1, 1, 1};
       colorText[] = {1, 1, 1, 0.5};
       colorSelect2[] = {1, 1, 1, 1};
-      colorSelectBackground[] = {0.96,0.65,0.12,0.8};
-      colorSelectBackground2[] = {0.96,0.65,0.12,0.8};
+      colorSelectBackground[] = PRIMARY_COLOR;
+      colorSelectBackground2[] = PRIMARY_COLOR;
     };
+    class switch_side: RscButtonMenu
+    {
+		idc = 105;
+		size = "1.00 *		 (pixelH * pixelGridNoUIScale * 2.5)";
+		font = "PuristaBold";
+		color[] = {0,0,0,1};
+		action = "[] spawn client_fnc_sideSwitch;";
+		text = "SWITCH SIDE"; //--- ToDo: Localize;
+		x = 0.835011 * safezoneW + safezoneX;
+		y = 0.118201 * safezoneH + safezoneY;
+		w = 0.111964 * safezoneW;
+		h = 0.0470196 * safezoneH;
+		colorText[] = {0,0,0,1};
+		colorBackground[] = PRIMARY_COLOR;
+		colorDisabled[] = DISABLED_COLOR;
+		colorBackgroundDisabled[] = DARK_COLOR;
+    };
+    class enemy_flag: RscPicture
+    {
+    	idc = 1205;
+    	text = "";
+      x = 0.94962 * safezoneW + safezoneX;
+    	y = 0.118201 * safezoneH + safezoneY;
+    	w = 0.0440804 * safezoneW;
+    	h = 0.0470196 * safezoneH;
+    };
+	class admin_area: RscButtonMenu
+	{
+		action = "[] call client_fnc_displayAdminArea";
+		idc = 1301;
+		size = "1.00 *		 (pixelH * pixelGridNoUIScale * 2.5)";
+		font = "PuristaBold";
+		color[] = {0,0,0,1};
+
+		text = "ADMIN AREA"; //--- ToDo: Localize;
+		x = 0.835011 * safezoneW + safezoneX;
+		y = 0.0693003 * safezoneH + safezoneY;
+		w = 0.159844 * safezoneW;
+		h = 0.044 * safezoneH;
+		colorText[] = {0,0,0,1};
+		colorBackground[] = PRIMARY_COLOR;
+		colorDisabled[] = DISABLED_COLOR;
+		colorBackgroundDisabled[] = DARK_COLOR;
+	};
   };
 };
 
@@ -473,7 +529,7 @@ class rr_info_box {
 			y = 0.357 * safezoneH + safezoneY;
 			w = 0.309375 * safezoneW;
 			h = 0.286 * safezoneH;
-			colorBackground[] = {0.12,0.14,0.16,0.8};
+			colorBackground[] = DARK_COLOR;
 		};
 		class RscText_1001: RscText
 		{
@@ -529,7 +585,7 @@ class rr_class_customization {
 			y = 0.335 * safezoneH + safezoneY;
 			w = 0.4125 * safezoneW;
 			h = 0.33 * safezoneH;
-			colorBackground[] = {0.12,0.14,0.16,0.8};
+			colorBackground[] = DARK_COLOR;
 		};
 		class RscText_1001: RscText
 		{
@@ -575,8 +631,8 @@ class rr_class_customization {
 			colorSelect[] = {1, 1, 1, 1};
 		    colorText[] = {1, 1, 1, 0.5};
 		    colorSelect2[] = {1, 1, 1, 1};
-		    colorSelectBackground[] = {0.96,0.65,0.12,0.8};
-		    colorSelectBackground2[] = {0.96,0.65,0.12,0.8};
+		    colorSelectBackground[] = PRIMARY_COLOR;
+		    colorSelectBackground2[] = PRIMARY_COLOR;
 		};
 		class lbSquadPerks: RscListbox
 		{
@@ -593,8 +649,8 @@ class rr_class_customization {
 			colorSelect[] = {1, 1, 1, 1};
 		    colorText[] = {1, 1, 1, 0.5};
 		    colorSelect2[] = {1, 1, 1, 1};
-		    colorSelectBackground[] = {0.96,0.65,0.12,0.8};
-		    colorSelectBackground2[] = {0.96,0.65,0.12,0.8};
+		    colorSelectBackground[] = PRIMARY_COLOR;
+		    colorSelectBackground2[] = PRIMARY_COLOR;
 		};
 		class RscButtonMenu_2400: RscButtonMenu
 		{
@@ -604,7 +660,309 @@ class rr_class_customization {
 			y = 0.6672 * safezoneH + safezoneY;
 			w = 0.0825 * safezoneW;
 			h = 0.022 * safezoneH;
+			colorBackground[] = DARK_COLOR;
+		};
+	};
+};
+
+class AdminAreaLB: RscListBox {
+	rowHeight = "1.00 *		 (pixelH * pixelGridNoUIScale * 1.5)";
+	wholeHeight = "1.00 *		 (pixelH * pixelGridNoUIScale * 1.5)";
+	sizeEx = "1.00 * pixelH * pixelGridNoUIScale * 1.4";
+	colorSelect[] = BRIGHT_COLOR;
+	colorText[] = {1, 1, 1, 0.5};
+	colorSelect2[] = BRIGHT_COLOR;
+	colorSelectBackground[] = PRIMARY_COLOR;
+	colorSelectBackground2[] = PRIMARY_COLOR;
+	period = 1;
+};
+
+class PlayerSelectorLB: AdminAreaLB {
+	onLBSelChanged = "cl_admin_player_sel = ((_this select 0) lbData (_this select 1)) call BIS_fnc_objectFromNetId;";
+	onSetFocus = "params ['_ctrl']; private _display = ctrlParent _ctrl; (_display displayCtrl ([1500,1501] select (ctrlIDC _ctrl == 1500))) lbSetCurSel -1;"
+};
+
+class rr_modal {
+	idd = 8000;
+	movingEnable = 0;
+	enableSimulation = 1;
+	duration = 999999;
+	onUnload = "params ['_display', '_exitCode'];if (_exitCode != 1) exitWith {};[ctrlText 1400] call (uiNamespace getVariable ['rr_modal_callback', {}])";
+	class controls {
+		class RscText_1000: RscText
+		{
+			idc = 1000;
+
+			x = 0.323679 * safezoneW + safezoneX;
+			y = 0.415365 * safezoneH + safezoneY;
+			w = 0.352643 * safezoneW;
+			h = 0.131655 * safezoneH;
 			colorBackground[] = {0.12,0.14,0.16,0.8};
+		};
+		class RscText_1001: RscText
+		{
+			idc = 1001;
+
+			x = 0.323679 * safezoneW + safezoneX;
+			y = 0.415365 * safezoneH + safezoneY;
+			w = 0.352643 * safezoneW;
+			h = 0.0282118 * safezoneH;
+			colorBackground[] = {0.96,0.65,0.12,0.8};
+		};
+		class RscText_1002: RscText
+		{
+			idc = 1002;
+
+			text = "TITLE"; //--- ToDo: Localize;
+			x = 0.328087 * safezoneW + safezoneX;
+			y = 0.415365 * safezoneH + safezoneY;
+			w = 0.343827 * safezoneW;
+			h = 0.0282118 * safezoneH;
+		};
+		class RscButtonMenuOK_2600: RscButtonMenu
+		{
+			idc = 1;
+
+			text = "CONFIRM"; //--- ToDo: Localize;
+			x = 0.610201 * safezoneW + safezoneX;
+			y = 0.54702 * safezoneH + safezoneY;
+			w = 0.0661205 * safezoneW;
+			h = 0.0188079 * safezoneH;
+			colorText[] = {1,1,1,1};
+			colorBackground[] = {0.96,0.65,0.12,0.8};
+		};
+		class RscButtonMenuCancel_2700: RscButtonMenu
+		{
+			idc = 2;
+
+			text = "CANCEL"; //--- ToDo: Localize;
+			x = 0.54408 * safezoneW + safezoneX;
+			y = 0.54702 * safezoneH + safezoneY;
+			w = 0.0661205 * safezoneW;
+			h = 0.0188079 * safezoneH;
+			colorText[] = {1,1,1,1};
+			colorBackground[] = {0.12,0.14,0.16,0.8};
+		};
+		class RscEdit_1400: RscEdit
+		{
+			idc = 1400;
+			text = "";
+			maxChars = 256;
+			x = 0.328087 * safezoneW + safezoneX;
+			y = 0.471788 * safezoneH + safezoneY;
+			w = 0.343827 * safezoneW;
+			h = 0.0658275 * safezoneH;
+			colorBackground[] = {1,1,1,0.1};
+		};
+		class RscText_1003: RscText
+		{
+			idc = 1003;
+
+			text = "Description"; //--- ToDo: Localize;
+			x = 0.328087 * safezoneW + safezoneX;
+			y = 0.443576 * safezoneH + safezoneY;
+			w = 0.343827 * safezoneW;
+			h = 0.0282118 * safezoneH;
+		};
+	};
+};
+
+class rr_admin_area {
+    idd = 7000;
+    movingEnable = 0;
+    enableSimulation = 1;
+    duration = 999999;
+	onLoad = "_this call client_fnc_populateAdminArea;"
+	class controls {
+		class RscText_1000: RscText
+		{
+			idc = -1;
+
+			x = 0.27519 * safezoneW + safezoneX;
+			y = 0.264902 * safezoneH + safezoneY;
+			w = 0.44962 * safezoneW;
+			h = 0.329137 * safezoneH;
+			colorBackground[] = {0.12,0.14,0.16,0.8};
+		};
+		class RscText_1001: RscText
+		{
+			idc = -1;
+
+			x = 0.27519 * safezoneW + safezoneX;
+			y = 0.264902 * safezoneH + safezoneY;
+			w = 0.44962 * safezoneW;
+			h = 0.0282118 * safezoneH;
+			colorBackground[] = {0.96,0.65,0.12,0.8};
+		};
+		class RscText_1002: RscText
+		{
+			idc = -1;
+			shadow = 2;
+
+			text = "ADMIN AREA"; //--- ToDo: Localize;
+			x = 0.27519 * safezoneW + safezoneX;
+			y = 0.264902 * safezoneH + safezoneY;
+			w = 0.211586 * safezoneW;
+			h = 0.0282118 * safezoneH;
+			sizeEx = "1.00 * pixelH * pixelGridNoUIScale * 1.5";
+		};
+		class RscText_1003: RscText
+		{
+			idc = 1001;
+			shadow = 2;
+			style = 2;
+
+			text = "Attackers"; //--- ToDo: Localize;
+			x = 0.279598 * safezoneW + safezoneX;
+			y = 0.302518 * safezoneH + safezoneY;
+			w = 0.105793 * safezoneW;
+			h = 0.0188079 * safezoneH;
+		};
+		class RscButtonMenu_2400: RscButtonMenu
+		{
+			idc = 1;
+			text = "RETURN"; //--- ToDo: Localize;
+			x = 0.641057 * safezoneW + safezoneX;
+			y = 0.594039 * safezoneH + safezoneY;
+			w = 0.0837527 * safezoneW;
+			h = 0.0206886 * safezoneH;
+			colorText[] = {1,1,1,1};
+			colorBackground[] = {0.12,0.14,0.16,0.8};
+		};
+		class RscText_1006: RscText
+		{
+			idc = 1002;
+			shadow = 2;
+			style = 2;
+
+			text = "Defenders"; //--- ToDo: Localize;
+			x = 0.425063 * safezoneW + safezoneX;
+			y = 0.302518 * safezoneH + safezoneY;
+			w = 0.105793 * safezoneW;
+			h = 0.0188079 * safezoneH;
+		};
+		/* class RscButtonMenu_1600: RscButtonMenu
+		{
+			idc = 1600;
+
+			text = "&lt;"; //--- ToDo: Localize;
+			x = 0.389799 * safezoneW + safezoneX;
+			y = 0.434173 * safezoneH + safezoneY;
+			w = 0.0147863 * safezoneW;
+			h = 0.0282118 * safezoneH;
+			colorText[] = {1,1,1,1};
+			colorBackground[] = {0.12,0.14,0.16,0.8};
+		};
+		class RscButtonMenu_1601: RscButtonMenu
+		{
+			idc = 1601;
+
+			text = "&gt;"; //--- ToDo: Localize;
+			x = 0.40655 * safezoneW + safezoneX;
+			y = 0.434173 * safezoneH + safezoneY;
+			w = 0.0147863 * safezoneW;
+			h = 0.0282118 * safezoneH;
+			colorText[] = {1,1,1,1};
+			colorBackground[] = {0.12,0.14,0.16,0.8};
+		}; */
+		class RscText_1004: RscText
+		{
+			idc = 1000;
+			shadow = 2;
+
+			text = "Next map:"; //--- ToDo: Localize;
+			x = 0.539672 * safezoneW + safezoneX;
+			y = 0.302518 * safezoneH + safezoneY;
+			w = 0.158689 * safezoneW;
+			h = 0.0188079 * safezoneH;
+		};
+		class map_picker: RscButtonMenu
+		{
+			idc = 100;
+			action = "[cl_admin_sel_map] remoteExecCall ['server_fnc_selectNextMap',2]; private _admin = findDisplay 7000; private _list = _admin displayCtrl 1502; (_admin displayCtrl 1000) ctrlSetText format ['Next map: %1', _list lbText (lbCurSel _list)]; false";
+			text = "CHOOSE MAP"; //--- ToDo: Localize;
+			x = 0.539672 * safezoneW + safezoneX;
+			y = 0.437934 * safezoneH + safezoneY;
+			w = 0.158689 * safezoneW;
+			h = 0.0206886 * safezoneH;
+			colorText[] = {1,1,1,1};
+			colorBackground[] = {0.12,0.14,0.16,0.8};
+		};
+		class kick_player: RscButtonMenu
+		{
+			idc = 101;
+
+			text = "KICK PLAYER"; //--- ToDo: Localize;
+			x = 0.592569 * safezoneW + safezoneX;
+			y = 0.556424 * safezoneH + safezoneY;
+			w = 0.105793 * safezoneW;
+			h = 0.0206886 * safezoneH;
+			colorText[] = {1,1,1,1};
+			colorBackground[] = {0.12,0.14,0.16,0.8};
+			action = "[] call admin_fnc_kickPlayer";
+		};
+		class RscButtonMenu_2403: RscButtonMenu
+		{
+			idc = 102;
+
+			text = "SWITCH PLAYER"; //--- ToDo: Localize;
+			x = 0.592569 * safezoneW + safezoneX;
+			y = 0.5 * safezoneH + safezoneY;
+			w = 0.105793 * safezoneW;
+			h = 0.0206886 * safezoneH;
+			colorText[] = {1,1,1,1};
+			colorBackground[] = {0.12,0.14,0.16,0.8};
+			action = "[] call admin_fnc_switchPlayer";
+		};
+		class kill_player: RscButtonMenu
+		{
+			idc = 103;
+
+			text = "KILL PLAYER"; //--- ToDo: Localize;
+			x = 0.592569 * safezoneW + safezoneX;
+			y = 0.528212 * safezoneH + safezoneY;
+			w = 0.105793 * safezoneW;
+			h = 0.0206886 * safezoneH;
+			colorText[] = {1,1,1,1};
+			colorBackground[] = {0.12,0.14,0.16,0.8};
+			action = "[] call admin_fnc_killPlayer";
+		};
+		class RscButtonMenu_2405: RscButtonMenu
+		{
+			idc = 1;
+			text = "SPECTATOR MODE"; //--- ToDo: Localize;
+			x = 0.592569 * safezoneW + safezoneX;
+			y = 0.471788 * safezoneH + safezoneY;
+			w = 0.105793 * safezoneW;
+			h = 0.0206886 * safezoneH;
+			colorText[] = {1,1,1,1};
+			colorBackground[] = {0.12,0.14,0.16,0.8};
+			action = "[] spawn admin_fnc_spectate";
+		};
+		class attackers_list: PlayerSelectorLB
+		{
+			idc = 1500;
+			x = 0.279598 * safezoneW + safezoneX;
+			y = 0.330729 * safezoneH + safezoneY;
+			w = 0.105793 * safezoneW;
+			h = 0.253906 * safezoneH;
+		};
+		class defenders_list: PlayerSelectorLB
+		{
+			idc = 1501;
+			x = 0.425063 * safezoneW + safezoneX;
+			y = 0.330729 * safezoneH + safezoneY;
+			w = 0.105793 * safezoneW;
+			h = 0.253906 * safezoneH;
+		};
+		class map_list: AdminAreaLB
+		{
+			idc = 1502;
+			x = 0.539672 * safezoneW + safezoneX;
+			y = 0.328849 * safezoneH + safezoneY;
+			w = 0.158689 * safezoneW;
+			h = 0.103443 * safezoneH;
+			onLBSelChanged = "params ['_ctrl', '_idx']; cl_admin_sel_map = _ctrl lbData _idx;";
 		};
 	};
 };

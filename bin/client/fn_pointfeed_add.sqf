@@ -8,6 +8,7 @@ scriptName "fn_pointfeed_add";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_pointfeed_add.sqf"
+#include "..\utils.h"
 if (isServer && !hasInterface) exitWith {};
 
 private _toAdd = param[0,"",[""]];
@@ -35,9 +36,7 @@ private _finalText = "<t align='right' size='1.4' shadow='2' font='PuristaMedium
 ((uiNamespace getVariable ["rr_pointfeed",displayNull]) displayCtrl 0) ctrlSetStructuredText parseText _finalText;
 ((uiNamespace getVariable ["rr_pointfeed",displayNull]) displayCtrl 1) ctrlSetStructuredText parseText format["<t align='left' size='1.65' shadow='2' font='PuristaBold' color='#FFFFFF'>%1</t>", round cl_pointfeed_points];
 
-if (!isNil "cl_pointfeed_removalThread") then {
-	terminate cl_pointfeed_removalThread;
-};
+TERMINATE_SCRIPT(cl_pointfeed_removalThread);
 
 cl_pointfeed_removalThread = [] spawn {
 	uiSleep 8;

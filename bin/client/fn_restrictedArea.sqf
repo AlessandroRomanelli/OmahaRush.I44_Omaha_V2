@@ -31,7 +31,7 @@ for "_i" from _OOBTimeout to 0 step -1 do {
 		50 cutRsc ["rr_timeout","PLAIN", 0.25];
 		private _display = uiNamespace getVariable ["timeout", displayNull];
 		(_display displayCtrl 0) ctrlSetStructuredText parseText format ["<t size='1.5' align='center' shadow='2' font='PuristaMedium' color='#ff0000'>%1</t>", _message];
-		if ((vehicle player) inArea playArea) exitWith {};
+		if ((vehicle player) inArea playArea || {player getVariable ["isAlive", true] && cl_inSpawnMenu}) exitWith {};
 		uiSleep 1;
 		if (_i == 0) then {
 			forceRespawn player;

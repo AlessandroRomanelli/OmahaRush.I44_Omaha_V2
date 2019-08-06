@@ -16,7 +16,7 @@ private _fnc_getColorForObj = {
 	private _obj = param [0, objNull, [objNull]];
 	if (isNull _obj) exitWith {"#FFFFFF"};
 	private _color = "";
-	private _sameSide = ((effectiveCommander vehicle _obj) getVariable ["side",civilian]) isEqualTo playerSide;
+	private _sameSide = ((effectiveCommander vehicle _obj) getVariable ["side", sideUnknown]) isEqualTo (player getVariable ["side", sideUnknown]);
 	private _sameGroup = (group _obj) isEqualTo (group player);
 	if (_sameSide) then {
 		if (_sameGroup) then {

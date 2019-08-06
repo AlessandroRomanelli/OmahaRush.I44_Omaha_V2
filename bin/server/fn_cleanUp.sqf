@@ -10,6 +10,7 @@ scriptName "fn_cleanUp";
 #define __filename "fn_cleanUp.sqf"
 
 /* private _allObjects = (allMissionObjects "Man") + (allMissionObjects "GroundWeaponHolder") + (allMissionObjects "LandVehicle") + (allMissionObjects "Air") + (allMissionObjects "WeaponHolder") + (allMissionObjects "LIB_GerRadio") + (allMissionObjects "LIB_Static_opelblitz_radio") + (allMissionObjects "LIB_SovRadio"); */
+
 private _allObjects = [];
 
 {
@@ -22,6 +23,15 @@ private _allObjects = [];
 		 _allObjects pushBack _x
 	 }
  } forEach allMissionObjects "";
+
+{
+	if (!isNil _x) then {
+		_allObjects pushBackUnique (missionNamespace getVariable [_x, objNull]);
+	};
+} forEach ["sv_stage1_obj", "sv_stage2_obj", "sv_stage3_obj", "sv_stage4_obj"];
+
+
+ _allObjects append (allMissionObjects "#crater");
 
 // If we have vehicles, delete them aswell
 if (!isNil "sv_persistentVehicles") then {

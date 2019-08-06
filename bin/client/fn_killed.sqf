@@ -1,12 +1,13 @@
 scriptName "fn_killed";
 /*--------------------------------------------------------------------
-	Author: Maverick (ofpectag: MAV)
+	Author: A.Roman
     File: fn_killed.sqf
 
-	<Maverick Applications>
-    Written by Maverick Applications (www.maverick-apps.de)
+
+    Written by A.Roman
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
+#include "..\utils.h"
 #define __filename "fn_killed.sqf"
 #define CAM_DIST 2
 #define pm_random(x) random [-x, 0, x]
@@ -14,9 +15,7 @@ if (isServer && !hasInterface) exitWith {};
 
 params [["_killer", objNull, [objNull]]];
 
-if (!isNil "cl_killcam_thread") then {
-	terminate cl_killcam_thread;
-};
+TERMINATE_SCRIPT(cl_killcam_thread);
 
 cl_killcam_thread = [_killer] spawn {
 	params [["_killer", objNull, [objNull]]];

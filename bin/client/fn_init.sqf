@@ -7,6 +7,7 @@ scriptName "fn_init";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_init.sqf"
+#include "..\utils.h"
 if (isServer && !hasInterface) exitWith {};
 
 // Did the init run already?
@@ -21,13 +22,8 @@ waitUntil {(!isNull (findDisplay 46)) AND (isNull (findDisplay 101)) AND (!isNul
 enableSaving [false, false];
 enableRadio false;
 
-// Check if this player should be able to join the team
-[] spawn client_fnc_instantTeamBalanceCheck;
-
 // Wait for the server to be ready
-if (isNil "sv_serverReady") then {
-	sv_serverReady = false;
-};
+VARIABLE_DEFAULT(sv_serverReady,false);
 
 waitUntil {sv_serverReady && !isNil "sv_usingDatabase"};
 
@@ -39,18 +35,18 @@ disableRemoteSensors true;
 // Player name
 player setVariable ["name", name player, true];
 
-// Time played to make sure the auto team balancer knows our jointime
-player setVariable ["joinServerTime", serverTime, true];
+[player] remoteExec ["server_fnc_assignSide", 2];
+waitUntil {side player != civilian};
 
 // Used for determining if a player is on our side since side _x returns civilian if someone is dead
-player setVariable ["side", playerSide, true];
+player setVariable ["side", side player, true];
 
 player setVariable ["gameSide", (
 	[
 		["defenders", "attackers"],
 		["attackers", "defenders"]
 	] select (sv_gameCycle % 2 == 0)
-) select (playerSide == WEST), true];
+) select (side player == WEST), true];
 
 cl_statisticsLoaded = false;
 [] call client_fnc_loadStatistics;

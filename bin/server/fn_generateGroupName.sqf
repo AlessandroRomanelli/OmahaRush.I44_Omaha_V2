@@ -7,15 +7,16 @@ scriptName "fn_generateGroupName";
   	You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_generateGroupName.sqf"
+#include "..\utils.h"
 
 params ["_group","_faction"];
-
-waitUntil {isNil "sv_grpName_lock" || {!sv_grpName_lock}};
-sv_grpName_lock = true;
 
 private _usNames =  ["Able","Baker","Charlie","Dog","Easy"];
 private _gerNames = ["Anton","Bertha","Casar","Dora","Emil"];
 private _sovNames = ["Alexey","Boris","Maxim","Dmitry","Filipp"];
+
+MUTEX_INIT(sv_grpName_lock);
+MUTEX_LOCK(sv_grpName_lock);
 
 {
   if (isNil _x) then {
@@ -45,5 +46,6 @@ if (_faction == "SOV") then {
 
 _group setGroupIdGlobal [_currentName];
 
-sv_grpName_lock = false;
+MUTEX_UNLOCK(sv_grpName_lock);
+
 true

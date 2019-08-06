@@ -7,6 +7,7 @@ scriptName "fn_waitForServer";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_waitForServer.sqf"
+#include "..\utils.h"
 
 #define HEX_GREEN "#00FF00"
 #define HEX_YELLOW "#FFFF00"
@@ -19,17 +20,14 @@ player enableSimulation false;
 // Apparently the server isnt done selecting a map yet
 60000 cutRsc ["waitingForPlayers", "PLAIN"];
 
-if (!isNil "cl_waitingThread") then {
-    removeMissionEventHandler["EachFrame", cl_waitingThread];
-};
-
+REMOVE_EXISTING_MEH("EachFrame", cl_waitingThread);
 cl_waitingThread = addMissionEventHandler["EachFrame", {
   private _display = uiNamespace getVariable ["waitingForPlayers", displayNull];
   private _title = _display displayCtrl 1100;
   private _connectedCtrl = _display displayCtrl 1101;
   private _readyCtrl = _display displayCtrl 1102;
   private _required = _display displayCtrl 1103;
-  private _players = playersNumber west + playersNumber independent;
+  private _players = (WEST countSide allPlayers) + (EAST countSide allPlayers);
   private _reqPlayers = ["MinPlayers", 4] call BIS_fnc_getParamValue;
   private _readyPlayers = {_x getVariable ["playerInitOK", false]} count allPlayers;
   private "_color";
