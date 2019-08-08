@@ -16,7 +16,7 @@ private _text = param[0,"",[""]];
 if (_text isEqualTo "") exitWith {};
 
 // Display error rsc
-35 cutRsc ["rr_errorText","PLAIN"];
+60002 cutRsc ["rr_errorText","PLAIN"];
 
 private _display = uiNamespace getVariable ["errorText", displayNull];
 
