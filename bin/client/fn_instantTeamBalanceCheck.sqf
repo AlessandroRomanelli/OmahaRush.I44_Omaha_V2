@@ -8,13 +8,14 @@ scriptName "fn_instantTeamBalanceCheck";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_instantTeamBalanceCheck.sqf"
+#include "..\utils.h"
 
 // Made obsolete by server-side assignment
 if (true) exitWith {};
 
 // Is this even enabled
-private _enableATB = ["AutoTeamBalancer", 1] call BIS_fnc_getParamValue;
-if (_enableATB != 1) exitWith {};
+VARIABLE_DEFAULT(sv_setting_AutoTeamBalancer, 1);
+if (sv_setting_AutoTeamBalancer != 1) exitWith {};
 
 // Check if server has been online for 300 seconds already
 if (serverTime < 300) exitWith {};
@@ -30,7 +31,8 @@ diag_log format["DEBUG: TeamBalanceCheck.. Attackers' count: %1, Defenders' coun
 private _diff = _attackersTeam - _defendersTeam;
 private _sideWithMoreUnits = if (_attackersTeam >= _defendersTeam) then {_attackersSide} else {_defendersSide};
 
-private _maxDiff = ["AutoTeamBalanceAtDifference", 3] call BIS_fnc_getParamValue;
+VARIABLE_DEFAULT(sv_setting_AutoTeamBalanceAtDifference, 3);
+private _maxDiff = sv_setting_AutoTeamBalanceAtDifference;
 private _ending = ["teamFullWEST", "teamFullEAST"] select ((player getVariable ["side", sideUnknown]) isEqualTo WEST);
 
 if (((player getVariable ["side", sideUnknown]) isEqualTo _sideWithMoreUnits) && (_diff < 0 || _diff > _maxDiff)) then {

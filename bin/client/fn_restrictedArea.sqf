@@ -7,13 +7,14 @@ scriptName "fn_restrictedArea";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_restrictedArea.sqf"
-
+#include "..\utils.h"
 player setVariable ["entryTime", diag_tickTime];
 
 
 private _safeSpawnDistance = getNumber(missionConfigFile >> "MapSettings" >> sv_mapSize >> "safeSpawnDistance");
 private _isFallingBack = player getVariable ["isFallingBack", false];
-private _OOBTimeout = [["OutOfBoundsTime", 20] call BIS_fnc_getParamValue, [] call client_fnc_getFallbackTime] select _isFallingBack;
+VARIABLE_DEFAULT(sv_setting_OutOfBoundsTime,20);
+private _OOBTimeout = [sv_setting_OutOfBoundsTime, [] call client_fnc_getFallbackTime] select _isFallingBack;
 
 "ColorCorrections" ppEffectEnable true;
 "ColorCorrections" ppEffectAdjust [1,1,0,[0,0,0,0.5],[1,1,1,0],[0.299,0.587,0.114,0]];

@@ -8,6 +8,7 @@ scriptName "fn_resetPlayer";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_resetPlayer.sqf"
+#include "..\utils.h"
 if (isServer && !hasInterface) exitWith {};
 
 disableSerialization;
@@ -17,7 +18,6 @@ if (missionNamespace getVariable ["cl_resetPlayerRunning", false]) exitWith {};
 cl_resetPlayerRunning = true;
 
 // Start a countdown until the next match starts
-private _time = ["LobbyTime", 60] call BIS_fnc_getParamValue;
 
 // Enable global voice
 0 enableChannel [true, false];
@@ -73,15 +73,17 @@ if (true) then {
 	} forEach (_data select 3);
 };
 
+VARIABLE_DEFAULT(sv_setting_RotationsPerMatch, 2);
 
 // If we have OnTenRestart enabled, WARN THE PLAYER
-if ((sv_gameCycle >= ((["RotationsPerMatch", 2] call BIS_fnc_getParamValue) - 1)) && sv_dedicatedEnvironment) then {
+if ((sv_gameCycle >= (sv_setting_RotationsPerMatch - 1)) && sv_dedicatedEnvironment) then {
 	(_d displayCtrl 0) ctrlSetStructuredText parseText "<t size='2' color='#FE4629' shadow='2' align='center'>THE SERVER IS CHANGING MAP</t>";
 	uiSleep 30;
 } else {
 // While loop
-private _restartTime = diag_tickTime + _time;
-private _timeLeft = _time;
+VARIABLE_DEFAULT(sv_setting_LobbyTime, 60);
+private _restartTime = diag_tickTime + sv_setting_LobbyTime;
+private _timeLeft = sv_setting_LobbyTime;
 	while {_timeLeft > 0 && (sv_gameStatus in [3,4])} do {
 		uiSleep 1;
 		_timeLeft = round (_restartTime - diag_tickTime);

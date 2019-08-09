@@ -7,6 +7,7 @@ scriptName "fn_spawnPlayer";
     You're not allowed to use this file without permission from the authors!
 --------------------------------------------------------------------*/
 #define __filename "fn_spawnPlayer.sqf"
+#include "..\utils.h"
 if (isServer && !hasInterface) exitWith {};
 
 if (cl_equipClassnames select 0 == "") exitWith {
@@ -17,7 +18,8 @@ if !((cl_equipClassnames select 0) in cl_equipConfigurations) exitWith {
 	 ["YOU HAVE SELECTED AN INVALID WEAPON"] call client_fnc_displayError;
 };
 
-private _matchTime = (["RoundTime", 15] call BIS_fnc_getParamValue)*60;
+VARIABLE_DEFAULT(sv_setting_RoundTime, 15);
+private _matchTime = sv_setting_RoundTime*60;
 if (sv_matchTime > _matchTime && (player getVariable ["gameSide", "attackers"]) isEqualTo "attackers") exitWith {
 	[format["YOU ARE NOT ALLOWED TO SPAWN JUST YET! %1S LEFT"], sv_matchTime - _matchTime] call client_fnc_displayError;
 };

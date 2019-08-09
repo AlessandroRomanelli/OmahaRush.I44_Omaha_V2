@@ -8,6 +8,8 @@ scriptName "fn_spawnMenu_loadClasses";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_spawnMenu_loadClasses.sqf"
+#include "..\utils.h"
+
 if (isServer && !hasInterface) exitWith {};
 
 disableSerialization;
@@ -18,13 +20,14 @@ private _isRefreshing = param[0, false, [false]];
 private _d = findDisplay 5000;
 private _l = _d displayCtrl 300;
 
-private _classRestrictionEnabled = (["ClassLimits", 1] call BIS_fnc_getParamValue) isEqualTo 1;
+VARIABLE_DEFAULT(sv_setting_ClassLimits, 1);
+private _classRestrictionEnabled = sv_setting_ClassLimits == 1;
 
 private _countClassPlayers = {
 	private _class = param[0, "", [""]];
 	private _sameSidePlayers = allPlayers select {if ((player getVariable ["side", sideUnknown]) isEqualTo (_x getVariable ["side", sideUnknown])) then {true}};
 	private _sameClassPlayers = _sameSidePlayers select {if (_x getVariable ["class", "medic"] isEqualTo _class) then {true}};
-	private _classLimit = ((format ["ClassLimits_%1", _class]) call bis_fnc_getParamValue)/10;
+	private _classLimit = (missionNamespace getVariable [format ["sv_setting_ClassLimits_%1", _class], 10])/10;
 	private _maxClassPlayers = if(_classLimit != 1) then {floor (((count allPlayers)/2) * _classLimit)} else {-1};
 	[count _sameClassPlayers, _maxClassPlayers, player in _sameClassPlayers];
 };

@@ -55,12 +55,13 @@ cl_killcam_thread = [_killer] spawn {
 		[] call _fnc_zoomAway;
 	};
 
-	if ((["FoeStatsEnabled", 1] call BIS_fnc_getParamValue) == 1) then {
+	VARIABLE_DEFAULT(sv_setting_FoeStatsEnabled, 1);
+	if (sv_setting_FoeStatsEnabled == 1) then {
 		[_killer] spawn client_fnc_displayKillcam;
 	};
 
-
-	if ((["KillcamEnabled", 1] call BIS_fnc_getParamValue) == 0) then {
+	VARIABLE_DEFAULT(sv_setting_KillcamEnabled, 1);
+	if (sv_setting_KillcamEnabled == 0) then {
 		[] call _fnc_zoomAway;
 	};
 

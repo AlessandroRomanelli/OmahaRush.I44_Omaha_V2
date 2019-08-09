@@ -12,15 +12,13 @@ scriptName "fn_engine";
 
 ["Server engine has been started"] call server_fnc_log;
 
-private _fallBackTime = ["InitialFallBack", 60] call BIS_fnc_getParamValue;
-
 // Server is now ready
 sv_serverReady = true;
 [["sv_serverReady"]] call server_fnc_updateVars;
 
 // Persistent weather
-private _mapWeather = ["MapWeather", 0] call BIS_fnc_getParamValue;
-if (_mapWeather == 0) then {
+VARIABLE_DEFAULT(sv_setting_MapWeather, 0);
+if (sv_setting_MapWeather == 0) then {
 	[] call server_fnc_loadPersistentWeather;
 	["Persistent weather loaded"] call server_fnc_log;
 };
@@ -63,6 +61,9 @@ sv_east_group deleteGroupWhenEmpty false;
 sv_west_group = createGroup WEST;
 sv_west_group deleteGroupWhenEmpty false;
 
+VARIABLE_DEFAULT(sv_setting_InitialFallback, 60);
+VARIABLE_DEFAULT(sv_setting_AutoTeamBalancer, 1);
+
 // Server engine loop
 while {true} do {
 	// Kill old threads
@@ -71,6 +72,7 @@ while {true} do {
 	TERMINATE_SCRIPT(sv_matchTimer_thread);
 	TERMINATE_SCRIPT(sv_autoTeamBalancer_thread);
 	["Old threads have been killed"] call server_fnc_log;
+	[] call server_fnc_initParams;
 
 	[] call server_fnc_waitForPlayers;
 
@@ -87,7 +89,7 @@ while {true} do {
 
 
 	// Load weather
-	if (_mapWeather == 1) then {
+	if (sv_setting_MapWeather == 1) then {
 		[] call server_fnc_loadWeather;
 		["Weather has been loaded"] call server_fnc_log;
 	};
@@ -104,7 +106,7 @@ while {true} do {
 	["Tickets have been reset"] call server_fnc_log;
 
 	// Make a new matchtimer with matchStart param true so it gets broadcasted to all clients
-	sv_matchTimer_thread = [true, _fallBackTime] spawn server_fnc_matchTimer;
+	sv_matchTimer_thread = [true, sv_setting_InitialFallback] spawn server_fnc_matchTimer;
 	["Matchtimer has been started"] call server_fnc_log;
 
 	// Map has been selected, broadcast
@@ -122,7 +124,7 @@ while {true} do {
 	["Stage vehicles manager has been started"] call server_fnc_log;
 
 	// Start autobalancer (will auto close when the match ends)
-	if ((["AutoTeamBalancer", 1] call BIS_fnc_getParamValue) == 1) then {
+	if (sv_setting_AutoTeamBalancer == 1) then {
 		sv_autoTeamBalancer_thread = [] spawn server_fnc_autoTeamBalancer;
 	};
 
@@ -151,11 +153,12 @@ while {true} do {
 	[format["Cycle %1 has been finished", sv_gameCycle]] call server_fnc_log;
 
 	// If we have OnMatchEndRestart enabled, restart the mission rather than just keep running
-	private _maxMatchTime = ["MaxMatchDuration", 10800] call BIS_fnc_getParamValue;
+	VARIABLE_DEFAULT(sv_setting_MaxMatchDuration, 10800);
+	VARIABLE_DEFAULT(sv_setting_RotationsPerMatch, 2);
 	private _missions = getArray(missionConfigFile >> "GeneralConfig" >> "mapsPool");
 	private _currentMission = [format["%1.%2", missionName, worldName]];
 	private _missionsPool = _missions - _currentMission;
-	if (((sv_gameCycle >= (["RotationsPerMatch", 2] call BIS_fnc_getParamValue)) || ((_maxMatchTime != -1) && (_maxMatchTime <= diag_tickTime))) && isDedicated) then {
+	if (((sv_gameCycle >= sv_setting_RotationsPerMatch) || ((sv_setting_MaxMatchDuration != -1) && (sv_setting_MaxMatchDuration <= diag_tickTime))) && isDedicated) then {
 		["Attempting to restart mission...."] call server_fnc_log;
 		uiSleep 1;
 		private _mission = if (!isNil "sv_nextMap") then {sv_nextMap} else {selectRandom _missionsPool};

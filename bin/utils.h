@@ -1,7 +1,15 @@
 #define QUOTE(var1) #var1
+#define DOUBLES(var1,var2) var1##_##var2
 
 // DECLARATIONS
 #define VARIABLE_DEFAULT(VAR_NAME,DEFAULT) if (isNil QUOTE(VAR_NAME)) then {VAR_NAME = DEFAULT;}
+
+#define SV_SETTING_INIT(VAR_NAME, DEFAULT) \
+	sv_setting_##VAR_NAME = profileNamespace getVariable [QUOTE(DOUBLES(sv_setting,VAR_NAME)), DEFAULT];
+
+#define SV_SETTING_INIT_P(VAR_NAME, DEFAULT) \
+	sv_setting_##VAR_NAME = profileNamespace getVariable [QUOTE(DOUBLES(sv_setting,VAR_NAME)), DEFAULT]; \
+	sv_settings pushBack [QUOTE(DOUBLES(sv_setting,VAR_NAME)), sv_setting_##VAR_NAME]
 
 // MUTEX
 #define MUTEX_INIT(LOCK) VARIABLE_DEFAULT(LOCK, false)

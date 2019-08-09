@@ -6,12 +6,14 @@ scriptName "fn_matchTimer";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_matchTimer.sqf"
+#include "..\utils.h"
 
 private _matchStart = param[0,false,[false]];
 private _additionalTime = param[1,0,[0]];
 
 /* _stageTime = getNumber(missionConfigFile >> "MapSettings" >> sv_mapSize >> "roundTime"); */
-private _stageTime = ceil ((["RoundTime", 15] call BIS_fnc_getParamValue) * 60);
+VARIABLE_DEFAULT(sv_setting_RoundTime, 15);
+private _stageTime = sv_setting_RoundTime * 60;
 
 sv_matchTime =  _stageTime + _additionalTime;
 sv_matchEndTime =  sv_matchTime + (ceil diag_tickTime);

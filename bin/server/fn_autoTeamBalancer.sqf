@@ -8,6 +8,7 @@ scriptName "fn_autoTeamBalancer";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_autoTeamBalancer.sqf"
+#include "..\utils.h"
 
 private _getUnitsThatLastJoined = {
 	params [["_side",sideUnknown,[sideUnknown]], ["_amount", 0, [0]]];
@@ -17,6 +18,8 @@ private _getUnitsThatLastJoined = {
 };
 
 sv_autoTeamBalancerWarning = false;
+
+VARIABLE_DEFAULT(sv_setting_AutoTeamBalanceAtDifference, 3);
 
 while {sv_gameStatus == 2} do {
 	uiSleep 60;
@@ -28,7 +31,7 @@ while {sv_gameStatus == 2} do {
 	private _defenders = _defendersSide countSide allPlayers;
 
 	private _diff = _attackers - _defenders;
-	private _maxDiff = ["AutoTeamBalanceAtDifference", 3] call BIS_fnc_getParamValue;
+	private _maxDiff = sv_setting_AutoTeamBalanceAtDifference;
 	private _sideWithMoreUnits = if (_attackers >= _defenders) then {_attackersSide} else {_defendersSide};
 
 	if (_diff < 0 || _diff > _maxDiff) then {

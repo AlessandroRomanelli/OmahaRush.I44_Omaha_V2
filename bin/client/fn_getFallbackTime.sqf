@@ -7,11 +7,13 @@ scriptName "fn_getFallbackTime";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_getFallbackTime.sqf"
+#include "..\utils.h"
 
 private _oldStage = sv_cur_obj getVariable ["pre_stage", ""];
 
 // If it's the first objective, return the defined fallback time
-if (_oldStage isEqualTo "") exitWith {["InitialFallBack", 60] call BIS_fnc_getParamValue};
+VARIABLE_DEFAULT(sv_setting_InitialFallback, 60);
+if (_oldStage isEqualTo "") exitWith {sv_setting_InitialFallback};
 
 // 4m/s speed of a player whilst sprinting
 private _playerSpeed = 6;

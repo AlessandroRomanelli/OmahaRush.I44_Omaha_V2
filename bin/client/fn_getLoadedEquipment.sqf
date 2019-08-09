@@ -7,6 +7,8 @@ scriptName "fn_getLoadedEquipment";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_getLoadedEquipment.sqf"
+#include "..\utils.h"
+
 if (isServer && !hasInterface) exitWith {};
 
 cl_equipConfigurations = [];
@@ -26,9 +28,10 @@ private _configs = "true" configClasses (missionConfigFile >> "Unlocks" >> playe
 
 private _maxExp = selectMax [cl_exp_assault, cl_exp_medic, cl_exp_engineer, cl_exp_support, cl_exp_recon];
 // Populate cl_equipConfigurations with all possible weapons
-private _isDebug = (["DebugMode", 0] call BIS_fnc_getParamValue) == 1;
+VARIABLE_DEFAULT(sv_setting_DebugMode, 0);
+private _isDebug = sv_setting_DebugMode == 1;
 if (_isDebug) then {
-	cl_equipConfigurations = _configs;
+	cl_equipConfigurations = _configs apply {configName _x};
 } else {
 	{
 		private _exp = missionNamespace getVariable [format["cl_exp_%1", cl_class], 0];

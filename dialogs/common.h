@@ -8,6 +8,10 @@
 #define GUI_GRID_CENTER_H        (GUI_GRID_CENTER_HAbs / 25)
 #define GUI_GRID_CENTER_X        (safezoneX + (safezoneW - GUI_GRID_CENTER_WAbs)/2)
 #define GUI_GRID_CENTER_Y        (safezoneY + (safezoneH - GUI_GRID_CENTER_HAbs)/2)
+#define CT_XLISTBOX 42
+#define ST_HORZ 1024
+#define SL_TEXTURES 16
+#define CT_COMBO 4
 
 class Checkbox
 {
@@ -145,7 +149,7 @@ class RscListNBox
     colorSelectBackground2[] = {1,1,1,0.5};
     colorPicture[] = {1,1,1,1};
     colorPictureSelected[] = {1,1,1,1};
-        colorPictureDisabled[] = {1,1,1,1};
+    colorPictureDisabled[] = {1,1,1,1};
     soundSelect[] = {"",0.1,1};
     soundExpand[] = {"",0.1,1};
     soundCollapse[] = {"",0.1,1};
@@ -1123,34 +1127,61 @@ class RscMapControl
 };
 
 class RscCombo {
-    style = 16;
-    type = 4;
-    x = 0;
-    y = 0;
-    w = 0.12;
-    h = 0.035;
-    shadow = 0;
-    colorSelect[] = {0, 0, 0, 1};
-    soundExpand[] = {"",0.1,1};
-    colorText[] = {0.95, 0.95, 0.95, 1};
-    soundCollapse[] = {"",0.1,1};
-    maxHistoryDelay = 1;
-    colorBackground[] = {0.4,0.4,0.4,0.4};
-    colorSelectBackground[] = {1, 1, 1, 0.7};
-    colow_Rscrollbar[] = {1, 0, 0, 1};
-    soundSelect[] = {
-            "", 0.000000, 1
-    };
-    arrowFull = "\A3\ui_f\data\gui\cfg\scrollbar\arrowFull_ca.paa";
-    arrowEmpty = "\A3\ui_f\data\gui\cfg\scrollbar\arrowEmpty_ca.paa";
-    wholeHeight = 0.45;
-    color[] = {1, 1, 1, 1};
-    colorActive[] = {1, 0, 0, 1};
-    colorDisabled[] = {1, 1, 1, 0.25};
-    font = "PuristaMedium";
-    sizeEx = "(((((safezoneW / safezoneH) min 1.2) / 1.2) / 25) * 1)";
+	access = 0; // Control access (0 - ReadAndWrite, 1 - ReadAndCreate, 2 - ReadOnly, 3 - ReadOnlyVerified)
+	idc = -1; // Control identification (without it, the control won't be displayed)
+	type = CT_COMBO; // Type is 4
+	style = ST_CENTER + LB_TEXTURES; // Style
+	default = 0; // Control selected by default (only one within a display can be used)
+	blinkingPeriod = 0; // Time in which control will fade out and back in. Use 0 to disable the effect.
 
-    class ComboScrollBar : RscScrollBar {};
+	x = 0; // Horizontal coordinates
+	y = 0; // Vertical coordinates
+	w = 0; // Width
+	h = 0; // Height
+
+	colorBackground[] = {0.2,0.2,0.2,1}; // Fill color
+	colorSelectBackground[] = {1,0.5,0,1}; // Selected item fill color
+
+	font = "PuristaMedium";
+    sizeEx = "(((((safezoneW / safezoneH) min 1.2) / 1.2) / 25) * 1)";
+	shadow = 0; // Shadow (0 - none, 1 - N/A, 2 - black outline)
+	colorText[] = {1,1,1,1}; // Text and frame color
+	colorDisabled[] = {1,1,1,0.5}; // Disabled text color
+	colorSelect[] = {1,1,1,1}; // Text selection color
+
+	pictureColor[] = {1,0.5,0,1}; // Picture color
+	pictureColorSelect[] = {1,1,1,1}; // Selected picture color
+	pictureColorDisabled[] = {1,1,1,0.5}; // Disabled picture color
+
+	tooltip = ""; // Tooltip text
+	tooltipColorShade[] = {0,0,0,1}; // Tooltip background color
+	tooltipColorText[] = {1,1,1,1}; // Tooltip text color
+	tooltipColorBox[] = {1,1,1,1}; // Tooltip frame color
+
+	arrowEmpty = "\A3\ui_f\data\GUI\RscCommon\rsccombo\arrow_combo_ca.paa"; // Expand arrow
+	arrowFull = "\A3\ui_f\data\GUI\RscCommon\rsccombo\arrow_combo_active_ca.paa"; // Collapse arrow
+
+	wholeHeight = 5 * GUI_GRID_CENTER_H; // Maximum height of expanded box (including the control height)
+	maxHistoryDelay = 1; // Time since last keyboard type search to reset it
+
+	soundExpand[] = {"\A3\ui_f\data\sound\RscCombo\soundExpand",0.1,1}; // Sound played when the list is expanded
+	soundCollapse[] = {"\A3\ui_f\data\sound\RscCombo\soundCollapse",0.1,1}; // Sound played when the list is collapsed
+	soundSelect[] = {"\A3\ui_f\data\sound\RscCombo\soundSelect",0.1,1}; // Sound played when an item is selected
+
+	// Scrollbar configuration (applied only when LB_TEXTURES style is used)
+	class ComboScrollBar
+	{
+		width = 0; // width of ComboScrollBar
+		height = 0; // height of ComboScrollBar
+		scrollSpeed = 0.01; // scrollSpeed of ComboScrollBar
+
+		arrowEmpty = "\A3\ui_f\data\gui\cfg\scrollbar\arrowEmpty_ca.paa"; // Arrow
+		arrowFull = "\A3\ui_f\data\gui\cfg\scrollbar\arrowFull_ca.paa"; // Arrow when clicked on
+		border = "\A3\ui_f\data\gui\cfg\scrollbar\border_ca.paa"; // Slider background (stretched vertically)
+		thumb = "\A3\ui_f\data\gui\cfg\scrollbar\thumb_ca.paa"; // Dragging element (stretched vertically)
+
+		color[] = {1,1,1,1}; // Scrollbar color
+	};
 };
 
 class RscToolbox {
@@ -1163,4 +1194,34 @@ class RscToolbox {
     colorSelectedBg[] = {"(profilenamespace getvariable ['GUI_BCG_RGB_R',0.3843])", "(profilenamespace getvariable ['GUI_BCG_RGB_G',0.7019])", "(profilenamespace getvariable ['GUI_BCG_RGB_B',0.8862])", 0.5};
     font = "PuristaMedium";
     sizeEx = "(((((safezoneW / safezoneH) min 1.2) / 1.2) / 25) * 0.8)";
+};
+
+class RscXListBox {
+	access = 0; // Control access (0 - ReadAndWrite, 1 - ReadAndCreate, 2 - ReadOnly, 3 - ReadOnlyVerified)
+	idc = CT_XLISTBOX; // Control identification (without it, the control won't be displayed)
+	type = CT_XLISTBOX; // Type is 42
+	style = SL_HORZ + ST_CENTER + LB_TEXTURES; // Style
+	default = 0; // Control selected by default (only one within a display can be used)
+	blinkingPeriod = 0; // Time in which control will fade out and back in. Use 0 to disable the effect.
+
+	color[] = {1,1,1,1}; // Arrow color
+	colorActive[] = {1,0.5,0,1}; // Selected arrow color
+
+	sizeEx = "(((((safezoneW / safezoneH) min 1.2) / 1.2) / 25) * 1)";
+	font = "PuristaMedium";
+	shadow = 0; // Shadow (0 - none, 1 - N/A, 2 - black outline)
+	colorText[] = {1,1,1,1}; // Text color
+	colorSelect[] = {1,0.5,0,1}; // Selected text color
+	colorDisabled[] = {1,1,1,0.5}; // Disabled text color
+
+	tooltip = ""; // Tooltip text
+	tooltipColorShade[] = {0,0,0,1}; // Tooltip background color
+	tooltipColorText[] = {1,1,1,1}; // Tooltip text color
+	tooltipColorBox[] = {1,1,1,1}; // Tooltip frame color
+
+	arrowEmpty = "\A3\ui_f\data\gui\cfg\slider\arrowEmpty_ca.paa"; // Arrow
+	arrowFull = "\A3\ui_f\data\gui\cfg\slider\arrowFull_ca.paa"; // Arrow when clicked on
+	border = "\A3\ui_f\data\gui\cfg\slider\border_ca.paa"; // Fill texture
+
+	soundSelect[] = {"\A3\ui_f\data\sound\RscListbox\soundSelect",0.09,1}; // Sound played when an item is selected
 };

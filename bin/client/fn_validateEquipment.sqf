@@ -8,6 +8,7 @@ scriptName "fn_validateEquipment";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_validateEquipment.sqf"
+#include "..\utils.h"
 if (isServer && !hasInterface) exitWith {};
 
 // Inline function to find equip by classname in configuration array
@@ -24,7 +25,8 @@ private _find = {
 };
 
 private _exp = missionNamespace getVariable [format["cl_exp_%1", cl_class], 0];
-private _isDebug = (["DebugMode", 0] call BIS_fnc_getParamValue) == 1;
+VARIABLE_DEFAULT(sv_setting_DebugMode, 0);
+private _isDebug = sv_setting_DebugMode == 1;
 
 // Cycle through all unlocked weapons and check if they exit in the equip array, if not, add them
 if (count cl_equipConfigurations != 0) then {

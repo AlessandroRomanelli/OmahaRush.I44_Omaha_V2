@@ -8,6 +8,7 @@ scriptName "fn_persistentVehicleManager";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_persistentVehicleManager.sqf"
+#include "..\utils.h"
 
 // Get vehicles from config and fetch their data
 sv_persistentVehicleData = [];
@@ -72,7 +73,8 @@ sv_spawnVehicle = {
 	sv_persistentVehiclesAwaitingRespawn pushBack (configName _config);
 
 	// Wait the respawn time
-	private _sleepTime = if (_initialSpawn) then {["InitialFallBack", 60] call BIS_fnc_getParamValue} else {getNumber(_config >> "respawnTime")};
+	VARIABLE_DEFAULT(sv_setting_InitialFallback,60);
+	private _sleepTime = if (_initialSpawn) then {sv_setting_InitialFallback} else {getNumber(_config >> "respawnTime")};
 	uiSleep _sleepTime;
 
 	//diag_log "_1";
@@ -166,7 +168,7 @@ private _sv_deleteNullThreads = {
 	sv_persistentVehicleRespawnThreads = _newList;
 	true
 };
-
+VARIABLE_DEFAULT(sv_setting_DebugMode, 0);
 // Main brain of this script
 private _matchStart = true;
 while {sv_gameStatus == 2} do {
@@ -184,7 +186,7 @@ while {sv_gameStatus == 2} do {
 
 			if (isNull _v || !alive _v || !canMove _v) then {
 				private _populationReq = getNumber(_config >> "populationReq");
-				private _isDebug = (["DebugMode", 0] call BIS_fnc_getParamValue) == 1;
+				private _isDebug = sv_setting_DebugMode == 1;
 
 				if (_isDebug || {count allPlayers > _populationReq}) then {
 					/* diag_log format["DEBUG: Enough more than %1 players were connected, spawn allowed", _populationReq]; */

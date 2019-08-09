@@ -8,6 +8,7 @@ scriptName "fn_endRound";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_endRound.sqf"
+#include "..\utils.h"
 
 // Exit if the game is already over
 if (sv_gameStatus == 3) exitWith {};
@@ -35,8 +36,8 @@ uiSleep 31;
 [] remoteExec ["client_fnc_resetPlayer", 0];
 
 // Tell upper script we're done after all players waited
-private _time = ["LobbyTime", 60] call BIS_fnc_getParamValue;
-uiSleep (_time - 3);
+VARIABLE_DEFAULT(sv_setting_LobbyTime, 60);
+uiSleep (sv_setting_LobbyTime - 3);
 
 sv_gameStatus = 4;
 [["sv_gameStatus"]] call server_fnc_updateVars;

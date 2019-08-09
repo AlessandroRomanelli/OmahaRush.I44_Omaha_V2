@@ -8,6 +8,7 @@ scriptName "fn_stageVehicleManager";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_stageVehicleManager.sqf"
+#include "..\utils.h"
 
 // Get vehicles from config and fetch their data
 sv_stageVehicles = [];
@@ -36,7 +37,8 @@ private _sv_stage_spawnVehicle = {
 	private _currentPlayers = count allPlayers;
 	private _popReq = getNumber(_config >> "populationReq");
 
-	private _isDebug = (["DebugMode", 0] call BIS_fnc_getParamValue) == 1;
+	VARIABLE_DEFAULT(sv_setting_DebugMode, 0);
+	private _isDebug = sv_setting_DebugMode == 1;
 
 	if (!_isDebug && {_currentPlayers < _popReq}) exitWith {};
 

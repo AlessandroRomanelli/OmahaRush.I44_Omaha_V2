@@ -8,6 +8,7 @@ scriptName "fn_displaySpawnRestriction";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_displaySpawnRestriction.sqf"
+#include "..\utils.h"
 
 // Create display
 /* 30 cutRsc ["rr_keyBindingHintPermanent", "PLAIN"]; */
@@ -36,7 +37,8 @@ if (player getVariable ["gameSide", "defenders"] == "defenders") exitWith {
 (_d displayCtrl 304) ctrlEnable false;
 
 // Update text
-private _matchTime = (["RoundTime", 15] call BIS_fnc_getParamValue)*60;
+VARIABLE_DEFAULT(sv_setting_RoundTime, 15);
+private _matchTime = sv_setting_RoundTime*60;
 if (sv_matchTime > _matchTime) then {
 	(_d displayCtrl 304) ctrlSetStructuredText parseText format ["<t size='1' color='#FD1A07' shadow='2' align='right' font='PuristaBold'>%1s</t>", round (sv_matchTime - _matchTime)];
 	if (ctrlEnabled _deployBtn) then {

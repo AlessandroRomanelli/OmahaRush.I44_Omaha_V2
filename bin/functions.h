@@ -110,7 +110,9 @@ class Maverick_Functions_Client {
 		class sideSwitch {};
 		class displayAdminArea {};
 		class populateAdminArea {};
+		class populateAdminParams {};
 		class spawnModal {};
+		class updateParams {};
 
 		// Pointfeed
 		class pointfeed_add {};
@@ -156,6 +158,9 @@ class Maverick_Functions_Server {
 		class assignSide {};
 		class sideSwitch {};
 		class selectNextMap {};
+		class setParams {};
+		class initParams {};
+
 
 		// Database
 		class db_getPlayer {};
@@ -175,5 +180,6 @@ class Maverick_Functions_Admin {
 		class switchPlayer {};
 		class isAdmin {};
 		class spectate {};
+		class setParams {};
 	};
 };

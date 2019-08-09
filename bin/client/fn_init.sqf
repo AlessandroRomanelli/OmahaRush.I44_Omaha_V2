@@ -27,7 +27,10 @@ VARIABLE_DEFAULT(sv_serverReady,false);
 
 waitUntil {sv_serverReady && !isNil "sv_usingDatabase"};
 
+
 [] call client_fnc_initGlobalVars;
+
+"sv_settings" addPublicVariableEventHandler client_fnc_updateParams;
 
 // Disable raytracing
 disableRemoteSensors true;

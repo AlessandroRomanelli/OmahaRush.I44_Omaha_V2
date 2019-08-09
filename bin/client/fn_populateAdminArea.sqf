@@ -9,7 +9,11 @@ scriptName "fn_populateAdminArea.sqf";
 if (isServer && !hasInterface) exitWith {};
 
 disableSerialization;
-params [["_adminDisplay", displayNull, [displayNull]]];
+private _created = params [["_adminDisplay", displayNull, [displayNull]]];
+
+if (!_created) then {
+	_adminDisplay = findDisplay 7000;
+};
 
 private _mapsPool = ((getArray(missionConfigFile >> "GeneralConfig" >> "mapsPool")) apply {[_x, (_x splitString ".") select 1]}) apply {[_x select 0, getText(configFile >> "CfgWorlds" >> _x select 1 >> "description")]};
 
@@ -23,7 +27,7 @@ lbClear _mapList;
 } forEach _mapsPool;
 
 private _attackersList = _adminDisplay displayCtrl 1500;
-private _attackers = [player, player, player, player, player, player, player, player, player, player, player, player];
+private _attackers = allPlayers select {_x getVariable ["gameSide", ""] == "attackers"};
 lbClear _attackersList;
 {
 	_attackersList lbAdd (_x getVariable ["name", name _x]);
@@ -33,7 +37,7 @@ lbClear _attackersList;
 (_adminDisplay displayCtrl 1001) ctrlSetText format ["Attackers [%1]", count _attackers];
 
 private _defendersList = _adminDisplay displayCtrl 1501;
-private _defenders = [player, player, player, player, player, player, player, player, player, player, player, player];
+private _defenders = allPlayers select {_x getVariable ["gameSide", ""] == "defenders"};
 lbClear _defendersList;
 {
 	_defendersList lbAdd (_x getVariable ["name", name _x]);

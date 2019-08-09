@@ -6,8 +6,10 @@ scriptName "fn_decideMapSize";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_decideMapSize.sqf"
+#include "..\utils.h"
 private _size = "LargeSetting";
-private _threshold = ["MapPopulation", 12] call BIS_fnc_getParamValue;
+VARIABLE_DEFAULT(sv_setting_MapPopulation, 12);
+private _threshold = sv_setting_MapPopulation;
 private _hasSmallSetting = count ("true" configClasses (missionConfigFile >> "MapSettings" >> "SmallSetting")) > 0;
 if (_threshold isEqualTo 0 || !_hasSmallSetting) exitWith {"LargeSetting"};
 private _connectedPlayers = playersNumber civilian;

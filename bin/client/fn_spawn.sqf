@@ -53,8 +53,9 @@ disableSerialization;
 private _d = uiNamespace getVariable ["rr_objective_gui", displayNull];
 (_d displayCtrl 0) ctrlSetText WWRUSH_ROOT+("pictures\objective_"+(["attacker", "defender"] select (player getVariable ["gameSide", ""] == "defenders"))+".paa");
 
+VARIABLE_DEFAULT(sv_setting_RotationsPerMatch, 2);
 // If the server will restart after this round, display a visual warning at the top right
-if (sv_gameCycle >= ((["RotationsPerMatch", 2] call BIS_fnc_getParamValue) - 1)) then {
+if (sv_gameCycle >= (sv_setting_RotationsPerMatch - 1)) then {
 	500 cutRsc ["rr_topRightWarning", "PLAIN"];
 	((uiNamespace getVariable ["rr_topRightWarning", displayNull]) displayCtrl 0) ctrlSetStructuredText parseText "<t size='1.2' color='#FE4629' shadow='2' align='right'>LAST ROUND BEFORE MAP CHANGE</t>";
 };

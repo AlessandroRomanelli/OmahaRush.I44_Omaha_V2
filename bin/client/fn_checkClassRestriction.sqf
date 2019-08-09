@@ -6,13 +6,15 @@ scriptName "fn_checkClassRestriction";
   You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_checkClassRestriction.sqf"
+#include "..\utils.h"
 if (isServer && !hasInterface) exitWith {};
 
 private _class = param[0,"medic",[""]];
 private _isRestricted = false;
 
+VARIABLE_DEFAULT(sv_setting_ClassLimits, 1);
 // Check if the mission parameters restrict classes
-private _classRestrictionEnabled = (["ClassLimits", 1] call BIS_fnc_getParamValue) isEqualTo 1;
+private _classRestrictionEnabled = sv_setting_ClassLimits == 1;
 // If the class restriction is OFF or the class is not restricted, we got nothing to do!
 if (!_classRestrictionEnabled || !(_class in ["support", "engineer", "recon"])) exitWith {false};
 
@@ -36,7 +38,7 @@ private _sameSidePlayers = allPlayers select {if ((player getVariable ["side", s
 // Count how many players are playing with our same class
 private _sameClassPlayers = {if (_x getVariable ["class", "medic"] isEqualTo _class) then {true}} count _sameSidePlayers;
 // Get how much percentage of our side should be present as the given class (0 --> 1)
-private _classLimit = ((format ["ClassLimits_%1", _class]) call bis_fnc_getParamValue)/10;
+private _classLimit = (missionNamespace getVariable [format ["sv_setting_ClassLimits_%1", _class], 10])/10;
 // Check if the player already had spawned with the same class (thus already counted) or not
 private _newClassMember = if !(player getVariable ["class", "medic"] isEqualTo _class) then {1} else {0};
 

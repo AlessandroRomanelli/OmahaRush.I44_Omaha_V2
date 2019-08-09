@@ -21,6 +21,8 @@ cl_spectating = true;
 private "_spectatorDisplay";
 waitUntil { _spectatorDisplay = findDisplay 60492; !isNull _spectatorDisplay };
 
+systemChat "Press ESC at any time to return";
+
 _spectatorDisplay displayAddEventHandler ["KeyDown", {
 	private _h = false;
 	params ["_display", "_DIKcode"];

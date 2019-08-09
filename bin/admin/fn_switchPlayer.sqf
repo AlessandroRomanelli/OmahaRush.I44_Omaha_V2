@@ -8,4 +8,11 @@ scriptName "fn_switchPlayer";
 --------------------------------------------------------------------*/
 #define __filename "fn_switchPlayer.sqf"
 
+if (isNil "cl_admin_player_sel") exitWith {};
+
+private _oldSide = cl_admin_player_sel getVariable ["gameSide", ""];
 [] remoteExecCall ["client_fnc_teamBalanceKick", cl_admin_player_sel];
+
+waitUntil{(cl_admin_player_sel getVariable ["gameSide", ""]) != _oldSide};
+
+[] call client_fnc_populateAdminArea;

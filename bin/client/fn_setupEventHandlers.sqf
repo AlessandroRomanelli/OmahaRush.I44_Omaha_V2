@@ -139,14 +139,14 @@ cl_eventObserverID = addMissionEventHandler["EachFrame", {
 }] call bis_fnc_addScriptedEventHandler;
 
 [missionNamespace, "switchedToExtCamera", {
-	private _infFP = (["InfantryFPOnly", 1] call BIS_fnc_getParamValue) isEqualTo 1;
-	private _vehFP = (["VehicleFPOnly", 0] call BIS_fnc_getParamValue) isEqualTo 1;
+	VARIABLE_DEFAULT(sv_setting_InfantryFPOnly, 1);
+	VARIABLE_DEFAULT(sv_setting_VehicleFPOnly, 0);
 	if (isNull objectParent player) then {
-		if (_infFP) then {
+		if (sv_setting_InfantryFPOnly == 1) then {
 			player switchCamera "INTERNAL";
 		};
 	} else {
-		if (_vehFP) then {
+		if (sv_setting_VehicleFPOnly == 1) then {
 			player switchCamera "INTERNAL";
 			["Third person view for vehicles is disabled"] call client_fnc_displayError;
 		};
@@ -321,10 +321,10 @@ cl_killed_eh = player addEventHandler ["Killed", {
 		_victim setVariable ["isAlive", false];
 
 		private _spawnSafeDistance = (getNumber (missionConfigFile >> "MapSettings" >> sv_mapSize >> "safeSpawnDistance"));
-		private _spawnSafeTime = ["SpawnSafeTime", 5] call BIS_fnc_getParamValue;
+		VARIABLE_DEFAULT(sv_setting_SpawnSafeTime, 5);
 		private _spawnMarker = format ["mobile_respawn_%1", _victim getVariable "gameSide"];
 		if (_killer getVariable ["gameSide", "attackers"] != (_victim getVariable ["gameSide", "defenders"]) &&
-				{(diag_tickTime - cl_spawn_tick) < _spawnSafeTime} &&
+				{(diag_tickTime - cl_spawn_tick) < sv_setting_SpawnSafeTime} &&
 				{(_victim distance (getMarkerPos _spawnMarker)) < _spawnSafeDistance}) exitWith {
 			// Info
 			["Your killer has been punished for spawn camping, your death will not be counted"] call client_fnc_displayError;

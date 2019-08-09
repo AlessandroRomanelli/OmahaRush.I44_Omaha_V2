@@ -10,8 +10,6 @@ if (isServer && !hasInterface) exitWith {};
 
 if !([player] call admin_fnc_isAdmin) exitWith {};
 
-private _adminDisplay = (findDisplay 7000);
-if (isNull _adminDisplay) then {
+if (isNull (findDisplay 7000)) then {
 	createDialog "rr_admin_area";
-	_adminDisplay = (findDisplay 7000);
 };
