@@ -30,8 +30,6 @@ waitUntil {sv_serverReady && !isNil "sv_usingDatabase"};
 
 [] call client_fnc_initGlobalVars;
 
-"sv_settings" addPublicVariableEventHandler client_fnc_updateParams;
-
 // Disable raytracing
 disableRemoteSensors true;
 
@@ -132,6 +130,10 @@ CHBN_adjustBrightness = 0.66;
 // Fuck off?
 player enableStamina false;
 player forceWalk false;
+
+waitUntil{count sv_settings > 0};
+["sv_settings", sv_settings] call client_fnc_updateParams;
+"sv_settings" addPublicVariableEventHandler client_fnc_updateParams;
 
 cl_init_done = true;
 

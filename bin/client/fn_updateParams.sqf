@@ -16,5 +16,5 @@ if (!_valid || {_var != "sv_settings"}) exitWith {};
 
 {
 	_x params ["_varName", "_value"];
-	missionNamespace setVariable [_varName, _value];
+	missionNamespace setVariable [format["sv_setting_%1",_varName], _value];
 } forEach _settings;

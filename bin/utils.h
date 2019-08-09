@@ -5,11 +5,11 @@
 #define VARIABLE_DEFAULT(VAR_NAME,DEFAULT) if (isNil QUOTE(VAR_NAME)) then {VAR_NAME = DEFAULT;}
 
 #define SV_SETTING_INIT(VAR_NAME, DEFAULT) \
-	sv_setting_##VAR_NAME = profileNamespace getVariable [QUOTE(DOUBLES(sv_setting,VAR_NAME)), DEFAULT];
+	sv_setting_##VAR_NAME = profileNamespace getVariable [QUOTE(DOUBLES(sv_setting,VAR_NAME)), DEFAULT]
 
 #define SV_SETTING_INIT_P(VAR_NAME, DEFAULT) \
 	sv_setting_##VAR_NAME = profileNamespace getVariable [QUOTE(DOUBLES(sv_setting,VAR_NAME)), DEFAULT]; \
-	sv_settings pushBack [QUOTE(DOUBLES(sv_setting,VAR_NAME)), sv_setting_##VAR_NAME]
+	sv_settings pushBack [QUOTE(VAR_NAME), sv_setting_##VAR_NAME]
 
 // MUTEX
 #define MUTEX_INIT(LOCK) VARIABLE_DEFAULT(LOCK, false)

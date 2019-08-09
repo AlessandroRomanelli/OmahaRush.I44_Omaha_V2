@@ -72,8 +72,8 @@ while {true} do {
 	TERMINATE_SCRIPT(sv_matchTimer_thread);
 	TERMINATE_SCRIPT(sv_autoTeamBalancer_thread);
 	["Old threads have been killed"] call server_fnc_log;
-	[] call server_fnc_initParams;
-
+	[] spawn server_fnc_initParams;
+	waitUntil{!isNil "sv_setting_MinPlayers"};
 	[] call server_fnc_waitForPlayers;
 
 	// Delete all objects off the map

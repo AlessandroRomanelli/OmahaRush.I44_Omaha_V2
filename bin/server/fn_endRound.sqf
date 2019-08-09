@@ -36,7 +36,7 @@ uiSleep 31;
 [] remoteExec ["client_fnc_resetPlayer", 0];
 
 // Tell upper script we're done after all players waited
-VARIABLE_DEFAULT(sv_setting_LobbyTime, 60);
+VARIABLE_DEFAULT(sv_setting_LobbyTime, 30);
 uiSleep (sv_setting_LobbyTime - 3);
 
 sv_gameStatus = 4;

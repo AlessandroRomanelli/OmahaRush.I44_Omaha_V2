@@ -1,12 +1,12 @@
-scriptName "fn_initServerParams";
+scriptName "fn_initParams";
 /*--------------------------------------------------------------------
 	Author: A.Roman
-    File: fn_initServerParams.sqf
+    File: fn_initParams.sqf
 
     Written by A.Roman
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
-#define __filename "fn_initServerParams.sqf"
+#define __filename "fn_initParams.sqf"
 #include "..\utils.h"
 
 MUTEX_INIT(sv_settings_lock);
@@ -16,20 +16,20 @@ sv_settings = [];
 
 SV_SETTING_INIT_P(DebugMode, 0);
 SV_SETTING_INIT_P(MinPlayers, 0);
-SV_SETTING_INIT(MaxTickets, 300);
-SV_SETTING_INIT(MinTickets, 25);
-SV_SETTING_INIT(TicketsRate, 10);
+SV_SETTING_INIT_P(MaxTickets, 300);
+SV_SETTING_INIT_P(MinTickets, 25);
+SV_SETTING_INIT_P(TicketsRate, 10);
 SV_SETTING_INIT_P(LobbyTime, 30);
 SV_SETTING_INIT_P(RoundTime, 15);
-SV_SETTING_INIT(MaxMatchDuration, 10800);
+SV_SETTING_INIT_P(MaxMatchDuration, 10800);
 SV_SETTING_INIT_P(SpawnSafeTime, 5);
-/* SV_SETTING_INIT(attackers, 0);
-SV_SETTING_INIT(defenders, 0); */
+/* SV_SETTING_INIT_P(attackers, 0);
+SV_SETTING_INIT_P(defenders, 0); */
 SV_SETTING_INIT_P(OutOfBoundsTime, 20);
 SV_SETTING_INIT_P(InitialFallBack, 30);
-SV_SETTING_INIT(RotationsPerMatch, 2);
-SV_SETTING_INIT(MapWeather, 0);
-SV_SETTING_INIT(MapPopulation, 12);
+SV_SETTING_INIT_P(RotationsPerMatch, 2);
+SV_SETTING_INIT_P(MapWeather, 0);
+SV_SETTING_INIT_P(MapPopulation, 12);
 SV_SETTING_INIT_P(AutoTeamBalancer, 1);
 SV_SETTING_INIT_P(AutoTeamBalanceAtDifference, 3);
 SV_SETTING_INIT_P(InfantryFPOnly, 1);

@@ -16,25 +16,28 @@ params [["_settings", [], [[]]]];
 
 if (count _settings == 0) exitWith {};
 
+diag_log ("Received the following settings: "+str _settings);
+
 private _edited = [];
 {
 	_x params ["_key", "_value"];
 	private _setting = format ["sv_setting_%1", _key];
 	private _old = profileNamespace getVariable [_setting, nil];
 	if (isNil {_old} || {_old != _value}) then {
+		diag_log format ["%1 was changed to: %2", _setting, _value];
 		profileNamespace setVariable [_setting, _value];
 		missionNamespace setVariable [_setting, _value];
 		_edited pushBack _x;
 	};
 } forEach _settings;
 
-if (count _edited > 0) then {
+/* if (count _edited > 0) then {
 	saveProfileNamespace;
 	sv_settings = _edited;
 	publicVariable "sv_settings";
-};
+}; */
 
-/* VARIABLE_DEFAULT(sv_settings, []);
+VARIABLE_DEFAULT(sv_settings, []);
 
 if (count _edited > 0) then {
 	saveProfileNamespace;
@@ -53,6 +56,6 @@ if (count _edited > 0) then {
 		};
 	} forEach _edited;
 	publicVariable "sv_settings";
-}; */
+};
 
 MUTEX_UNLOCK(sv_settings_lock);

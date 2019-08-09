@@ -81,7 +81,7 @@ if ((sv_gameCycle >= (sv_setting_RotationsPerMatch - 1)) && sv_dedicatedEnvironm
 	uiSleep 30;
 } else {
 // While loop
-VARIABLE_DEFAULT(sv_setting_LobbyTime, 60);
+VARIABLE_DEFAULT(sv_setting_LobbyTime, 30);
 private _restartTime = diag_tickTime + sv_setting_LobbyTime;
 private _timeLeft = sv_setting_LobbyTime;
 	while {_timeLeft > 0 && (sv_gameStatus in [3,4])} do {
