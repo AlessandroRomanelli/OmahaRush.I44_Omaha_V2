@@ -71,6 +71,8 @@ while {true} do {
 	TERMINATE_SCRIPT(sv_stageVehicleManager_thread);
 	TERMINATE_SCRIPT(sv_matchTimer_thread);
 	TERMINATE_SCRIPT(sv_autoTeamBalancer_thread);
+	TERMINATE_SCRIPT(sv_corpse_cleaner_thread);
+
 	["Old threads have been killed"] call server_fnc_log;
 	[] spawn server_fnc_initParams;
 	waitUntil{!isNil "sv_setting_MinPlayers"};
@@ -128,8 +130,7 @@ while {true} do {
 		sv_autoTeamBalancer_thread = [] spawn server_fnc_autoTeamBalancer;
 	};
 
-	TERMINATE_SCRIPT(sv_corpse_cleaner);
-	sv_corpse_cleaner = [] spawn {
+	sv_corpse_cleaner_thread = [] spawn {
 		while {sv_gameStatus == 2} do {
 			{
 					if (!isPlayer _x) then {

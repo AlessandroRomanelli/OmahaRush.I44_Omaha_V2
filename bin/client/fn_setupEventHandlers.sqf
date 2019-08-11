@@ -14,7 +14,7 @@ if (isServer && !hasInterface) exitWith {};
 [missionNamespace, "switchedToExtCamera"] call BIS_fnc_removeAllScriptedEventHandlers;
 [missionNamespace, "playAreaChanged"] call BIS_fnc_removeAllScriptedEventHandlers;
 [missionNamespace, "objStatusChanged"] call BIS_fnc_removeAllScriptedEventHandlers;
-[missionNamespace, "playerSwimChanged"] call BIS_fnc_removeAllScriptedEventHandlers;
+[missionNamespace, "playerSwimming"] call BIS_fnc_removeAllScriptedEventHandlers;
 [missionNamespace, "newEnemiesNearby"] call BIS_fnc_removeAllScriptedEventHandlers;
 [missionNamespace, "weaponChanged"] call BIS_fnc_removeAllScriptedEventHandlers;
 
@@ -70,7 +70,7 @@ cl_eventObserverID = addMissionEventHandler["EachFrame", {
 
 		_data = !(isTouchingGround player) && (surfaceIsWater (getPosATL player));
 		if !(_data isEqualTo cl_playerSwimming) then {
-			[missionNamespace, "playerSwimChanged"] call BIS_fnc_callScriptedEventHandler;
+			[missionNamespace, "playerSwimming"] call BIS_fnc_callScriptedEventHandler;
 			cl_playerSwimming = _data;
 		};
 
@@ -103,16 +103,11 @@ cl_eventObserverID = addMissionEventHandler["EachFrame", {
 	["playArea"] call client_fnc_updateLine;
 }] call bis_fnc_addScriptedEventHandler;
 
-[missionNamespace, "playerSwimChanged", {
-	if (("swim" in cl_squadPerks) && {player getVariable ["isAlive", false]} && {isNull (objectParent player)} && {!(isTouchingGround player)} && {(surfaceIsWater (getPosATL player))}) then {
+[missionNamespace, "playerSwimming", {
+	if (("swim" in cl_squadPerks) && {player getVariable ["isAlive", false]} && {isNull (objectParent player)} && {!(isTouchingGround player)} && {(surfaceIsWater (getPosATL player))}) exitWith {
 		player setAnimSpeedCoef 3;
-	} else {
-		if ("sprint" in cl_squadPerks) then {
-			player setAnimSpeedCoef 1.3;
-		} else {
-			player setAnimSpeedCoef 1.15;
-		};
 	};
+	[] call client_fnc_initPerk;
 }] call bis_fnc_addScriptedEventHandler;
 
 [missionNamespace, "objStatusChanged", {
@@ -235,9 +230,6 @@ cl_hit_dir_eh = player addEventHandler ["Hit",{
 // Hit
 REMOVE_EXISTING_PEH("Hit", cl_hit_hp_regen_eh);
 cl_hit_hp_regen_eh = player addEventHandler ["Hit", {
-	// Stop any hp regeneration thread
-	TERMINATE_SCRIPT(client_hpregeneration_thread);
-
 	// Did we get hit by a player? Add it to our assist-array
 	private _causedBy = _this select 1;
 	if (!isNull _causedBy && isPlayer _causedBy) then {
@@ -245,6 +237,8 @@ cl_hit_hp_regen_eh = player addEventHandler ["Hit", {
 		[_causedBy, _this select 2] call client_fnc_countAssist;
 	};
 
+	// Stop any hp regeneration thread
+	TERMINATE_SCRIPT(client_hpregeneration_thread);
 	// Hp regeneration
 	client_hpregeneration_thread = [] spawn client_fnc_regenerateHP;
 }];

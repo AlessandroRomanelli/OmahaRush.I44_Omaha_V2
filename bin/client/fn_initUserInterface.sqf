@@ -151,25 +151,18 @@ private _event = addMissionEventHandler["EachFrame", {
   };
 
   private _origin = if (cl_inSpawnMenu) then {_curSpawn} else {_posPlayer};
-  if (_side isEqualTo "defenders") then {
-    if (_objStatus in [0,1]) then {
-      drawIcon3D [WWRUSH_ROOT+"pictures\objective_defender_armed.paa",[1,1,1,_alpha],_pos,1.5,1.5,0,format["Defuse (%1m)", round(_origin distance sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
-    } else {
-      drawIcon3D [WWRUSH_ROOT+"pictures\objective_defender.paa",[1,1,1,_alpha],_pos,1.5,1.5,0,format["Defend (%1m)", round(_origin distance sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
-    };
-  } else {
-    if (_objStatus isEqualTo 1) then {
-      drawIcon3D [WWRUSH_ROOT+"pictures\objective_attacker_armed.paa",[1,1,1,_alpha],_pos,1.5,1.5,0,format["Protect (%1m)", round(_origin distance sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
-    } else {
-      drawIcon3D [WWRUSH_ROOT+"pictures\objective_attacker.paa",[1,1,1,_alpha],_pos,1.5,1.5,0,format["Attack (%1m)", round(_origin distance sv_cur_obj)],2,0.04, "PuristaLight", "center", true];
-    };
-  };
-
+  private _icon = WWRUSH_ROOT+(
+		("pictures\objective_"+(
+		[
+			["defender.paa", "defender_armed.paa"],
+			["attacker.paa", "attacker_armed.paa"]
+		] select (_side isEqualTo "attackers"))) select (_objStatus isEqualTo 1));
+  private _text = format["Defuse (%1m)", round(_origin distance sv_cur_obj)];
+  drawIcon3D [_icon, [1,1,1,_alpha],_pos,1.5,1.5,0,_text,2,0.04, "PuristaLight", "center", true];
 
   private _ammoBoxes = (_posPlayer) nearObjects ["LIB_AmmoCrates_NoInteractive_Large", 7];
   {
-    private _pos = getPosASL _x;
-    _pos set [2, (_pos select 2) + 0.5];
+    private _pos = (getPosASL _x) vectorAdd [0,0,0.5];
     private _distance = player distance _x;
     private _alpha = if (_distance < 5) then {1} else {1-(1/2*_distance)+2.5};
     drawIcon3D [WWRUSH_ROOT+"pictures\support.paa", [1,1,1,_alpha], ASLToAGL _pos, 1.5, 1.5, 0, format["Rearm (%1m)", round _distance], 2, 0.04, "PuristaLight", "center", true];
@@ -177,26 +170,23 @@ private _event = addMissionEventHandler["EachFrame", {
 
   // Squad icons
   {
-    private _pos = getPosATLVisual (_x select 0);
-    _pos set [2, (_pos select 2) + 1.85];
-    drawIcon3D[_x select 2, [1,1,1, _x select 3], _pos, 1.5, 1.5, 0, _x select 1, 2, 0.04, "PuristaMedium", "center", true];
+	_x params ["_unit", "_name", "_icon", "_alpha"];
+    private _pos = (getPosATLVisual _unit) vectorAdd [0,0,1.85];
+    drawIcon3D[_icon, [1,1,1, _alpha], _pos, 1.5, 1.5, 0, _name, 2, 0.04, "PuristaMedium", "center", true];
   } forEach cl_onEachFrame_squad_members;
 
   // Squad spawn beacons
   {
-    drawIcon3D["", [1,1,1,1], _x select 0, 1.5, 1.5, 0, _x select 1, 2, 0.04, "PuristaMedium", "center", true];
+	_x params ["_ASLpos", "_name"];
+    drawIcon3D["", [1,1,1,1], _ASLpos, 1.5, 1.5, 0, _name, 2, 0.04, "PuristaMedium", "center", true];
   } forEach cl_onEachFrame_squad_beacons;
 
   // Team icons
   {
-    private _unit = _x select 0;
-    private _pos = getPosATLVisual _unit;
-    _pos set [2, (_pos select 2) + 1.85];
-    if (_unit == (driver vehicle cursorObject) || _unit == (driver vehicle cursorTarget)) then {
-      drawIcon3D[_x select 2, [1,1,1,0.75], _pos, 0.5, 0.5, 0, _x select 1, 2, 0.03, "PuristaMedium", "center", false];
-    } else {
-      drawIcon3D[_x select 2, [1,1,1,0.25], _pos, 0.5, 0.5, 0, "", 2, 0.03, "PuristaMedium", "center", false];
-    };
+	_x params ["_unit", "_name", "_icon"];
+    private _pos = (getPosATLVisual _unit) vectorAdd [0,0,1.85];
+	([[0.25, ""], [0.75, _name]] select (_unit == (driver vehicle cursorObject))) params ["_alpha", "_name"];
+	drawIcon3D[_icon, [1,1,1,_alpha], _pos, 0.5, 0.5, 0,_name, 2, 0.03, "PuristaMedium", "center", false];
   } forEach cl_onEachFrame_team_members;
 
   // 3D Spotted enemies
@@ -222,8 +212,7 @@ private _event = addMissionEventHandler["EachFrame", {
   // Revive icons
   if (cl_class == "medic") then {
     {
-      private _pos = getPosATLVisual _x;
-      _pos set [2, (_pos select 2) + 0.1];
+      private _pos = (getPosATLVisual _x) vectorAdd [0,0,0.1];
       drawIcon3D [WWRUSH_ROOT+"pictures\revive.paa", [1,1,1,0.8], _pos, 1.5, 1.5, 0, "", 2, 0.035, "PuristaMedium", "center", false];
     } forEach cl_onEachFrame_team_reviveable;
   };
@@ -272,14 +261,10 @@ private _event = addMissionEventHandler["EachFrame", {
       private _colors = [_unit, true] call _getHUDColor;
       private _name = _unit getVariable ["name", name _unit];
       _teamMateName ctrlSetStructuredText parseText (format ["<t size='1.15' shadow='1' shadowColor='%1' color='%2' font='PuristaLight' align='right'>%3</t>", _colors select 1, _colors select 0, _name]);
-      private _arrayColors = [_unit, false] call _getHUDColor;
+      ([_unit, false] call _getHUDColor) params ["_color"];
       _teamMateIcon ctrlSetText ([_unit] call _getTeamIcon);
-      _teamMateIcon ctrlSetTextColor (_arrayColors select 0);
-      if (_unit isEqualTo (leader (group player))) then {
-        _teamMateLeader ctrlSetTextColor (_arrayColors select 0);
-      } else {
-        _teamMateLeader ctrlSetTextColor [0,0,0,0];
-      }
+      _teamMateIcon ctrlSetTextColor _color;
+	  _teamMateLeader ctrlSetTextColor ([[0,0,0,0], _color] select (_unit isEqualTo (leader (group player))));
     } else {
       _teamMateName ctrlSetStructuredText parseText "";
       _teamMateIcon ctrlSetText WWRUSH_ROOT+"pictures\noperk.paa";
