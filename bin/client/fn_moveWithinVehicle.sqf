@@ -18,10 +18,11 @@ private _fnc_indexToRole = {
   params [["_index", 0, [0]], ["_vehicle", objNull, [objNull]]];
   if (isNull _vehicle) exitWith {""};
   private _count = 0;
-  private _gunnerCount = count fullCrew [_vehicle, "gunner", true];
-  private _commanderCount = count fullCrew [_vehicle, "commander", true];
-  private _turretsCount = count fullCrew [_vehicle, "turret", true];
-  private _cargoCount = count fullCrew [_vehicle, "cargo", true];
+  private _crew = fullCrew [_vehicle, "", true];
+  private _gunnerCount = {_x select 1 == "gunner"} count _crew;
+  private _commanderCount = {_x select 1 == "commander"} count _crew;
+  private _turretsCount = {_x select 1 == "turret"} count _crew;
+  private _cargoCount = {_x select 1 == "cargo"} count _crew;
   if (_index == _count) exitWith {"Driver"};
   if (_index > _count && _index <= _count + _gunnerCount) exitWith {"Gunner"};
   _count = _count + _gunnerCount;
@@ -41,17 +42,14 @@ private _slotsOfRole = fullCrew [_vehicle, _role, true];
 if (_role == "") exitWith {};
 
 {
-  private _unit = _x select 0;
-  private _index = if (_role == "Cargo") then {_x select 2} else {_x select 3},
-  if ((_unit == objNull) || (!alive _unit)) exitWith {
-    if (_role == "Cargo") exitWith {
-      player action ["moveToCargo", _vehicle, _index];
-    };
-    if (_role == "Turret") exitWith {
-      player action ["moveToTurret", _vehicle, _index];
-    };
-    player action [format ["moveTo%1", _role], _vehicle];
-  }
+	_x params ["_unit", "_unitRole", "_cargoIdx", "_turretPath"];
+	private _index = if (_role == "Cargo") then {_cargoIdx} else {_turretPath},
+	if ((_unit == objNull) || (!alive _unit)) exitWith {
+		if (_role == "Cargo" || _role == "Turret") exitWith {
+			player action ["moveTo"+_role, _vehicle, _index];
+		};
+		player action ["moveTo"+_role, _vehicle];
+	}
 } forEach _slotsOfRole;
 
 true

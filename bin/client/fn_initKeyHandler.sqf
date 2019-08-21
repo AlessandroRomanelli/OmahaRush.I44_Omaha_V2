@@ -122,7 +122,7 @@ cl_allowActions = true;
 
 	// Space bar to deploy parachute
 	if (_DIKcode == KEY_SPACE) then {
-		if ((isNull (objectParent player)) && {((getPos player) select 2) > 30} && {!(isTouchingGround (vehicle player))} && {player getVariable ["hasChute", true]}) then {
+		if (alive player && {isNull (objectParent player)} && {((getPos player) select 2) > 30} && {!(isTouchingGround (vehicle player))} && {player getVariable ["hasChute", true]}) then {
 			_h = true;
 			private _posPlayer = position player;
 			private _dirPlayer = getDir player;
