@@ -9,34 +9,16 @@ scriptName "fn_drawNames.sqf";
 if (isServer && !hasInterface) exitWith {};
 
 private _id = addMissionEventHandler ["Draw3D", {
-  {
-    if (((_x getVariable ["side", sideUnknown]) == (player getVariable ["side", sideUnknown])) && {alive _x}) then {
-      private _dist = (player distance _x) / 15;
-      private _color = getArray (configFile/'CfgInGameUI'/'SideColors'/'colorFriendly');
-      if (cursorTarget != _x) then {
-        _color set [3, 1 - _dist]
-      };
-      drawIcon3D [
-        '',
-        _color,
-        [
-          visiblePosition _x select 0,
-          visiblePosition _x select 1,
-          (visiblePosition _x select 2) +
-          ((_x modelToWorld (
-              _x selectionPosition 'head'
-          )) select 2) + 0.4 + _dist / 1.5
-        ],
-        0,
-        0,
-        0,
-        _x getVariable ["name", name _x],
-        2,
-        0.03,
-        'PuristaMedium'
-      ];
-    };
-  } count playableUnits - [player];
+	{
+		if !(!alive _x || {_x == player} || {(_x getVariable ["side", side _x]) != (player getVariable ["side", side player])}) then {
+			private _dist = (player distance _x) / 25;
+			private _color = getArray(configFile >> "CfgInGameUI" >> "SideColors" >> "colorFriendly");
+			if (cursorTarget != _x) then {
+				_color set [3, 1 - _dist];
+			};
+			drawIcon3D ["",_color,(ASLtoAGL (getPosASL _x)) vectorAdd [0,0, 1.9 + (_dist / 2)],0,0,0,_x getVariable ["name", name _x],2,0.03,"PuristaMedium"];
+		};
+	} forEach playableUnits;
 }];
 
 _id
