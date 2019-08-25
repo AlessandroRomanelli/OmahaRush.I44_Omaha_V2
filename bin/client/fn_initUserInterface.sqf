@@ -150,13 +150,13 @@ private _event = addMissionEventHandler["EachFrame", {
     _alpha = 2/3 + (1/3*cos(100*diag_tickTime*pi));
   };
 
-  private _origin = if (cl_inSpawnMenu) then {_curSpawn} else {_posPlayer};
-  private _icon = WWRUSH_ROOT+(
-		("pictures\objective_"+(
+	private _origin = if (cl_inSpawnMenu) then {_curSpawn} else {_posPlayer};
+	private _icon = WWRUSH_ROOT+("pictures\objective_"+((
 		[
 			["defender.paa", "defender_armed.paa"],
 			["attacker.paa", "attacker_armed.paa"]
-		] select (_side isEqualTo "attackers"))) select (_objStatus isEqualTo 1));
+		] select (_side isEqualTo "attackers")) select (_objStatus isEqualTo 1))
+	);
   private _text = format["Defuse (%1m)", round(_origin distance sv_cur_obj)];
   drawIcon3D [_icon, [1,1,1,_alpha],_pos,1.5,1.5,0,_text,2,0.04, "PuristaLight", "center", true];
 

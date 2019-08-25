@@ -1,7 +1,7 @@
 scriptName "fn_drawNames.sqf";
 /*--------------------------------------------------------------------
 	Author: A. Roman (ofpectag: RMN)
-    File: fn_checkClassRestriction.sqf
+    File: fn_drawNames.sqf
 
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
