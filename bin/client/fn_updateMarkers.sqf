@@ -17,13 +17,20 @@ private _spawns = "true" configClasses (_spawnsConfig >> (player getVariable ["g
 
 _spawns deleteAt 0;
 
+if (isNil "cl_spawnMarkers") then {
+	cl_spawnMarkers = [];
+} else {
+	{ deleteMarkerLocal _x } forEach cl_spawnMarkers;
+};
+
 {
 	private _markerName = configName _x;
-		createMarkerLocal [_markerName, getArray(_x >> "positionATL")];
-    _markerName setMarkerPosLocal (getArray(_x >> "positionATL"));
-		_markerName setMarkerTypeLocal "respawn_inf";
-		_markerName setMarkerTextLocal (getText(_x >> "name"));
-		_markerName setMarkerSizeLocal [0.75, 0.75];
+	createMarkerLocal [_markerName, getArray(_x >> "positionATL")];
+	_markerName setMarkerPosLocal (getArray(_x >> "positionATL"));
+	_markerName setMarkerTypeLocal "respawn_inf";
+	_markerName setMarkerTextLocal (getText(_x >> "name"));
+	_markerName setMarkerSizeLocal [0.75, 0.75];
+	cl_spawnMarkers pushBack _markerName;
 } forEach _spawns;
 
 if !(_objMarkerStatusUpdate) exitWith {
