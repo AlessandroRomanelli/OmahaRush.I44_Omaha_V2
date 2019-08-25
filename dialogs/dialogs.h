@@ -269,7 +269,7 @@ class rr_spawnmenu {
     {
     	idc = 301;
     	style = "0x02 + 0x0c";
-		action = "private _list = (findDisplay 5000) displayCtrl 300; private _class = _list lbData (lbCurSel _list);[_class] call client_fnc_spawnMenu_displayClassCustomization;"
+		action = "private _list = (findDisplay 5000) displayCtrl 300; private _class = _list lbData (lbCurSel _list);[_class] call client_fnc_spawnMenu_displayClassCustomization;";
     	text = "CUSTOMIZE CLASS ABILITIES"; //--- ToDo: Localize;
     	x = 0.835115 * safezoneW + safezoneX;
     	y = 0.664757 * safezoneH + safezoneY;
@@ -682,7 +682,7 @@ class AdminAreaLB: RscListBox {
 
 class PlayerSelectorLB: AdminAreaLB {
 	onLBSelChanged = "cl_admin_player_sel = ((_this select 0) lbData (_this select 1)) call BIS_fnc_objectFromNetId;";
-	onSetFocus = "params ['_ctrl']; private _display = ctrlParent _ctrl; (_display displayCtrl ([1500,1501] select (ctrlIDC _ctrl == 1500))) lbSetCurSel -1;"
+	onSetFocus = "params ['_ctrl']; private _display = ctrlParent _ctrl; (_display displayCtrl ([1500,1501] select (ctrlIDC _ctrl == 1500))) lbSetCurSel -1;";
 };
 
 class rr_modal {
