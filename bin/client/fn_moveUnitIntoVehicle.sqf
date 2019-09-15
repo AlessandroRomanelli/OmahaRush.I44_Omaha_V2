@@ -9,34 +9,14 @@ scriptName "fn_moveUnitIntoVehicle";
 --------------------------------------------------------------------*/
 #define __filename "fn_moveUnitIntoVehicle.sqf"
 
-_unit = param[0,objNull,[objNull]];
-_vehicle = param[1,objNull,[objNull]];
+params [["_vehicle", objNull, [objNull]]];
 
 // wow
-if (isNull _unit || isNull _vehicle) exitWith {false};
+if (isNull _vehicle) exitWith {false};
 
-// try i guess
-_ret = false;
+private ["_return"];
+player moveInAny _vehicle;
 
-if (!_ret) then {
-	_unit moveInDriver _vehicle;
-	sleep 0.1;
-	if (vehicle _unit != _unit) then {_ret = true};
-};
-if (!_ret) then {
-	_unit moveInGunner _vehicle;
-	sleep 0.1;
-	if (vehicle _unit != _unit) then {_ret = true};
-};
-if (!_ret) then {
-	_unit moveInCommander _vehicle;
-	sleep 0.1;
-	if (vehicle _unit != _unit) then {_ret = true};
-};
-if (!_ret) then {
-	_unit moveInCargo _vehicle;
-	sleep 0.1;
-	if (vehicle _unit != _unit) then {_ret = true};
-};
+_return = if (vehicle player == _vehicle) then {true} else {true};
 
-_ret
+_return

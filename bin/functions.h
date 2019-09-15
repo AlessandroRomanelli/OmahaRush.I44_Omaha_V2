@@ -4,9 +4,9 @@ class Maverick_Functions_Client {
 	class functions {
 		file = "bin\client";
 		class init {headerType = -1;};
+		class preInit {preInit = 1;};
 		class waitForServer {};
 		class spawn {};
-		class getCurrentStageString {};
 		class getSectionCenter {};
 		class populateSpawnMenu {};
 		class loadStatistics {};
@@ -18,7 +18,7 @@ class Maverick_Functions_Client {
 		class kill {};
 		class setupEventHandlers {};
 		class spawnPlayer {};
-		class spawnPlayerAtHQ {};
+		class spawnPlayerAtLocation {};
 		class spawnPlayerAtObject {};
 		class displayError {};
 		class startIngameGUI {};
@@ -33,7 +33,6 @@ class Maverick_Functions_Client {
 		class killed {};
 		class equipAll {};
 		class regenerateHP {};
-		class objectiveActionUpdate {};
 		class MCOMarmed {};
 		class armMCOM {};
 		class disarmMCOM {};
@@ -77,7 +76,7 @@ class Maverick_Functions_Client {
 		class initPerks {};
 		class cleanUp {};
 		class initHoldActions {};
-		class teamBalanceKick;
+		class teamBalanceKick {};
 		class remoteExecution {};
 		class dumpObjects {};
 		class instantTeamBalanceCheck {};
@@ -85,23 +84,39 @@ class Maverick_Functions_Client {
 		class vehicleDisabled {};
 		class displayKeyBindingHint {};
 		class restrictedArea {};
-		class initMatchTimer {};
 		class validatePointsEarned {};
 		class updateSpawnMenuCam {};
 		class revealFriendlyUnits {};
 		class onEachFramePreparation {};
 		class displaySpawnRestriction {};
 		class moveUnitIntoVehicle {};
-		class damageHandler {};
 		class teleport {};
 		class displayAds {};
 		class drawMapUnits {};
 		class getCurrentSideLoadout {};
 		class initGlobalVars {};
 		class brightNight {postInit = 1;};
+		class getSquadPerks {};
+		class setSquadPerks {};
+		class checkClassRestriction {};
+		class encryptData {};
+		class getFallbackTime {};
+		class spotTarget {};
+		class moveWithinVehicle {};
+		class getObjectiveDistance {};
+		class initUserInterface {};
+		class meleeTakedown {};
+		class getUnitIcon {};
+		class sideSwitch {};
+		class displayAdminArea {};
+		class populateAdminArea {};
+		class populateAdminParams {};
+		class spawnModal {};
+		class updateParams {};
 
 		// Pointfeed
 		class pointfeed_add {};
+		class displayKillcam {};
 
 		// Spawn menu
 		class spawnMenu_displayPrimaryWeaponSelection {};
@@ -126,11 +141,10 @@ class Maverick_Functions_Server {
 		class engine {};
 		class cleanUp {};
 		class spawnObjectives {};
-		class getRandomMap {};
+		class decideMapSize {};
 		class refreshTickets {};
 		class endRound {};
 		class matchTimer {};
-		class getMatchTime {};
 		class persistentVehicleManager {};
 		class stageVehicleManager {};
 		class importantObjects {};
@@ -139,6 +153,14 @@ class Maverick_Functions_Server {
 		class scriptMonitoring {};
 		class autoTeamBalancer {};
 		class monitorVehicle {};
+		class waitForPlayers {};
+		class generateGroupName {};
+		class assignSide {};
+		class sideSwitch {};
+		class selectNextMap {};
+		class setParams {};
+		class initParams {};
+
 
 		// Database
 		class db_getPlayer {};
@@ -146,5 +168,18 @@ class Maverick_Functions_Server {
 		class db_connect {};
 		class db_asyncCall {};
 		class db_prepareString {};
+	};
+};
+
+class Maverick_Functions_Admin {
+	tag = "admin";
+	class functions {
+		file = "bin\admin";
+		class kickPlayer {};
+		class killPlayer {};
+		class switchPlayer {};
+		class isAdmin {};
+		class spectate {};
+		class setParams {};
 	};
 };

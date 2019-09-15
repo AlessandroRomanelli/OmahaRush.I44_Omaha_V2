@@ -1,47 +1,44 @@
 scriptName "fn_equipAll";
 /*--------------------------------------------------------------------
-	Author: Maverick (ofpectag: MAV)
+	Author: A. Roman (ofpectag: MAV)
     File: fn_equipAll.sqf
 
-	<Maverick Applications>
-    Written by Maverick Applications (www.maverick-apps.de)
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_equipAll.sqf"
 if (isServer && !hasInterface) exitWith {};
 
+private _isBeingRevived = param[0, false, [false]];
+
 // Give player loadout
-_side = player getVariable "gameSide";
-_sideLoadout = [] call client_fnc_getCurrentSideLoadout;
+private _side = player getVariable "gameSide";
+private _sideLoadout = [] call client_fnc_getCurrentSideLoadout;
 
-_uniforms = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "uniforms"));
-_goggles = (getText(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "goggles"));
-_vests		 = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "vests"));
-_headgears = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "headgears"));
-_backpacks = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "backpacks"));
+private _uniforms = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "uniforms"));
+private _goggles = (getText(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "goggles"));
+private _vests		 = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "vests"));
+private _headgears = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "headgears"));
+private _backpacks = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "backpacks"));
 
 
-if (count _uniforms > 0) then {player forceAddUniform (selectRandom _uniforms)};
+if ((count _uniforms > 0) && {(uniform player) isEqualTo ""}) then {player forceAddUniform (selectRandom _uniforms)};
 if (_goggles != "") then {player addGoggles _goggles;};
-if (count _vests > 0) then {player addVest (selectRandom _vests)};
-if (count _headgears > 0) then {player addHeadgear (selectRandom _headgears)};
-if (count _backpacks > 0) then {removeBackpackGlobal player; player addBackpack (selectRandom _backpacks);};
+if ((count _vests > 0) && {(vest player) isEqualTo ""}) then {player addVest (selectRandom _vests)};
+if ((count _headgears > 0) && {(headgear player) isEqualTo ""}) then {player addHeadgear (selectRandom _headgears)};
+if ((count _backpacks > 0) && {(backpack player) isEqualTo ""}) then {removeBackpackGlobal player; player addBackpack (selectRandom _backpacks);};
 
 // Vest perk handler
 /* if (cl_squadPerk == "extended_vest") then {
 	player addVest "V_Press_F";
 }; */
 
-// Smoke grenade?
-if (cl_squadPerk == "smoke_grenades") then {
-	for "_i" from 1 to 2 do {player addItem "SmokeShell";};
-};
-
 // Give weapons
-[] spawn client_fnc_equipWeapons;
+[_isBeingRevived] call client_fnc_equipWeapons;
 
 // Shared items
 player addItem "ItemMap";
 player assignITem "ItemMap";
 player addItem "ItemCompass";
 player assignItem "ItemCompass";
+
+true

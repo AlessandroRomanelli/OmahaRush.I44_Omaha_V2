@@ -8,21 +8,21 @@ scriptName "fn_refreshTickets";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_refreshTickets.sqf"
+#include "..\utils.h"
 
-_maxTickets = "MaxTickets" call bis_fnc_getParamValue;
-_minTickets = "MinTickets" call bis_fnc_getParamValue;
+private _avgPlayersPerSide = (count allPlayers)/2;
 
-_attackers = (count allPlayers)/2;
+VARIABLE_DEFAULT(sv_setting_MaxTickets,300);
+VARIABLE_DEFAULT(sv_setting_MinTickets,25);
+VARIABLE_DEFAULT(sv_setting_TicketsRate,10);
 
-_ticketRate = "TicketsRate" call bis_fnc_getParamValue;
+private _tickets = ceil (_avgPlayersPerSide * sv_setting_TicketsRate);
 
-_tickets = ceil (_attackers * _ticketRate);
-
-if (_tickets > _maxTickets) then {
-  _tickets = _maxTickets;
+if (_tickets > sv_setting_MaxTickets) then {
+  _tickets = sv_setting_MaxTickets;
 } else {
-  if (_tickets < _minTickets) then {
-    _tickets = _minTickets;
+  if (_tickets < sv_setting_MinTickets) then {
+    _tickets = sv_setting_MinTickets;
   };
 };
 
@@ -31,4 +31,4 @@ sv_tickets = _tickets;
 sv_tickets_total = _tickets;
 
 // Broadcast
-[["sv_tickets","sv_tickets_total"]] spawn server_fnc_updateVars;
+[["sv_tickets","sv_tickets_total"]] call server_fnc_updateVars;

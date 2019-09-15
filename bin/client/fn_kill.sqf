@@ -10,18 +10,22 @@ scriptName "fn_kill";
 #define __filename "fn_kill.sqf"
 if (isServer && !hasInterface) exitWith {};
 
-params [["_victim", objNull], ["_wasHS", false]];
+params [["_victim", objNull, [objNull]], ["_wasHS", false, [false]], ["_grenade", "", [""]], ["_wasMelee", false, [false]]];
+
+// Play sound
+playSound "kill";
 
 // Increase kills
 cl_kills = cl_kills + 1;
 cl_total_kills = cl_total_kills + 1;
 
 player setVariable ["kills",cl_kills,true];
+_victim setVariable ["killed", (_victim getVariable ["killed", 0]) + 1];
 
 // Get seat in vehicle
-_seat = -2;
-if ((vehicle player) != player) then {
-	_v = vehicle player;
+private _seat = -2;
+if !(isNull objectParent player) then {
+	private _v = vehicle player;
 
 	// Check if we are the driver
 	if ((driver _v) == player) then {
@@ -35,25 +39,32 @@ if ((vehicle player) != player) then {
 };
 
 // Pushback into render array
-_curWeapon = if (_seat in [-1, 0]) then {
-	currentWeapon (vehicle player)
+private _curWeapon = "";
+if (_grenade != "") then {
+	_curWeapon = _grenade;
 } else {
-	currentWeapon player
+	_curWeapon = if (_seat in [-1, 0]) then {
+		currentWeapon (vehicle player)
+	} else {
+		currentWeapon player
+	};
 };
 
-// Current weapon
-_curWeapon = currentWeapon (vehicle player);
-_reason = "KILLED";
 
+private _reason = "KILLED";
 if (_curWeapon != "") then {
 	_reason = (([_curWeapon] call client_fnc_weaponDetails) select 1);
 };
 
-_points = 100;
+if (_wasMelee) then {
+	_reason = "KNIFE";
+};
+
+private _points = 100;
 
 // Display hit marker
-_HSkill = "";
-if (_wasHS) then {
+private _HSkill = "";
+if (_wasHS && (_grenade == "")) then {
 	-0.03122 call client_fnc_MPHit;
 	_HSkill = "<br/><t size='1.0' color='#FFFFFF'>HEADSHOT BONUS</t>";
 	_points = _points + 50;
@@ -61,8 +72,14 @@ if (_wasHS) then {
 	-0.03184 call client_fnc_MPHit;
 };
 
+private _meleeTakedown = "";
+if (_wasMelee) then {
+	_meleeTakedown = "<br/><t size='1.0' color='#FFFFFF'>MELEE TAKEDOWN</t>";
+	_points = _points + 100;
+};
+
 // Any additional points?
-_distanceKill = "";
+private _distanceKill = "";
 if (_victim distance player > 50) then {
 	_distanceKill = "<br/><t size='1.0' color='#FFFFFF'>LONG RANGE KILL</t>";
 
@@ -76,8 +93,9 @@ if (_victim distance player > 50) then {
 	// Additional points
 	_points = _points + 15;
 };
-_objectiveKill = "";
-if ((player distance sv_cur_obj) < 20 || (_victim distance sv_cur_obj) < 20) then {
+
+private _objectiveKill = "";
+if ((player distance sv_cur_obj) < 25 || (_victim distance sv_cur_obj) < 25) then {
 	if (player getVariable "gameSide" == "defenders") then {
 		_objectiveKill = "<br/><t size='1.0' color='#FFFFFF'>OBJECTIVE DEFENDER</t>";
 	} else {
@@ -89,6 +107,6 @@ if ((player distance sv_cur_obj) < 20 || (_victim distance sv_cur_obj) < 20) the
 };
 
 // We've done good! Give me points
-/* ["<t size='1.3'>[" + _reason + "] <t color='#FE251B'>" + (_victim getVariable ["name", ""]) + "</t></t>" + _HSkill + _distanceKill + _objectiveKill, _points] spawn client_fnc_pointfeed_add; */
-["<t size='1.3'>[" + _reason + "] <t color='#FE251B'>" + name _victim + "</t></t>" + _HSkill + _distanceKill + _objectiveKill, _points] spawn client_fnc_pointfeed_add;
-[_points] spawn client_fnc_addPoints;
+private _killInfo = format["<t size='1.3'>[%1] <t color='#FE251B'>%2</t></t>", _reason, _victim getVariable ["name", name _victim]];
+[_killInfo + _meleeTakedown + _HSkill + _distanceKill + _objectiveKill, _points] call client_fnc_pointfeed_add;
+[_points] call client_fnc_addPoints;

@@ -1,95 +1,132 @@
-/*
-	Author: HallyG
+/* __________________________________________________________________
+
+	Author: A. Roman
 	Displays map markers for all friendly units on the map.
 
-	Argument(s):
-	0: Show AI: <BOOLEAN> (default: Show AI in singleplayer only)
-
-	Returns:
-	<NOTHING>
-
-	Example:
-	[true] spawn FUNCTIONNAME;
-	[true] execVM SCRIPTLOCATION;
 __________________________________________________________________*/
 
-if (isDedicated || missionNamespace getVariable ["HGF_unitMarkers_running", false]) exitWith {};
-HGF_unitMarkers_running = true;
+#include "..\utils.h"
+
+if (isDedicated || missionNamespace getVariable ["unitMarkers_running", false]) exitWith {};
+unitMarkers_running = true;
+
+#define TEAM_COLOR "ColorWhiteStrong"
+#define SIDE_COLOR "colorBLUFOR"
+#define REVIVE_COLOR "ColorRed"
+#define ENEMY_COLOR "colorOPFOR"
 
 params [
 	["_showAI", !isMultiplayer, [false]]
 ];
 
-private _fnc_updtMkr = {
-	params ["_marker", "_pos", "_dir", "_type", "_name"];
+cl_map_showAI = _showAI;
 
+cl_map_fnc_updtMkr = {
+	params ["_marker", "_pos", "_dir", "_type", "_name", "_size", "_alpha"];
+	_marker setMarkerSizeLocal _size;
 	_marker setMarkerPosLocal _pos;
 	_marker setMarkerDirLocal _dir;
 	_marker setMarkerTypeLocal _type;
 	_marker setMarkerTextLocal _name;
+	_marker setMarkerAlphaLocal _alpha
 };
 
-private _markers = [];
-private _units = [];
-private _sideColor = [blufor, true] call BIS_fnc_sideColor;
-private _teamColor = [independent, true] call BIS_fnc_sideColor;
+cl_map_fnc_getMarkerColor = {
+	params ["_unit"];
+	private _color = ENEMY_COLOR;
+	if ((_unit getVariable ["gameSide", "defenders"]) isEqualTo (player getVariable ["gameSide", "defenders"])) exitWith {
+		_color = if ((group _unit) isEqualTo (group player)) then {TEAM_COLOR} else {SIDE_COLOR};
+		if (!alive _unit) then {
+			_color = REVIVE_COLOR;
+		};
+		_color
+	};
+	_color
+};
 
-while {true} do {
-	_units = allUnits select {
-		if (isPlayer _x || _showAI) then {
-			if ((side _x) isEqualTo (playerSide)) then {
-				if (_x getVariable ["isAlive", false]) then {
-					true
+cl_map_fnc_removeMarker = {
+	params ["_marker"];
+	{
+		if (_x isEqualTo _marker) exitWith {
+			cl_map_markers deleteAt _forEachIndex;
+			deleteMarker _marker;
+		}
+	} forEach cl_map_markers;
+};
+
+cl_map_markers = [];
+
+REMOVE_EXISTING_MEH("EachFrame", cl_map_draw);
+
+cl_map_draw = addMissionEventHandler ["EachFrame", {
+	private _units = allUnits select {
+		if ((!isNull _x) && {isPlayer _x || cl_map_showAI} && {(_x distance sv_cur_obj) < 1000}) then {
+			true
+		}
+	};
+	{
+		private _marker = format ["Unit_%1", _x call bis_fnc_netId];
+		private _pos = visiblePositionASL _x;
+		private _dir = getDirVisual _x;
+		private _icon = "mil_triangle";
+		private _name = _x getVariable ["name", name _x];
+		private _veh = {isPlayer _x || cl_map_showAI} count (crew vehicle _x);
+		private _color = [_x] call cl_map_fnc_getMarkerColor;
+		private _size = [1,1];
+		private _alpha = 0.8;
+
+		if !(_marker in cl_map_markers) then {
+			cl_map_markers pushBack (createMarkerLocal [_marker, visiblePositionASL _x]);
+		};
+
+		_marker setMarkerColorLocal _color;
+
+		if ((_x getVariable ["gameSide", "defenders"]) isEqualTo (player getVariable ["gameSide", "defenders"])) then {
+			if !(alive _x) then {
+				_icon = "loc_hospital";
+				_dir = 0;
+			} else {
+				if (!isNull objectParent _x) then {
+					_name = format ["%1: %2 %3", getText (configFile >> "cfgVehicles" >> typeOf vehicle _x >> "displayname"), _x getVariable ["name", name _x], format [["+%1",""] select (_veh < 2), _veh -1]];
+					if (((crew vehicle _x) select {isPlayer _x || cl_map_showAI} select 0) isEqualTo _x) then {
+						_icon = "mil_box";
+					} else {
+						_icon = "Empty";
+					};
+				} else {
+					_size = [0.8,1];
 				};
 			};
+		} else {
+			if (_x getVariable ["isSpotted", 0] > 0) then {
+				_icon = "mil_circle";
+				_size = [0.4, 0.4];
+				_alpha = (10 + (_x getVariable ["isSpotted", 0]) - serverTime)/10;
+				if (_alpha < 0) then {
+					_alpha = 0;
+				};
+				_name = "";
+			} else {
+				_icon = "Empty";
+			};
 		};
-	};
+		[_marker, _pos, _dir, _icon, _name, _size, _alpha] spawn cl_map_fnc_updtMkr;
+	} forEach _units;
+}];
 
-	if (visibleGPS || visibleMap) then {
+TERMINATE_SCRIPT(cl_map_markers_check);
+
+cl_map_markers_check = [] spawn {
+	while {true} do {
 		{
-			private _marker = format ["Unit%1", _x];
-			private _veh = {isPlayer _x || _showAI} count (crew vehicle _x);
-
-			if !(_marker in _markers) then {
-				_markers pushBack (createMarkerLocal [_marker, visiblePositionASL _x]);
-				_marker setMarkerAlphaLocal 0.75;
-				_marker setMarkerSizeLocal [0.8, 0.8];
-				if ((group _x) isEqualTo (group player)) then {
-					_marker setMarkerColorLocal _teamColor;
-				} else {
-					_marker setMarkerColorLocal _sideColor;
-				}
-			};
-			[
-				[
-					_marker,
-					(visiblePositionASL _x),
-					(getDirVisual _x),
-					[
-						["Empty", "mil_box"] select ((((crew vehicle _x) select {isPlayer _x || _showAI}) select 0) isEqualTo _x),
-						"mil_triangle"
-					] select (isNull objectParent _x || {(objectParent _x isKindOf "ParachuteBase")}),
-					[
-						format ["%1: %2 %3", getText (configFile >> "cfgVehicles" >> typeOf vehicle _x >> "displayname"), name _x, format [["+%1",""] select (_veh < 2), _veh -1]],
-						name _x
-					] select (isNull objectParent _x || {(objectParent _x isKindOf "ParachuteBase")})
-				],
-				[
-					_marker,
-					(visiblePositionASL _x),
-					0,
-					"Empty",
-					name _x
-				]
-			] select !(alive _x) call _fnc_updtMkr;
-
-			if !(alive _x) then {
-				_units deleteAt _forEachIndex;
-			};
-		} forEach (_units select {!isNull _x});
-	} else {
-		{deleteMarkerLocal _x; true} count _markers;
-		_markers = [];
+			private _sub = _x splitString "_";
+			if ((_sub select 0) isEqualTo "Unit") then {
+				private _obj = (_sub select 1) call BIS_fnc_objectFromNetId;
+				if (isNull _obj) then {
+					[_x] spawn cl_map_fnc_removeMarker;
+				};
+			}
+		} forEach allMapMarkers;
+		uiSleep 5;
 	};
-	uiSleep 0.03;
 };

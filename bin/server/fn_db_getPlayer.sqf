@@ -10,12 +10,12 @@ scriptName "fn_db_getPlayer";
 #define __filename "fn_db_getPlayer.sqf"
 
 // Parameters
-_player = param[0,objNull,[objNull]];
+private _player = param[0,objNull,[objNull]];
 
 // Exceptions
 if (isNull _player) exitWith {};
 
-_pName = name _player;
+private _pName = name _player;
 if (_pName find "'" != -1) then {
 	_pName = _pName splitString "";
 	{if (_x == "'") then {_pName deleteAt _forEachIndex}} forEach _pName;
@@ -24,8 +24,8 @@ if (_pName find "'" != -1) then {
 
 
 // Code
-_query = format["SELECT kills, deaths, exp, equipConfigurations, equipLoaded FROM players WHERE steamid='%1'",getPlayerUID _player];
-_playerData = [_query,2] call server_fnc_db_asyncCall;
+private _query = format["SELECT kills, deaths, exp, equipConfigurations, equipLoaded FROM players WHERE steamid='%1'",getPlayerUID _player];
+private _playerData = [_query,2] call server_fnc_db_asyncCall;
 
 if(count _playerData == 0) then {
 	// Player does not exist in DB, create him

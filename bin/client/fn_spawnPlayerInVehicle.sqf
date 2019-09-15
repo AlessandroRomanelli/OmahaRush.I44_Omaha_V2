@@ -10,41 +10,40 @@ scriptName "fn_spawnPlayerInVehicle";
 #define __filename "fn_spawnPlayerInVehicle.sqf"
 if (isServer && !hasInterface) exitWith {};
 
-_configName = param[0,"",[""]];
+private _configName = param[0,"",[""]];
 
-_side = if (player getVariable "gameSide" == "defenders") then {"Defender"} else {"Attacker"};
-_config = (missionConfigFile >> "MapSettings" >> "PersistentVehicles" >> _side >> _configName);
+/* private _side = ["Attacker", "Defender"] select (player getVariable "gameSide" == "defenders"); */
+/* private _config = (missionConfigFile >> "MapSettings" >> sv_mapSize >> "PersistentVehicles" >> _side >> _configName);
 
 // If the config is null its most likely a stage vehicle
 if (isNull _config) then {
-	if (player getVariable "gameSide" == "defenders") then {
-		_config = (missionConfigFile >> "MapSettings" >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Vehicles" >> "Defender" >> _configName);
-	} else {
-		_config = (missionConfigFile >> "MapSettings" >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Vehicles" >> "Attacker" >> _configName);
-	};
-};
+	_config = (missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> (sv_cur_obj getVariable ["cur_stage", "Stage1"]) >> "Vehicles" >> _side >> _configName);
+}; */
 
-_pos = getArray(_config >> "positionATL");
-_class = getText(_config >> "classname");
-_displayName = getText(_config >> "displayName");
-_objects = nearestObjects [_pos, [_class], 5];
+// Equip
+[] call client_fnc_equipAll;
+
+/* private _pos = getArray(_config >> "positionATL");
+private _class = getText(_config >> "classname");
+private _objects = nearestObjects [_pos, [_class], 5];
 if (count _objects < 1) exitWith {["Vehicle unavailable"] spawn client_fnc_displayError;};
 
-_vehicle = _objects select 0;
+private _vehicle = _objects select 0; */
+
+private _vehicle = missionNamespace getVariable [_configName, objNull];
+
+if (isNull _vehicle) exitWith {["Vehicle unavailable"] call client_fnc_displayError;};
 
 // Put player into vehicle
-_vehicleNoSpace = !([player, _vehicle] call client_fnc_moveUnitIntoVehicle);
+private _vehicleNoSpace = !([_vehicle] call client_fnc_moveUnitIntoVehicle);
 
 // Was the vehicle full?
 if (_vehicleNoSpace) exitWith {
-	["Vehicle full"] spawn client_fnc_displayError;
+	["Vehicle full"] call client_fnc_displayError;
 };
 
 // Close spawn dialog
 closeDialog 0;
-
-// Equip
-[] spawn client_fnc_equipAll;
 
 // Move camera down to player, then delete it
 cl_spawnmenu_cam camPreparePos (getPosATL _vehicle);
@@ -53,8 +52,8 @@ cl_spawnmenu_cam camCommitPrepared 1;
 
 // Motion blurr
 if (getNumber(missionConfigFile >> "GeneralConfig" >> "PostProcessing") == 1) then {
-	0 = ["DynamicBlur", 400, [3]] spawn {
-		params ["_name", "_priority", "_effect", "_handle"];
+	["DynamicBlur", 400, [3]] spawn {
+		params ["_name", "_priority", "_effect"];
 		while {
 			cl_spawnmenu_blur = ppEffectCreate [_name, _priority];
 			cl_spawnmenu_blur < 0
@@ -67,16 +66,16 @@ if (getNumber(missionConfigFile >> "GeneralConfig" >> "PostProcessing") == 1) th
 	};
 };
 
-sleep 0.7;
+uiSleep 0.7;
 
 // Black fade out/in
 2000 cutRsc ["rr_spawnPlayer","PLAIN"];
-sleep 0.4;
+uiSleep 0.4;
 
 // Delete blurry effect
 if (getNumber(missionConfigFile >> "GeneralConfig" >> "PostProcessing") == 1) then {
-	0 = ["DynamicBlur", 400, [0]] spawn {
-		params ["_name", "_priority", "_effect", "_handle"];
+	["DynamicBlur", 400, [0]] spawn {
+		params ["_name", "_priority", "_effect"];
 		while {
 			cl_spawnmenu_blur = ppEffectCreate [_name, _priority];
 			cl_spawnmenu_blur < 0
@@ -92,24 +91,15 @@ if (getNumber(missionConfigFile >> "GeneralConfig" >> "PostProcessing") == 1) th
 // Unmute sound
 0.3 fadeSound 1;
 
-// HELICOPTER ONLY: MAKE SURE WE HAVE FLARES
-/*if (_vehicle isKindOf "B_Heli_Light_01_armed_F") then {
-	while {!("CMFlareLauncher" in (weapons _vehicle))} do {
-		_vehicle addWeaponGlobal "CMFlareLauncher";
-		_vehicle addWeapon "CMFlareLauncher";
-		_vehicle addMagazines ["120Rnd_CMFlare_Chaff_Magazine", 1];
-	};
-};*/
-
 // General success script
-[] spawn cl_spawn_succ;
+[] call cl_spawn_succ;
 
 cl_spawnmenu_cam cameraEffect ["TERMINATE","BACK"];
 camDestroy cl_spawnmenu_cam;
 player switchCamera "INTERNAL";
 
 // Launch GUI
-cl_gui_thread = [] spawn client_fnc_startIngameGUI;
+[] call client_fnc_startIngameGUI;
 
 // Display help hint
 if (player getVariable "gameSide" == "defenders") then {
@@ -119,11 +109,6 @@ if (player getVariable "gameSide" == "defenders") then {
 };
 
 // Display instructions hint for currently selected perk
-[] spawn {
-	sleep 10.3;
-	_instructions = [cl_classPerk] call client_fnc_getPerkInstructions;
-	[_instructions select 0, _instructions select 1] spawn client_fnc_hint;
-
-	// Reload mcom interaction
-	[] spawn client_fnc_objectiveActionUpdate;
-};
+uiSleep 10.3;
+private _instructions = [cl_classPerk] call client_fnc_getPerkInstructions;
+[_instructions select 0, _instructions select 1] spawn client_fnc_hint;

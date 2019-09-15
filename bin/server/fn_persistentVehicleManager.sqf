@@ -8,6 +8,7 @@ scriptName "fn_persistentVehicleManager";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_persistentVehicleManager.sqf"
+#include "..\utils.h"
 
 // Get vehicles from config and fetch their data
 sv_persistentVehicleData = [];
@@ -16,8 +17,8 @@ sv_persistentVehiclesAwaitingRespawn = [];
 sv_persistentVehicleRespawnThreads = [];
 
 // Get vehicle configs from both attacker and defender
-_configs = "true" configClasses (missionConfigFile >> "MapSettings" >> "PersistentVehicles" >> "Attacker");
-_configs = _configs + ("true" configClasses (missionConfigFile >> "MapSettings" >> "PersistentVehicles" >> "Defender"));
+private _configs = "true" configClasses (missionConfigFile >> "MapSettings" >> sv_mapSize >> "PersistentVehicles" >> "Attacker");
+private _configs = _configs + ("true" configClasses (missionConfigFile >> "MapSettings" >> sv_mapSize >> "PersistentVehicles" >> "Defender"));
 
 // Pushback into main array
 {
@@ -27,8 +28,8 @@ _configs = _configs + ("true" configClasses (missionConfigFile >> "MapSettings" 
 
 // Inline functions
 sv_getVehicleByID = {
-	_id = param[0,"",[""]];
-	_ret = objNull;
+	private _id = param[0,"",[""]];
+	private _ret = objNull;
 	{
 		if (_x getVariable ["id", ""] == _id) then {
 			_ret = _x;
@@ -37,7 +38,7 @@ sv_getVehicleByID = {
 	_ret;
 };
 sv_deleteNullVehicles = {
-	_newList = [];
+	private _newList = [];
 	{
 		if (!isNull _x) then {
 			_newList pushBack _x;
@@ -45,40 +46,41 @@ sv_deleteNullVehicles = {
 	} forEach sv_persistentVehicles;
 	sv_persistentVehicles = _newList;
 };
+
 sv_tryRespawn = {
-	_v = _this select 0;
+	private _v = _this select 0;
 	// Terminate old script handling this vehicle
 	if (!isNull (_v getVariable ["vehicle_getout_thread", scriptNull])) then {
 		terminate (_v getVariable ["vehicle_getout_thread", scriptNull]);
 	};
-	_scriptHandler = [_v] spawn {
-		sleep 30;
-		if ({alive _x} count (crew (_this select 0)) == 0 && {{alive _x} count (getPos (_this select 0) nearEntities ["man", 10]) == 0}) then {
-			deleteVehicle (_this select 0);
+	private _scriptHandler = [_v] spawn {
+		private _veh = param[0, objNull, [objNull]];
+		uiSleep 10;
+		if ((({alive _x} count (crew _veh)) == 0) && {({alive _x} count ((getPos _veh) nearEntities ["man", 10])) == 0}) then {
+			deleteVehicle _veh;
 		};
 	};
-
 	// Set handler on vehicle
 	_v setVariable ["vehicle_getout_thread", _scriptHandler];
 };
+
 sv_spawnVehicle = {
-	_config = param[0,configNull,[configNull]];
-	_initialSpawn = param[1,false,[false]];
-	_arrayToEdit = param[2,[],[[]]];
-	//diag_log "_0";
+	private _config = param[0,configNull,[configNull]];
+	private _initialSpawn = param[1,false,[false]];
+	private _arrayToEdit = param[2,[],[[]]];
 
 	// Vehicle is not being handled yet, handle it now
 	sv_persistentVehiclesAwaitingRespawn pushBack (configName _config);
 
 	// Wait the respawn time
-	_sleepTime = 0;
-	if (!_initialSpawn) then {_sleepTime = getNumber(_config >> "respawnTime")};
-	sleep _sleepTime;
+	VARIABLE_DEFAULT(sv_setting_InitialFallback,60);
+	private _sleepTime = if (_initialSpawn) then {sv_setting_InitialFallback} else {getNumber(_config >> "respawnTime")};
+	uiSleep _sleepTime;
 
 	//diag_log "_1";
 
 	// Check if there is a old vehicle, if yes, delete it
-	_oldVeh = [configName _config] call sv_getVehicleByID;
+	private _oldVeh = [configName _config] call sv_getVehicleByID;
 	if (!isNull _oldVeh) then {
 		deleteVehicle _oldVeh;
 		[] call sv_deleteNullVehicles;
@@ -88,11 +90,24 @@ sv_spawnVehicle = {
 	//diag_log "_2";
 
 	// Create vehicle
-	_posATL = getArray(_config >> "positionATL");
-	_dir = getNumber(_config >> "dir");
-	_vehicle = createVehicle [getText(_config >> "classname"), _posATL, [], _dir, "CAN_COLLIDE"];
-	_vehicle setPosATL _posATL;
-	_vehicle setDir _dir;
+	private _posATL = getArray(_config >> "positionATL");
+	private _dir = getNumber(_config >> "dir");
+	private _className = getText(_config >> "className");
+	private _vehicle = objNull;
+	if (_className isKindOf "Air") then {
+		_vehicle = createVehicle [_className, [-200,-200,0], [], 200, "FLY"];
+		_dir = _posATL getDir (getPos sv_cur_obj);
+		/* diag_log format["DEBUG: Creating vehicle of class %1, at posATL: %2, dir: %3", _className, _posATL, _dir]; */
+		_vehicle setDir _dir;
+		_vehicle setPosATL _posATL;
+		_vehicle setVelocityModelSpace [0, 60, 10];
+		_vehicle enableSimulationGlobal false;
+		/* diag_log format["DEBUG: Simulation for vehicle disabled, currently at: %1, should be at: %2", getPos _vehicle, _posATL]; */
+	} else {
+		_vehicle = createVehicle [_className, [-200,-200,0], [], 200, "CAN_COLLIDE"];
+		_vehicle setDir _dir;
+		_vehicle setPosATL _posATL;
+	};
 	_vehicle setVariable ["id", configName (_config), true];
 	_vehicle setVariable ["config", _config];
 
@@ -103,18 +118,35 @@ sv_spawnVehicle = {
 	clearBackpackCargoGlobal _vehicle;
 
 	// Broadcast to players
-	[_vehicle] remoteExec ["client_fnc_vehicleSpawned"];
+	/* [_vehicle] remoteExec ["client_fnc_vehicleSpawned"]; */
 
 	// Run init script
-	_script = getText(_config >> "script");
-	_compiled = compile _script;
-	[_vehicle] call _compiled;
+	private _script = getText(_config >> "script");
+	if (_script != "") then {
+		private _compiled = compile _script;
+		[_vehicle] call _compiled;
+	};
+
+	// Set texture
+	private _variant = getText(_config >> "variant");
+	if (_variant != "") then {
+		private _textures = getArray(configFile >> "CfgVehicles" >> typeOf _vehicle >> "textureSources" >> _variant >> "textures");
+		{
+		    _vehicle setObjectTextureGlobal [_forEachIndex, _x];
+		} forEach _textures;
+	};
+
+	missionNamespace setVariable [configName _config, _vehicle, true];
 
 	// Pushback into array that holds all vehicles
 	sv_persistentVehicles pushBack _vehicle;
 
 	// Tell upper script that this vehicle has respawned
 	_arrayToEdit set [1, false];
+
+	private _idx = sv_persistentVehicleData findIf {(_x select 0) isEqualTo _config};
+	diag_log format["Searched sv_persistentVehicleData, found a match at index: %1, replacing it with %2", _idx, _arrayToEdit];
+	sv_persistentVehicleData set [_idx, _arrayToEdit];
 
 	// Vehicle monitoring
 	[_vehicle] spawn server_fnc_monitorVehicle;
@@ -130,41 +162,38 @@ sv_spawnVehicle = {
 		[_v] spawn sv_tryRespawn;
 	}];*/
 };
-sv_deleteNullThreads = {
-	_newList = [];
-	{
-		if (!isNull _x) then {
-			_newList pushBack _x;
-		};
-	} forEach sv_persistentVehicleRespawnThreads;
 
+private _sv_deleteNullThreads = {
+	private _newList = sv_persistentVehicleRespawnThreads select {!isNull _x};
 	sv_persistentVehicleRespawnThreads = _newList;
+	true
 };
-
+VARIABLE_DEFAULT(sv_setting_DebugMode, 0);
 // Main brain of this script
-_matchStart = true;
+private _matchStart = true;
 while {sv_gameStatus == 2} do {
-	sleep 1;
+	uiSleep 1;
+	// Delete all respawn threads that are null
+	[] call _sv_deleteNullThreads;
 	{
-		// Delete all respawn threads that are null
-		[] call sv_deleteNullThreads;
-
+		private _config = _x select 0;
+		private _isRespawning = _x select 1;
 		// Check if vehicle is already respawning
-		if (!(_x select 1)) then {
+		if (!_isRespawning) then {
+			/* diag_log format["DEBUG: Attempting to spawn vehicle with ID: %1", configName _config]; */
 			// Vehicle isnt respawning, check if has been destroyed
-			//diag_log "1";
-			_v = [configName (_x select 0)] call sv_getVehicleByID;
+			private _v = missionNamespace getVariable [configName _config, objNull];
 
 			if (isNull _v || !alive _v || !canMove _v) then {
-				//diag_log "2";
-				// Vehicle was ingame destroyed
-				_thread = [_x select 0, _matchStart, _x] spawn sv_spawnVehicle;
-				_x set [1, true];
+				private _populationReq = getNumber(_config >> "populationReq");
+				private _isDebug = sv_setting_DebugMode == 1;
 
-				sv_persistentVehicleRespawnThreads pushBack _thread;
-			} else {
-				if (canMove _v) then {
-					_v setVariable ["disabled", nil];
+				if (_isDebug || {count allPlayers > _populationReq}) then {
+					/* diag_log format["DEBUG: Enough more than %1 players were connected, spawn allowed", _populationReq]; */
+					// Vehicle was ingame destroyed
+					private _thread = [_config, _matchStart, _x] spawn sv_spawnVehicle;
+					_x set [1, true];
+					sv_persistentVehicleRespawnThreads pushBack _thread;
 				};
 			};
 		};

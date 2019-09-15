@@ -8,27 +8,34 @@ scriptName "fn_instantTeamBalanceCheck";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_instantTeamBalanceCheck.sqf"
+#include "..\utils.h"
+
+// Made obsolete by server-side assignment
+if (true) exitWith {};
 
 // Is this even enabled
-_enableATB = "AutoTeamBalancer" call bis_fnc_getParamValue;
-if (_enableATB != 1) exitWith {};
+VARIABLE_DEFAULT(sv_setting_AutoTeamBalancer, 1);
+if (sv_setting_AutoTeamBalancer != 1) exitWith {};
 
 // Check if server has been online for 300 seconds already
 if (serverTime < 300) exitWith {};
 
+private _attackersSide = [WEST, EAST] select (sv_gameCycle % 2 == 0);
+private _defendersSide = [WEST, EAST] select (sv_gameCycle % 2 != 0);
+
 // Run side checks
-_unitsAttacker = {side _x == independent} count AllPlayers;
-_unitsDefender = {side _x == WEST} count AllPlayers;
+private _attackersTeam = {(_x getVariable ["gameSide", "attackers"]) isEqualTo "attackers"} count (allPlayers - [player]);
+private _defendersTeam = {(_x getVariable ["gameSide", "defenders"]) isEqualTo "defenders"} count (allPlayers - [player]);
+diag_log format["DEBUG: TeamBalanceCheck.. Attackers' count: %1, Defenders' count: %2", _attackersTeam, _defendersTeam];
 
-_diff = if (_unitsAttacker <= _unitsDefender) then {_unitsDefender - _unitsAttacker} else {_unitsAttacker - _unitsDefender};
-_sideWithMoreUnits = if (_unitsAttacker <= _unitsDefender) then {WEST} else {independent};
+private _diff = _attackersTeam - _defendersTeam;
+private _sideWithMoreUnits = if (_attackersTeam >= _defendersTeam) then {_attackersSide} else {_defendersSide};
 
-_maxDiff = "AutoTeamBalanceAtDifference" call bis_fnc_getParamValue;
+VARIABLE_DEFAULT(sv_setting_AutoTeamBalanceAtDifference, 3);
+private _maxDiff = sv_setting_AutoTeamBalanceAtDifference;
+private _ending = ["teamFullWEST", "teamFullEAST"] select ((player getVariable ["side", sideUnknown]) isEqualTo WEST);
 
-if (playerSide == _sideWithMoreUnits AND _diff > 2) then {
-	if (player getVariable "gameSide" == "defenders") then {
-		endMission "teamFullindependent";
-	} else {
-		endMission "teamFullWEST";
-	};
+if (((player getVariable ["side", sideUnknown]) isEqualTo _sideWithMoreUnits) && (_diff < 0 || _diff > _maxDiff)) then {
+	endMission _ending;
 };
+true

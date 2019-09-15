@@ -11,11 +11,15 @@ scriptName "fn_displayError";
 if (isServer && !hasInterface) exitWith {};
 
 disableSerialization;
-_text = param[0,"",[""]];
+private _text = param[0,"",[""]];
+
+if (_text isEqualTo "") exitWith {};
 
 // Display error rsc
-35 cutRsc ["rr_errorText","PLAIN"];
+60002 cutRsc ["rr_errorText","PLAIN"];
 
-_display = uiNamespace getVariable ["errorText", displayNull];
+private _display = uiNamespace getVariable ["errorText", displayNull];
 
 (_display displayCtrl 0) ctrlSetStructuredText parseText format ["<t size='1.5' align='center' shadow='2' font='PuristaMedium' color='#ff0000'>%1</t>", _text];
+
+true

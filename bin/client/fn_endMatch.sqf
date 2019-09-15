@@ -1,6 +1,6 @@
 scriptName "fn_endMatch";
 /*--------------------------------------------------------------------
-	Author: Maverick (ofpectag: MAV)
+	Author: Maverick (ofpectag: MAV) & A. Roman
     File: fn_endMatch.sqf
 
 	<Maverick Applications>
@@ -10,13 +10,13 @@ scriptName "fn_endMatch";
 #define __filename "fn_endMatch.sqf"
 if (isServer && !hasInterface) exitWith {};
 
-_winners = param[0,"",[""]];
+private _winners = param[0,"",[""]];
 
 // Huh?
 if (_winners == "") exitWith {};
 
 // Make people hear the explosion :)
-sleep 1;
+uiSleep 1;
 
 // Close dialogs
 while {dialog} do {
@@ -24,33 +24,31 @@ while {dialog} do {
 };
 
 // Play sound!
-if (_winners == "attackers") then {
-	playSound "endingAtk";
-} else {
-	playSound "endingDef";
-};
+private _faction = getText(missionConfigFile >> "Unlocks" >> _winners >> "faction");
+
+playSound (format ["ending%1", _faction]);
 
 // Get mcoms
-_mcoms = [];
+private _mcoms = [];
 for "_i" from 1 to 4 do {
-	_mcom = missionNamespace getVariable [format["sv_stage%1_obj", _i], objNull];
-	_hasBeenDone = _mcom getVariable ["status", -1] == 3;
+	private _mcom = missionNamespace getVariable [format["sv_stage%1_obj", _i], objNull];
+	private _hasBeenDone = _mcom getVariable ["status", -1] == 3;
 	_mcoms pushback _hasBeenDone;
 };
 
 [{_x} count _mcoms] call {
-	_mcomsDestroyed = _this select 0;
+	private _mcomsDestroyed = param[0, 0, [0]];
 	if (player getVariable ["gameSide", "defenders"] == "defenders" && _mcomsDestroyed < 4) then {
-		_mcomDefended = 4 - _mcomsDestroyed;
-		[format ["<t size='1.3' color='#FFFFFF'>%1 OBJECTIVE(S) DEFENDED</t>", _mcomDefended], 150*_mcomDefended] spawn client_fnc_pointfeed_add;
-		[150*_mcomDefended] spawn client_fnc_addPoints;
+		private _mcomDefended = 4 - _mcomsDestroyed;
+		[format ["<t size='1.3' color='#FFFFFF'>%1 OBJECTIVE(S) DEFENDED</t>", _mcomDefended], 150*_mcomDefended] call client_fnc_pointfeed_add;
+		[150*_mcomDefended] call client_fnc_addPoints;
 	};
 	if (player getVariable ["gameSide", "attackers"] == "attackers" && _mcomsDestroyed > 0) then {
-		[format ["<t size='1.3' color='#FFFFFF'>%1 OBJECTIVE(S) DESTROYED</t>", _mcomsDestroyed], 150*_mcomsDestroyed] spawn client_fnc_pointfeed_add;
-		[150*_mcomsDestroyed] spawn client_fnc_addPoints;
+		[format ["<t size='1.3' color='#FFFFFF'>%1 OBJECTIVE(S) DESTROYED</t>", _mcomsDestroyed], 150*_mcomsDestroyed] call client_fnc_pointfeed_add;
+		[150*_mcomsDestroyed] call client_fnc_addPoints;
 	};
-	["<t size='1.3' color='#FFFFFF'>ROUND COMPLETED BONUS</t>", 200] spawn client_fnc_pointfeed_add;
-	[200] spawn client_fnc_addPoints;
+	["<t size='1.3' color='#FFFFFF'>ROUND COMPLETED BONUS</t>", 200] call client_fnc_pointfeed_add;
+	[200] call client_fnc_addPoints;
 };
 
 // Save stats
@@ -59,6 +57,7 @@ for "_i" from 1 to 4 do {
 // No damage
 player allowDamage false;
 player setVariable ["isAlive", false];
+player setVariable ["name", name player, true];
 
 // black out
 60000 cutRsc ["rr_black", "PLAIN"];
@@ -69,7 +68,7 @@ player setVariable ["isAlive", false];
 ((uiNamespace getVariable ["rr_black",displayNull]) displayCtrl 0) ctrlSetPosition [0 * safezoneW + safezoneX, 0 * safezoneH + safezoneY];
 ((uiNamespace getVariable ["rr_black",displayNull]) displayCtrl 0) ctrlCommit 0.2;
 
-sleep 0.25;
+uiSleep 0.25;
 
 // Delete spawn cam if it exists
 if (!isNil "cl_spawnmenu_cam") then {
@@ -84,21 +83,21 @@ cl_exitcam_object cameraEffect ["Internal", "Back"];
 cl_exitcam_object camSetFOV .65;
 cl_exitcam_object camSetFocus [150, 1];
 cl_exitcam_object camCommit 0;
-sleep .05;
+uiSleep .05;
 showCinemaBorder false;
 
 // Display message
 if (_winners == "attackers") then {
 	if (player getVariable "gameSide" == "defenders") then {
-		["THE ENEMY TEAM HAS WON THE GAME"] spawn client_fnc_displayObjectiveMessage;
+		["THE ENEMY TEAM HAS WON THE GAME"] call client_fnc_displayObjectiveMessage;
 	} else {
-		["YOUR TEAM HAS WON THE GAME"] spawn client_fnc_displayObjectiveMessage;
+		["YOUR TEAM HAS WON THE GAME"] call client_fnc_displayObjectiveMessage;
 	};
 } else {
 	if (player getVariable "gameSide" != "defenders") then {
-		["THE ENEMY TEAM HAS WON THE GAME"] spawn client_fnc_displayObjectiveMessage;
+		["THE ENEMY TEAM HAS WON THE GAME"] call client_fnc_displayObjectiveMessage;
 	} else {
-		["YOUR TEAM HAS WON THE GAME"] spawn client_fnc_displayObjectiveMessage;
+		["YOUR TEAM HAS WON THE GAME"] call client_fnc_displayObjectiveMessage;
 	};
 };
 
@@ -120,7 +119,7 @@ cl_exitcam_object camCommitPrepared 38;
 // Blurr
 if (getNumber(missionConfigFile >> "GeneralConfig" >> "PostProcessing") == 1) then {
 	["DynamicBlur", 400, [3]] spawn {
-		params ["_name", "_priority", "_effect", "_handle"];
+		params ["_name", "_priority", "_effect"];
 		while {
 			cl_spawnmenu_blur = ppEffectCreate [_name, _priority];
 			cl_spawnmenu_blur < 0
@@ -133,7 +132,7 @@ if (getNumber(missionConfigFile >> "GeneralConfig" >> "PostProcessing") == 1) th
 	};
 };
 
-sleep .3;
+uiSleep .3;
 
 // Move out
 ((uiNamespace getVariable ["rr_black",displayNull]) displayCtrl 0) ctrlSetPosition [-1 * safezoneW + safezoneX, 0 * safezoneH + safezoneY];
@@ -145,14 +144,15 @@ player setVariable ["deaths",cl_deaths,true];
 player setVariable ["points",cl_points,true];
 
 // Wait...
-sleep 6.5;
+uiSleep 6.5;
 
 // Display for best-ofs
 250 cutRsc ["rr_end_bestof","PLAIN"];
 
 // Inline function to fade in / fade out the display
-_fadeInFadeOut = {
+private _fadeInFadeOut = {
 	disableSerialization;
+	private["_c1", "_c2", "_c3"];
 	_c1 = ((uiNamespace getVariable ["rr_end_bestof", displayNull]) displayCtrl 0);
 	_c2 = ((uiNamespace getVariable ["rr_end_bestof", displayNull]) displayCtrl 1);
 	_c3 = ((uiNamespace getVariable ["rr_end_bestof", displayNull]) displayCtrl 2);
@@ -178,7 +178,7 @@ _fadeInFadeOut = {
 	_c3 ctrlCommit 0.5;
 
 	// Wait 7 seconds
-	sleep 5;
+	uiSleep 5;
 
 	// Move to left and fade out
 	_c1 ctrlSetPosition [(-1) * safezoneW + safezoneX, 0.302 * safezoneH + safezoneY];
@@ -194,8 +194,8 @@ _fadeInFadeOut = {
 
 // Lets start determining who was the best of all!
 if (true) then {
-	_mostKills = -1;
-	_mostKillsPlayer = objNull;
+	private _mostKills = -1;
+	private _mostKillsPlayer = objNull;
 	{
 		if ((_x getVariable ["kills", -1]) > _mostKills) then {
 			_mostKills = _x getVariable ["kills", -1];
@@ -205,21 +205,21 @@ if (true) then {
 
 	// Set Text
 	((uiNamespace getVariable ["rr_end_bestof", displayNull]) displayCtrl 0) ctrlSetStructuredText parseText format ["<t size='3' color='#FFFFFF' shadow='2' align='center'>%1</t>","MOST ELIMINATIONS"];
-	((uiNamespace getVariable ["rr_end_bestof", displayNull]) displayCtrl 1) ctrlSetStructuredText parseText format ["<t size='6' color='#FFFFFF' shadow='2' align='center'>%1</t>",name _mostKillsPlayer];
+	((uiNamespace getVariable ["rr_end_bestof", displayNull]) displayCtrl 1) ctrlSetStructuredText parseText format ["<t size='6' color='#FFFFFF' shadow='2' align='center'>%1</t>", _mostKillsPlayer getVariable ["name", name _mostKillsPlayer]];
 	((uiNamespace getVariable ["rr_end_bestof", displayNull]) displayCtrl 2) ctrlSetStructuredText parseText format ["<t size='2.5' color='#FFFFFF' shadow='2' align='center'>%1</t>",_mostKillsPlayer getVariable ["kills", -1]];
 
 	// Display
 	[] spawn _fadeInFadeOut;
 
 	// Sleep
-	sleep 5.25;
+	uiSleep 5.25;
 };
 
 if (true) then {
-	_bestKD = -1;
-	_bestKDPlayer = objNull;
+	private _bestKD = -1;
+	private _bestKDPlayer = objNull;
 	{
-		_deaths = (_x getVariable ["deaths", -1]);
+		private _deaths = (_x getVariable ["deaths", -1]);
 		if (_deaths == 0) then {_deaths = 1};
 		if (((_x getVariable ["kills", -1]) / _deaths) > _bestKD) then {
 			_bestKD = ((_x getVariable ["kills", -1]) / _deaths);
@@ -227,24 +227,24 @@ if (true) then {
 		};
 	} forEach AllPlayers;
 
-	_deaths = (_bestKDPlayer getVariable ["deaths", -1]);
+	private _deaths = (_bestKDPlayer getVariable ["deaths", -1]);
 	if (_deaths == 0) then {_deaths = 1};
 
 	// Set Text
 	((uiNamespace getVariable ["rr_end_bestof", displayNull]) displayCtrl 0) ctrlSetStructuredText parseText format ["<t size='3' color='#FFFFFF' shadow='2' align='center'>%1</t>","BEST KILL/DEATH RATIO"];
-	((uiNamespace getVariable ["rr_end_bestof", displayNull]) displayCtrl 1) ctrlSetStructuredText parseText format ["<t size='6' color='#FFFFFF' shadow='2' align='center'>%1</t>",name _bestKDPlayer];
+	((uiNamespace getVariable ["rr_end_bestof", displayNull]) displayCtrl 1) ctrlSetStructuredText parseText format ["<t size='6' color='#FFFFFF' shadow='2' align='center'>%1</t>", _bestKDPlayer getVariable ["name", name _bestKDPlayer]];
 	((uiNamespace getVariable ["rr_end_bestof", displayNull]) displayCtrl 2) ctrlSetStructuredText parseText format ["<t size='2.5' color='#FFFFFF' shadow='2' align='center'>%1</t>",((_bestKDPlayer getVariable ["kills", -1]) / _deaths)];
 
 	// Display
 	[] spawn _fadeInFadeOut;
 
 	// Sleep
-	sleep 5.25;
+	uiSleep 5.25;
 };
 
 if (true) then {
-	_mostPoints = -1;
-	_mostPointsPlayer = objNull;
+	private _mostPoints = -1;
+	private _mostPointsPlayer = objNull;
 	{
 		if ((_x getVariable ["points", -1]) > _mostPoints) then {
 			_mostPoints = _x getVariable ["points", -1];
@@ -254,22 +254,22 @@ if (true) then {
 
 	// Set Text
 	((uiNamespace getVariable ["rr_end_bestof", displayNull]) displayCtrl 0) ctrlSetStructuredText parseText format ["<t size='3' color='#FFFFFF' shadow='2' align='center'>%1</t>","MOST VALUABLE PLAYER"];
-	((uiNamespace getVariable ["rr_end_bestof", displayNull]) displayCtrl 1) ctrlSetStructuredText parseText format ["<t size='6' color='#FFFFFF' shadow='2' align='center'>%1</t>",name _mostPointsPlayer];
+	((uiNamespace getVariable ["rr_end_bestof", displayNull]) displayCtrl 1) ctrlSetStructuredText parseText format ["<t size='6' color='#FFFFFF' shadow='2' align='center'>%1</t>", _mostPointsPlayer getVariable ["name", name _mostPointsPlayer]];
 	((uiNamespace getVariable ["rr_end_bestof", displayNull]) displayCtrl 2) ctrlSetStructuredText parseText format ["<t size='2.5' color='#FFFFFF' shadow='2' align='center'>%1</t>",_mostPointsPlayer getVariable ["points", -1]];
 
 	// Display
 	[] spawn _fadeInFadeOut;
 
 	// Sleep
-	sleep 5.25;
+	uiSleep 5.25;
 };
 
 if (true) then {
-	_bestSquadPoints = -1;
-	_bestSquad = grpNull;
-	_groups = [];
+	private _bestSquadPoints = -1;
+	private _bestSquad = grpNull;
+	private _groups = [];
 	{
-		_p = 0;
+		private _p = 0;
 		{
 			_p = _p + (_x getVariable ["points", 0]);
 		} forEach (units _x);
@@ -286,9 +286,9 @@ if (true) then {
 	} forEach _groups;
 
 	// All units of the squad
-	_unitsText = "";
+	private _unitsText = "";
 	{
-		_unitsText = _unitsText + name _x + "<br/>";
+		_unitsText = _unitsText + (_x getVariable ["name", name _x]) + "<br/>";
 	} forEach (units _bestSquad);
 
 	// Set Text
@@ -300,7 +300,7 @@ if (true) then {
 	[] spawn _fadeInFadeOut;
 
 	// Sleep
-	sleep 4.5;
+	uiSleep 4.5;
 };
 
 60000 cutRsc ["rr_black", "PLAIN"];
@@ -311,7 +311,7 @@ if (true) then {
 ((uiNamespace getVariable ["rr_black",displayNull]) displayCtrl 0) ctrlSetPosition [0 * safezoneW + safezoneX, 0 * safezoneH + safezoneY];
 ((uiNamespace getVariable ["rr_black",displayNull]) displayCtrl 0) ctrlCommit 0.2;
 
-sleep 1;
+uiSleep 1;
 
 // To safe pos
 player setPos cl_safePos;

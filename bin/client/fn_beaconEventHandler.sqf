@@ -10,14 +10,14 @@ scriptName "fn_beaconEventHandler";
 #define __filename "fn_beaconEventHandler.sqf"
 if (isServer && !hasInterface) exitWith {};
 
-_beacon = param[0,objNull,[objNull]];
+private _beacon = param[0,objNull,[objNull]];
 
 if (isNull _beacon) exitWith {};
-_owner = [_beacon] call client_fnc_getBeaconOwner;
+private _owner = [_beacon] call client_fnc_getBeaconOwner;
 if (isNull _owner) exitWith {};
 
 // Check if this beacon is on our team
-if (_owner getVariable ["side", sideUnknown] == playerSide) exitWith {};
+if (_owner getVariable ["side", sideUnknown] == player getVariable ["side", sideUnknown]) exitWith {};
 
 _beacon addEventHandler ["HitPart", {
 	_beacon = _this select 0 select 0;
@@ -32,9 +32,9 @@ _beacon addEventHandler ["HitPart", {
 	deleteVehicle _beacon;
 
 	// Points!
-	["<t size='1.3' color='#FFFFFF'>RALLY POINT DESTROYED</t>", 15] spawn client_fnc_pointfeed_add;
-	[15] spawn client_fnc_addPoints;
+	["<t size='1.3' color='#FFFFFF'>RALLY POINT DESTROYED</t>", 15] call client_fnc_pointfeed_add;
+	[15] call client_fnc_addPoints;
 
 	// Send an information to the owner
-	["Your rally point has been destroyed"] remoteExec ["client_fnc_displayError", _owner];
+	["Your rally point has been destroyed"] remoteExecCall ["client_fnc_displayError", _owner];
 }];

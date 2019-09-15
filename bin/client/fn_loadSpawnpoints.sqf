@@ -8,110 +8,115 @@ scriptName "fn_loadSpawnpoints";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_loadSpawnpoints.sqf"
+
+#define COLOR_RED [0.51,0,0,1]
+#define COLOR_BLUE [0,0.3,0.6,1]
+
 if (isServer && !hasInterface) exitWith {};
 
 disableSerialization;
-_d = findDisplay 5000;
+private _d = findDisplay 5000;
 
 // Clear listbox of any spawnpoints
-lbClear (_d displayCtrl 9);
+private _spawnCtrl = _d displayCtrl 8;
+private _vehiclesCtrl = _d displayCtrl 9;
+lbClear _spawnCtrl;
+lbClear _vehiclesCtrl;
 
-// Load HQ spawnpoint
-if (player getVariable "gameSide" == "defenders") then {
-	(_d displayCtrl 9) lbAdd "Defender HQ";
-} else {
-	(_d displayCtrl 9) lbAdd "Attacker HQ";
+private _side = player getVariable ["gameSide", "defenders"];
+private _playerIsDefending = _side isEqualTo "defenders";
+
+private _configs = configProperties [missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> sv_cur_obj getVariable ["cur_stage", "Stage1"] >> "Spawns" >> _side, "true", false];
+
+{
+  _spawnCtrl lbAdd (getText(_x >> "name"));
+  private _ctrlIdx = (lbSize _spawnCtrl) - 1;
+	_spawnCtrl lbSetPicture [_ctrlIdx, WWRUSH_ROOT+"pictures\teammate.paa"];
+	_spawnCtrl lbSetValue [_ctrlIdx, -1];
+	_spawnCtrl lbSetData [_ctrlIdx, configName _x];
+} forEach _configs;
+
+private _fnc_appendBeacon = {
+  params [["_unit", objNull, [objNull]], ["_index", -1, [0]]];
+  _spawnCtrl lbAdd ((_unit getVariable ["name", name _unit]) + "'s Beacon");
+  private _ctrlIdx = (lbSize _spawnCtrl) - 1;
+  _spawnCtrl lbSetData [_ctrlIdx, "beacon"];
+  _spawnCtrl lbSetValue [_ctrlIdx, _index];
+  _spawnCtrl lbSetPicture [_ctrlIdx, "\a3\ui_f\data\Map\MapControl\bunker_CA.paa"];
+  _spawnCtrl lbSetPictureColor [_ctrlIdx, COLOR_BLUE];
+  true
 };
 
-// HQ Icon
-(_d displayCtrl 9) lbSetPicture [(lbSize (_d displayCtrl 9)) - 1, "pictures\teammate.paa"];
-(_d displayCtrl 9) lbSetValue [(lbSize (_d displayCtrl 9)) - 1, -1];
-(_d displayCtrl 9) lbSetData [(lbSize (_d displayCtrl 9)) - 1, "HQ"];
+private _fnc_appendUnit = {
+  params [["_unit", objNull, [objNull]], ["_index", -1, [0]]];
+  private _icon = [_unit] call client_fnc_getUnitIcon;
+  // Find enemies within 25m radius
+  private _nearbyEnemies = {(_unit getVariable "gameSide") != (_x getVariable "gameSide")} count (_unit nearEntities ["Man", 25]);
+  // If the unit was hit or is nearby enemies
+  if (damage _unit > 0.1 || {_nearbyEnemies > 0} || {!(_unit inArea playArea)}) exitWith {
+    if !(_unit inArea playArea) then {
+      _spawnCtrl lbAdd ((_unit getVariable ["name", name _unit]) + " (TOO FAR)");
+    } else {
+      _spawnCtrl lbAdd ((_unit getVariable ["name", name _unit]) + " (IN COMBAT)");
+    };
+    private _ctrlIdx = (lbSize _spawnCtrl) - 1;
+    _spawnCtrl lbSetColor [_ctrlIdx, COLOR_RED];
+    _spawnCtrl lbSetValue [_ctrlIdx, _index];
+    _spawnCtrl lbSetData [_ctrlIdx, "inCombat"];
+    _spawnCtrl lbSetPicture [_ctrlIdx, _icon];
+    _spawnCtrl lbSetPictureColor [_ctrlIdx, COLOR_RED];
+    true
+  };
+
+
+  _spawnCtrl lbAdd (_unit getVariable ["name", name _unit]);
+  private _ctrlIdx = (lbSize _spawnCtrl) - 1;
+  _spawnCtrl lbSetValue [_ctrlIdx, _index];
+  _spawnCtrl lbSetData [_ctrlIdx, netID _unit];
+  _spawnCtrl lbSetPicture [_ctrlIdx, _icon];
+  _spawnCtrl lbSetPictureColor [_ctrlIdx, COLOR_BLUE];
+  true
+};
 
 // Load squad members
-_index = -1;
 {
-	_index = _index + 1;
+  // If unit is alive AND is not the player AND (player NOT defending OR the unit is the leader OR player is the leader)
+  // If the player is attacking, he can spawn on any group member, whereas if he's defending, he can only spawn on the leader
+  if (alive _x && {_x inArea playArea} && {_x != player} && {!_playerIsDefending || (_x == (leader group player)) || ((leader group player) == player)}) then {
+    [_x, _forEachIndex] call _fnc_appendUnit;
+  };
 
-	if ((isPlayer _x && _x distance sv_cur_obj < 1500 && alive _x) || (_x == player) || (!isNull (_x getVariable ["assault_beacon_obj", objNUll]))) then {
-		_add = false;
-
-		if (alive _x) then {
-			if (_x != player) then {
-				if ((leader group player) == player) then {
-					_add = true;
-				} else {
-					if (_x == (leader group player)) then {
-						_add = true;
-					};
-				};
-			};
-		};
-
-		_beacon = _x getVariable ["assault_beacon_obj", objNull];
-		if (!isNull _beacon) then {
-			_add = true;
-		};
-
-		if (_add) then {
-			if (!isNull _beacon) then {
-				// Spawn beacon
-				(_d displayCtrl 9) lbAdd (name _x + "'s Beacon");
-				(_d displayCtrl 9) lbSetData [(lbSize (_d displayCtrl 9)) - 1, "beacon"];
-				(_d displayCtrl 9) lbSetValue [(lbSize (_d displayCtrl 9)) - 1, _index];
-			} else {
-				// Player
-				if (_x getVariable ["inCombat", false]) then {
-					(_d displayCtrl 9) lbAdd (name _x + " (IN COMBAT)");
-					(_d displayCtrl 9) lbSetData [(lbSize (_d displayCtrl 9)) - 1, "inCombat"];
-					(_d displayCtrl 9) lbSetValue [(lbSize (_d displayCtrl 9)) - 1, _index];
-				} else {
-					(_d displayCtrl 9) lbAdd (name _x);
-					(_d displayCtrl 9) lbSetValue [(lbSize (_d displayCtrl 9)) - 1, _index];
-					(_d displayCtrl 9) lbSetData [(lbSize (_d displayCtrl 9)) - 1, ""];
-				};
-			};
-
-			(_d displayCtrl 9) lbSetPicture [(lbSize (_d displayCtrl 9)) - 1, "pictures\squad.paa"];
-		};
-	};
+  private _beacon = _x getVariable ["assault_beacon_obj", objNull];
+  // If there is a valid beacon
+  if (!isNull _beacon && {_beacon inArea playArea}) then {
+    [_x, _forEachIndex] call _fnc_appendBeacon;
+  };
 } forEach (units group player);
 
-// No selection made? Select 0
-if (lbCurSel (_d displayCtrl 9) == -1) then {
-	(_d displayCtrl 9) lbSetCurSel 0;
-};
 
 // Get configs of vehicles we can spawn at (PERSISTENT ONES)
-_configs = [];
-if (player getVariable "gameSide" == "defenders") then {
-	_configs append ("true" configClasses (missionConfigFile >> "MapSettings" >> "PersistentVehicles" >> "Defender"));
-	_configs append ("true" configClasses (missionConfigFile >> "MapSettings" >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Vehicles" >> "Defender"));
-} else {
-	_configs append ("true" configClasses (missionConfigFile >> "MapSettings" >> "PersistentVehicles" >> "Attacker"));
-	_configs append ("true" configClasses (missionConfigFile >> "MapSettings" >> "Stages" >> ([] call client_fnc_getCurrentStageString) >> "Vehicles" >> "Attacker"));
-};
+private _configs = [];
+private _side = ["Attacker", "Defender"] select (_playerIsDefending);
+_configs append ("true" configClasses (missionConfigFile >> "MapSettings" >> sv_mapSize >> "PersistentVehicles" >> _side));
+_configs append ("true" configClasses (missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> (sv_cur_obj getVariable ["cur_stage", "Stage1"]) >> "Vehicles" >> _side));
+
 
 {
-	_pos = getArray(_x >> "positionATL");
-	_class = getText(_x >> "classname");
-	_displayName = getText(_x >> "displayName");
-	_objects = nearestObjects [_pos, [_class], 20];
-	_config = _x;
-	if (count _objects > 0) then {
-		// Check whether this array of found vehicles actually containers our vehicle
-		_OK = false;
-		{
-			if ((_x getVariable ["id", ""]) == (configName _config)) then {
-				_OK = true;
-			};
-		} forEach _objects;
-
-		if (_OK) then {
-			(_d displayCtrl 9) lbAdd _displayName;
-			(_d displayCtrl 9) lbSetData [(lbSize (_d displayCtrl 9)) - 1, configName _x];
-			(_d displayCtrl 9) lbSetValue [(lbSize (_d displayCtrl 9)) - 1, -2];
-			(_d displayCtrl 9) lbSetPicture [(lbSize (_d displayCtrl 9)) - 1, "pictures\teammate.paa"];
-		};
+  private _initialPos = getArray(_x >> "positionATL");
+	private _displayName = getText(_x >> "displayName");
+	private _className = getText(_x >> "className");
+  private _configName = configName _x;
+  private _vehicle = missionNamespace getVariable [_configName, objNull];
+  private _crew = fullCrew [_vehicle, "", true];
+  private _seats = count _crew;
+  private _occupants = {!isNull (_x select 0)} count _crew;
+	// Check whether this array of found vehicles actually containers our vehicle
+	if (!isNull _vehicle && {(_seats - _occupants) > 0} && {(_vehicle distance2D _initialPos) < 50} && {_vehicle isKindOf "Air" || {_vehicle isKindOf "Land" && _vehicle inArea playArea}}) then {
+		_vehiclesCtrl lbAdd (format ["%1 (%2/%3)",_displayName, _occupants, _seats]);
+    private _ctrlIdx = (lbSize _vehiclesCtrl) - 1;
+		_vehiclesCtrl lbSetData [_ctrlIdx, _configName];
+		_vehiclesCtrl lbSetValue [_ctrlIdx, -2];
+		_vehiclesCtrl lbSetPicture [_ctrlIdx, getText(configFile >> "CfgVehicles" >> _className >> "Icon")];
 	};
 } forEach _configs;
+true

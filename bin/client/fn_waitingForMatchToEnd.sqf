@@ -15,10 +15,13 @@ if (isServer && !hasInterface) exitWith {};
 60001 cutRsc ["rr_timer", "PLAIN"];
 
 // Wait display text
-((uiNamespace getVariable ["rr_timer", displayNull]) displayCtrl 0) ctrlSetStructuredText parseText format "<t size='2' color='#FFFFFF' shadow='2' align='center'>Waiting for match to end</t>";
+((uiNamespace getVariable ["rr_timer", displayNull]) displayCtrl 0) ctrlSetStructuredText (parseText "<t size='2' color='#FFFFFF' shadow='2' align='center'>Waiting for match to end</t>");
 
 // Wait...
 waitUntil {!(sv_gameStatus in [3,4])};
 
+((uiNamespace getVariable ["rr_black",displayNull]) displayCtrl 0) ctrlSetPosition [-1 * safezoneW + safezoneX, 0 * safezoneH + safezoneY];
+((uiNamespace getVariable ["rr_black",displayNull]) displayCtrl 0) ctrlCommit 0.2;
+
 // spawn?
-[] spawn client_fnc_spawn;
+[] call client_fnc_spawn;

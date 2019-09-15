@@ -11,11 +11,15 @@ scriptName "fn_administrationKill";
 if (isServer && !hasInterface) exitWith {};
 
 // Reason
-_reason = param[0,"",[""]];
+private _reason = param[0,"",[""]];
+
+if (cl_inSpawnMenu || !(player getVariable ["isAlive", false])) exitWith {};
 
 // Kill me
-player setDamage 1;
+forceRespawn player;
 player setVariable ["isAlive", false];
 
 // Display the reason
-[_reason] spawn client_fnc_displayError;
+[_reason] call client_fnc_displayError;
+
+true

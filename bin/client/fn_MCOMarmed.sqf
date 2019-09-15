@@ -8,148 +8,105 @@ scriptName "fn_MCOMarmed";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_MCOMarmed.sqf"
+#include "..\utils.h"
 
 // Planter
-_planter = param[0,objNull,[objNull]];
+private _planter = param[0,objNull,[objNull]];
 
 // Display warning
-["EXPLOSIVES HAVE BEEN SET"] spawn client_fnc_displayObjectiveMessage;
-
-// Make the UI at the top blink
-[] spawn client_fnc_objectiveArmedGUIAnimation;
-
+["EXPLOSIVES HAVE BEEN SET"] call client_fnc_displayObjectiveMessage;
 // Info
 ["EXPLOSIVES ARMED","The objective has been armed. Attackers will not lose tickets while it is."] spawn client_fnc_hint;
 
 // Start sound loop if we are the server
-_wasServer = false;
 if (isServer) then {
-	_wasServer = true;
-
-	if (!isNil "sv_mcom_thread") then {
-		terminate sv_mcom_thread;
-	};
+	TERMINATE_SCRIPT(sv_mcom_thread);
 
 	sv_mcom_thread = [] spawn {
-		// Countdown
-		_time = 71; // Original time 71 = 60 seconds (95 = 80 seconds)
-		_status = sv_cur_obj getVariable ["status", -1];
+		// Countdown of 60 seconds
+		private _time = 60;
+		private _soundTime = 60;
+		waitUntil {(sv_cur_obj getVariable ["status", -1]) == 1};
+		private _status = 1;
+		private _beep = WWRUSH_ROOT + "sounds\beep.ogg";
+
+		private _obj = sv_cur_obj;
 		// If the objective is armed and there's still time on the clock
-		while {((_status == 1) || (_status == 0)) && _time >= 0} do {
-			_status = sv_cur_obj getVariable ["status", -1];
+		playSound3D [_beep, _obj, false, getPosATL _obj, 3, 1, 500];
+		while {_status = sv_cur_obj getVariable ["status", -1]; (_status in [0,1]) && _time >= 0} do {
 			// Freeze time if the objective is being armed
-			if (_status == 0) then {
-				_time = _time;
-			} else {
+			if (_status == 1) then {
 				_time = _time - 1;
 			};
-			sv_cur_obj say3D "beep";
-			if (_time < 20) then {
-				sleep 0.425;
-				sv_cur_obj say3D "beep";
-				sleep 0.425;
-			} else {
-				sleep 0.85;
+			private _timeFrame = (((floor (_time / 10)) min 2) + 1) max 1;
+			if (_soundTime % _timeFrame == 0) then {
+				playSound3D [_beep, _obj, false, getPosATL _obj, 2, 1, 500];
 			};
+			_soundTime = _soundTime - 1;
+			uiSleep 1;
 		};
-
-		_status = sv_cur_obj getVariable ["status", -1];
 		// was the mcom disarmed? If yes, just exit here, players will get a text displayed by the player who disarmed
-		if (_status == 2) exitWith {
-			sleep 1;
-			sv_cur_obj setVariable ["status",-1,true];
+		if (_time > 0 || {!(_status in [0,1])}) exitWith {
+			uiSleep 1;
+			_obj setVariable ["status",-1,true];
 		};
 
 		// Mark this mcom as done // e.g. used in matchTimer
-		sv_cur_obj setVariable ["status", 3, true];
+		_obj setVariable ["status", 3, true];
 
 		// Display message
-		if (sv_cur_obj != sv_stage4_obj) then {
+		if (_obj != sv_stage4_obj) then {
 			// Mcom has been destroyed
-			[true] remoteExec ["client_fnc_MCOMdestroyed"];
+			[true] remoteExec ["client_fnc_MCOMdestroyed", 0];
 		};
 
+		private _pos = getPosATL _obj;
+		_obj enableSimulation true;
+		_obj allowDamage true;
 		// Explosion
-		"HelicopterExploBig" createVehicle getPos sv_cur_obj;
-		if ((player distance sv_cur_obj < 10) || (player distance sv_cur_obj < 25 && (([sv_cur_obj, "VIEW"] checkVisibility [eyePos sv_cur_obj, eyePos player]) > 0.1))) then {
-			player setDamage 1;
-			["You were killed by the blast of the charge"] spawn client_fnc_displayError;
-		};
-		sv_cur_obj setVariable ["positionAGL", nil];
+		createVehicle ["HelicopterExploBig", _pos, [], 0, "CAN_COLLIDE"];
+		_obj setDamage 1;
 
-		if (sv_cur_obj == sv_stage4_obj) then {
-			// Trigger win
-			[] spawn server_fnc_endRound;
-		} else {
-			// Move onto next objective
-			if (sv_cur_obj == sv_stage1_obj) then {
-				sv_cur_obj = sv_stage2_obj;
-			} else {
-			if (sv_cur_obj == sv_stage2_obj) then {
-				sv_cur_obj = sv_stage3_obj;
-			} else {
-				sv_cur_obj = sv_stage4_obj;
-				};
+		private _killZone = _obj nearEntities ["Man", 25];
+		{
+			if ((_x distance _obj < 10) || {_x distance _obj < 25 && {([_obj, "VIEW"] checkVisibility [eyePos _obj, eyePos _x]) > 0.1}}) then {
+				["You were killed by the blast of the explosion"] remoteExecCall ["client_fnc_administrationKill", _x];
 			};
-			// Reset the time
-			//sv_matchTime = getNumber(missionConfigFile >> "MapSettings" >> "roundTime");
-			if (!isNil "sv_matchTimer_thread") then {
-				terminate sv_matchTimer_thread;
-			};
-			// Start the timer again with additional time counting in the fallback phase
-			_fallBackTime = "FallBackSeconds" call bis_fnc_getParamValue;
-			[false, _fallBackTime] spawn server_fnc_matchTimer;
+		} forEach _killZone;
 
-			// refresh tickets
-			[] call server_fnc_refreshTickets;
-
-			[] remoteExec ["client_fnc_objectiveActionUpdate",0];
-
-			// Update everyones variable
-			[["sv_cur_obj"]] spawn server_fnc_updateVars;
+		private _nextObj = sv_cur_obj getVariable ["next_obj", objNull];
+		// Trigger win
+		if (isNull _nextObj) exitWith {
+			[] call server_fnc_endRound;
 		};
+		sv_cur_obj = _nextObj;
+		// Reset the time
+		TERMINATE_SCRIPT(sv_matchTimer_thread);
+		// Start the timer again with additional time counting in the fallback phase
+		private _fallBackTime = [] call client_fnc_getFallbackTime;
+		sv_matchTimer_thread = [false, _fallBackTime] spawn server_fnc_matchTimer;
+
+		// refresh tickets
+		[] call server_fnc_refreshTickets;
+
+		// Update everyones variable
+		[["sv_cur_obj"]] call server_fnc_updateVars;
+		sv_mcom_thread = nil;
 	};
 };
-
-// Local sound loop
-if (!_wasServer) then {
-	[] spawn {
-		_time = 71;
-		_status = sv_cur_obj getVariable ["status", -1];
-		while {(_status == 0 || _status == 1) && _time >= 0} do {
-			_status = sv_cur_obj getVariable ["status", -1];
-			// Freeze time if the objective is being armed
-			if (_status == 0) then {
-				_time = _time;
-			} else {
-				_time = _time - 1;
-			};
-			sv_cur_obj say3D "beep";
-			if (_time < 20) then {
-				sleep 0.425;
-				sv_cur_obj say3D "beep";
-				sleep 0.425;
-			} else {
-				sleep 0.85;
-			};
-		};
-	};
-};
-
 
 // Did we plant? Should be give ourself points?
 if (_planter == player) then {
 	// Wait until estimated explosion time
-	_objective = sv_cur_obj;
-	_status = _objective getVariable ["status", -1];
-	waitUntil {_status != 1 || _objective != sv_cur_obj};
+	private _objective = sv_cur_obj;
+	waitUntil {(_objective getVariable ["status", -1] == 3) || (_objective != sv_cur_obj)};
 
 	// Still the same objective? Looks like we werent successful...
 	if (_objective == sv_cur_obj) exitWith {};
 
 	// We made it work yay
-	["<t size='1.3' color='#FFFFFF'>OBJECTIVE DESTROYED</t>", 400] spawn client_fnc_pointfeed_add;
-	[400] spawn client_fnc_addPoints;
+	["<t size='1.3' color='#FFFFFF'>OBJECTIVE DESTROYED</t>", 400] call client_fnc_pointfeed_add;
+	[400] call client_fnc_addPoints;
 };
 
 // PROPER FORMATTING

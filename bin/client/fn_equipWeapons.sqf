@@ -1,93 +1,58 @@
 scriptName "fn_equipWeapons";
 /*--------------------------------------------------------------------
-	Author: Maverick (ofpectag: MAV)
+	Author: A. Roman
     File: fn_equipWeapons.sqf
 
-	<Maverick Applications>
-    Written by Maverick Applications (www.maverick-apps.de)
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_equipWeapons.sqf"
 if (isServer && !hasInterface) exitWith {};
 
-_swapItems = {
-	params["_current_loadout", "_classNames", "_index", "_subindex"];
-	_temp = _currentLoadout select _index;
+// Inline function to swap an item within the loadout of a unit
+private _swapItems = {
+	params["_currentLoadout", "_classNames", "_index", "_subindex"];
+	private _temp = _currentLoadout select _index;
 	_temp set [_subindex, selectRandom _classNames];
 	_currentLoadout set [_index, _temp];
 	_currentLoadout;
 };
 
+private _fnc_equipBayo = {
+	private _primary = param [0, "", [""]];
+	if (_primary == "") exitWith {false};
+  private _result = false;
+	private _compatibles = getArray(configFile >> "CfgWeapons" >> _primary >> "WeaponSlotsInfo" >> "MuzzleSlot" >> "compatibleItems");
+	private _idx = _compatibles findIf {["bayo", _x] call BIS_fnc_inString};
+	if (_idx > -1) then {
+		player addPrimaryWeaponItem (_compatibles select _idx);
+		_result = true;
+	};
+	_result
+};
+
 // Get equip
-_equipInfo = [] call client_fnc_getLoadedEquipment;
+private _equipInfo = player getVariable ["loaded_equipment", [cl_equipClassnames select 0, cl_equipClassnames select 1]];
 
-// No mags? (Revive)
-_noMags = param[0,false,[false]];
+// Get primary and secondary classnames
+private _primary = _equipInfo select 0;
+private _secondary = _equipInfo select 1;
 
-_primary = _equipInfo select 0;
-if (count _primary != 0) then {
-	// Primary
-	_primaryClassname = _primary select 0;
-	_primaryAttachements = _primary select 1;
+// Is the unit being revived? If so, no ammo resupply
+private _isBeingRevived = param[0,false,[false]];
 
-	_primaryAmmo = getText(missionConfigFile >> "Unlocks" >> format["%1", player getVariable "gameSide"] >> _primaryClassname >> "ammo");
 
-	// Give ammo
-	if (!_noMags) then {
-		// Extended ammo perk
-		if (cl_squadPerk == "extended_ammo") then {
-			player addMagazines [_primaryAmmo, 6];
-		} else {
-			player addMagazines [_primaryAmmo, 4];
-		};
-	};
+private _side = player getVariable "gameSide";
+private _sideLoadout = [] call client_fnc_getCurrentSideLoadout;
 
-	// Give weapon
-	player addWeaponGlobal _primaryClassname;
+// If the player is a medic equip him with medic gear to distinguish from non medics
+if (cl_class isEqualTo "medic") then {
+	private _medic_uniforms = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "medics" >> "uniforms"));
+	private _medic_vests = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "medics" >> "vests"));
+	private _medic_headgears = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "medics" >> "headgears"));
+	private _medic_backpacks = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "medics" >> "backpacks"));
 
-	// Add attachments
-	{
-		player addPrimaryWeaponItem _x;
-	} forEach _primaryAttachements;
-};
-
-_secondary = _equipInfo select 1;
-if (count _secondary != 0) then {
-	// Secondary
-	_secondaryClassname = _secondary select 0;
-	_secondaryAttachements = _secondary select 1;
-
-	_secondaryAmmo = getText(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> _secondaryClassname >> "ammo");
-
-	// Give ammo
-	if (!_noMags) then {
-		// Extended ammo perk
-		if (cl_squadPerk == "extended_ammo") then {
-			player addMagazines [_secondaryAmmo, 6];
-		} else {
-			player addMagazines [_secondaryAmmo, 4];
-		};
-	};
-
-	// Give weapon
-	player addWeaponGlobal _secondaryClassname;
-
-	// Add attachments
-	{
-		player addHandgunItem _x;
-	} forEach _secondaryAttachements;
-};
-
-_side = player getVariable "gameSide";
-_sideLoadout = [] call client_fnc_getCurrentSideLoadout;
-if (cl_class == "medic") then {
-	_medic_uniforms = (getArray(missionConfigFile >> "Soldiers" >> _side >> _sideLoadout >> "medics" >> "uniforms"));
-	_medic_vests = (getArray(missionConfigFile >> "Soldiers" >> _side >> _sideLoadout >> "medics" >> "vests"));
-	_medic_headgears = (getArray(missionConfigFile >> "Soldiers" >> _side >> _sideLoadout >> "medics" >> "headgears"));
-	_medic_backpacks = (getArray(missionConfigFile >> "Soldiers" >> _side >> _sideLoadout >> "medics" >> "backpacks"));
-
-	_currentLoadout = getUnitLoadout player;
-	_newLoadout = +_currentLoadout;
+	private _currentLoadout = getUnitLoadout player;
+	private _newLoadout = +_currentLoadout;
 	if (count _medic_uniforms > 0) then {_newLoadout = [_currentLoadout, _medic_uniforms, 3, 0] call _swapItems;};
 	if (count _medic_vests > 0) then {_newLoadout = [_currentLoadout, _medic_vests, 4, 0] call _swapItems};
 	if (count _medic_backpacks > 0) then {_newLoadout = [_currentLoadout, _medic_backpacks, 5, 0] call _swapItems};
@@ -95,37 +60,110 @@ if (cl_class == "medic") then {
 	player setUnitLoadout _newLoadout;
 };
 
-if (cl_classPerk == "grenadier") then {
-	_currentWeapon = _primary select 0;
-	_cfgRifleGrenade = (missionConfigFile >> "Soldiers" >> _side >> "Grenade" >> "RifleGrenade");
-	_rifles = getArray(_cfgRifleGrenade >> "rifles");
-	_count = if (cl_squadPerk == "extended_ammo") then {2} else {4};
-	if (_currentWeapon in _rifles) then {
-		player addPrimaryWeaponItem (getText(_cfgRifleGrenade >> "attachment"));
-		for "_i" from 1 to _count do {player addItem (getText(_cfgRifleGrenade >> "rifleGrenade"))};
+// Smoke grenades to those who have the class perk
+if ((cl_classPerk isEqualTo "smoke_grenades") && (!_isBeingRevived)) then {
+	for "_i" from 1 to 2 do {player addItem "SmokeShell"};
+};
+
+// Engineer
+if (cl_class isEqualTo "engineer") then {
+	// Demo Engineer Loadout
+	if (cl_classPerk isEqualTo "demolition") then {
+		private _backpack = getText(missionConfigFile >> "Soldiers" >> _side >> "ExplosiveCharge" >> "backpack");
+		private _explCharge = getText(missionConfigFile >> "Soldiers" >> _side >> "ExplosiveCharge" >> "weapon");
+		// Give a bigger backpack
+		if !(_backpack isEqualTo "") then {
+			removeBackpackGlobal player;
+			player addBackpack _backpack;
+		};
+		// Give him his explosives charges
+		private _count = if ("expl" in cl_squadPerks) then {2} else {1};
+		if (!_isBeingRevived) then {
+			for "_i" from 1 to _count do {player addItemToBackpack _explCharge};
+		};
 	};
 
-	_grenade = getText(missionConfigFile >> "Soldiers" >> _side >> "Grenade" >> "weapon");
-	for "_i" from 1 to _count do {player addItem _grenade};
+	// AT Engineer loadout
+	if ((cl_classPerk isEqualTo "perkAT")) then {
+		// Fetch the launcher data
+		private _cfgLauncher = (missionConfigFile >> "Soldiers" >> _side >> "Launcher");
+		private _backpack = getText(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "ATbackpack");
+		private _launcher = getText(_cfgLauncher >> "weapon");
+		private _ammoName = getText(_cfgLauncher >> "ammoType");
+		private _ammoCount = getNumber(_cfgLauncher >> "ammoCount");
+		removeBackpack player;
+		// Give him a rocket launcher backpack
+		player addBackpack _backpack;
+		{player removeItemFromBackpack _x} forEach (backpackItems player);
+		// Give him 1 rounds first, the weapon and then the rest of the rounds (so that it doesn't have to reload it)
+		if (!_isBeingRevived) then {
+			player addMagazine _ammoName;
+		};
+		player addWeaponGlobal _launcher;
+		if (("expl" in cl_squadPerks) && (!_isBeingRevived)) then {
+			for "_i" from 2 to _ammoCount do {player addMagazine _ammoName};
+		};
+	};
 };
 
-if (cl_classPerk == "demolition") then {
-	removeBackpackGlobal player;
-	_backpack = getText(missionConfigFile >> "Soldiers" >> _side >> "ExplosiveCharge" >> "backpack");
-	_explCharge = getText(missionConfigFile >> "Soldiers" >> _side >> "ExplosiveCharge" >> "weapon");
-	player addBackpack _backpack;
-	_count = if (cl_squadPerk == "extended_ammo") then {1} else {3};
-	for "_i" from 1 to _count do {player addItemToBackpack _explCharge};
+if (_primary != "") then {
+	// Primary
+	private _primaryAmmo = getText(missionConfigFile >> "Unlocks" >> format["%1", player getVariable ["gameSide", "attackers"]] >> _primary >> "ammo");
+	// Give ammo
+	if (!_isBeingRevived) then {
+		// Extended ammo perk
+		if ("ammo" in cl_squadPerks) then {
+			player addMagazines [_primaryAmmo, 6];
+		} else {
+			player addMagazines [_primaryAmmo, 4];
+		};
+	};
+	// Give weapon
+	player removeWeapon (primaryWeapon player);
+	player addWeapon _primary;
 };
 
-if (cl_class == "engineer" && cl_classPerk == "perkAT") then {
-	_cfgLauncher = (missionConfigFile >> "Soldiers" >> _side >> "Launcher");
-	_backpack = getText(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "ATbackpack");
-	_launcher = getText(_cfgLauncher >> "weapon");
-	_ammoName = getText(_cfgLauncher >> "ammoType");
-	_ammoCount = getNumber(_cfgLauncher >> "ammoCount");
-	removeBackpackGlobal player;
-	player addBackpack _backpack;
-	{player removeItemFromBackpack _x} forEach backpackItems player;
-	[player, _launcher, _ammoCount, _ammoName] call BIS_fnc_addWeapon;
+if ((cl_class isEqualTo "assault") && (cl_classPerk isEqualTo "grenadier")) then {
+	private _cfgRifleGrenade = (missionConfigFile >> "Soldiers" >> _side >> "Grenade" >> "RifleGrenade");
+	private _rifles = getArray(_cfgRifleGrenade >> "rifles");
+	private _count = if ("expl" in cl_squadPerks) then {2} else {1};
+
+	// If the rifle is grenade launcher capable
+	if (_primary in _rifles) then {
+		// Add the attachment and give ammo
+		player addPrimaryWeaponItem (getText(_cfgRifleGrenade >> "attachment"));
+		if (!_isBeingRevived) then {
+			for "_i" from 1 to _count do {player addItem (getText(_cfgRifleGrenade >> "rifleGrenade"))};
+		};
+	} else {
+		[_primary] call _fnc_equipBayo;
+	};
+} else {
+	[_primary] call _fnc_equipBayo;
 };
+
+if (_secondary != "") then {
+	private _secondaryAmmo = getText(missionConfigFile >> "Unlocks" >> (player getVariable ["gameSide", "attackers"]) >> _secondary >> "ammo");
+	// Give ammo
+	if (!_isBeingRevived) then {
+		// Extended ammo perk
+		if ("ammo" in cl_squadPerks) then {
+			player addMagazines [_secondaryAmmo, 4];
+		} else {
+			player addMagazines [_secondaryAmmo, 2];
+		};
+	};
+	// Give weapon
+	player removeWeapon (secondaryWeapon player);
+	player addWeapon _secondary;
+};
+
+if (!(cl_classPerk isEqualTo "grenadier" || {"frag" in cl_squadPerks}) || _isBeingRevived) exitWith {};
+private _count = if (cl_classPerk isEqualTo "grenadier" && {"frag" in cl_squadPerks}) then {2} else {1};
+private _grenade = getText(missionConfigFile >> "Soldiers" >> _side >> "Grenade" >> "weapon");
+private _currentNades = count ((itemsWithMagazines player) select {_x isEqualTo _grenade});
+for "_i" from _currentNades to _count do {
+	player addItem _grenade
+};
+
+true

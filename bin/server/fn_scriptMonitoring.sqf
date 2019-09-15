@@ -10,7 +10,7 @@ scriptName "fn_scriptMonitoring";
 #define __filename "fn_scriptMonitoring.sqf"
 
 while {true} do {
-	sleep 60;
+	uiSleep 60;
 	["Currently active scripts"] call server_fnc_log;
 	["Amount: " + str (count diag_activeSQFScripts)] call server_fnc_log;
 	{

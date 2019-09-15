@@ -1,79 +1,59 @@
 scriptName "fn_getLoadedEquipment";
 /*--------------------------------------------------------------------
-	Author: Maverick (ofpectag: MAV)
+	Author: Maverick (ofpectag: MAV) & A.Roman
     File: fn_getLoadedEquipment.sqf
 
-	<Maverick Applications>
-    Written by Maverick Applications (www.maverick-apps.de)
+    Written by both authors
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_getLoadedEquipment.sqf"
+#include "..\utils.h"
+
 if (isServer && !hasInterface) exitWith {};
 
-_ret = [];
-
-// Inline function to find equip by classname in configuration array
-_find = {
-	_class = param[0,"",[""]];
-	_ret = [];
-	{
-		if (_x select 0 == _class) then {
-			_ret = _x;
-		};
-	} forEach cl_equipConfigurations;
-
-	_ret
-};
+cl_equipConfigurations = [];
 
 // Get loaded equipment
 // Returns default if nothing was selected
-if (count cl_equipConfigurations == 0) then {
-	// Get all unlockable weapons
-	_configs = "true" configClasses (missionConfigFile >> "Unlocks" >> player getVariable "gameSide");
 
-	// Populare cl_equipConfigurations with all possible weapons
-	for "_i" from 0 to (count _configs - 1) step 1 do
+// Get all unlockable weapons
+private _configs = "true" configClasses (missionConfigFile >> "Unlocks" >> player getVariable "gameSide");
+{
+	private _weapon = _x;
+	private _valid = _configs findIf {(configName _x) isEqualTo _weapon};
+	if (_valid < 0) then {
+		cl_equipClassnames set [_forEachIndex, ""];
+	};
+} forEach cl_equipClassnames;
+
+private _maxExp = selectMax [cl_exp_assault, cl_exp_medic, cl_exp_engineer, cl_exp_support, cl_exp_recon];
+// Populate cl_equipConfigurations with all possible weapons
+VARIABLE_DEFAULT(sv_setting_DebugMode, 0);
+private _isDebug = sv_setting_DebugMode == 1;
+if (_isDebug) then {
+	cl_equipConfigurations = _configs apply {configName _x};
+} else {
 	{
-		// All weapons cheat
-		_allWeapons = false;
-		if (!sv_usingDatabase) then {
-			_allWeapons = true;
-		};
+		private _exp = missionNamespace getVariable [format["cl_exp_%1", cl_class], 0];
+		if ((getNumber(_x >> "exp") <= _exp) || (((getText(_x >> "type")) isEqualTo "secondary") && (_maxExp > (getNumber(_x >> "exp"))))) then {
 
-		if (getNumber((_configs select _i) >> "exp") <= cl_exp || _allWeapons) then {
-			// Weapon has been unlocked, display it
-
-			// Get all attachments (ONLY FOR DEBUG)
-			_attachments = [];
-			_attachmentConfigs = "true" configClasses (missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> (configName (_configs select _i)) >> "attachments");
-			for "_f" from 0 to (count _attachmentConfigs - 1) step 1 do
-			{
-				_attachments pushBack (configName (_attachmentConfigs select _f));
-			};
-
-			if (sv_usingDatabase) then {
-				_attachments = [];
-			};
-
-			_item = [
-				configName (_configs select _i), // Weapon classname
-				["","",""],	// No attachments equipped
-				_attachments // All attachments unlocked
-			];
+			private _item = configName _x;
 
 			// If no default equipped classname has been set yet
-			if (getText((_configs select _i) >> "type") == "primary" && (cl_equipClassnames select 0) == "" && cl_class in getArray((_configs select _i) >> "roles")) then {
-				cl_equipClassnames set[0, configName (_configs select _i)];
+			if ((getText(_x >> "type") == "primary") && {(cl_equipClassnames select 0) == ""} && {cl_class in getArray(_x >> "roles")}) then {
+				cl_equipClassnames set [0, _item];
 			};
-			if (getText((_configs select _i) >> "type") == "secondary" && (cl_equipClassnames select 1) == "") then {
-				cl_equipClassnames set[1, configName (_configs select _i)];
+			if ((getText(_x >> "type") == "secondary") && {(cl_equipClassnames select 1) == ""}) then {
+				cl_equipClassnames set [1, _item];
 			};
 
 			// Pushback into configuration pool
-			cl_equipConfigurations pushBack _item;
+			cl_equipConfigurations pushBackUnique _item;
 		};
-	};
+	} forEach _configs;
 };
 
+player setVariable ["loaded_equipment", [cl_equipClassnames select 0, cl_equipClassnames select 1]];
+
 // Return
-[[cl_equipClassnames select 0] call _find,[cl_equipClassnames select 1] call _find];
+[cl_equipClassnames select 0, cl_equipClassnames select 1];

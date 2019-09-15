@@ -10,8 +10,8 @@ scriptName "fn_countAssist";
 #define __filename "fn_countAssist.sqf"
 if (isServer && !hasInterface) exitWith {};
 
-_causedBy = param[0,objNull,[objNull]];
-_inflictedDamage = param[1,0,[0]];
+private _causedBy = param[0,objNull,[objNull]];
+private _inflictedDamage = param[1,0,[0]];
 
 // Make sure the damage isnt small
 if (_inflictedDamage < 0.05) exitWith {};
@@ -22,7 +22,7 @@ if (isNull _causedBy) exitWith {};
 if (isNil "cl_assistsInfo") exitWith {};
 
 // Check the side
-_side = _causedBy getVariable ["side", sideUnknown];
+private _side = _causedBy getVariable ["side", sideUnknown];
 
 // Bad side
 if (_side == (player getVariable ["side", sideUnknown]) || _side == sideUnknown) exitWith {};
@@ -31,7 +31,7 @@ if (_side == (player getVariable ["side", sideUnknown]) || _side == sideUnknown)
 if (_inflictedDamage < 0.15) exitWith {};
 
 // Iterate through our existing assistsInfo array and check whether this unit has already an entry in it
-_existingEntry = false;
+private _existingEntry = false;
 {
 	if ((_x select 0) == _causedBy) then {
 		_x set [1, (_x select 1) + _inflictedDamage];
@@ -44,3 +44,5 @@ if (_existingEntry) exitWith {};
 
 // Pushback!
 cl_assistsInfo pushBack [_causedBy, _inflictedDamage];
+
+true

@@ -9,20 +9,24 @@ scriptName "fn_monitorVehicle";
 --------------------------------------------------------------------*/
 #define __filename "fn_monitorVehicle.sqf"
 
-_vehicle = param[0, objNull, [objNull]];
+private _vehicle = param[0, objNull, [objNull]];
 
 // Wait until a unit is in the vehicle
 waitUntil {{alive _x} count (crew _vehicle) > 0 || (!alive _vehicle)};
+
+if (_vehicle isKindOf "Air") then {
+	_vehicle enableSimulationGlobal true;
+};
 
 // Now wait until all units have left the vehicle
 waitUntil {{alive _x} count (crew _vehicle) == 0 || (!alive _vehicle)};
 
 // Wait 45 seconds
-_start = diag_tickTime;
-_exit = false;
+private _start = diag_tickTime;
+private _exit = false;
 
 while {diag_tickTime - _start < 35 && !_exit && (alive _vehicle)} do {
-	sleep 1;
+	uiSleep 1;
 	// Did units get into the vehicle again?
 	if ({alive _x} count (crew _vehicle) > 0) then {
 		// Units inside the vehicle, relaunch the script and kill this one

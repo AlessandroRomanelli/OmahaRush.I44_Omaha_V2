@@ -10,8 +10,8 @@ scriptName "fn_hint";
 #define __filename "fn_hint.sqf"
 if (isServer && !hasInterface) exitWith {};
 
-_header = param[0,"",[""]];
-_msg = param[1,"",[""]];
+private _header = param[0,"",[""]];
+private _msg = param[1,"",[""]];
 
 
 // Nope?

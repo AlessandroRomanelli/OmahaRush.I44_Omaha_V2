@@ -10,37 +10,67 @@ scriptName "fn_spawnObjectives";
 #define __filename "fn_spawnObjectives.sqf"
 
 //Init array of objects nearby our objectives
-_objects = [];
+private _objects = [];
+private _walls = [];
 
-for "_i" from 0 to 3 do {
+for "_i" from 1 to 4 do {
+	private _objective = missionNamespace getVariable [format["sv_stage%1_obj", _i], objNull];
+	if (!isNull _objective) then {
+		deleteVehicle _objective;
+	};
+
+
 	//Get data out of config
-	_class = getText(missionConfigFile >> "MapSettings" >> "Stages" >> format["Stage%1", (_i+1)] >> "Objective" >> "classname");
-	_posATL = getArray(missionConfigFile >> "MapSettings" >> "Stages" >> format["Stage%1", (_i+1)] >> "Objective" >> "positionATL");
-	_dir = getNumber(missionConfigFile >> "MapSettings" >> "Stages" >> format["Stage%1", (_i+1)] >> "Objective" >> "dir");
+	private _class = getText(missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> format["Stage%1", _i] >> "Objective" >> "classname");
+	private _posATL = getArray(missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> format["Stage%1", _i] >> "Objective" >> "positionATL");
+	private _dir = getNumber(missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> format["Stage%1", _i] >> "Objective" >> "dir");
 
 	//Create object and make it invincible
-	_obj = createVehicle [_class, _posATL, [], 0, "CAN_COLLIDE"];
+	private _obj = createVehicle [_class, _posATL, [], 0, "CAN_COLLIDE"];
 	_obj allowDamage false;
 	_obj setDir _dir;
 	_obj setPosATL _posATL;
+	_obj setVehicleLock "LOCKED";
+	_obj enableSimulation false;
 
-	missionNamespace setVariable [format["sv_stage%1_obj", (_i+1)], _obj];
-	_objective = missionNamespace getVariable (format["sv_stage%1_obj", (_i+1)]);
+	missionNamespace setVariable [format["sv_stage%1_obj", _i], _obj];
+	_objective = missionNamespace getVariable (format["sv_stage%1_obj", _i]);
 	_objective setVariable ['status', -1, true];
 	_objects append (nearestTerrainObjects [_objective, [], 75, false]);
-	_fences = nearestTerrainObjects [_objective, ["FENCE", "WALL"], 75, false];
-	_objects = _objects - _fences;
+	_walls append (nearestTerrainObjects [_objective, ["FENCE", "WALL"], 75, false]);
 };
 
 // Set active objective
 sv_cur_obj = sv_stage1_obj;
 
-// Broadcast
-[["sv_stage1_obj","sv_stage2_obj","sv_stage3_obj","sv_stage4_obj","sv_cur_obj"]] spawn server_fnc_updateVars;
+private _objectives = [sv_stage1_obj, sv_stage2_obj, sv_stage3_obj, sv_stage4_obj];
+{
+	if (_forEachIndex > 0) then {
+		_x setVariable ["pre_stage", format["Stage%1", _forEachIndex]];
+	};
+	_x setVariable ["cur_stage", format["Stage%1", _forEachIndex + 1]];
+	if (_forEachIndex != (count _objectives - 1)) then {
+		_x setVariable ["nex_stage", format["Stage%1", _forEachIndex + 2]];
+		_x setVariable ["next_obj", _objectives select (_forEachIndex + 1)];
+	};
+} forEach _objectives;
 
+// Broadcast
+[["sv_stage1_obj","sv_stage2_obj","sv_stage3_obj","sv_stage4_obj","sv_cur_obj"]] call server_fnc_updateVars;
+
+{
+	private _obj = _x;
+	{
+			_obj animateSource [_x, 1, true];
+	} forEach animationNames _obj;
+} forEach _objects;
+
+_objects = _objects - _walls;
 
 //Make objects around objective invincible
 {
 	_x allowDamage false;
 	_x setDamage 0;
 } forEach _objects;
+
+true

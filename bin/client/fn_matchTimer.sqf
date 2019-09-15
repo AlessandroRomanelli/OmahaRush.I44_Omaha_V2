@@ -9,28 +9,25 @@ scriptName "fn_matchTimer";
 --------------------------------------------------------------------*/
 #define __filename "fn_matchTimer.sqf"
 
-_stageTime = param[0,0,[0]];
-cl_intendedTime = diag_tickTime + _stageTime;
+// Make obsolete
+if (true) exitWith {};
+
+private _stageTime = param[0,0,[0]];
+/* cl_intendedTime = diag_tickTime + _stageTime; */
+cl_matchEndTime = _stageTime;
 
 cl_matchTimer_thread = [] spawn {
+	private ["_time"];
+	private _delay = 0;
 	while {sv_gameStatus == 2} do {
-		// Wait until the current mcom is NOT armed
-		_delay = diag_tickTime;
-		_status = sv_cur_obj getVariable ["status", -1];
-		// This delay will either exit when the current mcom is not armed (nor being armed) or wait until the current mcom object changes
-		waitUntil {_status != 0 && _status != 1};
-		_delay = diag_tickTime - _delay;
-
-		sleep 1;
-
-
-		cl_intendedTime = cl_intendedTime + _delay;
-		_timeLeft = cl_intendedTime - diag_tickTime;
-		if (_timeLeft > 0) then {
-			cl_matchTime = _timeLeft;
+		uiSleep 1;
+		private _status = sv_cur_obj getVariable ["status", -1];
+		if (_status == 0 || _status == 1) then {
+			_delay = _delay + 1;
 		};
-
-		// Reveal friendly units (dank usage of already existing loops heh?)
-		[] spawn client_fnc_revealFriendlyUnits;
+		_time = cl_matchEndTime - serverTime + _delay;
+		if (_time > 0) then {
+			cl_matchTime = _time;
+		};
 	};
 };

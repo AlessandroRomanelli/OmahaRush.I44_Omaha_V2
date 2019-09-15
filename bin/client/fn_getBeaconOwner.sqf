@@ -10,13 +10,9 @@ scriptName "fn_getBeaconOwner";
 #define __filename "fn_getBeaconOwner.sqf"
 if (isServer && !hasInterface) exitWith {};
 
-_beacon = param[0,objNull,[objNull]];
-_ret = objNull;
+private _beacon = param[0,objNull,[objNull]];
 
-{
-	if (_x getVariable ["assault_beacon_obj", objNull] == _beacon) then {
-		_ret = _x;
-	};
-} forEach AllPlayers;
+private _idx = allPlayers findIf {_x getVariable ["assault_beacon_obj", objNull] isEqualTo _beacon};
+private _ret = allPlayers select _idx;
 
 _ret;

@@ -1,55 +1,74 @@
 scriptName "fn_spawnPlayer";
 /*--------------------------------------------------------------------
-	Author: Maverick (ofpectag: MAV)
+	Author: Maverick (ofpectag: MAV) & A. Roman
     File: fn_spawnPlayer.sqf
 
-	<Maverick Applications>
-    Written by Maverick Applications (www.maverick-apps.de)
-    You're not allowed to use this file without permission from the author!
+    Written by both authors
+    You're not allowed to use this file without permission from the authors!
 --------------------------------------------------------------------*/
 #define __filename "fn_spawnPlayer.sqf"
+#include "..\utils.h"
 if (isServer && !hasInterface) exitWith {};
 
-// Check if spawning is currently allowed and if we are the side thats not allowed to spawn
-if ((missionNamespace getVariable ["cl_blockSpawnUntil", diag_tickTime]) - diag_tickTime > 0 && ((missionNamespace getVariable "cl_blockSpawnForSide") == (player getVariable "gameSide"))) exitWith {
-	[format ["SPAWNING ALLOWED IN %1", [(missionNamespace getVariable ["cl_blockSpawnUntil", diag_tickTime]) - diag_tickTime, "MM:SS"] call bis_fnc_secondsToString]] spawn client_fnc_displayError;
+if (cl_equipClassnames select 0 == "") exitWith {
+	 ["YOU NEED TO CHOOSE A WEAPON BEFORE SPAWNING"] call client_fnc_displayError;
 };
 
-if (cl_equipClassnames select 0 == "") exitWith {
-	 ["YOU NEED TO CHOOSE A WEAPON BEFORE SPAWNING"] spawn client_fnc_displayError;
+if !((cl_equipClassnames select 0) in cl_equipConfigurations) exitWith {
+	 ["YOU HAVE SELECTED AN INVALID WEAPON"] call client_fnc_displayError;
+};
+
+VARIABLE_DEFAULT(sv_setting_RoundTime, 15);
+private _matchTime = sv_setting_RoundTime*60;
+if (sv_matchTime > _matchTime && (player getVariable ["gameSide", "attackers"]) isEqualTo "attackers") exitWith {
+	[format["YOU ARE NOT ALLOWED TO SPAWN JUST YET! %1S LEFT"], sv_matchTime - _matchTime] call client_fnc_displayError;
 };
 
 disableSerialization;
-_d = findDisplay 5000;
+private _d = findDisplay 5000;
 
 // Class and perks
-_class = param[0,"medic",[""]];
+private _class = param[0,"medic",[""]];
+
+private _isClassRestricted = [_class] call client_fnc_checkClassRestriction;
+if (_isClassRestricted) exitWith {};
+
 cl_class = _class;
-_perkData = [cl_class] call client_fnc_getUsedPerksForClass;
+private _perkData = [cl_class] call client_fnc_getUsedPerksForClass;
+if ((count _perkData) isEqualTo 0) then {
+	["NO CLASS PERK SELECTED, PLEASE RESELECT ONE AND TRY AGAIN"] call client_fnc_displayError;
+};
+
 cl_classPerk = _perkData select 0;
 cl_squadPerk = _perkData select 1;
+[] call client_fnc_setSquadPerks;
+
+cl_squadPerks = [] call client_fnc_getSquadPerks;
 
 // Set class
 cl_equipClassnames set [2, _class];
 
 // Get value from listbox
-_value = (_d displayCtrl 9) lbValue (lbCurSel (_d displayCtrl 9));
+private _spawnCtrl = _d displayCtrl 8;
+private _vehiclesCtrl = _d displayCtrl 9;
+private _value = if !((lbCurSel _spawnCtrl) isEqualTo -1) then {
+	_spawnCtrl lbValue (lbCurSel _spawnCtrl);
+} else {
+	_vehiclesCtrl lbValue (lbCurSel _vehiclesCtrl);
+};
 
 // Successfull spawn inline function (stupid design) | Will be called from the child scripts if the spawn was successfull
 cl_spawn_succ = {
-	// Object action update
-	[] spawn client_fnc_objectiveActionUpdate;
-
 	if (isNil "cl_adsDisplay") then {
 		cl_adsDisplay = [] spawn client_fnc_displayAds;
 	};
 
 	// GPS
-	showGPS true;
+	showGPS false;
 	player setVariable ["isAlive", true];
 	// Spawn protection
 	[] spawn {
-		sleep 1;
+		uiSleep 0.5;
 		player allowDamage true;
 	};
 
@@ -60,7 +79,7 @@ cl_spawn_succ = {
 	[] call client_fnc_initPerks;
 
 	// Init hold actions
-	[] spawn client_fnc_initHoldActions;
+	[] call client_fnc_initHoldActions;
 
 	// Out of spawn menu
 	cl_inSpawnMenu = false;
@@ -79,10 +98,10 @@ cl_spawn_succ = {
 	};
 };
 
-_deleteBlurr = {
+/* private _deleteBlurr = {
 	// Delete blurry effect
-	0 = ["DynamicBlur", 400, [0]] spawn {
-		params ["_name", "_priority", "_effect", "_handle"];
+	["DynamicBlur", 400, [0]] spawn {
+		params ["_name", "_priority", "_effect"];
 		while {
 			cl_spawnmenu_blur = ppEffectCreate [_name, _priority];
 			cl_spawnmenu_blur < 0
@@ -93,52 +112,59 @@ _deleteBlurr = {
 		cl_spawnmenu_blur ppEffectAdjust _effect;
 		cl_spawnmenu_blur ppEffectCommit 0.1;
 	};
-};
+}; */
+
+[] spawn client_fnc_saveStatistics;
+
+private _spawnDisplay = _d displayCtrl 8;
+private _data = _spawnDisplay lbData (lbCurSel _spawnDisplay);
 
 switch (_value) do
 {
 	case -2: // Vehicle (classname given as data)
 	{
-		_configName = (_d displayCtrl 9) lbData (lbCurSel (_d displayCtrl 9));
-		[_configName] spawn client_fnc_spawnPlayerInVehicle;
+		private _vehiclesDisplay = _d displayCtrl 9;
+		private _configName = _vehiclesDisplay lbData (lbCurSel _vehiclesDisplay);
+		[_configName] call client_fnc_spawnPlayerInVehicle;
 	};
 
 	case -1: // HQ
 	{
-		[] spawn client_fnc_spawnPlayerAtHQ;
+		[_data] call client_fnc_spawnPlayerAtLocation;
 	};
 
 	default // Beacon or squad member (squad member may be in vehicle)
 	{
-		_data = (_d displayCtrl 9) lbData (lbCurSel (_d displayCtrl 9));
-
 		// Soldier selected, is he in combat?
 		if (_data == "inCombat") exitWith {
-			["The selected player is in combat and cannot be spawned on"] spawn client_fnc_displayError;
+			["The selected player is in combat and cannot be spawned on"] call client_fnc_displayError;
 		};
 
 		// Get unit to spawn at
-		_unit = (units group player) select _value;
-		_beacon = _unit getVariable ["assault_beacon_obj", objNull];
+		private _unit = objectFromNetID _data;
+		if (isNull _unit) then {
+			_unit = (units group player) select _value;
+		};
+		private _beacon = _unit getVariable ["assault_beacon_obj", objNull];
 
 		if (_data == "beacon") then {
 			// Spawn at object
 			if (!isNull _beacon) then {
-				[_beacon, false] spawn client_fnc_spawnPlayerAtObject;
-
 				// Give points
 				if (_unit != player) then {
-					[] remoteExec ["client_fnc_beaconSpawn", _unit];
+					[] remoteExecCall ["client_fnc_beaconSpawn", _unit];
 				};
+				[_beacon, false] call client_fnc_spawnPlayerAtObject;
+
 			} else {
-				["The beacon is unavailable"] spawn client_fnc_displayError;
+				["The beacon is unavailable"] call client_fnc_displayError;
 			};
 		} else {
 			// Spawn at object
 			if (vehicle _unit == _unit) then {
-				[_unit] spawn client_fnc_spawnPlayerAtObject;
+				[_unit] call client_fnc_spawnPlayerAtObject;
 			} else {
-				[_unit, true, true] spawn client_fnc_spawnPlayerAtObject;
+				[_unit, true, true] call client_fnc_spawnPlayerAtObject;
 			};
 		};
 	};

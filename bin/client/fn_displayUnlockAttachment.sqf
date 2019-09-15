@@ -12,14 +12,14 @@ if (isServer && !hasInterface) exitWith {};
 
 disableSerialization;
 
-_info = param[0,[],[[]]];
+private _info = param[0,[],[[]]];
 if (count _info == 0) exitWith {};
 
 // Display unlock layer
 120 cutRsc ["rr_weaponUnlockSingle","PLAIN"];
 
 // Get display
-_display = uiNamespace getVariable ["rr_weaponUnlockSingle",displayNull];
+private _display = uiNamespace getVariable ["rr_weaponUnlockSingle",displayNull];
 
 // Display weapon, attachment and text
 (_display displayCtrl 0) ctrlSetStructuredText parseText "<t size='2.5' align='center' shadow='2'>ATTACHMENT UNLOCKED</t>";
@@ -27,3 +27,5 @@ _display = uiNamespace getVariable ["rr_weaponUnlockSingle",displayNull];
 
 // Play sound
 playSound "unlock_epic";
+
+true

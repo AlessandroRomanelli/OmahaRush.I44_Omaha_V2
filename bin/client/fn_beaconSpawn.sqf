@@ -11,8 +11,8 @@ scriptName "fn_beaconSpawn";
 if (isServer && !hasInterface) exitWith {};
 
 // We are nice, arent we?
-["<t size='1.3' color='#FFFFFF'>SQUAD MEMBER SPAWNED AT RALLY POINT</t>", 20] spawn client_fnc_pointfeed_add;
-[20] spawn client_fnc_addPoints;
+["<t size='1.3' color='#FFFFFF'>SQUAD MEMBER SPAWNED AT RALLY POINT</t>", 20] call client_fnc_pointfeed_add;
+[20] call client_fnc_addPoints;
 
 // Increase amount the beacon has been used
 cl_beacon_used = cl_beacon_used + 1;
@@ -20,11 +20,13 @@ cl_beacon_used = cl_beacon_used + 1;
 // Too many uses?
 if (cl_beacon_used >= 5) then {
 	// Delete beacon
-	_beacon = player getVariable ["assault_beacon_obj", objNull];
+	private _beacon = player getVariable ["assault_beacon_obj", objNull];
 	if (!isNull _beacon) then {
 		deleteVehicle _beacon;
 	};
 
 	// Message
-	["RALLY POINT", "Your rally point has been used 5 times and despawned. You may place a new one now."] spawn client_fnc_hint;
+	["RALLY POINT", "You used your rally point 5 times and it despawned. You may place a new one now."] spawn client_fnc_hint;
 };
+
+true

@@ -10,6 +10,8 @@ scriptName "fn_getUnlockableAttachments";
 #define __filename "fn_getUnlockableAttachments.sqf"
 if (isServer && !hasInterface) exitWith {};
 
+if (true) exitWith {};
+
 private["_curEquip","_weaponInfo","_currentWeapon"];
 
 // Unlocks random attachment for currently used weapon

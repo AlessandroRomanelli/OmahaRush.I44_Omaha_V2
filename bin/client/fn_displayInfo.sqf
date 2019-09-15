@@ -10,11 +10,13 @@ scriptName "fn_displayInfo";
 #define __filename "fn_displayInfo.sqf"
 
 disableSerialization;
-_text = param[0,"",[""]];
+private _text = param[0,"",[""]];
 
 // Display error rsc
 35 cutRsc ["rr_errorText","PLAIN"];
 
-_display = uiNamespace getVariable ["errorText", displayNull];
+private _display = uiNamespace getVariable ["errorText", displayNull];
 
 (_display displayCtrl 0) ctrlSetStructuredText parseText format ["<t size='1.5' align='center' shadow='2' font='PuristaMedium' color='#ffffff'>%1</t>", _text];
+
+true

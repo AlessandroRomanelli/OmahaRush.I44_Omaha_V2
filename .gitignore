@@ -1,0 +1,9 @@
+ChangeLog.md
+README.md
+config/factions.h
+mission.sqm
+*.sqm
+config/master.h
+config/maps
+config/params.h
+.idea/
