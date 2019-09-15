@@ -59,6 +59,7 @@ player setVariable ["gameSide", (
 
 cl_lastSwitched = diag_tickTime;
 
-[] call client_fnc_spawn;
 
 cl_forceSwitch = false;
+
+[] spawn client_fnc_spawn;
