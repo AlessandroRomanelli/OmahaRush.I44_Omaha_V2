@@ -37,13 +37,12 @@ if ((player getVariable ["side", sideUnknown]) == _sideLessUnits) exitWith {
   ["CANNOT SWITCH TO THE BIGGER SIDE"] call client_fnc_displayError;
 };
 
-private _request = diag_tickTime;
 private _oldSide = player getVariable ["side", sideUnknown];
-[player] remoteExec ["server_fnc_sideSwitch", 2];
 
-waitUntil {(side player != civilian && side player != _oldSide) || {(diag_tickTime - _request) > 5}};
+[player] join (createGroup _sideLessUnits);
+[player] join grpNull;
 
-if (side player == _oldSide) exitWith {};
+waitUntil {side player != civilian && {side player != _oldSide}};
 
 [] call client_fnc_saveStatistics;
 
