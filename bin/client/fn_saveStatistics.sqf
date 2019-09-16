@@ -9,6 +9,7 @@ scriptName "fn_saveStatistics";
 #define __filename "fn_saveStatistics.sqf"
 
 if (isServer && !hasInterface) exitWith {};
+if (isNil "cl_init_done" || isNil "cl_currentRecord" || !cl_init_done) exitWith {};
 
 // SAVE!!
 with missionNamespace do {

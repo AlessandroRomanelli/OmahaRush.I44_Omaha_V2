@@ -170,7 +170,7 @@ private _event = addMissionEventHandler["EachFrame", {
 
   // Squad icons
   {
-	_x params ["_unit", "_name", "_icon", "_alpha"];
+	_x params [["_unit", objNull], ["_name", ""], ["_icon", ""], ["_alpha", 1]];
     private _pos = (getPosATLVisual _unit) vectorAdd [0,0,1.85];
     drawIcon3D[_icon, [1,1,1, _alpha], _pos, 1.5, 1.5, 0, _name, 2, 0.04, "PuristaMedium", "center", true];
   } forEach cl_onEachFrame_squad_members;

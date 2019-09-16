@@ -9,16 +9,6 @@ scriptName "fn_onEachFramePreparation";
 --------------------------------------------------------------------*/
 #define __filename "fn_onEachFramePreparation.sqf"
 
-// Inline function to determine icon
-private _getIcon = {
-	private _unit = param[0,objNull,[objNull]];
-	if (_unit getVariable ["class",""] == "medic") exitWith {WWRUSH_ROOT+"pictures\medic.paa"};
-	if (_unit getVariable ["class",""] == "engineer") exitWith {WWRUSH_ROOT+"pictures\engineer.paa"};
-	if (_unit getVariable ["class",""] == "support") exitWith {WWRUSH_ROOT+"pictures\support.paa"};
-	if (_unit getVariable ["class",""] == "recon") exitWith {WWRUSH_ROOT+"pictures\recon.paa"};
-	WWRUSH_ROOT+"pictures\assault.paa";
-};
-
 // Variables
 cl_onEachFrame_squad_members = [];
 cl_onEachFrame_squad_beacons = [];
@@ -38,7 +28,7 @@ cl_onEachFramePreparationID = addMissionEventHandler["EachFrame", {
 	// Fill with data
 	{
 		private _name = (_x getVariable ["name", name _x]);
-		if (_x != player) then {
+		if (isNull _x && {_x != player}) then {
 			if (side (group _x) == side (group player)) then {
 				if ((group _x) == (group player)) then {
 					// Does this unit provide a beacon
@@ -54,8 +44,8 @@ cl_onEachFramePreparationID = addMissionEventHandler["EachFrame", {
 						// The player should not be on the debug island
 						if (_x distance cl_safePos > 200) then {
 							private _alpha = [0.75, 0.55] select (_x distance player > 50);
-							private _icon = [_x] call _getIcon;
-							_squad_members pushBack [_x, _name, (WWRUSH_ROOT+_icon), _alpha];
+							private _icon = format ["%1pictures\%2.paa", WWRUSH_ROOT, _x getVariable ["class", "medic"]];
+							_squad_members pushBack [_x, _name, _icon, _alpha];
 						};
 					};
 				} else {

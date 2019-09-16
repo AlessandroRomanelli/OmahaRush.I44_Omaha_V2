@@ -44,15 +44,15 @@ private _animate = {
 	_c ctrlCommit 0.25;
 };
 
-
+params [["_moreMcoms", false, [false]]];
 // Param is TRUE if the just destroyed mcom was NOT the last one
-if (param[0,false,[false]]) then {
+if (_moreMcoms) then {
 	private _fallBackTime = [] call client_fnc_getFallbackTime;
 
 	// Update markers
 	[] call client_fnc_updateMarkers;
 
-	private _isPlayerAttacking = ((player getVariable "gameSide") isEqualTo "attackers");
+	private _isPlayerAttacking = ((player getVariable ["gameSide", "attackers"]) isEqualTo "attackers");
 
 	// If we are attacker, block the next mcom for now
 	if (_isPlayerAttacking) then {
