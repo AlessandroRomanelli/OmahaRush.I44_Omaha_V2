@@ -8,7 +8,10 @@ scriptName "fn_beaconEventHandler";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_beaconEventHandler.sqf"
+#include "..\utils.h"
 if (isServer && !hasInterface) exitWith {};
+
+WAIT_IF_NOT(cl_init_done);
 
 private _beacon = param[0,objNull,[objNull]];
 

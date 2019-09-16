@@ -12,6 +12,8 @@ scriptName "fn_medic_unitDied";
 
 if (isServer && !hasInterface) exitWith {};
 
+WAIT_IF_NOT(cl_init_done);
+
 private _unit = param[0,objNull,[objNull]];
 private _killer = param[1,objNull,[objNull]];
 private _assistsInfo = param[2,[],[[]]];

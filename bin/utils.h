@@ -11,6 +11,7 @@
 	sv_setting_##VAR_NAME = profileNamespace getVariable [QUOTE(DOUBLES(sv_setting,VAR_NAME)), DEFAULT]; \
 	sv_settings pushBack [QUOTE(VAR_NAME), sv_setting_##VAR_NAME]
 
+#define WAIT_IF_NOT(VAR_NAME) waitUntil{!isNil QUOTE(VAR_NAME) || {VAR_NAME}}
 // MUTEX
 #define MUTEX_INIT(LOCK) VARIABLE_DEFAULT(LOCK, false)
 #define MUTEX_LOCK(LOCK) waitUntil {\

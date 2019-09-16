@@ -1,17 +1,18 @@
 scriptName "fn_MCOMarmed";
 /*--------------------------------------------------------------------
-	Author: Maverick (ofpectag: MAV)
-    File: fn_MCOMarmed.sqf
+	Author: A. Roman
+	File: fn_MCOMarmed.sqf
 
-	<Maverick Applications>
-    Written by Maverick Applications (www.maverick-apps.de)
-    You're not allowed to use this file without permission from the author!
+	Written by A. Roman
+	You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_MCOMarmed.sqf"
 #include "..\utils.h"
 
 // Planter
 private _planter = param[0,objNull,[objNull]];
+
+WAIT_IF_NOT(cl_init_done);
 
 // Display warning
 ["EXPLOSIVES HAVE BEEN SET"] call client_fnc_displayObjectiveMessage;

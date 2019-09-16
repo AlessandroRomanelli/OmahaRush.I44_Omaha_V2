@@ -1,11 +1,10 @@
 scriptName "fn_displaySpawnRestriction";
 /*--------------------------------------------------------------------
-	Author: Maverick (ofpectag: MAV)
-    File: fn_displaySpawnRestriction.sqf
+	Author: A. Roman
+	File: fn_MCOMarmed.sqf
 
-	<Maverick Applications>
-    Written by Maverick Applications (www.maverick-apps.de)
-    You're not allowed to use this file without permission from the author!
+	Written by A. Roman
+	You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_displaySpawnRestriction.sqf"
 #include "..\utils.h"

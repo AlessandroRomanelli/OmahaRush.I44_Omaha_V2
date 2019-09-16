@@ -8,7 +8,10 @@ scriptName "fn_endMatch";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_endMatch.sqf"
+#include "..\utils.h"
 if (isServer && !hasInterface) exitWith {};
+
+WAIT_IF_NOT(cl_init_done);
 
 private _winners = param[0,"",[""]];
 

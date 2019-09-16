@@ -1,13 +1,16 @@
 scriptName "fn_MCOMdestroyed";
 /*--------------------------------------------------------------------
-	Author: Maverick (ofpectag: MAV)
-    File: fn_MCOMdestroyed.sqf
+	Author: A. Roman
+	File: fn_MCOMarmed.sqf
 
-	<Maverick Applications>
-    Written by Maverick Applications (www.maverick-apps.de)
-    You're not allowed to use this file without permission from the author!
+	Written by A. Roman
+	You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_MCOMdestroyed.sqf"
+#include "..\utils.h"
+
+WAIT_IF_NOT(cl_init_done);
+
 
 if (isServer && !hasInterface) exitWith {};
 
