@@ -154,7 +154,7 @@ class Maverick_Functions_Server {
 		class autoTeamBalancer {};
 		class monitorVehicle {};
 		class waitForPlayers {};
-		class generateGroupName {};
+		class generateGroup {};
 		class assignSide {};
 		class sideSwitch {};
 		class selectNextMap {};

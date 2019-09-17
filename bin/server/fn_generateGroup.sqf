@@ -9,7 +9,9 @@ scriptName "fn_generateGroupName";
 #define __filename "fn_generateGroupName.sqf"
 #include "..\utils.h"
 
-params ["_group","_faction"];
+params [["_group", grpNull],["_player", objNull],["_faction", "US"]];
+
+if (isNull _player || isNull _group) exitWith {};
 
 private _usNames =  ["Able","Baker","Charlie","Dog","Easy"];
 private _gerNames = ["Anton","Bertha","Casar","Dora","Emil"];
@@ -17,6 +19,8 @@ private _sovNames = ["Alexey","Boris","Maxim","Dmitry","Filipp"];
 
 MUTEX_INIT(sv_grpName_lock);
 MUTEX_LOCK(sv_grpName_lock);
+
+["RegisterGroup", [_group, _player]] call BIS_fnc_dynamicGroups;
 
 {
   if (isNil _x) then {
