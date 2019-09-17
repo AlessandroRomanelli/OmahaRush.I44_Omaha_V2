@@ -10,8 +10,6 @@ scriptName "fn_spawnPlayerAtLocation";
 #define __filename "fn_spawnPlayerAtLocation.sqf"
 if (isServer && !hasInterface) exitWith {};
 
-// Close spawn dialog
-closeDialog 0;
 
 private _side = player getVariable ["gameSide", "defenders"];
 private _spawnName = param [0, "HQSpawn", [""]];
@@ -22,8 +20,13 @@ private _pos = getArray(_spawnConfig >> "positionATL");
 
 private _spawnPos = _pos findEmptyPosition [0,20];
 
-private _idx = (_spawnPos nearEntities ["Man", 25]) findIf {(_x getVariable ["gameSide", ""]) != _side};
-if !(_idx isEqualTo -1) exitWith {["Enemies nearby this spawn point!"] call client_fnc_displayError};
+private _enemiesNearby = {(_x getVariable ["gameSide", ""]) != _side} count (_spawnPos nearEntities ["Man", 25]) ;
+if (_enemiesNearby > 0) exitWith {
+	["Enemies nearby this spawn point!"] call client_fnc_displayError
+};
+
+// Close spawn dialog
+closeDialog 0;
 
 [] call client_fnc_equipAll;
 
