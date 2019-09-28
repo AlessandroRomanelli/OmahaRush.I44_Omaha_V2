@@ -51,7 +51,7 @@ class LIB_DP28 {
   exp = 0;
   type = "primary";
   roles[] = {"support"};
-  damageMultiplier = 0.25;
+  damageMultiplier = 0.5;
   class attachments {};
 };
 
@@ -60,7 +60,7 @@ class LIB_DT {
   exp = 12500;
   type = "primary";
   roles[] = {"support"};
-  damageMultiplier = 0.25;
+  damageMultiplier = 0.5;
   class attachments {};
 };
 
@@ -69,7 +69,7 @@ class LIB_PPSh41_m {
   exp = 0;
   type = "primary";
   roles[] = {"engineer"};
-  damageMultiplier = 0.5;
+  damageMultiplier = 1;
   class attachments {};
 };
 
