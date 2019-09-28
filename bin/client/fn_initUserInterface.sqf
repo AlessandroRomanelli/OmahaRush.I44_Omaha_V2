@@ -157,7 +157,7 @@ private _event = addMissionEventHandler["EachFrame", {
 			["attacker.paa", "attacker_armed.paa"]
 		] select (_side isEqualTo "attackers")) select (_objStatus isEqualTo 1))
 	);
-  private _text = format["Defuse (%1m)", round(_origin distance sv_cur_obj)];
+  private _text = format["%1 (%2m)", ["Defuse", "Defend"] select (_side isEqualTo "attackers"), round(_origin distance sv_cur_obj)];
   drawIcon3D [_icon, [1,1,1,_alpha],_pos,1.5,1.5,0,_text,2,0.04, "PuristaLight", "center", true];
 
   private _ammoBoxes = (_posPlayer) nearObjects ["LIB_AmmoCrates_NoInteractive_Large", 7];

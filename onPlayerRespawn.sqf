@@ -8,6 +8,7 @@ scriptName "onPlayerRespawn";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "onPlayerRespawn.sqf"
+#include "bin\utils.h"
 
 WAIT_IF_NOT(cl_init_done);
 if (!isNil "sv_gameStatus" && !isNil "cl_revived") then {

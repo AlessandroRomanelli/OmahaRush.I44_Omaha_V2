@@ -8,19 +8,10 @@ scriptName "fn_equipWeapons";
 #define __filename "fn_equipWeapons.sqf"
 if (isServer && !hasInterface) exitWith {};
 
-// Inline function to swap an item within the loadout of a unit
-private _swapItems = {
-	params["_currentLoadout", "_classNames", "_index", "_subindex"];
-	private _temp = _currentLoadout select _index;
-	_temp set [_subindex, selectRandom _classNames];
-	_currentLoadout set [_index, _temp];
-	_currentLoadout;
-};
-
 private _fnc_equipBayo = {
 	private _primary = param [0, "", [""]];
 	if (_primary == "") exitWith {false};
-  private _result = false;
+	private _result = false;
 	private _compatibles = getArray(configFile >> "CfgWeapons" >> _primary >> "WeaponSlotsInfo" >> "MuzzleSlot" >> "compatibleItems");
 	private _idx = _compatibles findIf {["bayo", _x] call BIS_fnc_inString};
 	if (_idx > -1) then {
@@ -43,22 +34,6 @@ private _isBeingRevived = param[0,false,[false]];
 
 private _side = player getVariable "gameSide";
 private _sideLoadout = [] call client_fnc_getCurrentSideLoadout;
-
-// If the player is a medic equip him with medic gear to distinguish from non medics
-if (cl_class isEqualTo "medic") then {
-	private _medic_uniforms = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "medics" >> "uniforms"));
-	private _medic_vests = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "medics" >> "vests"));
-	private _medic_headgears = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "medics" >> "headgears"));
-	private _medic_backpacks = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "medics" >> "backpacks"));
-
-	private _currentLoadout = getUnitLoadout player;
-	private _newLoadout = +_currentLoadout;
-	if (count _medic_uniforms > 0) then {_newLoadout = [_currentLoadout, _medic_uniforms, 3, 0] call _swapItems;};
-	if (count _medic_vests > 0) then {_newLoadout = [_currentLoadout, _medic_vests, 4, 0] call _swapItems};
-	if (count _medic_backpacks > 0) then {_newLoadout = [_currentLoadout, _medic_backpacks, 5, 0] call _swapItems};
-	if (count _medic_headgears > 0) then {_newLoadout set [6, selectRandom _medic_headgears]};
-	player setUnitLoadout _newLoadout;
-};
 
 // Smoke grenades to those who have the class perk
 if ((cl_classPerk isEqualTo "smoke_grenades") && (!_isBeingRevived)) then {

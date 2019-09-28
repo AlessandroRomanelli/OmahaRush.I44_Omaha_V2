@@ -14,12 +14,19 @@ private _isBeingRevived = param[0, false, [false]];
 private _side = player getVariable "gameSide";
 private _sideLoadout = [] call client_fnc_getCurrentSideLoadout;
 
-private _uniforms = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "uniforms"));
-private _goggles = (getText(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "goggles"));
-private _vests		 = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "vests"));
-private _headgears = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "headgears"));
-private _backpacks = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "backpacks"));
-
+private ["_uniforms", "_goggles", "_vests", "_headgears", "_backpacks"];
+if (cl_class isEqualTo "medic") then {
+	_uniforms = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "medics" >> "uniforms"));
+	_vests = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "medics" >> "vests"));
+	_headgears = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "medics" >> "headgears"));
+	_backpacks = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "medics" >> "backpacks"));
+} else {
+	_uniforms = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "uniforms"));
+	_vests		 = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "vests"));
+	_headgears = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "headgears"));
+	_backpacks = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "backpacks"));
+};
+_goggles = (getText(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "goggles"));
 
 if ((count _uniforms > 0) && {(uniform player) isEqualTo ""}) then {player forceAddUniform (selectRandom _uniforms)};
 if (_goggles != "") then {player addGoggles _goggles;};
@@ -27,10 +34,7 @@ if ((count _vests > 0) && {(vest player) isEqualTo ""}) then {player addVest (se
 if ((count _headgears > 0) && {(headgear player) isEqualTo ""}) then {player addHeadgear (selectRandom _headgears)};
 if ((count _backpacks > 0) && {(backpack player) isEqualTo ""}) then {removeBackpackGlobal player; player addBackpack (selectRandom _backpacks);};
 
-// Vest perk handler
-/* if (cl_squadPerk == "extended_vest") then {
-	player addVest "V_Press_F";
-}; */
+if ((uniform player) isEqualTo "") exitWith {[] call client_fnc_equipAll};
 
 // Give weapons
 [_isBeingRevived] call client_fnc_equipWeapons;
