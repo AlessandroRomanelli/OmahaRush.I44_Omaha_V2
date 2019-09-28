@@ -74,7 +74,7 @@ if (cl_class isEqualTo "engineer") then {
 		if (!_isBeingRevived) then {
 			player addMagazine _ammoName;
 		};
-		player addWeaponGlobal _launcher;
+		player addWeapon _launcher;
 		if (("expl" in cl_squadPerks) && (!_isBeingRevived)) then {
 			for "_i" from 2 to _ammoCount do {player addMagazine _ammoName};
 		};
