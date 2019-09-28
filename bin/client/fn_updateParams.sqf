@@ -10,7 +10,7 @@ scriptName "fn_updateParams";
 
 private _valid = params ["_var", "_settings"];
 
-systemChat str _this;
+diag_log ("Params updated: " +  str _this);
 
 if (!_valid || {_var != "sv_settings"}) exitWith {};
 
