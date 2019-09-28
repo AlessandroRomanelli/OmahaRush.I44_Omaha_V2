@@ -1717,7 +1717,7 @@ class killcam_info {
 		class RscStructuredText_1100: RscStructuredText
 		{
 			idc = -1;
-			text = "<t size='1.25' shadow=0 font='PuristaMedium' valign='center'>KILLED BY:</t>"; //--- ToDo: Localize;
+			text = "<t size='1.25' shadow=0 font='PuristaMedium' valign='middle'>KILLED BY:</t>"; //--- ToDo: Localize;
 			x = 0.243805 * safezoneW + safezoneX;
 			y = 0.660619 * safezoneH + safezoneY;
 			w = 0.0705286 * safezoneW;
@@ -1729,7 +1729,7 @@ class killcam_info {
 		class killer_name: RscStructuredText
 		{
 			idc = 1100;
-			text = "<t size='1.25' shadow=2 font='PuristaBold' valign='center'></t>"; //--- ToDo: Localize;
+			text = "<t size='1.25' shadow=2 font='PuristaBold' valign='middle'></t>"; //--- ToDo: Localize;
 			x = 0.30252 * safezoneW + safezoneX;
 			y = 0.660807 * safezoneH + safezoneY;
 			w = 0.169671 * safezoneW;
@@ -1740,7 +1740,7 @@ class killcam_info {
 		class RscStructuredText_1102: RscStructuredText
 		{
 			idc = -1;
-			text = "<t size='1.5' shadow=2 font='PuristaBold' align='center' valign='center'>HEALTH</t>"; //--- ToDo: Localize;
+			text = "<t size='1.5' shadow=2 font='PuristaBold' align='center' valign='middle'>HEALTH</t>"; //--- ToDo: Localize;
 			x = 0.248742 * safezoneW + safezoneX;
 			y = 0.744502 * safezoneH + safezoneY;
 			w = 0.101385 * safezoneW;
@@ -1751,7 +1751,7 @@ class killcam_info {
 		class hp_indicator: RscStructuredText
 		{
 			idc = 1102;
-			text = "<t size='3' shadow=2 font='PuristaBold' align='center' valign='center'>100</t>"; //--- ToDo: Localize;
+			text = "<t size='3' shadow=2 font='PuristaBold' align='center' valign='middle'>100</t>"; //--- ToDo: Localize;
 			x = 0.270782 * safezoneW + safezoneX;
 			y = 0.76331 * safezoneH + safezoneY;
 			w = 0.0573045 * safezoneW;
@@ -1762,7 +1762,7 @@ class killcam_info {
 		class RscStructuredText_1104: RscStructuredText
 		{
 			idc = -1;
-			text = "<t size='1.5' shadow=2 font='PuristaBold' align='center' valign='center'><t color='#0000ff'>YOU</t>  -  <t color='#ff0000'>FOE</t></t>"; //--- ToDo: Localize;
+			text = "<t size='1.5' shadow=2 font='PuristaBold' align='center' valign='middle'><t color='#0000ff'>YOU</t>  -  <t color='#ff0000'>FOE</t></t>"; //--- ToDo: Localize;
 			x = 0.306046 * safezoneW + safezoneX;
 			y = 0.876157 * safezoneH + safezoneY;
 			w = 0.101385 * safezoneW;
@@ -1773,7 +1773,7 @@ class killcam_info {
 		class weapon_name: RscStructuredText
 		{
 			idc = 1103;
-			text = "<t size='1.25' shadow=2 font='PuristaMedium' align='center' valign='center'>SUPER POWER WEAPON</t>"; //--- ToDo: Localize;
+			text = "<t size='1.25' shadow=2 font='PuristaMedium' align='center' valign='middle'>SUPER POWER WEAPON</t>"; //--- ToDo: Localize;
 			x = 0.473552 * safezoneW + safezoneX;
 			y = 0.878038 * safezoneH + safezoneY;
 			w = 0.167505 * safezoneW;
@@ -1784,7 +1784,7 @@ class killcam_info {
 		class killer_class: RscStructuredText
 		{
 			idc = 1104;
-			text = "<t size='1.25' shadow=2 font='PuristaMedium' align='center' valign='center'>ENGINEER</t>"; //--- ToDo: Localize;
+			text = "<t size='1.25' shadow=2 font='PuristaMedium' align='center' valign='middle'>ENGINEER</t>"; //--- ToDo: Localize;
 			x = 0.645465 * safezoneW + safezoneX;
 			y = 0.878038 * safezoneH + safezoneY;
 			w = 0.110201 * safezoneW;
@@ -1795,7 +1795,7 @@ class killcam_info {
 		class victim_score: RscStructuredText
 		{
 			idc = 1105;
-			text = "<t size='1.5' shadow=2 font='PuristaBold' align='right' valign='center'>0</t>"; //--- ToDo: Localize;
+			text = "<t size='1.5' shadow=2 font='PuristaBold' align='right' valign='middle'>0</t>"; //--- ToDo: Localize;
 			x = 0.239044 * safezoneW + safezoneX;
 			y = 0.876157 * safezoneH + safezoneY;
 			w = 0.0793447 * safezoneW;
@@ -1806,7 +1806,7 @@ class killcam_info {
 		class killer_score: RscStructuredText
 		{
 			idc = 1106;
-			text = "<t size='1.5' shadow=2 font='PuristaBold' align='left' valign='center'>0</t>"; //--- ToDo: Localize;
+			text = "<t size='1.5' shadow=2 font='PuristaBold' align='left' valign='middle'>0</t>"; //--- ToDo: Localize;
 			x = 0.39597 * safezoneW + safezoneX;
 			y = 0.876157 * safezoneH + safezoneY;
 			w = 0.0793447 * safezoneW;

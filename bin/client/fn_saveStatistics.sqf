@@ -7,9 +7,11 @@ scriptName "fn_saveStatistics";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_saveStatistics.sqf"
+#include "..\utils.h"
 
 if (isServer && !hasInterface) exitWith {};
-if (isNil "cl_init_done" || isNil "cl_currentRecord" || !cl_init_done) exitWith {};
+EXIT_IF_NOT(cl_init_done);
+if (isNil "cl_currentRecord") exitWith {};
 
 // SAVE!!
 with missionNamespace do {

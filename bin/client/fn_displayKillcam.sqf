@@ -48,17 +48,17 @@ private _killerClass = _killer getVariable ["class", "assault"];
 
 private _display = uiNamespace getVariable ["killcam_info", displayNull];
 (_display displayCtrl 1100) ctrlSetStructuredText parseText(
-  format["<t size='1.25' shadow=2 font='PuristaBold' valign='center'>%1</t>", toUpper(_killerName)]);
+  format["<t size='1.25' shadow=2 font='PuristaBold' valign='middle'>%1</t>", toUpper(_killerName)]);
 (_display displayCtrl 1102) ctrlSetStructuredText parseText(
-  format["<t size='3' shadow=2 font='PuristaBold' align='center' valign='center'>%1</t>", ceil(_health * 100)]);
+  format["<t size='3' shadow=2 font='PuristaBold' align='center' valign='middle'>%1</t>", ceil(_health * 100)]);
 (_display displayCtrl 1103) ctrlSetStructuredText parseText(
-  format["<t size='1.25' shadow=2 font='PuristaMedium' align='center' valign='center'>%1</t>", toUpper([_killerWeapon select 1, MAX_NAME_LEN] call _fnc_trimString)]);
+  format["<t size='1.25' shadow=2 font='PuristaMedium' align='center' valign='middle'>%1</t>", toUpper([_killerWeapon select 1, MAX_NAME_LEN] call _fnc_trimString)]);
 (_display displayCtrl 1104) ctrlSetStructuredText parseText(
-  format["<t size='1.25' shadow=2 font='PuristaMedium' align='center' valign='center'>%1</t>", toUpper(_killerClass)]);
+  format["<t size='1.25' shadow=2 font='PuristaMedium' align='center' valign='middle'>%1</t>", toUpper(_killerClass)]);
 (_display displayCtrl 1105) ctrlSetStructuredText parseText(
-  format["<t size='1.5' shadow=2 font='PuristaBold' align='right' valign='center'>%1</t>", _score]);
+  format["<t size='1.5' shadow=2 font='PuristaBold' align='right' valign='middle'>%1</t>", _score]);
 (_display displayCtrl 1106) ctrlSetStructuredText parseText(
-  format["<t size='1.5' shadow=2 font='PuristaBold' align='left' valign='center'>%1</t>", _foe_score]);
+  format["<t size='1.5' shadow=2 font='PuristaBold' align='left' valign='middle'>%1</t>", _foe_score]);
 (_display displayCtrl 1200) ctrlSetText ([_killer] call _fnc_getFactionTexture);
 (_display displayCtrl 1201) ctrlSetText (_killerWeapon select 2);
 (_display displayCtrl 1202) ctrlSetText ([_killer] call _fnc_getIcon);

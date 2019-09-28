@@ -9,7 +9,8 @@ scriptName "onPlayerRespawn";
 --------------------------------------------------------------------*/
 #define __filename "onPlayerRespawn.sqf"
 
-if (!isNil "sv_gameStatus" && !isNil "cl_revived" && !isNil "cl_init_done" && {cl_init_done}) then {
+WAIT_IF_NOT(cl_init_done);
+if (!isNil "sv_gameStatus" && !isNil "cl_revived") then {
 	if (sv_gameStatus == 2 && !cl_revived) then {
 		["Player respawned"] spawn server_fnc_log;
 		[format["sv_gameStatus %1 cl_revived %2", sv_gameStatus, cl_revived]] spawn server_fnc_log;
