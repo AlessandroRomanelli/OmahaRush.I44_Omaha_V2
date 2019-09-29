@@ -20,6 +20,7 @@ private _event = addMissionEventHandler["EachFrame", {
 
   if (visibleMap) exitWith {};
   private _side = player getVariable ["gameSide", "defenders"];
+  private _isAttacking = _side isEqualTo "attackers";
   private _HQPos = getArray(missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> (sv_cur_obj getVariable ["cur_stage", "Stage1"]) >> "Spawns" >> _side >> "HQSpawn" >> "positionATL");
   private _vehiclePlayer = vehicle player;
   private _posPlayer = getPosATL player;
@@ -155,10 +156,14 @@ private _event = addMissionEventHandler["EachFrame", {
 		[
 			["defender.paa", "defender_armed.paa"],
 			["attacker.paa", "attacker_armed.paa"]
-		] select (_side isEqualTo "attackers")) select (_objStatus isEqualTo 1))
+		] select (_isAttacking)) select (_objStatus == 1))
 	);
-  private _text = format["%1 (%2m)", ["Defuse", "Defend"] select (_side isEqualTo "attackers"), round(_origin distance sv_cur_obj)];
-  drawIcon3D [_icon, [1,1,1,_alpha],_pos,1.5,1.5,0,_text,2,0.04, "PuristaLight", "center", true];
+	private _text = format["%1 (%2m)",
+		([
+			["Defend", "Defuse"],
+			["Attack", "Protect"]
+		] select (_isAttacking)) select (_objStatus == 1), round(_origin distance sv_cur_obj)];
+	drawIcon3D [_icon, [1,1,1,_alpha],_pos,1.5,1.5,0,_text,2,0.04, "PuristaLight", "center", false];
 
   private _ammoBoxes = (_posPlayer) nearObjects ["LIB_AmmoCrates_NoInteractive_Large", 7];
   {
@@ -213,7 +218,8 @@ private _event = addMissionEventHandler["EachFrame", {
   if (cl_class == "medic") then {
     {
       private _pos = (getPosATLVisual _x) vectorAdd [0,0,0.1];
-      drawIcon3D [WWRUSH_ROOT+"pictures\revive.paa", [1,1,1,0.8], _pos, 1.5, 1.5, 0, "", 2, 0.035, "PuristaMedium", "center", false];
+	  private _alpha = (player distance _x) / 50;
+      drawIcon3D [WWRUSH_ROOT+"pictures\revive.paa", [1,1,1,1 - _alpha], _pos, 1.35, 1.35, 0, "", 2, 0.035, "PuristaMedium", "center", false];
     } forEach cl_onEachFrame_team_reviveable;
   };
 
