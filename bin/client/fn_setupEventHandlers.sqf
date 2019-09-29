@@ -447,6 +447,7 @@ cl_get_in_man_eh = player addEventHandler ["GetInMan", {
 			[_vehicle] spawn {
 				private _vehicle = param[0, objNull, [objNull]];
 				private _fuelTime = getNumber(missionConfigFile >> "Vehicles" >> "Plane" >> "fuelTime");
+				if (_fuelTime == 0) exitWith {};
 				uiSleep (_fuelTime - 10);
 				private _timeLeft = diag_tickTime + 10;
 				while {_timeLeft > diag_tickTime && ((vehicle player) isEqualTo _vehicle)} do {
@@ -510,13 +511,13 @@ cl_get_in_man_eh = player addEventHandler ["GetInMan", {
 			};
 			[100, true, "VEHICLE"] remoteExec ["client_fnc_vehicleDisabled", _killer];
 		};
- }];
+	}];
 
 	// Always make sure we have an hit eventhandler
 	_vehicle removeAllEventHandlers "HandleDamage";
 	_vehicle addEventHandler ["HandleDamage", {
 		params ["_vehicle", "_hitSelection", "_damage", "_shooter", "_projectile"];
-  	private _rockets = ["LIB_60mm_M6", "LIB_R_88mm_RPzB", "LIB_1Rnd_89m_PIAT"];
+		private _rockets = ["LIB_60mm_M6", "LIB_R_88mm_RPzB", "LIB_1Rnd_89m_PIAT"];
 		if (_projectile in _rockets) then {
 			_damage = damage _vehicle + (_damage*2);
 		};
@@ -548,6 +549,10 @@ cl_get_in_man_eh = player addEventHandler ["GetInMan", {
 			};
 		};
 	}];
+
+	if (count fullCrew [_vehicle, "", true] > 1) then {
+		["Seat Switching", "<b>Did you know?</b><br/>You can use the function keys to change seats faster: use F1, F2, F3... to switch to a different position."] spawn client_fnc_hint;
+	};
 }];
 
 REMOVE_EXISTING_PEH("GetOutMan", cl_get_out_man);
@@ -563,7 +568,7 @@ cl_get_out_man = player addEventHandler ["GetOutMan", {
 	};
 	if ((_vehicle isKindOf "Air") && (_pos select 2 > 5)) then {
 		private _velPlayer = (velocity player) vectorMultiply 0.1;
-		player setVelocity _velPlayer;
+		player setVelocity (_velPlayer);
 		if (player getVariable ["hasChute", true]) then {
 			["PRESS <t size='1.5'>[SPACE BAR]</t> TO OPEN YOUR PARACHUTE!"] call client_fnc_displayInfo;
 		};

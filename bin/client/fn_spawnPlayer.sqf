@@ -66,6 +66,7 @@ cl_spawn_succ = {
 	// GPS
 	showGPS false;
 	player setVariable ["isAlive", true];
+	player setVariable ["hasChute", true];
 	// Spawn protection
 	[] spawn {
 		uiSleep 0.5;
