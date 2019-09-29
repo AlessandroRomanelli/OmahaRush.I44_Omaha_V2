@@ -17,9 +17,21 @@ private _sideLoadout = [] call client_fnc_getCurrentSideLoadout;
 private ["_uniforms", "_goggles", "_vests", "_headgears", "_backpacks"];
 if (cl_class isEqualTo "medic") then {
 	_uniforms = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "medics" >> "uniforms"));
+	if (count _uniforms == 0) then {
+		_uniforms = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "uniforms"));
+	};
 	_vests = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "medics" >> "vests"));
+	if (count _vests == 0) then {
+		_vests		 = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "vests"));
+	};
 	_headgears = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "medics" >> "headgears"));
+	if (count _headgears == 0) then {
+		_headgears = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "headgears"));
+	};
 	_backpacks = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "medics" >> "backpacks"));
+	if (count _backpacks == 0) then {
+		_backpacks = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "backpacks"));
+	};
 } else {
 	_uniforms = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "uniforms"));
 	_vests		 = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "vests"));
