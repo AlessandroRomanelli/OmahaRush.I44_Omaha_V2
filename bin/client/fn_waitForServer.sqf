@@ -13,6 +13,8 @@ scriptName "fn_waitForServer";
 #define HEX_YELLOW "#FFFF00"
 #define HEX_RED "#FF0000"
 
+#define KEY_SPACE 57
+
 if (isServer && !hasInterface) exitWith {};
 
 player setVariable ["playerInitOK", true, true];
@@ -47,9 +49,24 @@ cl_waitingThread = addMissionEventHandler["EachFrame", {
   _required ctrlSetStructuredText (parseText (format ["REQUIRED: <t color='%2'>%1</t>", sv_setting_MinPlayers, [HEX_RED, HEX_GREEN] select _enoughPlayers]));
 }];
 
-if !([player] call admin_fnc_isAdmin) then {
-	waitUntil{sv_gameStatus isEqualTo 2};
+if (!isNil "cl_admin_key_h") then {
+	(findDisplay 46) displayRemoveEventHandler ["KeyDown", cl_admin_key_h];
 };
+cl_admin_key_h = (findDisplay 46) displayAddEventHandler ["KeyDown", {
+	private _DIKcode = _this select 1;
+	private _h = false;
+	if (_DIKcode == KEY_ESC) then {
+		[] call client_fnc_displayAdminArea;
+		_h = true;
+	};
+	_h
+}];
+
+waitUntil{sv_gameStatus isEqualTo 2};
+
+(findDisplay 46) displayRemoveEventHandler ["KeyDown", cl_admin_key_h];
+cl_admin_key_h = nil;
+
 removeMissionEventHandler ["EachFrame", cl_waitingThread];
 
 cl_waitingThread = nil;
