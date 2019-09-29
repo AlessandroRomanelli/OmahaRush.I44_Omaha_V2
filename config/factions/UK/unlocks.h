@@ -59,7 +59,7 @@ class LIB_M1919A4 {
   exp = 7500;
   type = "primary";
   roles[] = {"support"};
-  damageMultiplier = 0.5;
+  damageMultiplier = 0.75;
   class attachments {};
 };
 
@@ -68,7 +68,7 @@ class LIB_M1919A6 {
   exp = 12500;
   type = "primary";
   roles[] = {"support"};
-  damageMultiplier = 0.5;
+  damageMultiplier = 0.75;
   class attachments {};
 };
 
@@ -77,7 +77,7 @@ class LIB_Sten_Mk2 {
   exp = 0;
   type = "primary";
   roles[] = {"engineer"};
-  damageMultiplier = 1;
+  damageMultiplier = 1.5;
   class attachments {};
 };
 
@@ -86,7 +86,7 @@ class LIB_Sten_Mk5 {
   exp = 10000;
   type = "primary";
   roles[] = {"engineer"};
-  damageMultiplier = 1;
+  damageMultiplier = 1.5;
   class attachments {};
 };
 
@@ -95,7 +95,7 @@ class LIB_M1A1_Thompson {
   exp = 10000;
   type = "primary";
   roles[] = {"engineer"};
-  damageMultiplier = 1;
+  damageMultiplier = 1.5;
   class attachments {};
 };
 
@@ -104,7 +104,7 @@ class LIB_M1928_Thompson {
   exp = 12500;
   type = "primary";
   roles[] = {"engineer"};
-  damageMultiplier = 1;
+  damageMultiplier = 1.5;
   class attachments {};
 };
 
