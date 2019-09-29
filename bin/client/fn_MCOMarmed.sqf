@@ -12,7 +12,9 @@ scriptName "fn_MCOMarmed";
 // Planter
 private _planter = param[0,objNull,[objNull]];
 
-WAIT_IF_NOT(cl_init_done);
+if (!isServer) then {
+	WAIT_IF_NOT(cl_init_done);
+};
 
 // Display warning
 ["EXPLOSIVES HAVE BEEN SET"] call client_fnc_displayObjectiveMessage;
