@@ -47,7 +47,9 @@ cl_waitingThread = addMissionEventHandler["EachFrame", {
   _required ctrlSetStructuredText (parseText (format ["REQUIRED: <t color='%2'>%1</t>", sv_setting_MinPlayers, [HEX_RED, HEX_GREEN] select _enoughPlayers]));
 }];
 
-waitUntil{sv_gameStatus isEqualTo 2};
+if !([player] call admin_fnc_isAdmin) then {
+	waitUntil{sv_gameStatus isEqualTo 2};
+};
 removeMissionEventHandler ["EachFrame", cl_waitingThread];
 
 cl_waitingThread = nil;
