@@ -21,6 +21,7 @@ waitUntil {(!isNull (findDisplay 46)) AND (isNull (findDisplay 101)) AND (!isNul
 // Disable saving
 enableSaving [false, false];
 enableRadio false;
+enableSentences false;
 
 // Wait for the server to be ready
 VARIABLE_DEFAULT(sv_serverReady,false);
