@@ -23,8 +23,9 @@ class CfgRemoteExec {
 
     class Commands
     {
-        mode = 1;
-        class setFuel {allowedTargets = 0;};
+        mode = 2;
+//        class setFuel {allowedTargets = 0;};
+//        class say3d {allowedTargets = 0;};
     };
 };
 

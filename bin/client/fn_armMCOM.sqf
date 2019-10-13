@@ -20,6 +20,7 @@ sv_cur_obj setVariable ["status", 1, true];
 [225] call client_fnc_addPoints;
 
 // Inform server that the mcom has been planted
-[player] remoteExec ["client_fnc_MCOMarmed", 0];
+[player] remoteExec ["client_fnc_MCOMarmed", -2];
+[player] remoteExec ["server_fnc_MCOMarmed", 2];
 
 true

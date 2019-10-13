@@ -21,6 +21,7 @@ waitUntil {(!isNull (findDisplay 46)) AND (isNull (findDisplay 101)) AND (!isNul
 // Disable saving
 enableSaving [false, false];
 enableRadio false;
+enableSentences false;
 
 {
 	_x setSpeaker "NoVoice";

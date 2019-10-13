@@ -160,6 +160,7 @@ class Maverick_Functions_Server {
 		class selectNextMap {};
 		class setParams {};
 		class initParams {};
+		class MCOMarmed {};
 
 
 		// Database
