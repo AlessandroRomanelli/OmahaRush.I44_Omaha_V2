@@ -112,7 +112,6 @@ private _assignVariables = {
   };
   cl_equipConfigurations = _record select 3;
   cl_equipClassnames = _record select 4;
-  cl_statisticsLoaded = true;
   true
 };
 

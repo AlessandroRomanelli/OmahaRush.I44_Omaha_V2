@@ -22,10 +22,16 @@ waitUntil {(!isNull (findDisplay 46)) AND (isNull (findDisplay 101)) AND (!isNul
 enableSaving [false, false];
 enableRadio false;
 
+{
+	_x setSpeaker "NoVoice";
+}	forEach allPlayers;
+
+player enableSimulation false;
+
 // Wait for the server to be ready
 VARIABLE_DEFAULT(sv_serverReady,false);
 
-waitUntil {sv_serverReady && !isNil "sv_usingDatabase"};
+waitUntil {sv_serverReady};
 
 
 [] call client_fnc_initGlobalVars;
@@ -49,9 +55,7 @@ player setVariable ["gameSide", (
 	] select (sv_gameCycle % 2 == 0)
 ) select (side player == WEST), true];
 
-cl_statisticsLoaded = false;
 [] call client_fnc_loadStatistics;
-waitUntil {cl_statisticsLoaded};
 
 // Get initial spawn position to teleport the player to (e.g. in spawn menu)
 cl_safePos = getPos player;
@@ -68,10 +72,10 @@ cl_viewDistance = viewDistance;
 
 
 // Do all the cool stuff!
-[] call client_fnc_resetVariables;
+[] spawn client_fnc_resetVariables;
 
 // Give onEachFrame data
-[] call client_fnc_onEachFramePreparation;
+[] spawn client_fnc_onEachFramePreparation;
 
 // Init group client
 ["InitializePlayer", [player]] call BIS_fnc_dynamicGroups;
