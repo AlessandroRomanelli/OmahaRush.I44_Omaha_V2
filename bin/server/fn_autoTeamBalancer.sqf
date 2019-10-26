@@ -41,7 +41,7 @@ while {sv_gameStatus == 2} do {
 			} else {
 				format["TEAM BALANCE: players will be moved in 60 seconds if there are more than %1 attackers than defenders", sv_setting_AutoTeamBalanceAtDifference]
 			};
-			[_message] remoteExec ["client_fnc_displayError", 1];
+			[_message] remoteExec ["client_fnc_displayError", -2];
 			[format["Players have been warned about team difference: %1", _diff]] call server_fnc_log;
 		} else {
 			private _toMove = ceil(_diff / 2);

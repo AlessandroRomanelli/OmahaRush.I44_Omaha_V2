@@ -11,7 +11,7 @@ scriptName "fn_switchPlayer";
 if (isNil "cl_admin_player_sel") exitWith {};
 
 private _oldSide = cl_admin_player_sel getVariable ["gameSide", ""];
-[] remoteExecCall ["client_fnc_teamBalanceKick", cl_admin_player_sel];
+[] remoteExec ["client_fnc_teamBalanceKick", cl_admin_player_sel];
 
 waitUntil{(cl_admin_player_sel getVariable ["gameSide", ""]) != _oldSide};
 
