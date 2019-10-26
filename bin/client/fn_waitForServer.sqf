@@ -18,7 +18,6 @@ scriptName "fn_waitForServer";
 if (isServer && !hasInterface) exitWith {};
 
 player setVariable ["playerInitOK", true, true];
-player enableSimulation false;
 // Apparently the server isnt done selecting a map yet
 60000 cutRsc ["waitingForPlayers", "PLAIN"];
 
@@ -71,7 +70,6 @@ removeMissionEventHandler ["EachFrame", cl_waitingThread];
 
 cl_waitingThread = nil;
 
-player enableSimulation true;
 // Cycle..
 60000 cutText ["", "PLAIN"];
 

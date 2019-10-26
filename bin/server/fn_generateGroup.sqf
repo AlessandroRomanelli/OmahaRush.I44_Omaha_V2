@@ -1,12 +1,12 @@
-scriptName "fn_generateGroupName";
+scriptName "fn_generateGroup";
 /*--------------------------------------------------------------------
 	Author: A. Roman
-    File: fn_generateGroupName.sqf
+    File: fn_generateGroup.sqf
 
     Written by A.Roman
   	You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
-#define __filename "fn_generateGroupName.sqf"
+#define __filename "fn_generateGroup.sqf"
 #include "..\utils.h"
 
 params [["_group", grpNull],["_player", objNull],["_faction", "US"]];

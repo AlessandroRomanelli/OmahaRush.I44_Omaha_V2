@@ -23,21 +23,21 @@ if (player getVariable ["isAlive", true]) then {
   _error = "CANNOT SWITCH SIDES WHEN DEPLOYED";
 };
 
-VARIABLE_DEFAULT(cl_forceSwitch, false);
-if (_error != "" && !cl_forceSwitch) exitWith {
-  [_error] call client_fnc_displayError;
-};
-
 private _def = WEST countSide allPlayers;
 private _atk = EAST countSide allPlayers;
 
 private _sideLessUnits = [EAST, WEST] select (_def <= _atk);
 
-if ((player getVariable ["side", sideUnknown]) == _sideLessUnits) exitWith {
-  ["CANNOT SWITCH TO THE BIGGER SIDE"] call client_fnc_displayError;
+if ((player getVariable ["side", sideUnknown]) == _sideLessUnits) then {
+  _error = "CANNOT SWITCH TO THE BIGGER SIDE";
 };
 
-private _oldSide = player getVariable ["side", sideUnknown];
+VARIABLE_DEFAULT(cl_forceSwitch, false);
+if (_error != "" && !cl_forceSwitch) exitWith {
+  [_error] call client_fnc_displayError;
+};
+
+private _oldSide = player getVariable ["side", side player];
 
 [player] join (createGroup _sideLessUnits);
 [player] join grpNull;

@@ -12,9 +12,9 @@ scriptName "fn_autoTeamBalancer";
 
 private _getUnitsThatLastJoined = {
 	params [["_side",sideUnknown,[sideUnknown]], ["_amount", 0, [0]]];
-	private _sidePlayers = (allPlayers select {side _x == _side}) apply {[_x getVariable ["joinServerTime",0], _x]};
+	private _sidePlayers = (allPlayers select {side _x == _side}) apply {[_x getVariable ["joinServerTime", diag_tickTime], _x]};
 	_sidePlayers sort false;
-	(_sidePlayers select [0,_amount]) apply {_x select 1};
+	(_sidePlayers select [0,_amount]) apply {_x select 1}
 };
 
 sv_autoTeamBalancerWarning = false;
@@ -24,23 +24,27 @@ VARIABLE_DEFAULT(sv_setting_AutoTeamBalanceAtDifference, 3);
 while {sv_gameStatus == 2} do {
 	uiSleep 60;
 
-	private _attackersSide = [WEST, EAST] select (sv_gameCycle % 2 == 0);
-	private _defendersSide = [EAST, WEST] select (sv_gameCycle % 2 == 0);
 	// Run side checks
-	private _attackers = _attackersSide countSide allPlayers;
-	private _defenders = _defendersSide countSide allPlayers;
+	private _attackers = EAST countSide allPlayers;
+	private _defenders = WEST countSide allPlayers;
 
-	private _diff = _attackers - _defenders;
-	private _maxDiff = sv_setting_AutoTeamBalanceAtDifference;
-	private _sideWithMoreUnits = if (_attackers >= _defenders) then {_attackersSide} else {_defendersSide};
+	private _sideWithMoreUnits = if (_attackers <= _defenders) then {WEST} else {EAST};
+	private _maxDiff = if (_sideWithMoreUnits == WEST) then {0} else {sv_setting_AutoTeamBalanceAtDifference};
 
-	if (_diff < 0 || _diff > _maxDiff) then {
+	private _diff = abs(_attackers - _defenders);
+
+	if (_diff > _maxDiff) then {
 		if (!sv_autoTeamBalancerWarning) then {
 			sv_autoTeamBalancerWarning = true;
-			["Auto team balance will commence in 60 seconds if teams stay unbalanced"] remoteExec ["client_fnc_displayError", 0];
+			private _message = if (_sideWithMoreUnits == WEST) then {
+				"TEAM BALANCE: players will be moved in 60 seconds if there will be more defenders than attackers"
+			} else {
+				format["TEAM BALANCE: players will be moved in 60 seconds if there are more than %1 attackers than defenders", sv_setting_AutoTeamBalanceAtDifference]
+			};
+			[_message] remoteExec ["client_fnc_displayError", 1];
 			[format["Players have been warned about team difference: %1", _diff]] call server_fnc_log;
 		} else {
-			private _toMove = floor(_diff / 2);
+			private _toMove = ceil(_diff / 2);
 			for "_i" from 1 to _toMove step 1 do {
 				private _units = [_sideWithMoreUnits, _toMove] call _getUnitsThatLastJoined;
 				[format["Players %1 have been switched due to team balance", _units apply {_x getVariable ["name", name _x]}]] call server_fnc_log;

@@ -24,12 +24,14 @@ _unit setVariable ["joinServerTime", diag_tickTime];
 
 MUTEX_INIT(sv_groups_lock);
 MUTEX_LOCK(sv_groups_lock);
+diag_log ("Acquiring lock in " +__filename);
 
-private _def = WEST countSide allPlayers;
-private _atk = EAST countSide allPlayers;
+VARIABLE_DEFAULT(sv_groups_counter, 0);
+private _sideToJoin = [EAST, WEST] select (sv_groups_counter % 2);
+sv_groups_counter = (sv_groups_counter + 1) % 2;
+private _group = [sv_east_group, sv_west_group] select (_sideToJoin == WEST);
 
-private _sideLessUnits = [sv_east_group, sv_west_group] select (_def <= _atk);
-
-[_unit] join _sideLessUnits;
+[_unit] join _group;
 
 MUTEX_UNLOCK(sv_groups_lock);
+diag_log ("Releasing lock in " +__filename);

@@ -10,19 +10,17 @@ scriptName "fn_teamBalanceKick";
 if (isServer && !hasInterface) exitWith {};
 
 
-[] spawn {
-	if (player getVariable ["isAlive", false] && !cl_inSpawnMenu) then {
-		["TEAMBALANCE - YOU ARE ABOUT TO BE MOVED"] call client_fnc_displayError;
+if (player getVariable ["isAlive", false] && !cl_inSpawnMenu) then {
+	["TEAMBALANCE - YOU ARE ABOUT TO BE MOVED"] call client_fnc_displayError;
 
-		uiSleep 3;
+	uiSleep 5;
 
-		cl_forceSwitch = true;
-		player setVariable ["isAlive", false];
-		forceRespawn player;
-	} else {
-		["TEAMBALANCE - YOU ARE BEING MOVED"] call client_fnc_displayError;
-		cl_forceSwitch = true;
-	};
-	waitUntil{alive player && side player != civilian};
-	[] call client_fnc_sideSwitch;
+	cl_forceSwitch = true;
+	player setVariable ["isAlive", false];
+	forceRespawn player;
+} else {
+	["TEAMBALANCE - YOU ARE BEING MOVED"] call client_fnc_displayError;
+	cl_forceSwitch = true;
 };
+waitUntil{alive player && side player != civilian};
+[] call client_fnc_sideSwitch;

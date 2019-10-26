@@ -63,6 +63,10 @@ cl_spawn_succ = {
 		cl_adsDisplay = [] spawn client_fnc_displayAds;
 	};
 
+	player enableSimulation true;
+	player allowDamage true;
+
+
 	// GPS
 	showGPS false;
 	player setVariable ["isAlive", true];
