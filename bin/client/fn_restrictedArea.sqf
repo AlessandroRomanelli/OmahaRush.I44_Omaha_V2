@@ -16,6 +16,8 @@ private _isFallingBack = player getVariable ["isFallingBack", false];
 VARIABLE_DEFAULT(sv_setting_OutOfBoundsTime,20);
 private _OOBTimeout = [sv_setting_OutOfBoundsTime, [] call client_fnc_getFallbackTime] select _isFallingBack;
 
+[playArea] call client_fnc_updateRestrictions;
+
 "ColorCorrections" ppEffectEnable true;
 "ColorCorrections" ppEffectAdjust [1,1,0,[0,0,0,0.5],[1,1,1,0],[0.299,0.587,0.114,0]];
 "ColorCorrections" ppEffectCommit 1;

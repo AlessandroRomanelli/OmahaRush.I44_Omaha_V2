@@ -421,22 +421,3 @@ player setSpeaker "NoVoice";
 if (isNil "unitMarkers_running") then {
 	[] spawn client_fnc_drawMapUnits;
 };
-
-private _registeredGroups = ["GetAllGroupsOfSide", [(player getVariable ["side", sideUnknown])]] call BIS_fnc_dynamicGroups;
-if !((group player) in _registeredGroups) then {
-	private _joined = false;
-	{
-		if !(_x getVariable ["bis_dg_pri", false]) then {
-			private _members = count units _x;
-			if ((_members > 0) && (_members < 5)) exitWith {
-				["AddGroupMember", [_x, player]] remoteExec ["BIS_fnc_dynamicGroups", 2];
-				_joined = true;
-			};
-		};
-	} forEach _registeredGroups;
-	if (!_joined) then {
-		// ["RegisterGroup", [(group player), player]] remoteExec ["BIS_fnc_dynamicGroups", 2];
-		private _faction = getText(missionconfigfile >> "Soldiers" >> (player getVariable ["gameSide", "attackers"]) >> "faction");
-		[group player, player, _faction] remoteExec ["server_fnc_generateGroup", 2];
-	};
-};
