@@ -249,7 +249,8 @@ cl_killed_eh = player addEventHandler ["Killed", {
 	private _victim = _this select 0;
 	private _lastDeath = _victim getVariable ["lastDeath", 0];
 
-	if (cl_inSpawnMenu || missionNamespace getVariable ["cl_forceSwitch", false]) exitWith {
+	VARIABLE_DEFAULT(cl_forceSwitch, false);
+	if (cl_inSpawnMenu || cl_forceSwitch) exitWith {
 		setPlayerRespawnTime 0;
 	};
  	//Avoiding more than one time each 1/10 of a second

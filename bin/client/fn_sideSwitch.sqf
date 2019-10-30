@@ -38,8 +38,9 @@ if (_error != "" && !cl_forceSwitch) exitWith {
 };
 
 private _oldSide = player getVariable ["side", side player];
+private _newSide = [EAST, WEST] select (_oldSide == EAST);
 
-[player] join (createGroup _sideLessUnits);
+[player] join (createGroup _newSide);
 [player] join grpNull;
 
 waitUntil {side player != civilian && {side player != _oldSide}};
@@ -58,8 +59,6 @@ player setVariable ["gameSide", (
 [] call client_fnc_loadStatistics;
 
 cl_lastSwitched = diag_tickTime;
-
-
 cl_forceSwitch = false;
 
 [] spawn client_fnc_spawn;

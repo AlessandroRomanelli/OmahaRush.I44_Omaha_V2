@@ -25,6 +25,7 @@ enableSentences false;
 
 {
 	_x setSpeaker "NoVoice";
+	_x disableAI "RADIOPROTOCOL";
 }	forEach allPlayers;
 
 player enableSimulation false;

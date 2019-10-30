@@ -48,6 +48,7 @@ cl_assistsInfo = [];
 60001 cutRsc ["default", "PLAIN"];
 
 400 cutRsc ["rr_objective_gui","PLAIN"];
+300 cutFadeOut 0;
 // Setup the objective icon at the top
 disableSerialization;
 private _d = uiNamespace getVariable ["rr_objective_gui", displayNull];

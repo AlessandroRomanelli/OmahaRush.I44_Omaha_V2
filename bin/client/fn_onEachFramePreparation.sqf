@@ -28,7 +28,7 @@ cl_onEachFramePreparationID = addMissionEventHandler["EachFrame", {
 	// Fill with data
 	{
 		private _name = (_x getVariable ["name", name _x]);
-		if (isNull _x && {_x != player}) then {
+		if (!isNull _x && {_x != player}) then {
 			if (side (group _x) == side (group player)) then {
 				if ((group _x) == (group player)) then {
 					// Does this unit provide a beacon
