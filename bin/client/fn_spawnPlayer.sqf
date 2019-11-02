@@ -21,7 +21,7 @@ if !((cl_equipClassnames select 0) in cl_equipConfigurations) exitWith {
 VARIABLE_DEFAULT(sv_setting_RoundTime, 15);
 private _matchTime = sv_setting_RoundTime*60;
 if (sv_matchTime > _matchTime && (player getVariable ["gameSide", "attackers"]) isEqualTo "attackers") exitWith {
-	[format["YOU ARE NOT ALLOWED TO SPAWN JUST YET! %1S LEFT"], sv_matchTime - _matchTime] call client_fnc_displayError;
+	[format["YOU ARE NOT ALLOWED TO SPAWN JUST YET! %1S LEFT", sv_matchTime - _matchTime]] call client_fnc_displayError;
 };
 
 disableSerialization;

@@ -39,7 +39,7 @@ if (player getVariable ["gameSide", "defenders"] == "defenders") exitWith {
 VARIABLE_DEFAULT(sv_setting_RoundTime, 15);
 private _matchTime = sv_setting_RoundTime*60;
 if (sv_matchTime > _matchTime) then {
-	(_d displayCtrl 304) ctrlSetStructuredText parseText format ["<t size='1' color='#FD1A07' shadow='2' align='right' font='PuristaBold'>%1s</t>", round (sv_matchTime - _matchTime)];
+	(_d displayCtrl 304) ctrlSetStructuredText parseText format ["<t size='1' color='#FD1A07' shadow='2' align='right' font='PuristaBold'>%1s</t>", sv_matchTime - _matchTime];
 	if (ctrlEnabled _deployBtn) then {
 		_deployBtn ctrlEnable false;
 		_deployBtn ctrlSetBackgroundColor _disabledBackgroundColor;

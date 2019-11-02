@@ -27,7 +27,6 @@ if (sv_setting_MapWeather == 0) then {
 [] spawn server_fnc_scriptMonitoring;
 
 // Initial start, make sure units requesting time will also not be able to spawn for a certain amount of seconds
-/* sv_fallBack_timeLeft = diag_tickTime + _fallBackTime; */
 
 REMOVE_EXISTING_MEH("EachFrame", sv_eventObserverID);
 sv_obj_status = -1;
