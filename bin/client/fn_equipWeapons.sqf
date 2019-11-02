@@ -34,32 +34,38 @@ private _isBeingRevived = param[0,false,[false]];
 
 private _side = player getVariable "gameSide";
 private _sideLoadout = [] call client_fnc_getCurrentSideLoadout;
+private _str = "1";
 
 // Smoke grenades to those who have the class perk
 if ((cl_classPerk isEqualTo "smoke_grenades") && (!_isBeingRevived)) then {
+	_str = _str + "2";
 	for "_i" from 1 to 2 do {player addItem "SmokeShell"};
 };
-
 // Engineer
 if (cl_class isEqualTo "engineer") then {
+	_str = _str + "3";
 	// Demo Engineer Loadout
 	if (cl_classPerk isEqualTo "demolition") then {
+		_str = _str + "4";
 		private _backpack = getText(missionConfigFile >> "Soldiers" >> _side >> "ExplosiveCharge" >> "backpack");
 		private _explCharge = getText(missionConfigFile >> "Soldiers" >> _side >> "ExplosiveCharge" >> "weapon");
 		// Give a bigger backpack
 		if !(_backpack isEqualTo "") then {
+			_str = _str + "5";
 			removeBackpackGlobal player;
 			player addBackpack _backpack;
 		};
 		// Give him his explosives charges
 		private _count = if ("expl" in cl_squadPerks) then {2} else {1};
 		if (!_isBeingRevived) then {
+			_str = _str + "6";
 			for "_i" from 1 to _count do {player addItemToBackpack _explCharge};
 		};
 	};
 
 	// AT Engineer loadout
-	if ((cl_classPerk isEqualTo "perkAT")) then {
+	if (cl_classPerk isEqualTo "perkAT") then {
+		_str = _str + "7";
 		// Fetch the launcher data
 		private _cfgLauncher = (missionConfigFile >> "Soldiers" >> _side >> "Launcher");
 		private _backpack = getText(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "ATbackpack");
@@ -72,14 +78,18 @@ if (cl_class isEqualTo "engineer") then {
 		{player removeItemFromBackpack _x} forEach (backpackItems player);
 		// Give him 1 rounds first, the weapon and then the rest of the rounds (so that it doesn't have to reload it)
 		if (!_isBeingRevived) then {
+			_str = _str + "8";
 			player addMagazine _ammoName;
 		};
 		player addWeapon _launcher;
 		if (("expl" in cl_squadPerks) && (!_isBeingRevived)) then {
+			_str = _str + "9";
 			for "_i" from 2 to _ammoCount do {player addMagazine _ammoName};
 		};
 	};
 };
+
+systemChat _str;
 
 if (_primary != "") then {
 	// Primary
@@ -129,7 +139,7 @@ if (_secondary != "") then {
 		};
 	};
 	// Give weapon
-	player removeWeapon (secondaryWeapon player);
+	player removeWeapon (handgunWeapon player);
 	player addWeapon _secondary;
 };
 

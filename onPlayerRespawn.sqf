@@ -25,6 +25,7 @@ setPlayerRespawnTime 15;
 player enableStamina false;
 player forceWalk false;
 
+VARIABLE_DEFAULT(cl_forceSwitch, false);
 if (cl_forceSwitch) exitWith {};
 
 [] spawn client_fnc_spawn;

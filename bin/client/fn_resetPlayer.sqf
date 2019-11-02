@@ -108,9 +108,8 @@ player setVariable ["gameSide", (
   ] select (sv_gameCycle % 2 == 0)
 ) select (side player == WEST), true];
 
-cl_statisticsLoaded = false;
 [] call client_fnc_loadStatistics;
-waitUntil {cl_statisticsLoaded && {sv_gameStatus isEqualTo 2}};
+waitUntil {sv_gameStatus isEqualTo 2};
 
 // Reset everything
 [] call client_fnc_resetVariables;

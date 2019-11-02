@@ -22,6 +22,3 @@ cl_exp_support = (_playerData select 2) select 3;
 cl_exp_recon = (_playerData select 2) select 4;
 cl_equipConfigurations = _playerData select 3;
 cl_equipClassnames = _playerData select 4;
-
-// Parent
-cl_statisticsLoaded = true;

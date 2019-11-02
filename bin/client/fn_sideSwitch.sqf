@@ -49,6 +49,8 @@ waitUntil {side player != civilian && {side player != _oldSide}};
 
 player setVariable ["side", side player, true];
 
+player setVariable ["joinServerTime", diag_tickTime, 2];
+
 player setVariable ["gameSide", (
   [
     ["defenders", "attackers"],
