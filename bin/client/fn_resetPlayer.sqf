@@ -26,52 +26,7 @@ cl_resetPlayerRunning = true;
 60001 cutRsc ["rr_timer", "PLAIN"];
 
 private _d = uiNamespace getVariable ["rr_timer", displayNull];
-
-// Lets fill the scoreboard
-if (true) then {
-	private _allInfoAttackers = [];
-	private _allInfoDefenders = [];
-	private _nAttacker = 0;
-	private _nDefender = 0;
-
-	// Fill data from objects
-	{
-		private _name = _x getVariable ["name", name _x];
-		if ((_x getVariable "gameSide") == "defenders") then {
-			_allInfoDefenders pushBack [_x getVariable ["points", 0], _x getVariable ["kills", 0], _x getVariable ["deaths", 0], _name];
-		} else {
-			_allInfoAttackers pushBack [_x getVariable ["points", 0], _x getVariable ["kills", 0], _x getVariable ["deaths", 0], _name];
-		};
-	} forEach AllPlayers;
-
-	// Sort data
-	_allInfoAttackers sort false;
-	_allInfoDefenders sort false;
-
-	private _data = if ((player getVariable ["gameSide", ""]) isEqualTo "attackers") then {
-		[" ATTACKERS (%1)", " DEFENDERS (%1)", _allInfoAttackers, _allInfoDefenders]
-	} else {
-		[" DEFENDERS (%1)", "ATTACKERS (%1)", _allInfoDefenders, _allInfoAttackers]
-	};
-
-	// Get controls
-	private _listFriends = (_d displayCtrl 1);
-	private _listEnemies = (_d displayCtrl 2);
-	(_d displayCtrl 1001) ctrlSetStructuredText (parseText (format[_data select 0, {(_x getVariable ["gameSide", ""]) isEqualTo (player getVariable ["gameSide", ""])} count allPlayers]));
-	(_d displayCtrl 1002) ctrlSetStructuredText (parseText (format[_data select 1, {!((_x getVariable ["gameSide", ""]) isEqualTo (player getVariable ["gameSide", ""]))} count allPlayers]));
-
-	{_x lnbAddRow ["","NAME","K","D","SCORE",""]} forEach [_listFriends, _listEnemies];
-
-	// Fill scoreboards
-	{
-		_nDefender = _nDefender + 1;
-		_listFriends lnbAddRow [str _nDefender, (_x select 3), str (_x select 1), str (_x select 2), str (_x select 0)];
-	} forEach (_data select 2);
-	{
-		_nAttacker = _nAttacker + 1;
-		_listEnemies lnbAddRow [str _nAttacker, (_x select 3), str (_x select 1), str (_x select 2), str (_x select 0)];
-	} forEach (_data select 3);
-};
+[_d] call client_fnc_populateScoreboard;
 
 VARIABLE_DEFAULT(sv_setting_RotationsPerMatch, 2);
 

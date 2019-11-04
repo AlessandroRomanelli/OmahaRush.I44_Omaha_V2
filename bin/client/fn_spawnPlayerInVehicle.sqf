@@ -96,7 +96,6 @@ if (getNumber(missionConfigFile >> "GeneralConfig" >> "PostProcessing") == 1) th
 
 cl_spawnmenu_cam cameraEffect ["TERMINATE","BACK"];
 camDestroy cl_spawnmenu_cam;
-player switchCamera "INTERNAL";
 
 // Launch GUI
 [] call client_fnc_startIngameGUI;

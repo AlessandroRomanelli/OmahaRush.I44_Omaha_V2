@@ -154,13 +154,14 @@ cl_eventObserverID = addMissionEventHandler["EachFrame", {
 		if (_x getVariable ["melee_action", -1] != -1) then {
 			[_x, _x getVariable "melee_action"] call BIS_fnc_holdActionRemove;
 		};
+		private _cond = "(_this distance _target) < 2.5 && {alive _target} && {side _this != side _target} && {(_target getRelDir _this) > 90 && (_target getRelDir _this) < 270} && {(currentWeapon _this) != (secondaryWeapon _this)}";
 		private _id = [
 		/* 0 object */							_x,
 		/* 1 action title */					"Melee Kill",
 		/* 2 idle icon */						WWRUSH_ROOT+"pictures\support.paa",
 		/* 3 progress icon */					WWRUSH_ROOT+"pictures\support.paa",
-		/* 4 condition to show */				"(_this distance _target) < 2.5 && {alive _target} && {side _this != side _target} && {(_target getRelDir _this) > 90 && (_target getRelDir _this) < 270}",
-		/* 5 condition for action */			"(_this distance _target) < 2.5 && {alive _target} && {side _this != side _target} && {(_target getRelDir _this) > 90 && (_target getRelDir _this) < 270}",
+		/* 4 condition to show */				_cond,
+		/* 5 condition for action */			_cond,
 		/* 6 code executed on start */			{},
 		/* 7 code executed per tick */			{},
 		/* 8 code executed on completion */		{
@@ -427,6 +428,12 @@ REMOVE_EXISTING_PEH("GetInMan", cl_get_in_man_eh);
 cl_get_in_man_eh = player addEventHandler ["GetInMan", {
 	private _unit = param[0, objNull, [objNull]];
 	private _vehicle = param[2, objNull, [objNull]];
+
+	VARIABLE_DEFAULT(sv_setting_VehicleFPOnly, 0);
+	if (sv_setting_VehicleFPOnly == 0) then {
+		player switchCamera "EXTERNAL";
+	};
+
 	_vehicle allowDamage true;
 
 	_vehicle enableSimulation true;

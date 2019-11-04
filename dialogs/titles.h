@@ -205,7 +205,14 @@ class rr_scoreboard
 	fadeout=0.1;
 	fadein=0.1;
 	duration = 9999999;
-	onLoad = "uiNamespace setVariable ['rr_scoreboard',_this select 0];";
+	onLoad = "uiNamespace setVariable ['rr_scoreboard',_this select 0];\
+	_this spawn {\
+		uiSleep 0.1;\
+		params[['_d', displayNull]];\
+		if (!isGameFocused) exitWith {\
+			_d closeDisplay 0;\
+		};\
+	};";
 
 	class controlsBackground {};
 

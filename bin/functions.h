@@ -113,6 +113,7 @@ class Maverick_Functions_Client {
 		class populateAdminParams {};
 		class spawnModal {};
 		class updateParams {};
+		class populateScoreboard {};
 
 		// Pointfeed
 		class pointfeed_add {};

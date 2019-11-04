@@ -15,8 +15,12 @@ scriptName "fn_initKeyHandler";
 #define KEY_SPACE 57
 #define KEY_F1 58
 #define KEY_F10 69
+#define KEY_1 0x02
+#define KEY_0 0x0B
+#define KEY_NUMENTER 0x9C
 
-private _h = false;
+#include "..\utils.h"
+
 cl_scoreboardHidden = true;
 
 cl_soundLevel = 1;
@@ -32,71 +36,26 @@ cl_spamCount = 0;
 cl_allowActions = true;
 (findDisplay 46) displayAddEventHandler ["KeyDown", {
 	private _DIKcode = _this select 1;
+	private _h = false;
+	if (_DIKcode == KEY_NUMENTER) then {
+		VARIABLE_DEFAULT(sv_setting_InfantryFPOnly,1);
+		VARIABLE_DEFAULT(sv_setting_VehicleFPOnly,0);
+		_h = 	(isNull(objectParent player) && sv_setting_InfantryFPOnly == 1) ||
+				(!isNull(objectParent player) && sv_setting_VehicleFPOnly == 1);
+	};
 	if (_DIKcode == KEY_TAB && (sv_gameStatus in [1,2])) then {
-		cl_scoreboardHidden = isNull (uiNamespace getVariable ["rr_scoreboard", displayNull]);
-		// Lets fill the scoreboard
-		if !(cl_scoreboardHidden) exitWith {};
-		if (cl_scoreboardHidden) then {
-			disableSerialization;
-			// Bring up ui for timer
-			60001 cutRsc ["rr_scoreboard", "PLAIN"];
-
-			private _d = (uiNamespace getVariable ["rr_scoreboard", displayNull]);
-
-			private _allInfoAttackers = [];
-			private _allInfoDefenders = [];
-
-			// Fill data from objects
-			_h = true;
-			{
-				private _name = _x getVariable ["name", name _x];
-				private _classInitial = [_x getVariable ["class", ""]] call {
-					private _class = param [0, "", [""]];
-					if (_class isEqualTo "medic") exitWith {"M"};
-					if (_class isEqualTo "assault") exitWith {"A"};
-					if (_class isEqualTo "engineer") exitWith {"E"};
-					if (_class isEqualTo "support") exitWith {"S"};
-					if (_class isEqualTo "recon") exitWith {"R"};
-					"";
-				};
-				if ((_x getVariable "gameSide") == "defenders") then {
-					_allInfoDefenders pushBack [_x getVariable ["points", 0], _x getVariable ["kills", 0], _x getVariable ["deaths", 0], _name, _classInitial];
-				} else {
-					_allInfoAttackers pushBack [_x getVariable ["points", 0], _x getVariable ["kills", 0], _x getVariable ["deaths", 0], _name, _classInitial];
-				};
-			} forEach AllPlayers;
-
-			// Sort data
-			_allInfoAttackers sort false;
-			_allInfoDefenders sort false;
-
-			private _data = if ((player getVariable ["gameSide", ""]) isEqualTo "attackers") then {
-				[" ATTACKERS (%1)", " DEFENDERS (%1)", _allInfoAttackers, _allInfoDefenders]
-			} else {
-				[" DEFENDERS (%1)", "ATTACKERS (%1)", _allInfoDefenders, _allInfoAttackers]
-			};
-			// Get controls
-			(_d displayCtrl 0) ctrlSetStructuredText (parseText "<t shadow='2'>SCOREBOARD</t>");
-			(_d displayCtrl 1001) ctrlSetStructuredText (parseText (format[_data select 0, {(_x getVariable ["gameSide", ""]) isEqualTo (player getVariable ["gameSide", ""])} count allPlayers]));
-			(_d displayCtrl 1002) ctrlSetStructuredText (parseText (format[_data select 1, {!((_x getVariable ["gameSide", ""]) isEqualTo (player getVariable ["gameSide", ""]))} count allPlayers]));
-			private _listFriendlies = (_d displayCtrl 1);
-			private _listEnemies = (_d displayCtrl 2);
-			{_x lnbAddRow ["","NAME","K","D","SCORE",""]} forEach [_listFriendlies, _listEnemies];
-
-			// Fill scoreboards
-			{
-			/* _listDefenders lnbAddRow [str _nDefender, (_x select 3), str (_x select 1), str (_x select 2), str (_x select 0)]; */
-			_listFriendlies lnbAddRow [(_x select 4), (_x select 3), str (_x select 1), str (_x select 2), str (_x select 0)];
-			} forEach (_data select 2);
-			{
-				_listEnemies lnbAddRow [(_x select 4), (_x select 3), str (_x select 1), str (_x select 2), str (_x select 0)];
-			} forEach (_data select 3);
-		};
+		private _scoreboardHidden = isNull (uiNamespace getVariable ["rr_scoreboard", displayNull]);
+		if !(_scoreboardHidden) exitWith {};
+		disableSerialization;
+		60001 cutRsc ["rr_scoreboard", "PLAIN"];
+		private _d = (uiNamespace getVariable ["rr_scoreboard", displayNull]);
+		_h = true;
+		[_d] call client_fnc_populateScoreboard;
 	};
 
 	// Earplugs
 	if (_DIKcode == KEY_Y) then {
-		_h = true;
+		_h = false;
 		switch (cl_soundLevel) do
 		{
 			case 1:
@@ -162,11 +121,15 @@ cl_allowActions = true;
 
 	// F1 to F10 - SEAT SWITCH
 	if (_DIKcode > KEY_F1 && _DIKcode < KEY_F10) then {
+		_h = true;
 		if (!isNull (objectParent player)) then {
 			[_DIKcode] call client_fnc_moveWithinVehicle;
 		};
 	};
 
+	if (_DIKcode >= KEY_1 && _DIKcode <= KEY_0) then {
+		_h = true;
+	};
 
 
 	// T - SPOTTING TARGETS
@@ -175,7 +138,8 @@ cl_allowActions = true;
 			private _text = format ["3D SPOTTING BLOCKED FOR %1 SECONDS", round (cl_lastKeyPressed + 5 - diag_tickTime)];
 			[_text] call client_fnc_displayError;
 		};
-		_h = true;
+		// Do not override engine key event
+		_h = false;
 		if (diag_tickTime - cl_lastKeyPressed < 1.5) then {
 			cl_spamCount = cl_spamCount + 1;
 		} else {
