@@ -21,7 +21,8 @@ private _event = addMissionEventHandler["EachFrame", {
   if (visibleMap) exitWith {};
   private _side = player getVariable ["side", side player];
   private _isAttacking = _side isEqualTo EAST;
-  private _HQPos = getArray(missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> (sv_cur_obj getVariable ["cur_stage", "Stage1"]) >> "Spawns" >> _side >> "HQSpawn" >> "positionATL");
+  private _gameSide = ["attackers", "defenders"] select (_side == WEST);
+  private _HQPos = getArray(missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> (sv_cur_obj getVariable ["cur_stage", "Stage1"]) >> "Spawns" >> _gameSide >> "HQSpawn" >> "positionATL");
   private _vehiclePlayer = vehicle player;
   private _posPlayer = getPosATL player;
   private _curSpawn = _HQPos;
@@ -63,10 +64,12 @@ private _event = addMissionEventHandler["EachFrame", {
     [] call {
       if (_data isEqualTo "") exitWith {};
       if (_value isEqualTo -1) exitWith {
-        private _spawnConfig = missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> sv_cur_obj getVariable ["cur_stage", "Stage1"] >> "Spawns" >> _side >> _data;
-        private _pos = getArray(_spawnConfig >> "positionATL");
-        private _name = getText(_spawnConfig >> "name");
-        [_pos, _name] call _makeCurrentSpawn;
+			private _side = player getVariable ["side", side player];
+			private _gameSide = ["attackers", "defenders"] select (_side == WEST);
+			private _spawnConfig = missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> sv_cur_obj getVariable ["cur_stage", "Stage1"] >> "Spawns" >> _gameSide >> _data;
+			private _pos = getArray(_spawnConfig >> "positionATL");
+			private _name = getText(_spawnConfig >> "name");
+			[_pos, _name] call _makeCurrentSpawn;
       };
       drawIcon3D [WWRUSH_ROOT+"pictures\mark.paa", [1,1,1,0.25], _HQPos, _iconSize, _iconSize, 0, "HQ", 0, 0.05, "PuristaMedium"];
       if (_value isEqualTo -2) exitWith {

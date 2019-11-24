@@ -26,7 +26,11 @@ lbClear _vehiclesCtrl;
 private _side = player getVariable ["side", side player];
 private _playerIsDefending = _side isEqualTo WEST;
 
-private _configs = configProperties [missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> sv_cur_obj getVariable ["cur_stage", "Stage1"] >> "Spawns" >> _side, "true", false];
+private _configs = configProperties [
+	missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> sv_cur_obj getVariable ["cur_stage", "Stage1"] >> "Spawns" >> ["attackers", "defenders"] select _playerIsDefending,
+	"true",
+	false
+];
 
 {
   _spawnCtrl lbAdd (getText(_x >> "name"));

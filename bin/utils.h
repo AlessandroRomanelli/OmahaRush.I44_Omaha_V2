@@ -34,3 +34,15 @@
 
 // SCRIPTS
 #define TERMINATE_SCRIPT(HANDLE) if (!isNil QUOTE(HANDLE)) then { terminate HANDLE }
+
+// SIDE LOGIC
+#define ATTACK_SIDE EAST
+#define DEFEND_SIDE WEST
+
+#define ATTACK_STR "attackers"
+#define DEFEND_STR "defenders"
+
+#define IS_ATTACKING(UNIT) ((UNIT getVariable ["side", side UNIT]) == ATTACK_SIDE)
+#define IS_DEFENDING(UNIT) ((UNIT getVariable ["side", side UNIT]) == DEFEND_SIDE)
+
+#define GAMESIDE(UNIT) ["attackers", "defenders"] select (IS_DEFENDING(UNIT))

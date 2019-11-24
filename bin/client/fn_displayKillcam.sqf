@@ -9,6 +9,7 @@ scriptName "fn_displayKillcam";
 if (isServer && !hasInterface) exitWith {};
 
 #define MAX_NAME_LEN 18
+#include "..\utils.h"
 
 private _fnc_trimString = {
   private _string = param [0, "", [""]];
