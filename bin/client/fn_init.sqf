@@ -50,13 +50,6 @@ waitUntil {side player != civilian};
 // Used for determining if a player is on our side since side _x returns civilian if someone is dead
 player setVariable ["side", side player, true];
 
-/* player setVariable ["gameSide", (
-	[
-		["defenders", "attackers"],
-		["attackers", "defenders"]
-	] select (sv_gameCycle % 2 == 0)
-) select (side player == WEST), true]; */
-
 [] call client_fnc_loadStatistics;
 
 // Get initial spawn position to teleport the player to (e.g. in spawn menu)
