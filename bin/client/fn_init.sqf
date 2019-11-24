@@ -18,6 +18,9 @@ cl_init_done = false;
 // Wait for the client to be ready for deployment
 waitUntil {(!isNull (findDisplay 46)) AND (isNull (findDisplay 101)) AND (!isNull player) AND (alive player) AND !dialog};
 
+60000 cutRsc ["rr_black", "PLAIN"];
+60001 cutText ["Client is being initialized.\nStand by!", "PLAIN"];
+
 // Disable saving
 enableSaving [false, false];
 enableRadio false;
@@ -26,7 +29,7 @@ enableSentences false;
 {
 	_x setSpeaker "NoVoice";
 	_x disableAI "RADIOPROTOCOL";
-}	forEach allPlayers;
+} forEach allPlayers;
 
 player enableSimulation false;
 
@@ -46,6 +49,8 @@ player setVariable ["name", name player, true];
 
 [player] remoteExec ["server_fnc_assignSide", 2];
 waitUntil {side player != civilian};
+
+60001 cutText ["", "PLAIN"];
 
 // Used for determining if a player is on our side since side _x returns civilian if someone is dead
 player setVariable ["side", side player, true];

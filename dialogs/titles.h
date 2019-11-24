@@ -60,11 +60,11 @@ class rr_black
 		class blackbackground: RscText
 		{
 			idc = 0;
-			x = 1 * safezoneW + safezoneX;
-			y = 1 * safezoneH + safezoneY;
+			x = 0 * safezoneW + safezoneX;
+			y = 0 * safezoneH + safezoneY;
 			w = 1 * safezoneW;
 			h = 1 * safezoneH;
-			colorBackground[] = {0,0,0,2};
+			colorBackground[] = {0,0,0,1};
 		};
 	};
 };
