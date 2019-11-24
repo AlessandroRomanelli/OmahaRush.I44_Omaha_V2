@@ -8,6 +8,8 @@ scriptName "fn_initClass";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_initClass.sqf"
+#include "..\utils.h"
+
 if (isServer && !hasInterface) exitWith {};
 
 private _class = cl_equipClassnames select 2;
@@ -41,7 +43,7 @@ rc_spawnBeacon = {
 				// Create beacon :>
 				private _pos = player modelToWorld [0,0,0];
 				_beacon = [] call {
-					private _side = ["attackers", "defenders"] select (player getVariable ["side", side player] == WEST);
+					private _side = GAMESIDE(player);
 					private _radio = getText(missionConfigFile >> "Soldiers" >> _side >> "Radio" >> "className");
 					createVehicle [_radio, position player, [], 0, "CAN_COLLIDE"];
 				};

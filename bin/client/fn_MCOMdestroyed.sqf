@@ -52,11 +52,10 @@ if (_moreMcoms) then {
 	// Update markers
 	[] call client_fnc_updateMarkers;
 
-	private _side = player getVariable ["side", side player];
-	private _isPlayerAttacking = (_side isEqualTo EAST);
+	private _isPlayerAttacking = IS_ATTACKING(player);
 
 	// If we are attacker, block the next mcom for now
-	if (_isPlayerAttacking) then {
+	if (IS_ATTACKING(player)) then {
 		cl_enemySpawnMarker = "objective";
 	} else {
 		// FallingBack flag in order to handle out of bounds kill time
@@ -78,7 +77,7 @@ if (_moreMcoms) then {
 		player setVariable ["isFallingBack", false];
 	};
 
-	private _gameSide = ["defenders", "attackers"] select _isPlayerAttacking;
+	private _gameSide = GAMESIDE(player);
 	private _faction = getText(missionConfigFile >> "Unlocks" >> _gameSide >> "faction");
 	private _idx = (floor (random 4))+1;
 	playSound format["%1Order%2_%3", _gameSide, _faction, _idx];

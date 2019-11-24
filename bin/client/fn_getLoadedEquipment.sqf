@@ -17,7 +17,7 @@ cl_equipConfigurations = [];
 // Returns default if nothing was selected
 
 // Get all unlockable weapons
-private _side = ["attackers", "defenders"] select (player getVariable ["side", side player] == WEST);
+private _side = GAMESIDE(player);
 private _configs = "true" configClasses (missionConfigFile >> "Unlocks" >> _side);
 {
 	private _weapon = _x;

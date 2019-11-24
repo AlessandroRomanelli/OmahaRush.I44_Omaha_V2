@@ -6,6 +6,8 @@ scriptName "fn_equipWeapons";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_equipWeapons.sqf"
+#include "..\utils.h"
+
 if (isServer && !hasInterface) exitWith {};
 
 private _fnc_equipBayo = {
@@ -32,7 +34,7 @@ private _secondary = _equipInfo select 1;
 private _isBeingRevived = param[0,false,[false]];
 
 
-private _side = ["attackers", "defenders"] select (player getVariable ["side", side player] == WEST);
+private _side = GAMESIDE(player);
 private _sideLoadout = [] call client_fnc_getCurrentSideLoadout;
 
 // Smoke grenades to those who have the class perk

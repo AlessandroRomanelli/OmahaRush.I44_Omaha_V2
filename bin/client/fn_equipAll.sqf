@@ -6,12 +6,14 @@ scriptName "fn_equipAll";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_equipAll.sqf"
+#include "..\utils.h"
+
 if (isServer && !hasInterface) exitWith {};
 
 private _isBeingRevived = param[0, false, [false]];
 
 // Give player loadout
-private _side = ["attackers", "defenders"] select (player getVariable ["side", side player] == WEST);
+private _side = GAMESIDE(player);
 private _sideLoadout = [] call client_fnc_getCurrentSideLoadout;
 
 private ["_uniforms", "_goggles", "_vests", "_headgears", "_backpacks"];

@@ -8,6 +8,8 @@ scriptName "fn_spawnPlayerInVehicle";
 	You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_spawnPlayerInVehicle.sqf"
+#include "..\utils.h"
+
 if (isServer && !hasInterface) exitWith {};
 
 private _configName = param[0,"",[""]];
@@ -33,8 +35,8 @@ private _vehicle = _objects select 0; */
 private _vehicle = missionNamespace getVariable [_configName, objNull];
 
 if (isNull _vehicle) exitWith {["Vehicle unavailable"] call client_fnc_displayError;};
-private _side = player getVariable ["side", side player];
-private _enemyWithin = (fullCrew _vehicle) findIf {_x getVariable ["side", side _x] != _side};
+private _side = SIDEOF(player);
+private _enemyWithin = (fullCrew _vehicle) findIf {SIDEOF(_x) != _side};
 if (_enemyWithin >= 0) exitWith {
 	["Vehicle has been hijacked"] call client_fnc_displayError;
 };

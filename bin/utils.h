@@ -42,7 +42,13 @@
 #define ATTACK_STR "attackers"
 #define DEFEND_STR "defenders"
 
-#define IS_ATTACKING(UNIT) ((UNIT getVariable ["side", side UNIT]) == ATTACK_SIDE)
-#define IS_DEFENDING(UNIT) ((UNIT getVariable ["side", side UNIT]) == DEFEND_SIDE)
+#define SIDEOF(UNIT) (UNIT getVariable ["side", side UNIT])
 
-#define GAMESIDE(UNIT) ["attackers", "defenders"] select (IS_DEFENDING(UNIT))
+#define SAME_SIDE(A,B) (SIDEOF(A) == SIDEOF(B))
+
+#define IS_ATTACKING(UNIT) (SIDEOF(UNIT) == ATTACK_SIDE)
+#define IS_DEFENDING(UNIT) (SIDEOF(UNIT) == DEFEND_SIDE)
+
+#define GAMESIDE(UNIT) ([ATTACK_STR, DEFEND_STR] select (IS_DEFENDING(UNIT)))
+
+#define SIDE_STR(SIDE) ([ATTACK_STR, DEFEND_STR] select (SIDE == DEFEND_SIDE))

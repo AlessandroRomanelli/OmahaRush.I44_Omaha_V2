@@ -43,7 +43,7 @@ private _found = false;
 
 if (!_found) exitWith {
 	private _group = createGroup _sideToJoin;
-	private _faction = getText(missionconfigfile >> "Soldiers" >> (["defenders", "attackers"] select (_sideToJoin == EAST)) >> "faction");
+	private _faction = getText(missionconfigfile >> "Soldiers" >> SIDE_STR(_sideToJoin) >> "faction");
 	[_unit] join _group;
 	[_group, _unit, _faction] call server_fnc_generateGroup;
 	MUTEX_UNLOCK(sv_groups_lock);

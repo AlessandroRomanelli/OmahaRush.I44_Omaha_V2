@@ -8,6 +8,7 @@ scriptName "fn_updateSpawnMenuCam";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_updateSpawnMenuCam.sqf"
+#include "..\utils.h"
 
 if (!cl_inSpawnMenu) exitWith {};
 if (isNil "cl_spawnmenu_cam") exitWith {hint "1"};
@@ -15,7 +16,7 @@ if (isNull cl_spawnmenu_cam) exitWith {hint "2"};
 
 // Get cam pos for spawn menu cam
 private _stage = sv_cur_obj getVariable ["cur_stage", "Stage1"];
-private _side = ["attackers", "defenders"] select (player getVariable ["side", side player] == WEST);
+private _side = GAMESIDE(player);
 private _pos = getArray(missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> _stage >> "Spawns" >> _side >> "HQSpawn" >> "positionATL");
 
 // Determine point between current pos and target pos

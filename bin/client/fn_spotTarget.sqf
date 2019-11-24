@@ -9,10 +9,12 @@ scriptName "fn_spotTarget";
 #define __filename "fn_spotTarget.sqf"
 
 if (isServer && !hasInterface) exitWith {};
+#include "..\utils.h"
+
 
 /* systemChat "Spotting targets.."; */
-private _side = player getVariable ["side", side player];
-private _allEnemies = allUnits select {(alive _x) && (_x getVariable ["side", _x] != _side) && ((_x distance2D player) < 200)};
+private _side = SIDEOF(player);
+private _allEnemies = allUnits select {(alive _x) && (SIDEOF(_x) != _side) && ((_x distance2D player) < 200)};
 private _fnc_getRelDirPOV = {
   private _origin = param [0, objNull, [objNull]];
   private _target = param [1, objNull, [objNull]];

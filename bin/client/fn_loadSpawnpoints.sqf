@@ -8,6 +8,7 @@ scriptName "fn_loadSpawnpoints";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_loadSpawnpoints.sqf"
+#include "..\utils.h"
 
 #define COLOR_RED [0.51,0,0,1]
 #define COLOR_BLUE [0,0.3,0.6,1]
@@ -23,11 +24,10 @@ private _vehiclesCtrl = _d displayCtrl 9;
 lbClear _spawnCtrl;
 lbClear _vehiclesCtrl;
 
-private _side = player getVariable ["side", side player];
-private _playerIsDefending = _side isEqualTo WEST;
+private _isDefending = IS_DEFENDING(player);
 
 private _configs = configProperties [
-	missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> sv_cur_obj getVariable ["cur_stage", "Stage1"] >> "Spawns" >> ["attackers", "defenders"] select _playerIsDefending,
+	missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> sv_cur_obj getVariable ["cur_stage", "Stage1"] >> "Spawns" >> GAMESIDE(player),
 	"true",
 	false
 ];
@@ -86,7 +86,7 @@ private _fnc_appendUnit = {
 {
   // If unit is alive AND is not the player AND (player NOT defending OR the unit is the leader OR player is the leader)
   // If the player is attacking, he can spawn on any group member, whereas if he's defending, he can only spawn on the leader
-  if (alive _x && {_x inArea playArea} && {_x != player} && {!_playerIsDefending || (_x == (leader group player)) || ((leader group player) == player)}) then {
+  if (alive _x && {_x inArea playArea} && {_x != player} && {!_isDefending || (_x == (leader group player)) || ((leader group player) == player)}) then {
     [_x, _forEachIndex] call _fnc_appendUnit;
   };
 
@@ -100,7 +100,7 @@ private _fnc_appendUnit = {
 
 // Get configs of vehicles we can spawn at (PERSISTENT ONES)
 private _configs = [];
-private _side = ["Attacker", "Defender"] select (_playerIsDefending);
+private _side = ["Attacker", "Defender"] select (_isDefending);
 _configs append ("true" configClasses (missionConfigFile >> "MapSettings" >> sv_mapSize >> "PersistentVehicles" >> _side));
 _configs append ("true" configClasses (missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> (sv_cur_obj getVariable ["cur_stage", "Stage1"]) >> "Vehicles" >> _side));
 

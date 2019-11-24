@@ -8,6 +8,8 @@ scriptName "fn_spawnMenu_displaySecondaryWeaponSelection";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_spawnMenu_displaySecondaryWeaponSelection.sqf"
+#include "..\utils.h"
+
 if (isServer && !hasInterface) exitWith {};
 
 disableSerialization;
@@ -47,7 +49,7 @@ cl_spawnmenu_currentWeaponSelectionState = 2;
 lbClear (_d displayCtrl 3);
 
 // Load all weapons into the listbox
-private _side = ["attackers", "defenders"] select (player getVariable ["side", side player] == WEST);
+private _side = GAMESIDE(player);
 
 private _secondaryWeapons = cl_equipConfigurations select {(getText(missionConfigFile >> "Unlocks" >> _side >> _x >> "type")) == "secondary"};
 {

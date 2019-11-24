@@ -7,6 +7,8 @@ scriptName "fn_loadStatistics";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_loadStatistics.sqf"
+#include "..\utils.h"
+
 if (isServer && !hasInterface) exitWith {};
 
 // Loading the key the server is using
@@ -94,7 +96,7 @@ private _assignVariables = {
   cl_currentRecord = _record;
   cl_total_kills = _record select 0;
   cl_total_deaths = _record select 1;
-  private _side = ["attackers", "defenders"] select (player getVariable ["side", side player] == WEST);
+  private _side = GAMESIDE(player);
   cl_faction = getText(missionConfigFile >> "Unlocks" >> _side >> "faction");
   private _globalXPs = _record select 2;
   private _factionIdx = _globalXPs findIf {(_x select 0) isEqualTo cl_faction};

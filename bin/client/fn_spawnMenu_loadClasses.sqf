@@ -37,7 +37,7 @@ if (!_isRefreshing) then {
 	// Allow listbox selection changes to update our "customize class" button (some classes are not customizeable atm so theres no reason for people to be able to click it)
 	_l ctrlAddEventHandler ["LBSelChanged", {
 		private _classSelected = (_this select 0) lbData (_this select 1);
-		private _side = ["attackers", "defenders"] select (player getVariable ["side", side player] == WEST);
+		private _side = GAMESIDE(player);
 		private _weaponAllowedClasses = getArray(missionConfigFile >> "Unlocks" >> _side >> (cl_equipClassNames select 0) >> "roles");
 		if !(_classSelected in _weaponAllowedClasses) then {
 			private _weapon = profileNamespace getVariable [format["rr_prefPWeapon_%1_%2", _classSelected, cl_faction], ""];

@@ -13,10 +13,10 @@ if (isServer && !hasInterface) exitWith {};
 
 WAIT_IF_NOT(cl_init_done);
 
-private _winners = param[0,"",[""]];
+private _winners = param[0,sideUnknown,[sideUnknown]];
 
 // Huh?
-if (_winners == "") exitWith {};
+if (_winners == sideUnknown) exitWith {};
 
 // Make people hear the explosion :)
 uiSleep 1;
@@ -27,7 +27,7 @@ while {dialog} do {
 };
 
 // Play sound!
-private _faction = getText(missionConfigFile >> "Unlocks" >> _winners >> "faction");
+private _faction = getText(missionConfigFile >> "Unlocks" >> SIDE_STR(_winners) >> "faction");
 
 playSound (format ["ending%1", _faction]);
 
@@ -41,13 +41,12 @@ for "_i" from 1 to 4 do {
 
 [{_x} count _mcoms] call {
 	private _mcomsDestroyed = param[0, 0, [0]];
-	private _side = player getVariable ["side", side player];
-	if (_side == WEST && _mcomsDestroyed < 4) then {
+	if (IS_DEFENDING(player) && _mcomsDestroyed < 4) then {
 		private _mcomDefended = 4 - _mcomsDestroyed;
 		[format ["<t size='1.3' color='#FFFFFF'>%1 OBJECTIVE(S) DEFENDED</t>", _mcomDefended], 150*_mcomDefended] call client_fnc_pointfeed_add;
 		[150*_mcomDefended] call client_fnc_addPoints;
 	};
-	if (_side == EAST && _mcomsDestroyed > 0) then {
+	if (IS_ATTACKING(player) && _mcomsDestroyed > 0) then {
 		[format ["<t size='1.3' color='#FFFFFF'>%1 OBJECTIVE(S) DESTROYED</t>", _mcomsDestroyed], 150*_mcomsDestroyed] call client_fnc_pointfeed_add;
 		[150*_mcomsDestroyed] call client_fnc_addPoints;
 	};
@@ -91,20 +90,8 @@ uiSleep .05;
 showCinemaBorder false;
 
 // Display message
-private _side = player getVariable ["side", side player];
-if (_winners == "attackers") then {
-	if (_side == WEST) then {
-		["THE ENEMY TEAM HAS WON THE GAME"] call client_fnc_displayObjectiveMessage;
-	} else {
-		["YOUR TEAM HAS WON THE GAME"] call client_fnc_displayObjectiveMessage;
-	};
-} else {
-	if (_side == WEST) then {
-		["YOUR TEAM HAS WON THE GAME"] call client_fnc_displayObjectiveMessage;
-	} else {
-		["THE ENEMY TEAM HAS WON THE GAME"] call client_fnc_displayObjectiveMessage;
-	};
-};
+private _winMsg = format ["%1 TEAM HAS WON THE GAME"], ["THE ENEMY", "YOUR"] select (SIDEOF(player) == _winners);
+[_winMsg] call client_fnc_displayObjectiveMessage;
 
 // Hide icons
 //["rr_spawn_iconrenderer", "onEachFrame"] call bis_fnc_removeStackedEventHandler;

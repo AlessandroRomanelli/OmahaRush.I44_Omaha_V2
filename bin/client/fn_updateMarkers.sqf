@@ -8,14 +8,15 @@ scriptName "fn_updateMarkers";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_updateMarkers.sqf"
+#include "..\utils.h"
+
 if (isServer && !hasInterface) exitWith {};
+
 
 private _objMarkerStatusUpdate = param[0, false, [false]];
 
-private _side = player getVariable ["side", side player];
-private _gameSide = ["attackers", "defenders"] select (_side == WEST);
 private _spawnsConfig = (missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> (sv_cur_obj getVariable ["cur_stage", "Stage1"]) >> "Spawns");
-private _spawns = "true" configClasses (_spawnsConfig >> _gameSide);
+private _spawns = "true" configClasses (_spawnsConfig >> GAMESIDE(player));
 
 _spawns deleteAt 0;
 
@@ -40,12 +41,12 @@ if !(_objMarkerStatusUpdate) exitWith {
 	private _atkFaction = getText(missionConfigFile >> "Vehicles" >> "Attacker" >> "faction");
 	private _defMarker = getText(missionConfigFile >> "Vehicles" >> "Defender" >> "marker");
 	private _defFaction = getText(missionConfigFile >> "Vehicles" >> "Defender" >> "faction");
-	private _HQposDef = getArray(_spawnsConfig >> "defenders" >> "HQSpawn" >> "positionATL");
-	private _HQposAtk = getArray(_spawnsConfig >> "attackers" >> "HQSpawn" >> "positionATL");
+	private _HQposDef = getArray(_spawnsConfig >> DEFEND_STR >> "HQSpawn" >> "positionATL");
+	private _HQposAtk = getArray(_spawnsConfig >> ATTACK_STR >> "HQSpawn" >> "positionATL");
 	"mobile_respawn_defenders" setMarkerPosLocal _HQposDef;
 	"mobile_respawn_attackers" setMarkerPosLocal _HQposAtk;
 
-	if (_side == WEST) then {
+	if (IS_DEFENDING(player)) then {
 		cl_enemySpawnMarker = "";
 		"mobile_respawn_defenders" setMarkerTypeLocal _defMarker;
 		"mobile_respawn_defenders" setMarkerTextLocal (format[" Defenders HQ (%1)", _defFaction]);

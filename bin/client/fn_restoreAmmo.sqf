@@ -9,10 +9,12 @@ scriptName "fn_restoreAmmo";
 --------------------------------------------------------------------*/
 #define __filename "fn_restoreAmmo.sqf"
 #define TIMEOUT 30
+#include "..\utils.h"
+
 if (isServer && !hasInterface) exitWith {};
 
 private _unit = param[0,objNull,[objNull]];
-private _side = ["attackers", "defenders"] select (player getVariable ["side", side player] == WEST);
+private _side = GAMESIDE(player);
 
 private _lastUsed = missionNamespace getVariable ["cl_last_rearm", 0];
 

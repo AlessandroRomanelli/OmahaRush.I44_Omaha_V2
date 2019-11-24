@@ -8,6 +8,8 @@ scriptName "fn_populateSpawnMenu";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_populateSpawnMenu.sqf"
+#include "..\utils.h"
+
 if (isServer && !hasInterface) exitWith {};
 
 // Arma..
@@ -16,7 +18,7 @@ disableSerialization;
 // Get dialog
 private _d = findDisplay 5000;
 
-private _side = player getVariable ["side", side player];
+private _side = SIDEOF(player);
 
 // Get selected equip to be displayed
 [] call client_fnc_getLoadedEquipment;
@@ -31,7 +33,7 @@ if (_primary == "") then {
 
 if (_secondary == "") then {
 	(_d displayCtrl 7) ctrlSetStructuredText parseText "<t size='4' color='#990000' shadow='2' font='PuristaMedium' align='center'>N/A</t>";
-	private _secondaryWeapons = cl_equipConfigurations select {(getText(missionConfigFile >> "Unlocks" >> ["attackers", "defenders"] select (_side == WEST) >> _x >> "type")) == "secondary"};
+	private _secondaryWeapons = cl_equipConfigurations select {(getText(missionConfigFile >> "Unlocks" >> GAMESIDE(player) >> _x >> "type")) == "secondary"};
 	if (count _secondaryWeapons != 0) then {
 		(_d displayCtrl 1004) ctrlSetStructuredText parseText "<t size='1.25' color='#990000' shadow='2' font='PuristaMedium' align='center'>NO WEAPON SELECTED</t>";
 		(_d displayCtrl 2001) ctrlSetStructuredText parseText "<t size='0.75' color='#FFFFFF' shadow='2' font='PuristaMedium' align='center'>[CLICK ABOVE TO OPEN]</t>";

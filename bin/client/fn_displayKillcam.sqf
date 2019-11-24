@@ -22,7 +22,7 @@ private _fnc_trimString = {
 
 private _fnc_getFactionTexture = {
   private _unit = param [0, objNull, [objNull]];
-  private _side = ["Attacker", "Defender"] select ((_unit getVariable ["side", side _unit]) == WEST);
+  private _side = ["Attacker", "Defender"] select IS_DEFENDING(_unit);
   private _marker = getText(missionConfigFile >> "Vehicles" >> _side >> "marker");
   private _texture = getText(configFile >> "CfgMarkers" >> _marker >> "texture");
   _texture

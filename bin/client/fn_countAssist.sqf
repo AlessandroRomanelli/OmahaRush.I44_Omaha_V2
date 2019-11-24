@@ -8,6 +8,8 @@ scriptName "fn_countAssist";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_countAssist.sqf"
+#include "..\utils.h"
+
 if (isServer && !hasInterface) exitWith {};
 
 private _causedBy = param[0,objNull,[objNull]];
@@ -21,11 +23,8 @@ if (_inflictedDamage > 1) then {_inflictedDamage = (_inflictedDamage / 100);};
 if (isNull _causedBy) exitWith {};
 if (isNil "cl_assistsInfo") exitWith {};
 
-// Check the side
-private _side = _causedBy getVariable ["side", sideUnknown];
-
 // Bad side
-if (_side == (player getVariable ["side", sideUnknown]) || _side == sideUnknown) exitWith {};
+if (SIDEOF(_causedBy) == SIDEOF(player)) exitWith {};
 
 // Damage has to be greater than 15 to be counted as an assist
 if (_inflictedDamage < 0.15) exitWith {};

@@ -7,6 +7,7 @@ scriptName "fn_setupEventHandlers";
 --------------------------------------------------------------------*/
 #define __filename "fn_setupEventHandlers.sqf"
 #include "..\utils.h"
+
 if (isServer && !hasInterface) exitWith {};
 
 // Remove all handlers
@@ -318,8 +319,8 @@ cl_killed_eh = player addEventHandler ["Killed", {
 
 		private _spawnSafeDistance = (getNumber (missionConfigFile >> "MapSettings" >> sv_mapSize >> "safeSpawnDistance"));
 		VARIABLE_DEFAULT(sv_setting_SpawnSafeTime, 5);
-		private _spawnMarker = format ["mobile_respawn_%1", ["attackers", "defenders"] select (_victim getVariable ["side", side _victim] == WEST)];
-		if (_killer getVariable ["side", side _killer] != (_victim getVariable ["side", side _victim]) &&
+		private _spawnMarker = format ["mobile_respawn_%1", GAMESIDE(_victim)];
+		if (SIDEOF(_killer) != SIDEOF(_victim) &&
 				{(diag_tickTime - cl_spawn_tick) < sv_setting_SpawnSafeTime} &&
 				{(_victim distance (getMarkerPos _spawnMarker)) < _spawnSafeDistance}) exitWith {
 			// Info
@@ -357,10 +358,11 @@ cl_handledmg_eh = player addEventHandler ["HandleDamage", {
 	};
 	// If the shooter is still unknown, highly reduce damage
 	if (isNull _shooter) exitWith {_damage/10};
-	private _shooterSide = _shooter getVariable ["side", side _shooter];
-	private _unitSide = _unit getVariable ["side", side _unit];
 	private _grenades = ["lib_us_mk_2", "lib_shg24", "lib_rg42", "lib_millsbomb"];
 	_projectile = toLower _projectile;
+
+	private _sameSide = SAME_SIDE(_shooter, _unit);
+
 	// If the damage
 	if (_damage >= 1 && {isNil {_unit getVariable "grenade_kill"}} && {_projectile in _grenades}) then {
 		_unit setVariable ["grenade_kill", _projectile];
@@ -371,14 +373,14 @@ cl_handledmg_eh = player addEventHandler ["HandleDamage", {
 		};
 	} else {
 		// Is the shooter on the opposite side of the victim and is the victim alive?
-		if ((_shooterSide != _unitSide) && _unit getVariable ["isAlive", true]) then {
+		if (!(_sameSide) && {_unit getVariable ["isAlive", true]}) then {
 			private _isExplosive = (getNumber(configFile >> "CfgAmmo" >> _projectile >> "explosive")) > 0;
 			//If critical damage to the head kill the victim and reward the shooter with HS bonus
 			if (_damage >= 0.3 && {_hitSelection in ["head", "face_hub"]} && {_projectile != ""} && {!_isExplosive}) then {
 				// Has the HS kill already been awarded?
 				if (!(_unit getVariable ["wasHS", false])) then {
 					_unit setVariable ["wasHS", true];
-	        _damage = 1 + _damage;
+					_damage = 1 + _damage;
 				};
 			} else {
 				// Get the last weapon the shooter fired
@@ -388,11 +390,10 @@ cl_handledmg_eh = player addEventHandler ["HandleDamage", {
 					_shooterWeapon = currentWeapon _shooter;
 				};
 				// Is it not a listed weapon?
-				private _gameSide = ["attackers", "defenders"] select (_shooterSide == WEST);
-				private _isWeaponListed = isClass(missionConfigFile >> "Unlocks" >> _gameSide >> _shooterWeapon);
+				private _isWeaponListed = isClass(missionConfigFile >> "Unlocks" >> GAMESIDE(_shooter) >> _shooterWeapon);
 				// If it is listed, get the multiplier, else don't do anything and use 1
 				private _damageMultiplier = if (_isWeaponListed) then {
-					getNumber(missionConfigFile >> "Unlocks" >> _gameSide >> _shooterWeapon >> "damageMultiplier")
+					getNumber(missionConfigFile >> "Unlocks" >> GAMESIDE(_shooter) >> _shooterWeapon >> "damageMultiplier")
 				} else {1};
 				// Handle only the global hit part
 				if (_hitSelection isEqualTo "") then {
@@ -417,7 +418,7 @@ cl_handledmg_eh = player addEventHandler ["HandleDamage", {
 	};
 
 	// If instead the shooter is on the same side as the victim (friendly fire) and it's not suicide
-	if (((_shooterSide == _unitSide) && {_shooter != _unit})) then {
+	if (_sameSide && {_shooter != _unit}) then {
 		// Disable damage
 		_damage = damage _unit;
 	};

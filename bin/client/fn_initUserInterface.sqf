@@ -7,6 +7,9 @@ scriptName "fn_initUserInterface";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_initUserInterface.sqf"
+
+#include "..\utils.h"
+
 #define COLOR_RED [[[1, 0.66, 0.66, 1], [0.4, 0.26, 0.26, 1]], ["#ffaaaa", "#664444"]]
 #define COLOR_YELLOW [[[1, 0.8, 0.6, 1], [0.4, 0.32, 0.24]], ["#ffcc99", "#66513d"]]
 #define COLOR_GREEN [[[0.66, 1, 0.66, 1], [0.26, 0.4, 0.26, 1]], ["#aaffaa", "#446644"]]
@@ -19,9 +22,8 @@ private _event = addMissionEventHandler["EachFrame", {
   (_d displayCtrl 2) progressSetPosition (sv_tickets / sv_tickets_total);
 
   if (visibleMap) exitWith {};
-  private _side = player getVariable ["side", side player];
-  private _isAttacking = _side isEqualTo EAST;
-  private _gameSide = ["attackers", "defenders"] select (_side == WEST);
+  private _isAttacking = IS_ATTACKING(player);
+  private _gameSide = GAMESIDE(player);
   private _HQPos = getArray(missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> (sv_cur_obj getVariable ["cur_stage", "Stage1"]) >> "Spawns" >> _gameSide >> "HQSpawn" >> "positionATL");
   private _vehiclePlayer = vehicle player;
   private _posPlayer = getPosATL player;
@@ -64,8 +66,7 @@ private _event = addMissionEventHandler["EachFrame", {
     [] call {
       if (_data isEqualTo "") exitWith {};
       if (_value isEqualTo -1) exitWith {
-			private _side = player getVariable ["side", side player];
-			private _gameSide = ["attackers", "defenders"] select (_side == WEST);
+			private _gameSide = GAMESIDE(player);
 			private _spawnConfig = missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> sv_cur_obj getVariable ["cur_stage", "Stage1"] >> "Spawns" >> _gameSide >> _data;
 			private _pos = getArray(_spawnConfig >> "positionATL");
 			private _name = getText(_spawnConfig >> "name");

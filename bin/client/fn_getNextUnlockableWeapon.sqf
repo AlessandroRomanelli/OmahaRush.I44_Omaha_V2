@@ -8,10 +8,12 @@ scriptName "fn_getNextUnlockableWeapon";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_getNextUnlockableWeapon.sqf"
+#include "..\utils.h"
+
 if (isServer && !hasInterface) exitWith {};
 
 // Get all unlocks
-private _side = ["attackers", "defenders"] select (player getVariable ["side", side player] == WEST);
+private _side = GAMESIDE(player);
 private _unlocks = "true" configClasses (missionConfigFile >> "Unlocks" >> _side);
 
 private _exp = missionNamespace getVariable [format["cl_exp_%1", cl_class], 0];

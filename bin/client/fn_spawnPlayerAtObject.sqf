@@ -8,6 +8,8 @@ scriptName "fn_spawnPlayerAtObject";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_spawnPlayerAtObject.sqf"
+#include "..\utils.h"
+
 if (isServer && !hasInterface) exitWith {};
 
 // Unit
@@ -16,8 +18,8 @@ private _sendPoints = param[1,true,[true]];
 private _inVehicle = param[2,false,[false]];
 
 // CHECKS TO DO BEFORE SPAWNING
-private _side = player getVariable ["side", side player];
-private _nearbyEnemies = {_side != _x getVariable ["side", side _x]} count (_unit nearEntities ["Man", 25]) > 0;
+private _side = SIDEOF(player);
+private _nearbyEnemies = {_side != SIDEOF(_x)} count (_unit nearEntities ["Man", 25]) > 0;
 
 // Invalid spawnpoint check (spawnpoint is not within the playable area)
 if (isNull _unit || {!alive _unit} || {_unit distance sv_cur_obj > 5000}) exitWith {
