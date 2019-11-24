@@ -11,14 +11,14 @@ if (isServer && !hasInterface) exitWith {};
 private _isBeingRevived = param[0, false, [false]];
 
 // Give player loadout
-private _side = player getVariable "gameSide";
+private _side = player getVariable ["gameSide", ["attackers", "defenders"] select (side player == WEST)];
 private _sideLoadout = [] call client_fnc_getCurrentSideLoadout;
 
 private ["_uniforms", "_goggles", "_vests", "_headgears", "_backpacks"];
-_uniforms = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "uniforms"));
-_vests		 = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "vests"));
-_headgears = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "headgears"));
-_backpacks = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "backpacks"));
+_uniforms 	= (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "uniforms"));
+_vests		= (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "vests"));
+_headgears 	= (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "headgears"));
+_backpacks 	= (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "backpacks"));
 if (cl_class isEqualTo "medic") then {
 	if (count _uniforms > 0) then {
 		_uniforms = (getArray(missionConfigFile >> "Soldiers" >> _side >> "Loadouts" >> _sideLoadout >> "uniforms"));
