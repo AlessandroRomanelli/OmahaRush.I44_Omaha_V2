@@ -22,4 +22,8 @@ if (isNull (objectParent _unit)) exitWith {
   "\a3\ui_f\data\Map\VehicleIcons\iconMan_ca.paa"
 };
 
-getText(configFile >> "CfgVehicles" >> typeOf (vehicle _unit) >> "Icon")
+private _icon = getText(configFile >> "CfgVehicles" >> typeOf (vehicle _unit) >> "Icon");
+if (_icon == "iconcar") then {
+	_icon = "";
+};
+_icon;

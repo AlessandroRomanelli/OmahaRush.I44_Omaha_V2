@@ -117,10 +117,14 @@ _configs append ("true" configClasses (missionConfigFile >> "MapSettings" >> sv_
 	// Check whether this array of found vehicles actually containers our vehicle
 	if (!isNull _vehicle && {(_seats - _occupants) > 0} && {(_vehicle distance2D _initialPos) < 50} && {_vehicle isKindOf "Air" || {_vehicle isKindOf "Land" && _vehicle inArea playArea}}) then {
 		_vehiclesCtrl lbAdd (format ["%1 (%2/%3)",_displayName, _occupants, _seats]);
-    private _ctrlIdx = (lbSize _vehiclesCtrl) - 1;
+    	private _ctrlIdx = (lbSize _vehiclesCtrl) - 1;
 		_vehiclesCtrl lbSetData [_ctrlIdx, _configName];
 		_vehiclesCtrl lbSetValue [_ctrlIdx, -2];
-		_vehiclesCtrl lbSetPicture [_ctrlIdx, getText(configFile >> "CfgVehicles" >> _className >> "Icon")];
+		private _icon = getText(configFile >> "CfgVehicles" >> _className >> "Icon");
+		if (_icon == "iconcar") then {
+			_icon = "";
+		};
+		_vehiclesCtrl lbSetPicture [_ctrlIdx, _icon];
 	};
 } forEach _configs;
 true

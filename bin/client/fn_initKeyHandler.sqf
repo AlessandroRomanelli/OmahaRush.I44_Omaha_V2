@@ -127,7 +127,7 @@ cl_allowActions = true;
 		};
 	};
 
-	if (_DIKcode >= KEY_1 && _DIKcode <= KEY_0) then {
+	if (_DIKcode >= KEY_4 && _DIKcode <= KEY_0) then {
 		_h = true;
 	};
 

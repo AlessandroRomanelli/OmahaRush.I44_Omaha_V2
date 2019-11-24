@@ -8,6 +8,7 @@ scriptName "fn_spawn";
 --------------------------------------------------------------------*/
 #define __filename "fn_spawn.sqf"
 #define KEY_ESC 1
+#define SPAWNCAM_POLAR 60
 #include "..\utils.h"
 
 if (isServer && !hasInterface) exitWith {};
@@ -294,8 +295,7 @@ disableSerialization;
 				(_display displayCtrl 207) ctrlSetBackgroundColor [0.725,0.588,0.356,0.8];
 			};
 		} else {
-			private _side = GAMESIDE(player);
-			private _secondaryWeapons = cl_equipConfigurations select {(getText(missionConfigFile >> "Unlocks" >> _side >> _x >> "type")) == "secondary"};
+			private _secondaryWeapons = cl_equipConfigurations select {(getText(missionConfigFile >> "Unlocks" >>  GAMESIDE(player) >> _x >> "type")) == "secondary"};
 			if (cl_spawnmenu_currentWeaponSelectionState != 2 && {count _secondaryWeapons != 0}) then {
 				(_display displayCtrl 209) ctrlSetBackgroundColor [0.725,0.588,0.356,0.8];
 			};
@@ -346,19 +346,23 @@ disableSerialization;
 	_spawnCtrl lbSetCurSel 0;
 };
 
+cl_cam_to_point = {
+	params ["_pos"];
+	private _target = (_pos vectorAdd (getPosATL sv_cur_obj)) vectorMultiply 0.5;
+	private _height = ((_pos distance2D _target)*tan(SPAWNCAM_POLAR)) min 500;
+	cl_spawnmenu_cam camSetPos (_pos vectorAdd [0,0,_height]);
+	cl_spawnmenu_cam camSetTarget _target;
+	cl_spawnmenu_cam camCommit 1;
+	waitUntil {camCommitted cl_spawnmenu_cam};
+};
+
 cl_fnc_follow_unit = {
 	params ["_unit"];
 	while {cl_inSpawnMenu && {!isNull _unit} && {alive _unit}} do {
 		private _newPos = getPosATL _unit;
-		private _height = round (100*log(_newPos distance2D sv_cur_obj))+50;
-		private _targetPos = [_newPos, getPos sv_cur_obj] call client_fnc_getSectionCenter;
-		_newPos set [2, _height];
-		cl_spawnmenu_cam camSetPos _newPos;
-		cl_spawnmenu_cam camSetTarget _targetPos;
-		cl_spawnmenu_cam camCommit 1;
-		waitUntil {camCommitted cl_spawnmenu_cam};
+		[_newPos] call cl_cam_to_point;
 	};
-
+	TERMINATE_SCRIPT(cl_cam_follow_unit);
 };
 
 private _spawnCtrl = _menuDisplay displayCtrl 8;
@@ -368,15 +372,9 @@ _spawnCtrl ctrlAddEventHandler ["MouseButtonClick", {
 	private _spawnName = _control lbData (lbCurSel _control);
 	if ((_control lbValue (lbCurSel _control)) == -1) then {
 		private _stage = sv_cur_obj getVariable ["cur_stage", "Stage1"];
-		private _side = GAMESIDE(player);
 		if (_stage == "") exitWith {};
-		private _newPos = getArray(missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> _stage >> "Spawns" >> _side >> _spawnName >> "positionATL");
-		private _targetPos = [_newPos, getPos sv_cur_obj] call client_fnc_getSectionCenter;
-		private _height = round (100*log(_newPos distance2D sv_cur_obj))+50;
-		_newPos set [2, _height];
-		cl_spawnmenu_cam camSetPos _newPos;
-		cl_spawnmenu_cam camSetTarget _targetPos;
-		cl_spawnmenu_cam camCommit 1;
+		private _newPos = getArray(missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> _stage >> "Spawns" >> GAMESIDE(player) >> _spawnName >> "positionATL");
+		[_newPos] spawn cl_cam_to_point;
 	} else {
 		private _unit = objectFromNetId _spawnName;
 		TERMINATE_SCRIPT(cl_cam_follow_unit);
@@ -392,12 +390,7 @@ _vehiclesCtrl ctrlAddEventHandler ["MouseButtonClick", {
 	private _spawnDisplay = findDisplay 5000;
 	private _vehName = _control lbData (lbCurSel _control);
 	private _newPos = getPosATL (missionNamespace getVariable [_vehName, objNull]);
-	private _height = round (100*log(_newPos distance2D sv_cur_obj))+50;
-	private _targetPos = [_newPos, getPos sv_cur_obj] call client_fnc_getSectionCenter;
-	_newPos set [2, _height];
-	cl_spawnmenu_cam camSetPos _newPos;
-	cl_spawnmenu_cam camSetTarget _targetPos;
-	cl_spawnmenu_cam camCommit 1;
+	[_newPos] spawn cl_cam_to_point;
 	(_spawnDisplay displayCtrl 8) lbSetCurSel -1;
 }];
 

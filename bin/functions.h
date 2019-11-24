@@ -114,6 +114,7 @@ class Maverick_Functions_Client {
 		class spawnModal {};
 		class updateParams {};
 		class populateScoreboard {};
+		class refreshSpawnMenu {};
 
 		// Pointfeed
 		class pointfeed_add {};

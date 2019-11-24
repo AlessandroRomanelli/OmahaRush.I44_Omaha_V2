@@ -584,4 +584,5 @@ cl_get_out_man = player addEventHandler ["GetOutMan", {
 		};
 	};
 }];
+
 true
