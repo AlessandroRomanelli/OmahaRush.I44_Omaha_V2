@@ -318,8 +318,8 @@ cl_killed_eh = player addEventHandler ["Killed", {
 
 		private _spawnSafeDistance = (getNumber (missionConfigFile >> "MapSettings" >> sv_mapSize >> "safeSpawnDistance"));
 		VARIABLE_DEFAULT(sv_setting_SpawnSafeTime, 5);
-		private _spawnMarker = format ["mobile_respawn_%1", _victim getVariable "gameSide"];
-		if (_killer getVariable ["gameSide", "attackers"] != (_victim getVariable ["gameSide", "defenders"]) &&
+		private _spawnMarker = format ["mobile_respawn_%1", ["attackers", "defenders"] select (_victim getVariable ["side", side _victim] == WEST)];
+		if (_killer getVariable ["side", side _killer] != (_victim getVariable ["side", side _victim]) &&
 				{(diag_tickTime - cl_spawn_tick) < sv_setting_SpawnSafeTime} &&
 				{(_victim distance (getMarkerPos _spawnMarker)) < _spawnSafeDistance}) exitWith {
 			// Info
@@ -357,8 +357,8 @@ cl_handledmg_eh = player addEventHandler ["HandleDamage", {
 	};
 	// If the shooter is still unknown, highly reduce damage
 	if (isNull _shooter) exitWith {_damage/10};
-	private _shooterSide = _shooter getVariable ["gameSide", "attackers"];
-	private _unitSide = _unit getVariable ["gameSide", "defenders"];
+	private _shooterSide = _shooter getVariable ["side", side _shooter];
+	private _unitSide = _unit getVariable ["side", side _unit];
 	private _grenades = ["lib_us_mk_2", "lib_shg24", "lib_rg42", "lib_millsbomb"];
 	_projectile = toLower _projectile;
 	// If the damage
@@ -388,10 +388,11 @@ cl_handledmg_eh = player addEventHandler ["HandleDamage", {
 					_shooterWeapon = currentWeapon _shooter;
 				};
 				// Is it not a listed weapon?
-				private _isWeaponListed = isClass(missionConfigFile >> "Unlocks" >> _shooterSide >> _shooterWeapon);
+				private _gameSide = ["attackers", "defenders"] select (_shooterSide == WEST);
+				private _isWeaponListed = isClass(missionConfigFile >> "Unlocks" >> _gameSide >> _shooterWeapon);
 				// If it is listed, get the multiplier, else don't do anything and use 1
 				private _damageMultiplier = if (_isWeaponListed) then {
-					getNumber(missionConfigFile >> "Unlocks" >> _shooterSide >> _shooterWeapon >> "damageMultiplier")
+					getNumber(missionConfigFile >> "Unlocks" >> _gameSide >> _shooterWeapon >> "damageMultiplier")
 				} else {1};
 				// Handle only the global hit part
 				if (_hitSelection isEqualTo "") then {

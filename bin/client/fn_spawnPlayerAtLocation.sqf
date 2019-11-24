@@ -10,17 +10,17 @@ scriptName "fn_spawnPlayerAtLocation";
 #define __filename "fn_spawnPlayerAtLocation.sqf"
 if (isServer && !hasInterface) exitWith {};
 
-
-private _side = player getVariable ["gameSide", "defenders"];
+private _side = player getVariable ["side", side player];
+private _gameSide = ["attackers", "defenders"] select (_side == WEST);
 private _spawnName = param [0, "HQSpawn", [""]];
-private _spawnConfig = missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> sv_cur_obj getVariable ["cur_stage", "Stage1"] >> "Spawns" >> _side >> _spawnName;
+private _spawnConfig = missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> sv_cur_obj getVariable ["cur_stage", "Stage1"] >> "Spawns" >> _gameSide >> _spawnName;
 
 // Get spawn position
 private _pos = getArray(_spawnConfig >> "positionATL");
 
 private _spawnPos = _pos findEmptyPosition [0,20];
 
-private _enemiesNearby = {(_x getVariable ["gameSide", ""]) != _side} count (_spawnPos nearEntities ["Man", 25]) ;
+private _enemiesNearby = {(_x getVariable ["side", side _x]) != _side} count (_spawnPos nearEntities ["Man", 25]) ;
 if (_enemiesNearby > 0) exitWith {
 	["Enemies nearby this spawn point!"] call client_fnc_displayError
 };
@@ -95,7 +95,7 @@ player switchCamera "INTERNAL";
 [] call cl_spawn_succ;
 
 // Display help hint
-if (player getVariable "gameSide" == "defenders") then {
+if (_side == WEST) then {
 	["DEFENDER", "Defend the objectives and kill all attackers trying to destroy them. Each killed attacker reduces their tickets. If it reaches zero, they have lost."] spawn client_fnc_hint;
 } else {
 	["ATTACKER", "Attack the objectives and blow them up, protect them for 60 seconds and move on before you run out of tickets. Each death reduces your ticket count."] spawn client_fnc_hint;

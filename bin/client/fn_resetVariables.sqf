@@ -12,7 +12,13 @@ if (isServer && !hasInterface) exitWith {};
 // Vars
 [] call client_fnc_initGlobalVars;
 
-cl_enemySpawnMarker = if (player getVariable "gameSide" == "defenders") then {"mobile_respawn_attackers"} else {"mobile_respawn_defenders"};
+
+private _isDefending = player getVariable ["side", side player] == WEST;
+cl_enemySpawnMarker = if (_isDefending) then {
+	"mobile_respawn_attackers"
+} else {
+	"mobile_respawn_defenders"
+};
 
 
 // Remove all actions
@@ -35,7 +41,7 @@ if (!isNull _beacon) then {
 400 cutRsc ["rr_objective_gui","PLAIN"];
 
 // Setup the objective icon at the top
-if (player getVariable "gameSide" == "defenders") then {
+if (_isDefending) then {
 	disableSerialization;
 	private _d = uiNamespace getVariable ["rr_objective_gui", displayNull];
 	(_d displayCtrl 0) ctrlSetText WWRUSH_ROOT+"pictures\objective_defender.paa";

@@ -20,7 +20,9 @@ if !((cl_equipClassnames select 0) in cl_equipConfigurations) exitWith {
 
 VARIABLE_DEFAULT(sv_setting_RoundTime, 15);
 private _matchTime = sv_setting_RoundTime*60;
-if (sv_matchTime > _matchTime && (player getVariable ["gameSide", "attackers"]) isEqualTo "attackers") exitWith {
+private _isAttacking = player getVariable ["side", side player] == EAST;
+
+if (sv_matchTime > _matchTime && _isAttacking) exitWith {
 	[format["YOU ARE NOT ALLOWED TO SPAWN JUST YET! %1S LEFT", sv_matchTime - _matchTime]] call client_fnc_displayError;
 };
 
@@ -95,7 +97,7 @@ cl_spawn_succ = {
 	// Run check if we have been moved to an OK position, if not, move us to our HQ, failed spawn as it seems...
 	if (player distance cl_safePos < 100) then {
 		// we are on the debug island, move us to our hq as our spawn is bugged apparently
-		if (player getVariable "gameSide" == "defenders") then {
+		if (player getVariable ["side", side player] == WEST) then {
 			player setPos (getMarkerPos "mobile_respawn_defenders");
 		} else {
 			player setPos (getMarkerPos "mobile_respawn_attackers");

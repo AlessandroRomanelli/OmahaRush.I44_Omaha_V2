@@ -10,7 +10,7 @@ scriptName "fn_getCurrentSideLoadout";
 if (isServer && !hasInterface) exitWith {};
 
 // Give player loadout
-private _side = player getVariable ["gameSide", ["attackers", "defenders"] select (side player == WEST)];
+private _side = ["attackers", "defenders"] select (player getVariable ["side", side player] == WEST);
 private _possibleLoadouts = (missionconfigfile >> "Soldiers" >> _side >> "Loadouts") call Bis_fnc_getCfgSubClasses;
 private _loadoutIdx = _side call BIS_fnc_getParamValue;
 private _sideLoadout = _possibleLoadouts select _loadoutIdx;

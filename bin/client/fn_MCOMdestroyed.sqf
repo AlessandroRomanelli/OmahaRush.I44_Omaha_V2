@@ -52,7 +52,8 @@ if (_moreMcoms) then {
 	// Update markers
 	[] call client_fnc_updateMarkers;
 
-	private _isPlayerAttacking = ((player getVariable ["gameSide", "attackers"]) isEqualTo "attackers");
+	private _side = player getVariable ["side", side player];
+	private _isPlayerAttacking = (_side isEqualTo EAST);
 
 	// If we are attacker, block the next mcom for now
 	if (_isPlayerAttacking) then {
@@ -77,10 +78,10 @@ if (_moreMcoms) then {
 		player setVariable ["isFallingBack", false];
 	};
 
-	private _side = player getVariable ["gameSide", "defenders"];
-	private _faction = getText(missionConfigFile >> "Unlocks" >> _side >> "faction");
+	private _gameSide = ["defenders", "attackers"] select _isPlayerAttacking;
+	private _faction = getText(missionConfigFile >> "Unlocks" >> _gameSide >> "faction");
 	private _idx = (floor (random 4))+1;
-	playSound format["%1Order%2_%3", _side, _faction, _idx];
+	playSound format["%1Order%2_%3", _gameSide, _faction, _idx];
 
 	// Update markers
 	if (_isPlayerAttacking) then {

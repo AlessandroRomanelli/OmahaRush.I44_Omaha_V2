@@ -16,6 +16,8 @@ disableSerialization;
 // Get dialog
 private _d = findDisplay 5000;
 
+private _side = player getVariable ["side", side player];
+
 // Get selected equip to be displayed
 [] call client_fnc_getLoadedEquipment;
 private _equip = player getVariable ["loaded_equipment", [cl_equipClassnames select 0, cl_equipClassnames select 1]];
@@ -29,7 +31,7 @@ if (_primary == "") then {
 
 if (_secondary == "") then {
 	(_d displayCtrl 7) ctrlSetStructuredText parseText "<t size='4' color='#990000' shadow='2' font='PuristaMedium' align='center'>N/A</t>";
-	private _secondaryWeapons = cl_equipConfigurations select {(getText(missionConfigFile >> "Unlocks" >> player getVariable ["gameSide", "defenders"] >> _x >> "type")) == "secondary"};
+	private _secondaryWeapons = cl_equipConfigurations select {(getText(missionConfigFile >> "Unlocks" >> ["attackers", "defenders"] select (_side == WEST) >> _x >> "type")) == "secondary"};
 	if (count _secondaryWeapons != 0) then {
 		(_d displayCtrl 1004) ctrlSetStructuredText parseText "<t size='1.25' color='#990000' shadow='2' font='PuristaMedium' align='center'>NO WEAPON SELECTED</t>";
 		(_d displayCtrl 2001) ctrlSetStructuredText parseText "<t size='0.75' color='#FFFFFF' shadow='2' font='PuristaMedium' align='center'>[CLICK ABOVE TO OPEN]</t>";
@@ -88,7 +90,7 @@ if (_secondary != "") then {
 
 // Change the faction flag
 private _flagCtrl = _d displayCtrl 1205;
-private _marker = getText(missionConfigFile >> "Vehicles" >> ["Attacker", "Defender"] select (player getVariable ["gameSide", "defenders"] == "defenders") >> "marker");
+private _marker = getText(missionConfigFile >> "Vehicles" >> ["Attacker", "Defender"] select (_side == WEST) >> "marker");
 _flagCtrl ctrlSetText (getText(configFile >> "CfgMarkers" >> _marker >> "texture"));
 
 // Get unlock progress

@@ -16,8 +16,8 @@ private _sendPoints = param[1,true,[true]];
 private _inVehicle = param[2,false,[false]];
 
 // CHECKS TO DO BEFORE SPAWNING
-
-private _nearbyEnemies = {player getVariable ["gameSide", ""] != _x getVariable ["gameSide", ""]} count (_unit nearEntities ["Man", 25]) > 0;
+private _side = player getVariable ["side", side player];
+private _nearbyEnemies = {_side != _x getVariable ["side", side _x]} count (_unit nearEntities ["Man", 25]) > 0;
 
 // Invalid spawnpoint check (spawnpoint is not within the playable area)
 if (isNull _unit || {!alive _unit} || {_unit distance sv_cur_obj > 5000}) exitWith {
@@ -131,7 +131,7 @@ player switchCamera "INTERNAL";
 [] call cl_spawn_succ;
 
 // Display help hint
-if (player getVariable "gameSide" == "defenders") then {
+if (_side == WEST) then {
 	["DEFENDER", "Defend the objectives and kill all attackers trying to destroy them. Each killed attacker reduces their tickets. If it reaches zero, they have lost."] spawn client_fnc_hint;
 } else {
 	["ATTACKER", "Attack the objectives and blow them up, protect them for 60 seconds and move on before you run out of tickets. Each death reduces your ticket count."] spawn client_fnc_hint;

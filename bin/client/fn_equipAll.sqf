@@ -11,7 +11,7 @@ if (isServer && !hasInterface) exitWith {};
 private _isBeingRevived = param[0, false, [false]];
 
 // Give player loadout
-private _side = player getVariable ["gameSide", ["attackers", "defenders"] select (side player == WEST)];
+private _side = ["attackers", "defenders"] select (player getVariable ["side", side player] == WEST);
 private _sideLoadout = [] call client_fnc_getCurrentSideLoadout;
 
 private ["_uniforms", "_goggles", "_vests", "_headgears", "_backpacks"];

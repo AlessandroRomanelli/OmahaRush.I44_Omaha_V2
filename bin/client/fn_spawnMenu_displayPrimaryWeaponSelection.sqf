@@ -47,18 +47,20 @@ cl_spawnmenu_currentWeaponSelectionState = 1;
 // Clear listbox
 lbClear (_d displayCtrl 3);
 
+private _side = ["attackers", "defenders"] select (player getVariable ["side", side player] == WEST);
+
 private _primaryWeapons = [];
 {
-		if (getText(missionConfigFile >> "Unlocks" >> player getVariable ["gameSide", "defenders"] >> _x >> "type") isEqualTo "primary") then {
-			_primaryWeapons pushBackUnique _x;
-		};
+	if (getText(missionConfigFile >> "Unlocks" >> _side >> _x >> "type") isEqualTo "primary") then {
+		_primaryWeapons pushBackUnique _x;
+	};
 } forEach cl_equipConfigurations;
 // Load all weapons into the listbox
 {
 	// Basic check
 	if (_x != "") then {
 		// Add weapon to list of weapons
-		private _allowedClasses = getArray(missionConfigFile >> "Unlocks" >> player getVariable ["gameSide", "defenders"] >> _x >> "roles");
+		private _allowedClasses = getArray(missionConfigFile >> "Unlocks" >> _side >> _x >> "roles");
 		if (cl_class in _allowedClasses) then {
 			private _weaponData = [_x] call client_fnc_weaponDetails;
 			(_d displayCtrl 3) lbAdd (_weaponData select 1);

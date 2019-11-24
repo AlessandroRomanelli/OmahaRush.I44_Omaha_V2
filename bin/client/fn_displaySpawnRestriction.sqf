@@ -28,7 +28,7 @@ if (diag_tickTime - (missionNamespace getVariable ["cl_lastSwitched", 0]) < 15 |
 	_SwitchBtn ctrlSetBackgroundColor _backgroundColor;
 };
 
-if (player getVariable ["gameSide", "defenders"] == "defenders") exitWith {
+if (player getVariable ["side", side player] == WEST) exitWith {
 	_deployBtn ctrlEnable true;
 	(_d displayCtrl 304) ctrlSetStructuredText parseText "";
 	_deployBtn ctrlSetBackgroundColor _backgroundColor;

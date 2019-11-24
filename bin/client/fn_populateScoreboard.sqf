@@ -29,8 +29,8 @@ private _allInfoDefenders = [];
 		if (_class isEqualTo "recon") exitWith {"R"};
 		"";
 	};
-	if (_x getVariable ["side", sideUnknown] != civilian) then {
-		if ((_x getVariable "gameSide") == "defenders") then {
+	if (_x getVariable ["side", side _x] != civilian) then {
+		if ((_x getVariable ["side", side _x]) == WEST) then {
 			_allInfoDefenders pushBack [_x getVariable ["points", 0], _x getVariable ["kills", 0], _x getVariable ["deaths", 0], _name, _classInitial];
 		} else {
 			_allInfoAttackers pushBack [_x getVariable ["points", 0], _x getVariable ["kills", 0], _x getVariable ["deaths", 0], _name, _classInitial];
@@ -42,7 +42,7 @@ private _allInfoDefenders = [];
 _allInfoAttackers sort false;
 _allInfoDefenders sort false;
 
-private _data = if ((player getVariable ["gameSide", ""]) isEqualTo "attackers") then {
+private _data = if ((player getVariable ["side", side player]) isEqualTo EAST) then {
 	[" ATTACKERS (%1)", " DEFENDERS (%1)", _allInfoAttackers, _allInfoDefenders]
 } else {
 	[" DEFENDERS (%1)", "ATTACKERS (%1)", _allInfoDefenders, _allInfoAttackers]

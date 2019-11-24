@@ -8,7 +8,7 @@ scriptName "fn_teleport";
 private _dest = param [0, objNull];
 private _path = param [1, "tunnels"];
 
-if (({isPlayer _x && (_x getVariable ["gameSide", "attackers"] != player getVariable ["gameSide", "defenders"])} count (getPosWorld _dest nearEntities ["Man", 20])) > 0) exitWith {
+if (({isPlayer _x && (_x getVariable ["side", side _x] != player getVariable ["side", side player])} count (getPosWorld _dest nearEntities ["Man", 20])) > 0) exitWith {
   ["Enemies detected near tunnel exit"] spawn client_fnc_displayError;
 };
 

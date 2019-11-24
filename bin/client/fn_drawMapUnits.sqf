@@ -34,7 +34,7 @@ cl_map_fnc_updtMkr = {
 cl_map_fnc_getMarkerColor = {
 	params ["_unit"];
 	private _color = ENEMY_COLOR;
-	if ((_unit getVariable ["gameSide", "defenders"]) isEqualTo (player getVariable ["gameSide", "defenders"])) exitWith {
+	if ((_unit getVariable ["side", side _unit]) isEqualTo (player getVariable ["side", side player])) exitWith {
 		_color = if ((group _unit) isEqualTo (group player)) then {TEAM_COLOR} else {SIDE_COLOR};
 		if (!alive _unit) then {
 			_color = REVIVE_COLOR;
@@ -81,7 +81,7 @@ cl_map_draw = addMissionEventHandler ["EachFrame", {
 
 		_marker setMarkerColorLocal _color;
 
-		if ((_x getVariable ["gameSide", "defenders"]) isEqualTo (player getVariable ["gameSide", "defenders"])) then {
+		if ((_x getVariable ["side", side _x]) isEqualTo (player getVariable ["side", side player])) then {
 			if !(alive _x) then {
 				_icon = "loc_hospital";
 				_dir = 0;

@@ -47,7 +47,9 @@ cl_spawnmenu_currentWeaponSelectionState = 2;
 lbClear (_d displayCtrl 3);
 
 // Load all weapons into the listbox
-private _secondaryWeapons = cl_equipConfigurations select {(getText(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> _x >> "type")) == "secondary"};
+private _side = ["attackers", "defenders"] select (player getVariable ["side", side player] == WEST);
+
+private _secondaryWeapons = cl_equipConfigurations select {(getText(missionConfigFile >> "Unlocks" >> _side >> _x >> "type")) == "secondary"};
 {
 	private _weaponData = [_x] call client_fnc_weaponDetails;
 	(_d displayCtrl 3) lbAdd (_weaponData select 1);

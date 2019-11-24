@@ -12,7 +12,7 @@ if (isServer && !hasInterface) exitWith {};
 
 if (true) exitWith {};
 
-private["_curEquip","_weaponInfo","_currentWeapon"];
+/* private["_curEquip","_weaponInfo","_currentWeapon"];
 
 // Unlocks random attachment for currently used weapon
 _currentWeapon = currentWeapon player;
@@ -67,4 +67,4 @@ _e = [] call client_fnc_getLoadedEquipment;
 } forEach _unlockableAttachments;
 
 
-_finalUnlockableAttachments;
+_finalUnlockableAttachments; */

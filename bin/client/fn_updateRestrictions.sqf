@@ -18,7 +18,7 @@ if (isNull _trigger) exitWith {};
 private _currentStage = sv_cur_obj getVariable ["cur_stage", "Stage1"];
 
 // Check if the player is attacking
-private _isPlayerAttacking = (player getVariable "gameSide" == "attackers");
+private _isPlayerAttacking = (player getVariable ["side", side player] == EAST);
 // A set of data depending on whether the player attacks or defends
 private _side = [["Defender", "mobile_respawn_attackers"], ["Attacker", "mobile_respawn_defenders"]] select (_isPlayerAttacking);
 

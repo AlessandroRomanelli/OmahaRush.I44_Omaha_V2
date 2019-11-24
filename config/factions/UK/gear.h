@@ -5,6 +5,10 @@ class ExplosiveCharge {
   backpack = "B_LIB_UK_HSack";
 };
 
+class Radio {
+	className = "LIB_SovRadio";
+};
+
 class Grenade {
   weapon = "LIB_MillsBomb";
   class RifleGrenade {

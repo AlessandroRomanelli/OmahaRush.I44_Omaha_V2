@@ -23,8 +23,8 @@ private _vehiclesCtrl = _d displayCtrl 9;
 lbClear _spawnCtrl;
 lbClear _vehiclesCtrl;
 
-private _side = player getVariable ["gameSide", "defenders"];
-private _playerIsDefending = _side isEqualTo "defenders";
+private _side = player getVariable ["side", side player];
+private _playerIsDefending = _side isEqualTo WEST;
 
 private _configs = configProperties [missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> sv_cur_obj getVariable ["cur_stage", "Stage1"] >> "Spawns" >> _side, "true", false];
 
@@ -51,7 +51,7 @@ private _fnc_appendUnit = {
   params [["_unit", objNull, [objNull]], ["_index", -1, [0]]];
   private _icon = [_unit] call client_fnc_getUnitIcon;
   // Find enemies within 25m radius
-  private _nearbyEnemies = {(_unit getVariable "gameSide") != (_x getVariable "gameSide")} count (_unit nearEntities ["Man", 25]);
+  private _nearbyEnemies = {(_unit getVariable ["side", side _unit]) != (_x getVariable ["side", side _x])} count (_unit nearEntities ["Man", 25]);
   // If the unit was hit or is nearby enemies
   if (damage _unit > 0.1 || {_nearbyEnemies > 0} || {!(_unit inArea playArea)}) exitWith {
     if !(_unit inArea playArea) then {

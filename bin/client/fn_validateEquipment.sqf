@@ -28,10 +28,11 @@ private _exp = missionNamespace getVariable [format["cl_exp_%1", cl_class], 0];
 VARIABLE_DEFAULT(sv_setting_DebugMode, 0);
 private _isDebug = sv_setting_DebugMode == 1;
 
+private _side = ["attackers", "defenders"] select (player getVariable ["side", side player] == WEST);
 // Cycle through all unlocked weapons and check if they exit in the equip array, if not, add them
 if (count cl_equipConfigurations != 0) then {
 	// Get all unlockable weapons
-	private _configs = "true" configClasses (missionConfigFile >> "Unlocks" >> player getVariable "gameSide");
+	private _configs = "true" configClasses (missionConfigFile >> "Unlocks" >> _side);
 	private _maxExp = selectMax [cl_exp_assault, cl_exp_medic, cl_exp_engineer, cl_exp_support, cl_exp_recon];
 	// Populate cl_equipConfigurations with all possible weapons
 	if (_isDebug) then {
@@ -58,9 +59,9 @@ if (true) then {
 	private _validatedArray = [];
 	{
 		// Check if unlocked
-		private _isConfig = isClass(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> _x);
-		private _isUnlocked = (getNumber(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> _x >> "exp")) <= _exp;
-		private _isRightClass = cl_class in (getArray(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> _x >> "roles"));
+		private _isConfig = isClass(missionConfigFile >> "Unlocks" >> _side >> _x);
+		private _isUnlocked = (getNumber(missionConfigFile >> "Unlocks" >> _side >> _x >> "exp")) <= _exp;
+		private _isRightClass = cl_class in (getArray(missionConfigFile >> "Unlocks" >> _side >> _x >> "roles"));
 
 		if (_isDebug || {_isConfig && _isUnlocked && _isRightClass}) then {
 			_validatedArray pushBackUnique _x;

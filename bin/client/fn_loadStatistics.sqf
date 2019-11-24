@@ -94,7 +94,8 @@ private _assignVariables = {
   cl_currentRecord = _record;
   cl_total_kills = _record select 0;
   cl_total_deaths = _record select 1;
-  cl_faction = getText(missionConfigFile >> "Unlocks" >> player getVariable ["gameSide", "defenders"] >> "faction");
+  private _side = ["attackers", "defenders"] select (player getVariable ["side", side player] == WEST);
+  cl_faction = getText(missionConfigFile >> "Unlocks" >> _side >> "faction");
   private _globalXPs = _record select 2;
   private _factionIdx = _globalXPs findIf {(_x select 0) isEqualTo cl_faction};
   if !(_factionIdx isEqualTo -1) then {

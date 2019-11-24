@@ -41,11 +41,9 @@ rc_spawnBeacon = {
 				// Create beacon :>
 				private _pos = player modelToWorld [0,0,0];
 				_beacon = [] call {
-					if (player getVariable ["gameSide", "defenders"] == "defenders") then {
-						createVehicle ["LIB_GerRadio", position player, [], 0, "CAN_COLLIDE"];
-					} else {
-						createVehicle ["LIB_SovRadio", position player, [], 0, "CAN_COLLIDE"];
-					};
+					private _side = ["attackers", "defenders"] select (player getVariable ["side", side player] == WEST);
+					private _radio = getText(missionConfigFile >> "Soldiers" >> _side >> "Radio" >> "className");
+					createVehicle [_radio, position player, [], 0, "CAN_COLLIDE"];
 				};
 				_beacon setPosATL _pos;
 				_beacon enableSimulation false;

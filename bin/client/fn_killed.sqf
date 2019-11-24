@@ -128,7 +128,7 @@ private _objs = nearestObjects [getPos player, ["Man","GroundWeaponHolder", "Wea
 } forEach _objs;
 
 // Reduce ticket count if we are an attacker
-if (player getVariable "gameSide" == "attackers") then {
+if (player getVariable ["side", side player] == EAST) then {
 	private _isObjArmed = sv_cur_obj getVariable ["status", -1] == 1;
 	if (sv_tickets > 0 && !(_isObjArmed)) then {
 		sv_tickets = sv_tickets - 1;

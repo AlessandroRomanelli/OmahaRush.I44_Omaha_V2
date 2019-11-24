@@ -41,12 +41,13 @@ for "_i" from 1 to 4 do {
 
 [{_x} count _mcoms] call {
 	private _mcomsDestroyed = param[0, 0, [0]];
-	if (player getVariable ["gameSide", "defenders"] == "defenders" && _mcomsDestroyed < 4) then {
+	private _side = player getVariable ["side", side player];
+	if (_side == WEST && _mcomsDestroyed < 4) then {
 		private _mcomDefended = 4 - _mcomsDestroyed;
 		[format ["<t size='1.3' color='#FFFFFF'>%1 OBJECTIVE(S) DEFENDED</t>", _mcomDefended], 150*_mcomDefended] call client_fnc_pointfeed_add;
 		[150*_mcomDefended] call client_fnc_addPoints;
 	};
-	if (player getVariable ["gameSide", "attackers"] == "attackers" && _mcomsDestroyed > 0) then {
+	if (_side == EAST && _mcomsDestroyed > 0) then {
 		[format ["<t size='1.3' color='#FFFFFF'>%1 OBJECTIVE(S) DESTROYED</t>", _mcomsDestroyed], 150*_mcomsDestroyed] call client_fnc_pointfeed_add;
 		[150*_mcomsDestroyed] call client_fnc_addPoints;
 	};
@@ -90,17 +91,18 @@ uiSleep .05;
 showCinemaBorder false;
 
 // Display message
+private _side = player getVariable ["side", side player];
 if (_winners == "attackers") then {
-	if (player getVariable "gameSide" == "defenders") then {
+	if (_side == WEST) then {
 		["THE ENEMY TEAM HAS WON THE GAME"] call client_fnc_displayObjectiveMessage;
 	} else {
 		["YOUR TEAM HAS WON THE GAME"] call client_fnc_displayObjectiveMessage;
 	};
 } else {
-	if (player getVariable "gameSide" != "defenders") then {
-		["THE ENEMY TEAM HAS WON THE GAME"] call client_fnc_displayObjectiveMessage;
-	} else {
+	if (_side == WEST) then {
 		["YOUR TEAM HAS WON THE GAME"] call client_fnc_displayObjectiveMessage;
+	} else {
+		["THE ENEMY TEAM HAS WON THE GAME"] call client_fnc_displayObjectiveMessage;
 	};
 };
 

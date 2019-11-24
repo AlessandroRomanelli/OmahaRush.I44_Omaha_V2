@@ -19,8 +19,8 @@ private _event = addMissionEventHandler["EachFrame", {
   (_d displayCtrl 2) progressSetPosition (sv_tickets / sv_tickets_total);
 
   if (visibleMap) exitWith {};
-  private _side = player getVariable ["gameSide", "defenders"];
-  private _isAttacking = _side isEqualTo "attackers";
+  private _side = player getVariable ["side", side player];
+  private _isAttacking = _side isEqualTo EAST;
   private _HQPos = getArray(missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> (sv_cur_obj getVariable ["cur_stage", "Stage1"]) >> "Spawns" >> _side >> "HQSpawn" >> "positionATL");
   private _vehiclePlayer = vehicle player;
   private _posPlayer = getPosATL player;

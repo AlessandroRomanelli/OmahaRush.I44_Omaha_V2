@@ -33,6 +33,11 @@ private _vehicle = _objects select 0; */
 private _vehicle = missionNamespace getVariable [_configName, objNull];
 
 if (isNull _vehicle) exitWith {["Vehicle unavailable"] call client_fnc_displayError;};
+private _side = player getVariable ["side", side player];
+private _enemyWithin = (fullCrew _vehicle) findIf {_x getVariable ["side", side _x] != _side};
+if (_enemyWithin >= 0) exitWith {
+	["Vehicle has been hijacked"] call client_fnc_displayError;
+};
 
 // Put player into vehicle
 private _vehicleNoSpace = !([_vehicle] call client_fnc_moveUnitIntoVehicle);
@@ -101,7 +106,8 @@ camDestroy cl_spawnmenu_cam;
 [] call client_fnc_startIngameGUI;
 
 // Display help hint
-if (player getVariable "gameSide" == "defenders") then {
+
+if (_side == WEST) then {
 	["DEFENDER", "Defend the objectives and kill all attackers trying to destroy them. Each killed attacker reduces their tickets. If it reaches zero, they have lost."] spawn client_fnc_hint;
 } else {
 	["ATTACKER", "Attack the objectives and plant explosives on them, hold them for 60 seconds and move on before you run out of tickets. Each death reduces your ticket count."] spawn client_fnc_hint;

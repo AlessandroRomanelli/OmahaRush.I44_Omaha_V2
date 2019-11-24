@@ -11,7 +11,8 @@ scriptName "fn_spotTarget";
 if (isServer && !hasInterface) exitWith {};
 
 /* systemChat "Spotting targets.."; */
-private _allEnemies = allUnits select {(alive _x) && (_x getVariable "gameSide" != player getVariable "gameSide") && ((_x distance2D player) < 200)};
+private _side = player getVariable ["side", side player];
+private _allEnemies = allUnits select {(alive _x) && (_x getVariable ["side", _x] != _side) && ((_x distance2D player) < 200)};
 private _fnc_getRelDirPOV = {
   private _origin = param [0, objNull, [objNull]];
   private _target = param [1, objNull, [objNull]];

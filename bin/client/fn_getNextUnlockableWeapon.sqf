@@ -11,7 +11,8 @@ scriptName "fn_getNextUnlockableWeapon";
 if (isServer && !hasInterface) exitWith {};
 
 // Get all unlocks
-private _unlocks = "true" configClasses (missionConfigFile >> "Unlocks" >> player getVariable "gameSide");
+private _side = ["attackers", "defenders"] select (player getVariable ["side", side player] == WEST);
+private _unlocks = "true" configClasses (missionConfigFile >> "Unlocks" >> _side);
 
 private _exp = missionNamespace getVariable [format["cl_exp_%1", cl_class], 0];
 private _maxExp = selectMax [cl_exp_assault, cl_exp_medic, cl_exp_engineer, cl_exp_support, cl_exp_recon];
@@ -41,12 +42,12 @@ private _lowest = 999999999999999999;
 // Now lets check if we found something
 private _bottomExp = 0;
 if (_lastUnlock != "") then {
-	_bottomExp = getNumber(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> _lastUnlock >> "exp");
+	_bottomExp = getNumber(missionConfigFile >> "Unlocks" >> _side >> _lastUnlock >> "exp");
 };
 
 private _topExp = 0;
 if (_nextUnlock != "") then {
-	_topExp = getNumber(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> _nextUnlock >> "exp");
+	_topExp = getNumber(missionConfigFile >> "Unlocks" >> _side >> _nextUnlock >> "exp");
 };
 
 if (_topExp == 0) then {

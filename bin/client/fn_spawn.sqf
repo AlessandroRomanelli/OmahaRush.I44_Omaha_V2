@@ -52,7 +52,9 @@ cl_assistsInfo = [];
 // Setup the objective icon at the top
 disableSerialization;
 private _d = uiNamespace getVariable ["rr_objective_gui", displayNull];
-(_d displayCtrl 0) ctrlSetText WWRUSH_ROOT+("pictures\objective_"+(["attacker", "defender"] select (player getVariable ["gameSide", ""] == "defenders"))+".paa");
+private _isDefending = player getVariable ["side", side player] == WEST;
+private _side = ["attacker", "defender"] select _isDefending;
+(_d displayCtrl 0) ctrlSetText WWRUSH_ROOT+("pictures\objective_"+_side+".paa");
 
 VARIABLE_DEFAULT(sv_setting_RotationsPerMatch, 2);
 // If the server will restart after this round, display a visual warning at the top right
@@ -63,13 +65,13 @@ if (sv_gameCycle >= (sv_setting_RotationsPerMatch - 1)) then {
 
 private _marker1 = createMarkerLocal ["mobile_respawn_defenders",[0,0]];
 if (_marker1 != "") then {
-	_marker1 setMarkerTypeLocal (["o_unknown","b_unknown"] select ((player getVariable "gameSide") == "defenders"));
+	_marker1 setMarkerTypeLocal (["o_unknown","b_unknown"] select _isDefending);
 	_marker1 setMarkerTextLocal " Defenders HQ";
 };
 
 private _marker2 = createMarkerLocal ["mobile_respawn_attackers",[0,0]];
 if (_marker2 != "") then {
-	_marker1 setMarkerTypeLocal (["b_unknown","o_unknown"] select ((player getVariable "gameSide") == "defenders"));
+	_marker1 setMarkerTypeLocal (["b_unknown","o_unknown"] select _isDefending);
 	_marker2 setMarkerTextLocal " Attackers HQ";
 };
 
@@ -112,7 +114,7 @@ private _objectives = [sv_stage1_obj, sv_stage2_obj, sv_stage3_obj, sv_stage4_ob
 
 // Get cam pos for spawn menu cam
 private _stage = sv_cur_obj getVariable ["cur_stage", "Stage1"];
-private _side = player getVariable "gameSide";
+private _side = ["attackers", "defenders"] select _isDefending;
 private _pos = getArray(missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> _stage >> "Spawns" >> _side >> "HQSpawn" >> "positionATL");
 
 // Determine point between current pos and target pos
@@ -239,7 +241,7 @@ updateObjectiveProgress = {
 		private _idc = 1200 + _i;
 		private _ctrlObj = _display displayCtrl _idc;
 		private _IntToAlpha = ["", "A", "B", "C", "D"];
-		private _playerSide = player getVariable ["gameSide", "defenders"];
+		private _playerSide = ["attackers", "defenders"] select (player getVariable ["side", side player] == WEST);
 		private _picturePath = WWRUSH_ROOT+"pictures\"+(format["obj_%1_%2", _IntToAlpha select _i, _playerSide])+".paa";
 		private _objective = missionNamespace getVariable [format["sv_stage%1_obj", _i], objNull];
 		_ctrlObj ctrlSetText _picturePath;
@@ -293,7 +295,8 @@ disableSerialization;
 				(_display displayCtrl 207) ctrlSetBackgroundColor [0.725,0.588,0.356,0.8];
 			};
 		} else {
-			private _secondaryWeapons = cl_equipConfigurations select {(getText(missionConfigFile >> "Unlocks" >> player getVariable "gameSide" >> _x >> "type")) == "secondary"};
+			private _side = ["attackers", "defenders"] select (player getVariable ["side", side player] == WEST);
+			private _secondaryWeapons = cl_equipConfigurations select {(getText(missionConfigFile >> "Unlocks" >> _side >> _x >> "type")) == "secondary"};
 			if (cl_spawnmenu_currentWeaponSelectionState != 2 && {count _secondaryWeapons != 0}) then {
 				(_display displayCtrl 209) ctrlSetBackgroundColor [0.725,0.588,0.356,0.8];
 			};
@@ -366,7 +369,7 @@ _spawnCtrl ctrlAddEventHandler ["MouseButtonClick", {
 	private _spawnName = _control lbData (lbCurSel _control);
 	if ((_control lbValue (lbCurSel _control)) == -1) then {
 		private _stage = sv_cur_obj getVariable ["cur_stage", "Stage1"];
-		private _side = player getVariable ["gameSide", ""];
+		private _side = ["attackers", "defenders"] select (player getVariable ["side", side player] == WEST);
 		if (_side == "" || _stage == "") exitWith {};
 		private _newPos = getArray(missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> _stage >> "Spawns" >> _side >> _spawnName >> "positionATL");
 		private _targetPos = [_newPos, getPos sv_cur_obj] call client_fnc_getSectionCenter;

@@ -27,7 +27,7 @@ lbClear _mapList;
 } forEach _mapsPool;
 
 private _attackersList = _adminDisplay displayCtrl 1500;
-private _attackers = allPlayers select {_x getVariable ["gameSide", ""] == "attackers"};
+private _attackers = allPlayers select {_x getVariable ["side", side _x] == EAST};
 lbClear _attackersList;
 {
 	_attackersList lbAdd (_x getVariable ["name", name _x]);
@@ -37,7 +37,7 @@ lbClear _attackersList;
 (_adminDisplay displayCtrl 1001) ctrlSetText format ["Attackers [%1]", count _attackers];
 
 private _defendersList = _adminDisplay displayCtrl 1501;
-private _defenders = allPlayers select {_x getVariable ["gameSide", ""] == "defenders"};
+private _defenders = allPlayers select {_x getVariable ["side", side _x] == WEST};
 lbClear _defendersList;
 {
 	_defendersList lbAdd (_x getVariable ["name", name _x]);

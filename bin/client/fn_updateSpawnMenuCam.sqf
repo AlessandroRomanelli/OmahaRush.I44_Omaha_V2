@@ -15,7 +15,7 @@ if (isNull cl_spawnmenu_cam) exitWith {hint "2"};
 
 // Get cam pos for spawn menu cam
 private _stage = sv_cur_obj getVariable ["cur_stage", "Stage1"];
-private _side = if (player getVariable "gameSide" == "defenders") then {"defenders"} else {"attackers"};
+private _side = ["attackers", "defenders"] select (player getVariable ["side", side player] == WEST);
 private _pos = getArray(missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> _stage >> "Spawns" >> _side >> "HQSpawn" >> "positionATL");
 
 // Determine point between current pos and target pos

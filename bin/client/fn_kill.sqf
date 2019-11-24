@@ -96,7 +96,7 @@ if (_victim distance player > 50) then {
 
 private _objectiveKill = "";
 if ((player distance sv_cur_obj) < 25 || (_victim distance sv_cur_obj) < 25) then {
-	if (player getVariable "gameSide" == "defenders") then {
+	if (player getVariable ["side", side player] == WEST) then {
 		_objectiveKill = "<br/><t size='1.0' color='#FFFFFF'>OBJECTIVE DEFENDER</t>";
 	} else {
 		_objectiveKill = "<br/><t size='1.0' color='#FFFFFF'>OBJECTIVE ATTACKER</t>";

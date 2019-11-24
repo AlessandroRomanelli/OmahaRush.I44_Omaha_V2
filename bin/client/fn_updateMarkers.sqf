@@ -12,8 +12,10 @@ if (isServer && !hasInterface) exitWith {};
 
 private _objMarkerStatusUpdate = param[0, false, [false]];
 
+private _side = player getVariable ["side", side player];
+private _gameSide = ["attackers", "defenders"] select (_side == WEST);
 private _spawnsConfig = (missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> (sv_cur_obj getVariable ["cur_stage", "Stage1"]) >> "Spawns");
-private _spawns = "true" configClasses (_spawnsConfig >> (player getVariable ["gameSide", "attackers"]));
+private _spawns = "true" configClasses (_spawnsConfig >> _gameSide);
 
 _spawns deleteAt 0;
 
@@ -43,7 +45,7 @@ if !(_objMarkerStatusUpdate) exitWith {
 	"mobile_respawn_defenders" setMarkerPosLocal _HQposDef;
 	"mobile_respawn_attackers" setMarkerPosLocal _HQposAtk;
 
-	if (player getVariable "gameSide" == "defenders") then {
+	if (_side == WEST) then {
 		cl_enemySpawnMarker = "";
 		"mobile_respawn_defenders" setMarkerTypeLocal _defMarker;
 		"mobile_respawn_defenders" setMarkerTextLocal (format[" Defenders HQ (%1)", _defFaction]);
