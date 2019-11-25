@@ -37,7 +37,7 @@ class Loadouts {
       headgears[] = {"H_LIB_US_Helmet_Med", "H_LIB_US_Helmet_Med_ns", "H_LIB_US_Helmet_Med_os"};
       backpacks[] = {};
     };
-    ATbackpack = "B_LIB_US_Backpack_RocketBag_Empty";
+    ATbackpack = "B_LIB_US_Backpack_RocketBag_Big_Empty";
   };
 
   class HBT {

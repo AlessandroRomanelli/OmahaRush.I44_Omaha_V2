@@ -38,7 +38,7 @@ class Loadouts {
       headgears[] = {"H_LIB_GER_Helmet_Medic"};
       backpacks[] = {"B_LIB_GER_MedicBackpack_Empty"};
     };
-    ATbackpack = "B_LIB_GER_Panzer_Empty";
+    ATbackpack = "B_LIB_GER_Panzer_Big_Empty";
   };
 
   class M43_Camo {

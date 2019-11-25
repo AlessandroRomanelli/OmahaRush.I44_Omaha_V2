@@ -37,7 +37,7 @@ class Loadouts {
       headgears[] = {};
       backpacks[] = {"B_LIB_SOV_RA_MedicalBag_Empty"};
     };
-    ATbackpack = "B_LIB_US_RocketBag_Empty";
+    ATbackpack = "B_LIB_US_RocketBag_Big_Empty";
   };
   class Spring {
     uniforms[] = {"U_LIB_SOV_Strelok", "U_LIB_SOV_Efreitor"};
