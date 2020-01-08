@@ -15,7 +15,7 @@ if ((diag_tickTime - cl_lastSwitched) < 15) then {
   _error = "CANNOT SWITCH SIDES TOO QUICKLY";
 };
 
-if (sv_cur_obj getVariable ["status", 0] == 1) then {
+if (IS_OBJ_ARMED) then {
   _error = "CANNOT SWITCH SIDES WHILE THE BOMB IS ARMED";
 };
 

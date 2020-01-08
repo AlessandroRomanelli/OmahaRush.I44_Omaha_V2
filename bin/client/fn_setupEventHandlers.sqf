@@ -21,12 +21,18 @@ if (isServer && !hasInterface) exitWith {};
 
 // Custom Event Handler for Group Change
 cl_groupSize = -1;
+cl_cur_obj = objNull;
 cl_playAreaPos = [0,0,0];
 cl_obj_status = -1;
 cl_playerSwimming = !(isTouchingGround player) && (surfaceIsWater (getPosATL player));
-cl_enemiesNearby = 0;
+cl_enemiesNearby = [];
 cl_currentWeapon = "";
 cl_currentWeaponMode = "";
+cl_currentSide = sideUnknown;
+
+VARIABLE_DEFAULT(rr_gui_obj_animation_thread, scriptNull);
+
+
 REMOVE_EXISTING_MEH("Map", cl_mapObserverID);
 cl_mapObserverID = addMissionEventHandler["Map", {
 		params ["_mapIsOpened"];
@@ -48,8 +54,8 @@ cl_eventObserverID = addMissionEventHandler["EachFrame", {
 		private ["_data"];
 		_data = count (units group player);
 		if !(_data isEqualTo cl_groupSize) then {
-			[missionNamespace, "groupPlayerChanged"] call BIS_fnc_callScriptedEventHandler;
 			cl_groupSize = _data;
+			[missionNamespace, "groupPlayerChanged"] call BIS_fnc_callScriptedEventHandler;
 		};
 
 		_data = cameraView;
@@ -59,39 +65,50 @@ cl_eventObserverID = addMissionEventHandler["EachFrame", {
 
 		_data = getPosATL playArea;
 		if !(_data isEqualTo cl_playAreaPos) then {
-			[missionNamespace, "playAreaChanged"] call BIS_fnc_callScriptedEventHandler;
 			cl_playAreaPos = _data;
+			[missionNamespace, "playAreaChanged"] call BIS_fnc_callScriptedEventHandler;
 		};
 
-		_data = sv_cur_obj getVariable ["status", -1];
+		_data = sv_cur_obj getVariable ["status", OBJ_STATUS_UNRMED];
 		if !(_data isEqualTo cl_obj_status) then {
-			[missionNamespace, "objStatusChanged", [_data]] call BIS_fnc_callScriptedEventHandler;
 			cl_obj_status = _data;
+			[missionNamespace, "objStatusChanged", [_data]] call BIS_fnc_callScriptedEventHandler;
 		};
 
 		_data = !(isTouchingGround player) && (surfaceIsWater (getPosATL player));
 		if !(_data isEqualTo cl_playerSwimming) then {
-			[missionNamespace, "playerSwimming"] call BIS_fnc_callScriptedEventHandler;
 			cl_playerSwimming = _data;
+			[missionNamespace, "playerSwimming"] call BIS_fnc_callScriptedEventHandler;
 		};
 
-		private _enemiesNearby = (player nearEntities ["Man", 10]) select {alive _x && {(_x getVariable ["side", side _x]) != (player getVariable ["side", sideUnknown])}};
-		_data =  count _enemiesNearby;
-		if !(_data isEqualTo cl_enemiesNearby) then {
-			[missionNamespace, "newEnemiesNearby", [_enemiesNearby]] call BIS_fnc_callScriptedEventHandler;
+		private _data = (player nearEntities ["Man", 10]) select {alive _x && {SAME_SIDE(_x, player)}};
+		if !((count _data) isEqualTo (count cl_enemiesNearby)) then {
 			cl_enemiesNearby = _data;
+			[missionNamespace, "newEnemiesNearby"] call BIS_fnc_callScriptedEventHandler;
 		};
 
 		private _data = currentWeaponMode player;
 		if !(_data isEqualTo cl_currentWeaponMode) then {
-			[missionNamespace, "weaponChanged"] call BIS_fnc_callScriptedEventHandler;
 			cl_currentWeaponMode = _data;
+			[missionNamespace, "weaponChanged"] call BIS_fnc_callScriptedEventHandler;
 		};
 
 		private _data = currentWeapon player;
 		if !(_data isEqualTo cl_currentWeapon) then {
-			[missionNamespace, "weaponChanged"] call BIS_fnc_callScriptedEventHandler;
 			cl_currentWeapon = _data;
+			[missionNamespace, "weaponChanged"] call BIS_fnc_callScriptedEventHandler;
+		};
+
+		private _data = sv_cur_obj;
+		if !(_data isEqualTo cl_cur_obj) then {
+			cl_cur_obj = _data;
+			[missionNamespace, "objectiveChanged"] call BIS_fnc_callScriptedEventHandler;
+		};
+
+		private _data = SIDEOF(player);
+		if !(_data isEqualTo cl_currentSide) then {
+			cl_currentSide = _data;
+			[missionNamespace, "sideChanged"] call BIS_fnc_callScriptedEventHandler;
 		};
 }];
 
@@ -113,11 +130,16 @@ cl_eventObserverID = addMissionEventHandler["EachFrame", {
 
 [missionNamespace, "objStatusChanged", {
 	// Update objective marker to reflect status
-		private _status = param [0, -1, [0]];
 		[true] call client_fnc_updateMarkers;
-		if (_status isEqualTo 1) then {
+		TERMINATE_SCRIPT(rr_gui_obj_animation_thread);
+
+		private _c = (uiNamespace getVariable ["rr_objective_gui",displayNull]) displayCtrl 0;
+		_c ctrlSetFade 0;
+		_c ctrlCommit 0;
+
+		if (cl_obj_status isEqualTo OBJ_STATUS_ARMED) then {
 			// Make the UI at the top blink
-			[] spawn client_fnc_objectiveArmedGUIAnimation;
+			rr_gui_obj_animation_thread = [] spawn client_fnc_objectiveArmedGUIAnimation;
 		};
 }] call bis_fnc_addScriptedEventHandler;
 
@@ -149,8 +171,16 @@ cl_eventObserverID = addMissionEventHandler["EachFrame", {
 	};
 }] call bis_fnc_addScriptedEventHandler;
 
+[missionNamespace, "objectiveChanged", {
+	[] call displays_fnc_objectiveGUI_update;
+}] call bis_fnc_addScriptedEventHandler;
+
+[missionNamespace, "sideChanged", {
+	disableSerialization;
+	[] call displays_fnc_objectiveGUI_update;
+}] call bis_fnc_addScriptedEventHandler;
+
 [missionNamespace, "newEnemiesNearby", {
-	params [["_enemiesNearby", [], []]];
 	{
 		if (_x getVariable ["melee_action", -1] != -1) then {
 			[_x, _x getVariable "melee_action"] call BIS_fnc_holdActionRemove;
@@ -177,7 +207,7 @@ cl_eventObserverID = addMissionEventHandler["EachFrame", {
 		/* 14 show unconscious */				false
 		] call BIS_fnc_holdActionAdd;
 		_x setVariable ["melee_action", _id];
-	} forEach _enemiesNearby;
+	} forEach cl_enemiesNearby;
 }] call bis_fnc_addScriptedEventHandler;
 
 // Automatic magazine recombination

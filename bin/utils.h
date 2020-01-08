@@ -1,5 +1,14 @@
+// UTILITIES
 #define QUOTE(var1) #var1
 #define DOUBLES(var1,var2) var1##_##var2
+
+// OBJECTIVE status
+#define OBJ_STATUS_UNARMED 		-1
+#define OBJ_STATUS_IN_USE 		0
+#define OBJ_STATUS_ARMED 		1
+#define OBJ_STATUS_DISARMED 	2
+#define OBJ_STATUS_DONE			3
+#define IS_OBJ_ARMED (sv_cur_obj getVariable ["status", OBJ_STATUS_UNARMED] == OBJ_STATUS_ARMED)
 
 // DECLARATIONS
 #define VARIABLE_DEFAULT(VAR_NAME,DEFAULT) if (isNil QUOTE(VAR_NAME)) then {VAR_NAME = DEFAULT;}

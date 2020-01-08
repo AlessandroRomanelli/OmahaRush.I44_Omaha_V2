@@ -8,6 +8,7 @@ scriptName "fn_matchTimer";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_matchTimer.sqf"
+#include "..\utils.h"
 
 // Make obsolete
 if (true) exitWith {};
@@ -21,8 +22,8 @@ cl_matchTimer_thread = [] spawn {
 	private _delay = 0;
 	while {sv_gameStatus == 2} do {
 		uiSleep 1;
-		private _status = sv_cur_obj getVariable ["status", -1];
-		if (_status == 0 || _status == 1) then {
+		private _status = sv_cur_obj getVariable ["status", OBJ_STATUS_UNARMED];
+		if (_status == OBJ_STATUS_IN_USE || _status == OBJ_STATUS_ARMED) then {
 			_delay = _delay + 1;
 		};
 		_time = cl_matchEndTime - serverTime + _delay;

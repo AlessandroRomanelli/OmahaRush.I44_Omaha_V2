@@ -1,5 +1,5 @@
 // Client
-class Maverick_Functions_Client {
+class Functions_Client {
 	tag = "client";
 	class functions {
 		file = "bin\client";
@@ -129,11 +129,22 @@ class Maverick_Functions_Client {
 		class spawnMenu_loadClasses {};
 		class spawnMenu_getClassAndSpawn {};
 		class spawnMenu_displayClassCustomization {};
+
+	};
+};
+
+class Functions_Displays {
+	tag = "displays";
+	class functions {
+			file = "bin\displays";
+			class spawnMenu_handleWeaponSelect {};
+			class spawnMenu_handleClassSelect {};
+			class objectiveGUI_update {};
 	};
 };
 
 // Server
-class Maverick_Functions_Server {
+class Functions_Server {
 	tag = "server";
 	class functions {
 		file = "bin\server";
@@ -174,7 +185,7 @@ class Maverick_Functions_Server {
 	};
 };
 
-class Maverick_Functions_Admin {
+class Functions_Admin {
 	tag = "admin";
 	class functions {
 		file = "bin\admin";

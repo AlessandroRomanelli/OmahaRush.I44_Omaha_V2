@@ -8,12 +8,13 @@ scriptName "fn_armMCOM";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_armMCOM.sqf"
+#include "..\utils.h"
 if (isServer && !hasInterface) exitWith {};
 // If the objective is already armed, do nothing!
-if ((sv_cur_obj getVariable ["status", -1] == 1) || {!alive player} || {!isNil "cl_action_obj" && {cl_action_obj != sv_cur_obj}}) exitWith {};
+if (IS_OBJ_ARMED || {!alive player} || {!isNil "cl_action_obj" && {cl_action_obj != sv_cur_obj}}) exitWith {};
 
 // Set armed
-sv_cur_obj setVariable ["status", 1, true];
+sv_cur_obj setVariable ["status", OBJ_STATUS_ARMED, true];
 
 // Give points
 ["<t size='1.3' color='#FFFFFF'>EXPLOSIVES ARMED</t><br/><t size='1.0' color='#FFFFFF'>Objective Attacker</t>", 225] call client_fnc_pointfeed_add;

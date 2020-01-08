@@ -46,17 +46,14 @@ player allowDamage false;
 cl_assistsInfo = [];
 
 // Delete layers that may be still there
-60000 cutRsc ["default", "PLAIN"];
-60001 cutRsc ["default", "PLAIN"];
+60000 cutFadeOut 0;
+60001 cutFadeOut 0;
 
 400 cutRsc ["rr_objective_gui","PLAIN"];
 300 cutFadeOut 0;
 // Setup the objective icon at the top
 disableSerialization;
-private _d = uiNamespace getVariable ["rr_objective_gui", displayNull];
 private _isDefending = IS_DEFENDING(player);
-private _side = ["attacker", "defender"] select _isDefending;
-(_d displayCtrl 0) ctrlSetText WWRUSH_ROOT+("pictures\objective_"+_side+".paa");
 
 VARIABLE_DEFAULT(sv_setting_RotationsPerMatch, 2);
 // If the server will restart after this round, display a visual warning at the top right
@@ -179,15 +176,6 @@ if (isNull _menuDisplay) then {
 	_menuDisplay = (findDisplay 5000);
 };
 
-// Disable ESC
-_menuDisplay displayAddEventHandler ["KeyDown",{
-	private _handled = false;
-	if ((_this select 1) == KEY_ESC) then {
-		_handled = true; // Block ESC
-	};
-	_handled;
-}];
-
 // Blurry background?
 if (getNumber(missionConfigFile >> "GeneralConfig" >> "PostProcessing") == 1) then {
 	["DynamicBlur", 400, [0.5]] spawn {
@@ -207,7 +195,7 @@ if (getNumber(missionConfigFile >> "GeneralConfig" >> "PostProcessing") == 1) th
 // Populate the structured texts
 [] call client_fnc_populateSpawnMenu;
 
-scaleCtrl = {
+/* scaleCtrl = {
 	params [["_ctrl", controlNull, [controlNull]],["_factor", 0, [0]], ["_time", 0, [0]]];
 	private _ctrlPos = ctrlPosition _ctrl;
 	private _delta = ((_ctrlPos select 2)*(_factor - 1))/2;
@@ -215,10 +203,10 @@ scaleCtrl = {
   _ctrl ctrlSetPosition _newPos;
 	_ctrl ctrlCommit _time;
 	true
-};
+}; */
 
 // TODO: Move this to PFH
-animateCtrl = {
+/* animateCtrl = {
 	params [["_objective", objNUll, [objNull]],["_ctrl", controlNull, [controlNull]],["_factor", 0, [0]], ["_time", 0, [0]]];
 	private _ctrlPos = ctrlPosition _ctrl;
 	if (!isNil "cl_objectiveSpawnAnimation") exitWith {};
@@ -234,9 +222,10 @@ animateCtrl = {
 	_ctrl ctrlCommit 0;
 	cl_objectiveSpawnAnimation = nil;
 	[] call updateObjectiveProgress;
-};
+}; */
+
 // TODO: Move this to PFH
-updateObjectiveProgress = {
+/* updateObjectiveProgress = {
 	private _display = findDisplay 5000;
 	for "_i" from 1 to 4 do {
 		private _idc = 1200 + _i;
@@ -251,16 +240,16 @@ updateObjectiveProgress = {
 			_ctrlObj ctrlSetTextColor [1,1,1,1];
 			[_objective, _ctrlObj, 1.1, 0.5] spawn animateCtrl;
 		};
-		if ((_objective getVariable ["status", -1]) isEqualTo 3) then {
+		if ((_objective getVariable ["status", OBJ_STATUS_UNARMED]) isEqualTo OBJ_STATUS_DONE) then {
 			_ctrlObj ctrlSetTextColor [-1, -1, -1, 0.25];
 		};
 	};
 	true
-};
+}; */
 
-[_menuDisplay] spawn updateObjectiveProgress;
+/* [] spawn updateObjectiveProgress; */
 
-(_menuDisplay displayCtrl 1200) ctrlSetFade 1;
+/* (_menuDisplay displayCtrl 1200) ctrlSetFade 1;
 (_menuDisplay displayCtrl 1200) ctrlCommit 0;
 
 {
@@ -275,7 +264,7 @@ updateObjectiveProgress = {
 		(_display displayCtrl 1200) ctrlSetFade 1;
 		(_display displayCtrl 1200) ctrlCommit 0.5;
 	}];
-} forEach [1201,1202,1203,1204];
+} forEach [1201,1202,1203,1204]; */
 
 // Add eventhandlers to the dialog and hide the weapon selection
 cl_spawnmenu_currentWeaponSelectionState = 0; // Nothing open

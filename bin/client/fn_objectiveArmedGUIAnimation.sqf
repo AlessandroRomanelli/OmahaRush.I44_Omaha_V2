@@ -8,13 +8,15 @@ scriptName "fn_objectiveArmedGUIAnimation";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_objectiveArmedGUIAnimation.sqf"
+#include "..\utils.h"
 if (isServer && !hasInterface) exitWith {};
-
+	
 disableSerialization;
+
 private _c = (uiNamespace getVariable ["rr_objective_gui",displayNull]) displayCtrl 0;
 private _obj = sv_cur_obj;
 
-while {(_obj getVariable ["status", -1] == 1) && {sv_cur_obj == _obj}} do {
+while {IS_OBJ_ARMED && {sv_cur_obj == _obj}} do {
 	_c ctrlSetFade 1;
 	_c ctrlCommit 0.5;
 	uiSleep 0.5;

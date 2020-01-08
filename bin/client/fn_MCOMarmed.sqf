@@ -26,7 +26,7 @@ WAIT_IF_NOT(cl_init_done);
 if (_planter == player) then {
 	// Wait until estimated explosion time
 	private _objective = sv_cur_obj;
-	waitUntil {(_objective getVariable ["status", -1] == 3) || (_objective != sv_cur_obj)};
+	waitUntil {(_objective getVariable ["status", OBJ_STATUS_UNARMED] == OBJ_STATUS_DONE) || (_objective != sv_cur_obj)};
 
 	// Still the same objective? Looks like we werent successful...
 	if (_objective == sv_cur_obj) exitWith {};

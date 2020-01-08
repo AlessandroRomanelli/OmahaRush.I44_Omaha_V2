@@ -8,15 +8,16 @@ scriptName "fn_disarmMCOM";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_disarmMCOM.sqf"
+#include "..\utils.h"
 if (isServer && !hasInterface) exitWith {};
 
 // If it wasn't armed, there's nothing to disarm!
-private _status = sv_cur_obj getVariable ["status", -1];
-if (_status == -1 || _status > 1) exitWith {};
+private _status = sv_cur_obj getVariable ["status", OBJ_STATUS_UNARMED];
+if (_status == OBJ_STATUS_UNARMED || _status > OBJ_STATUS_ARMED) exitWith {};
 if (!alive player || {cl_action_obj != sv_cur_obj}) exitWith {};
 
 // Set disarmed
-sv_cur_obj setVariable ["status", 2, true];
+sv_cur_obj setVariable ["status", OBJ_STATUS_DISARMED, true];
 
 // Send message to everyone
 ["THE EXPLOSIVES HAVE BEEN DEFUSED"] remoteExecCall ["client_fnc_displayObjectiveMessage", -2];

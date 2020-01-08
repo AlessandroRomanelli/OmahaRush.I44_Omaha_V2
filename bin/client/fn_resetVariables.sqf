@@ -40,13 +40,6 @@ if (!isNull _beacon) then {
 // Start top objective gui
 400 cutRsc ["rr_objective_gui","PLAIN"];
 
-// Setup the objective icon at the top
-if (_isDefending) then {
-	disableSerialization;
-	private _d = uiNamespace getVariable ["rr_objective_gui", displayNull];
-	(_d displayCtrl 0) ctrlSetText WWRUSH_ROOT+"pictures\objective_defender.paa";
-};
-
 // Wait until we have a ticket count
 /* waitUntil {!isNil "sv_tickets" && !isNil "sv_tickets_total"}; */
 

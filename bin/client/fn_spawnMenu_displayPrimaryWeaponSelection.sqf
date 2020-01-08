@@ -43,11 +43,12 @@ cl_spawnmenu_currentWeaponSelectionState = 1;
 
 // Show selection
 (_d displayCtrl 2) ctrlShow true; // Background
-(_d displayCtrl 3) ctrlShow true; // List of options
 
-(_d displayCtrl 3) ctrlRemoveAllEventHandlers "LBSelChanged";
+private _listBox = _d displayCtrl 3;
+_listBox ctrlShow true; // List of options
+
 // Clear listbox
-lbClear (_d displayCtrl 3);
+lbClear _listBox;
 
 private _side = GAMESIDE(player);
 
@@ -68,25 +69,10 @@ private _primaryWeapons = [];
 			(_d displayCtrl 3) lbAdd (_weaponData select 1);
 			(_d displayCtrl 3) lbSetPicture [(lbSize (_d displayCtrl 3)) - 1, (_weaponData select 2)];
 			(_d displayCtrl 3) lbSetData [(lbSize (_d displayCtrl 3)) - 1, _x];
-			/* if ((_x select 0) == (cl_equipClassnames select 0)) then {
-				(_d displayCtrl 3) lbSetCurSel ((lbSize (_d displayCtrl 3)) - 1);
-			}; */
 		};
 	};
 } forEach _primaryWeapons;
 
-(_d displayCtrl 3) lbSetCurSel (profileNamespace getVariable [format["rr_prefPWeaponIdx_%1_%2", cl_class, cl_faction], 0]);
-
-// Give control
-(_d displayCtrl 3) ctrlAddEventHandler ["LBSelChanged", {
-	disableSerialization;
-	_d = findDisplay 5000;
-	private _idx = lbCurSel (_d displayCtrl 3);
-	cl_equipClassnames set [0, (_d displayCtrl 3) lbData _idx];
-	profileNamespace setVariable [format["rr_prefPWeaponIdx_%1_%2", cl_class, cl_faction], _idx];
-	profileNamespace setVariable [format["rr_prefPWeapon_%1_%2", cl_class, cl_faction], (cl_equipClassNames select 0)];
-	// Populate the structured texts
-	[] call client_fnc_populateSpawnMenu;
-}];
+_listBox lbSetCurSel (profileNamespace getVariable [format["rr_prefPWeaponIdx_%1_%2", cl_class, cl_faction], 0]);
 
 true

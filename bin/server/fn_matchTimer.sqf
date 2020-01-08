@@ -29,8 +29,8 @@ private _objective = sv_cur_obj;
 // While there's time left and the game is ongoing
 for "_time" from sv_matchTime to 0 step -1 do {
 	if (sv_gameStatus != 2) exitWith {};
-	private _status = _objective getVariable ["status", -1];
-	if (_status in [0, 1]) then {
+	private _status = _objective getVariable ["status", OBJ_STATUS_UNARMED];
+	if (_status in [OBJ_STATUS_IN_USE, OBJ_STATUS_ARMED]) then {
 		_time = _time + 1;
 	};
 	if (_time % 5 == 0) then {

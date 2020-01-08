@@ -32,27 +32,21 @@ private _faction = getText(missionConfigFile >> "Unlocks" >> SIDE_STR(_winners) 
 playSound (format ["ending%1", _faction]);
 
 // Get mcoms
-private _mcoms = [];
-for "_i" from 1 to 4 do {
-	private _mcom = missionNamespace getVariable [format["sv_stage%1_obj", _i], objNull];
-	private _hasBeenDone = _mcom getVariable ["status", -1] == 3;
-	_mcoms pushback _hasBeenDone;
-};
+private _mcoms = [sv_stage4_obj, sv_stage3_obj, sv_stage2_obj, sv_stage1_obj];
+private _idx = _mcoms findIf {_x getVariable ["status", OBJ_STATUS_UNARMED] == OBJ_STATUS_DONE};
+private _mcomsDestroyed = if (_idx > -1) then {4 - _idx} else {0};
 
-[{_x} count _mcoms] call {
-	private _mcomsDestroyed = param[0, 0, [0]];
-	if (IS_DEFENDING(player) && _mcomsDestroyed < 4) then {
-		private _mcomDefended = 4 - _mcomsDestroyed;
-		[format ["<t size='1.3' color='#FFFFFF'>%1 OBJECTIVE(S) DEFENDED</t>", _mcomDefended], 150*_mcomDefended] call client_fnc_pointfeed_add;
-		[150*_mcomDefended] call client_fnc_addPoints;
-	};
-	if (IS_ATTACKING(player) && _mcomsDestroyed > 0) then {
-		[format ["<t size='1.3' color='#FFFFFF'>%1 OBJECTIVE(S) DESTROYED</t>", _mcomsDestroyed], 150*_mcomsDestroyed] call client_fnc_pointfeed_add;
-		[150*_mcomsDestroyed] call client_fnc_addPoints;
-	};
-	["<t size='1.3' color='#FFFFFF'>ROUND COMPLETED BONUS</t>", 200] call client_fnc_pointfeed_add;
-	[200] call client_fnc_addPoints;
+if (IS_DEFENDING(player) && _mcomsDestroyed < 4) then {
+	private _mcomDefended = 4 - _mcomsDestroyed;
+	[format ["<t size='1.3' color='#FFFFFF'>%1 OBJECTIVE(S) DEFENDED</t>", _mcomDefended], 150*_mcomDefended] call client_fnc_pointfeed_add;
+	[150*_mcomDefended] call client_fnc_addPoints;
 };
+if (IS_ATTACKING(player) && _mcomsDestroyed > 0) then {
+	[format ["<t size='1.3' color='#FFFFFF'>%1 OBJECTIVE(S) DESTROYED</t>", _mcomsDestroyed], 150*_mcomsDestroyed] call client_fnc_pointfeed_add;
+	[150*_mcomsDestroyed] call client_fnc_addPoints;
+};
+["<t size='1.3' color='#FFFFFF'>ROUND COMPLETED BONUS</t>", 200] call client_fnc_pointfeed_add;
+[200] call client_fnc_addPoints;
 
 // Save stats
 [] spawn client_fnc_saveStatistics;

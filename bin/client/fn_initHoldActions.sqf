@@ -8,6 +8,8 @@ scriptName "fn_initHoldActions";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_initHoldActions.sqf"
+#include "..\utils.h"
+
 if (isServer && !hasInterface) exitWith {};
 
 {[player, _x] call BIS_fnc_holdActionRemove} forEach cl_actionIDs;
@@ -121,7 +123,7 @@ if ((player getVariable ["side", side player]) == WEST) then {
 		};
 	};
 	_interruption = {
-		sv_cur_obj setVariable ["status", 1, true];
+		sv_cur_obj setVariable ["status", OBJ_STATUS_ARMED, true];
 		sv_cur_obj setVariable ["arming", false];
 	};
 } else {
@@ -130,7 +132,7 @@ if ((player getVariable ["side", side player]) == WEST) then {
 	_cond = "player inArea playArea && {(player distance sv_cur_obj) < ceil(([sv_cur_obj] call client_fnc_getObjectiveDistance) + 1.5)} && {((sv_cur_obj getVariable ['status',-1]) in [-1, 2]) || {(sv_cur_obj getVariable ['status', -1] == 0) && {sv_cur_obj getVariable ['arming', false]}}}";
 	_completion = {if ((sv_cur_obj distance player) < ceil(([sv_cur_obj] call client_fnc_getObjectiveDistance) + 1.5)) then {[] call client_fnc_armMCOM;};};
 	_interruption = {
-		sv_cur_obj setVariable ["status", -1, true];
+		sv_cur_obj setVariable ["status", OBJ_STATUS_UNARMED, true];
 		sv_cur_obj setVariable ["arming", false];
 	};
 };
@@ -145,7 +147,7 @@ private _id = [
 /* 5 condition for action */			"player distance sv_cur_obj < ceil(([sv_cur_obj] call client_fnc_getObjectiveDistance) + 2)",
 /* 6 code executed on start */			{
 	playSound3D[WWRUSH_ROOT + "sounds\arm.ogg", sv_cur_obj];
-	sv_cur_obj setVariable ["status", 0, true];
+	sv_cur_obj setVariable ["status", OBJ_STATUS_IN_USE, true];
 	sv_cur_obj setVariable ["arming", true];
 	cl_action_obj = sv_cur_obj;
 },

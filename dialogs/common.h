@@ -261,6 +261,7 @@ class RscStructuredText {
         font = "PuristaMedium";
         color = "#ffffff";
         align = "left";
+		valign = "center";
         shadow = 1;
     };
 };

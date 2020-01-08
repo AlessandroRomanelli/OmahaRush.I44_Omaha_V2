@@ -16,19 +16,19 @@ disableSerialization;
 private _d = findDisplay 5000;
 private _deployBtn = _d displayCtrl 302;
 private _switchBtn = _d displayCtrl 105;
-private _deployBtnCfg = (missionconfigfile >> "rr_spawnmenu" >> "controls" >> "deploybutton");
+private _deployBtnCfg = (missionconfigfile >> "rr_spawnmenu" >> "controls" >> "Sidebar_Container" >> "controls" >> "Deploy" >> "Controls" >> "deploybutton");
 private _backgroundColor = getArray(_deployBtnCfg >> "colorBackground");
 private _disabledBackgroundColor = getArray(_deployBtnCfg >> "colorBackgroundDisabled");
 
-if (diag_tickTime - (missionNamespace getVariable ["cl_lastSwitched", 0]) < 15 || {sv_cur_obj getVariable ["status", 0] == 1}) then {
-  _switchBtn ctrlEnable false;
+if (diag_tickTime - (missionNamespace getVariable ["cl_lastSwitched", 0]) < 15 || {IS_OBJ_ARMED}) then {
+	_switchBtn ctrlEnable false;
 	_switchBtn ctrlSetBackgroundColor _disabledBackgroundColor;
 } else {
 	_switchBtn ctrlEnable true;
 	_SwitchBtn ctrlSetBackgroundColor _backgroundColor;
 };
 
-if (player getVariable ["side", side player] == WEST) exitWith {
+if (IS_DEFENDING(player)) exitWith {
 	_deployBtn ctrlEnable true;
 	(_d displayCtrl 304) ctrlSetStructuredText parseText "";
 	_deployBtn ctrlSetBackgroundColor _backgroundColor;

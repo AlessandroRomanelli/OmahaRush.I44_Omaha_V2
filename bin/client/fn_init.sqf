@@ -85,12 +85,13 @@ cl_viewDistance = viewDistance;
 	cl_exp = 10000000000;
 }; */
 
+private _markers = ["o_unknown","b_unknown"];
 private _marker1 = createMarkerLocal ["mobile_respawn_defenders",[0,0]];
-_marker1 setMarkerTypeLocal (["o_unknown","b_unknown"] select ((player getVariable "gameSide") == "defenders"));
+_marker1 setMarkerTypeLocal (_markers select IS_DEFENDING(player));
 _marker1 setMarkerTextLocal " Defenders HQ";
 
 private _marker2 = createMarkerLocal ["mobile_respawn_attackers",[0,0]];
-_marker1 setMarkerTypeLocal (["b_unknown","o_unknown"] select ((player getVariable "gameSide") == "defenders"));
+_marker1 setMarkerTypeLocal (_markers select IS_ATTACKING(player));
 _marker2 setMarkerTextLocal " Attackers HQ";
 
 // Objective markers

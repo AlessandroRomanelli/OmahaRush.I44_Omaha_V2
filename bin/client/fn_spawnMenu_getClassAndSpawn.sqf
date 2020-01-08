@@ -11,6 +11,9 @@ scriptName "fn_spawnMenu_getClassAndSpawn";
 if (isServer && !hasInterface) exitWith {};
 
 disableSerialization;
+if (cl_class != "") then {
+	profileNamespace setVariable ['rr_class_preferred', cl_class];
+};
 private _spawnDisplay = findDisplay 5000;
 private _requestedClass = (_spawnDisplay displayCtrl 300) lbData (lbCurSel (_spawnDisplay displayCtrl 300));
 

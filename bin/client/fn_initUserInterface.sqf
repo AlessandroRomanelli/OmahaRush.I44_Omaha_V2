@@ -14,6 +14,9 @@ scriptName "fn_initUserInterface";
 #define COLOR_YELLOW [[[1, 0.8, 0.6, 1], [0.4, 0.32, 0.24]], ["#ffcc99", "#66513d"]]
 #define COLOR_GREEN [[[0.66, 1, 0.66, 1], [0.26, 0.4, 0.26, 1]], ["#aaffaa", "#446644"]]
 
+#define SELECT_RGBA	0
+#define SELECT_HEX	1
+
 private _event = addMissionEventHandler["EachFrame", {
 	if (visibleMap) exitWith {};
 	private _isAttacking = IS_ATTACKING(player);
@@ -65,23 +68,29 @@ private _event = addMissionEventHandler["EachFrame", {
 		1 - ((_viewDir vectorDotProduct _los) max 0)^256;
 	};
 
-	private _objStatus = sv_cur_obj getVariable ["status", -1];
-	if (_objStatus isEqualTo 1) then {
+	private _objArmed = IS_OBJ_ARMED;
+	if (_objArmed) then {
 		_alpha = 2/3 + (1/3*cos(100*diag_tickTime*pi));
 	};
 
 	private _origin = if (cl_inSpawnMenu) then {_curSpawn} else {_posPlayer};
-	private _icon = WWRUSH_ROOT+("pictures\objective_"+((
+	private _IntToAlpha = ["A", "B", "C", "D"];
+	private _picturePath = ["defender.paa", "attacker.paa"] select (_isAttacking);
+	private _idx = [sv_stage1_obj, sv_stage2_obj, sv_stage3_obj, sv_stage4_obj] findIf {_x isEqualTo cl_cur_obj};
+	if (_idx >= 0) then {
+		_picturePath = format["obj_%1_%2.paa", _IntToAlpha select _idx, GAMESIDE(player)];
+	};
+	private _icon = WWRUSH_ROOT+("pictures\"+((
 		[
-			["defender.paa", "defender_armed.paa"],
-			["attacker.paa", "attacker_armed.paa"]
-		] select (_isAttacking)) select (_objStatus == 1))
+			[_picturePath, "objective_defender_armed.paa"],
+			[_picturePath, "objective_attacker_armed.paa"]
+		] select (_isAttacking)) select (_objArmed))
 	);
 	private _text = format["%1 (%2m)",
 		([
 			["Defend", "Defuse"],
 			["Attack", "Protect"]
-		] select (_isAttacking)) select (_objStatus == 1), round(_origin distance sv_cur_obj)];
+		] select (_isAttacking)) select (_objArmed), round(_origin distance sv_cur_obj)];
 	drawIcon3D [_icon, [1,1,1,_alpha],_pos,1.5,1.5,0,_text,2,0.04, "PuristaLight", "center", false];
 
 	private _ammoBoxes = (_posPlayer) nearObjects ["LIB_AmmoCrates_NoInteractive_Large", 7];
@@ -157,7 +166,7 @@ private _event = addMissionEventHandler["EachFrame", {
 
 	private _getHUDColor = {
 		private _unit = param [0, objNull, [objNull]];
-		private _textFormat = param [1, false, [false]];
+		private _textFormat = param [1, 0, [0]];
 		if (damage _unit > 0.1) exitWith {
 			COLOR_YELLOW select _textFormat
 		};
@@ -183,10 +192,10 @@ private _event = addMissionEventHandler["EachFrame", {
 		private _teamMateLeader = _hud displayCtrl (2300 + _i);
 		if (_i < count _groupUnits) then {
 			private _unit = _groupUnits select _i;
-			private _colors = [_unit, true] call _getHUDColor;
+			private _colors = [_unit, SELECT_HEX] call _getHUDColor;
 			private _name = _unit getVariable ["name", name _unit];
 			_teamMateName ctrlSetStructuredText parseText (format ["<t size='1.15' shadow='1' shadowColor='%1' color='%2' font='PuristaLight' align='right'>%3</t>", _colors select 1, _colors select 0, _name]);
-			([_unit, false] call _getHUDColor) params ["_color"];
+			([_unit, SELECT_RGBA] call _getHUDColor) params ["_color"];
 			_teamMateIcon ctrlSetText ([_unit] call _getTeamIcon);
 			_teamMateIcon ctrlSetTextColor _color;
 			_teamMateLeader ctrlSetTextColor ([[0,0,0,0], _color] select (_unit isEqualTo (leader (group player))));

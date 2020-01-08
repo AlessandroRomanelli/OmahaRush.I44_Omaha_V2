@@ -14,29 +14,14 @@ if (isServer && !hasInterface) exitWith {};
 
 private _configName = param[0,"",[""]];
 
-/* private _side = ["Attacker", "Defender"] select (player getVariable "gameSide" == "defenders"); */
-/* private _config = (missionConfigFile >> "MapSettings" >> sv_mapSize >> "PersistentVehicles" >> _side >> _configName);
-
-// If the config is null its most likely a stage vehicle
-if (isNull _config) then {
-	_config = (missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> (sv_cur_obj getVariable ["cur_stage", "Stage1"]) >> "Vehicles" >> _side >> _configName);
-}; */
-
 // Equip
 [] call client_fnc_equipAll;
-
-/* private _pos = getArray(_config >> "positionATL");
-private _class = getText(_config >> "classname");
-private _objects = nearestObjects [_pos, [_class], 5];
-if (count _objects < 1) exitWith {["Vehicle unavailable"] spawn client_fnc_displayError;};
-
-private _vehicle = _objects select 0; */
 
 private _vehicle = missionNamespace getVariable [_configName, objNull];
 
 if (isNull _vehicle) exitWith {["Vehicle unavailable"] call client_fnc_displayError;};
-private _side = SIDEOF(player);
-private _enemyWithin = (fullCrew _vehicle) findIf {SIDEOF(_x) != _side};
+
+private _enemyWithin = (fullCrew _vehicle) findIf {!(SAME_SIDE(player, _x))};
 if (_enemyWithin >= 0) exitWith {
 	["Vehicle has been hijacked"] call client_fnc_displayError;
 };
@@ -109,7 +94,7 @@ camDestroy cl_spawnmenu_cam;
 
 // Display help hint
 
-if (_side == WEST) then {
+if (IS_DEFENDING(player)) then {
 	["DEFENDER", "Defend the objectives and kill all attackers trying to destroy them. Each killed attacker reduces their tickets. If it reaches zero, they have lost."] spawn client_fnc_hint;
 } else {
 	["ATTACKER", "Attack the objectives and plant explosives on them, hold them for 60 seconds and move on before you run out of tickets. Each death reduces your ticket count."] spawn client_fnc_hint;

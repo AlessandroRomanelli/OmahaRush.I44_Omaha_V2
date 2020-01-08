@@ -792,7 +792,7 @@ class rr_objective_gui
 	fadeout=0;
 	fadein=2;
 	duration = 999999999999999;
-	onLoad = "uiNamespace setVariable ['rr_objective_gui',_this select 0];";
+	onLoad = "uiNamespace setVariable ['rr_objective_gui',_this select 0]; [] call displays_fnc_objectiveGUI_update";
 
 	class controlsBackground {};
 
@@ -809,7 +809,7 @@ class rr_objective_gui
 		class image: RscPictureKeepAspect
 		{
 			idc = 0;
-			text = "\WW2\MissionsWW2_p\WW2_Gamemodes_p\WWRush\pictures\objective_attacker.paa";
+			text = "";
 			x = 0.479375 * safezoneW + safezoneX;
 			y = 0.00500001 * safezoneH + safezoneY;
 			w = 0.037125 * safezoneW;

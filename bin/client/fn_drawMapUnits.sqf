@@ -44,16 +44,6 @@ cl_map_fnc_getMarkerColor = {
 	_color
 };
 
-cl_map_fnc_removeMarker = {
-	params ["_marker"];
-	{
-		if (_x isEqualTo _marker) exitWith {
-			cl_map_markers deleteAt _forEachIndex;
-			deleteMarker _marker;
-		}
-	} forEach cl_map_markers;
-};
-
 cl_map_markers = [];
 
 REMOVE_EXISTING_MEH("EachFrame", cl_map_draw);
@@ -118,15 +108,22 @@ TERMINATE_SCRIPT(cl_map_markers_check);
 
 cl_map_markers_check = [] spawn {
 	while {true} do {
+		private _indices = [];
 		{
-			private _sub = _x splitString "_";
+			private _marker = _x;
+			private _sub = _marker splitString "_";
 			if ((_sub select 0) isEqualTo "Unit") then {
 				private _obj = (_sub select 1) call BIS_fnc_objectFromNetId;
 				if (isNull _obj) then {
-					[_x] spawn cl_map_fnc_removeMarker;
+					deleteMarker _marker;
+					_indices pushBack (cl_map_markers findIf {_x isEqualTo _marker});
 				};
 			}
 		} forEach allMapMarkers;
+		for "_i" from (count _indices - 1) to 0 step -1 do {
+			private _j = _indices select _i;
+			cl_map_markers deleteAt _j;
+		};
 		uiSleep 5;
 	};
 };

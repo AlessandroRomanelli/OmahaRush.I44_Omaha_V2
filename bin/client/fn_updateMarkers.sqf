@@ -67,16 +67,18 @@ if !(_objMarkerStatusUpdate) exitWith {
 	true
 };
 
-private _status = sv_cur_obj getVariable ["status", -1];
-if (_status isEqualTo 0) exitWith {
+"objective" setMarkerColorLocal "ColorBlack";
+"objective" setMarkerTextLocal " Objective";
+
+private _status = sv_cur_obj getVariable ["status", OBJ_STATUS_UNARMED];
+if (_status isEqualTo OBJ_STATUS_IN_USE) then {
 	"objective" setMarkerColorLocal "ColorOrange";
 	"objective" setMarkerTextLocal " Objective (ARMING)";
 };
-if (_status isEqualTo 1) exitWith {
+if (_status isEqualTo OBJ_STATUS_ARMED) then {
 	"objective" setMarkerColorLocal "ColorRed";
 	"objective" setMarkerTextLocal " Objective (ARMED)";
 };
-"objective" setMarkerColorLocal "ColorBlack";
-"objective" setMarkerTextLocal " Objective";
+
 
 true
