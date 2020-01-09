@@ -125,10 +125,8 @@ class Functions_Client {
 		class spawnMenu_displaySecondaryWeaponSelection {};
 		class spawnMenu_displayPrimaryAttachmentSelection {};
 		class spawnMenu_displaySecondaryAttachmentSelection {};
-		class spawnMenu_displayGroupManagement {};
 		class spawnMenu_loadClasses {};
 		class spawnMenu_getClassAndSpawn {};
-		class spawnMenu_displayClassCustomization {};
 
 	};
 };
@@ -139,7 +137,11 @@ class Functions_Displays {
 			file = "bin\displays";
 			class spawnMenu_handleWeaponSelect {};
 			class spawnMenu_handleClassSelect {};
+			class spawnMenu_handleSpawnSelect {};
+			class spawnMenu_handleClassCustomize {};
+			class spawnMenu_getCameraPosAndTarget {};
 			class objectiveGUI_update {};
+			class getScreenCoords {};
 	};
 };
 

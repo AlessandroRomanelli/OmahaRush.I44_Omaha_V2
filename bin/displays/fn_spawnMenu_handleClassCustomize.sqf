@@ -1,14 +1,20 @@
-scriptName "fn_spawnMenu_displayClassCustomization";
+scriptName "fn_spawnMenu_handleClassCustomize";
 /*--------------------------------------------------------------------
-	Author: Maverick (ofpectag: MAV)
-    File: fn_spawnMenu_displayClassCustomization.sqf
+	Author: A. Roman
+    File: fn_spawnMenu_handleClassCustomize.sqf
 
-	<Maverick Applications>
-    Written by Maverick Applications (www.maverick-apps.de)
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
-#define __filename "fn_spawnMenu_displayClassCustomization.sqf"
+
+
+#define __filename "fn_spawnMenu_handleClassCustomize.sqf"
+#include "..\utils.h"
+
 if (isServer && !hasInterface) exitWith {};
+
+private _list = (findDisplay 5000) displayCtrl 300;
+private _class = _list lbData (lbCurSel _list);
+
 
 disableSerialization;
 
@@ -21,26 +27,20 @@ private _listboxClassPerks = _d displayCtrl 0;
 private _listboxSquadPerks = _d displayCtrl 1;
 /* private _confirmButton = _d displayCtrl 50; */
 
-/* _listboxClassPerks lbAdd "No perk";
-_listboxClassPerks lbSetData [(lbSize _listboxClassPerks) - 1, ""]; */
 _listboxSquadPerks lbAdd "No perk";
 _listboxSquadPerks lbSetData [(lbSize _listboxSquadPerks) - 1, ""];
-
-private _class = cl_class;
 
 private _classConfigs = [];
 private _squadConfigs = [];
 
 // Fetch data from config
 _squadConfigs = "true" configClasses (missionConfigFile >> "CfgPerks" >> "SquadPerks");
-_class = _class splitString "";
-_class set [0, toUpper (_class select 0)];
-_class = _class joinString "";
+_class = toUpper (_class select [0,1]) + (_class select [1, count _class - 1]);
 _classConfigs = "true" configClasses (missionConfigFile >> "CfgPerks" >> "ClassPerks" >> _class);
 
+
 // Get current selected perk for class
-private _perkNames = [cl_class] call client_fnc_getUsedPerksForClass;
-//hint str _perkNames;
+private _perkNames = [_class] call client_fnc_getUsedPerksForClass;
 
 // Iterate through class configs and add them to the listbox
 {
@@ -78,11 +78,4 @@ if ((lbCurSel _listboxSquadPerks) == -1 && (lbSize _listboxSquadPerks) > 0) then
 	_listboxSquadPerks lbSetCurSel 0;
 };
 
-// Give the listboxes their ability to edit our perks
-_listboxClassPerks ctrlAddEventHandler ["LBSelChanged", {
-	[cl_class] call client_fnc_setUsedPerksForClass;
-}];
-_listboxSquadPerks ctrlAddEventHandler ["LBSelChanged", {
-	[cl_class] call client_fnc_setUsedPerksForClass;
-}];
-true
+true;

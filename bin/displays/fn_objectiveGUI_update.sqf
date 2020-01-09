@@ -12,8 +12,6 @@ scriptName "fn_objectiveGUI_update";
 
 if (isServer && !hasInterface) exitWith {};
 
-params [["_ctrl", controlNull], ["_index", -1]];
-
 disableSerialization;
 private _c = (uiNamespace getVariable ["rr_objective_gui",displayNull]) displayCtrl 0;
 private _IntToAlpha = ["A", "B", "C", "D"];

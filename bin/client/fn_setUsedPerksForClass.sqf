@@ -12,7 +12,9 @@ if (isServer && !hasInterface) exitWith {};
 
 disableSerialization;
 
-private _class = param[0,"",[""]];
+private _list = (findDisplay 5000) displayCtrl 300;
+private _class = _list lbData (lbCurSel _list);
+
 if (_class == "") exitWith {};
 
 // Get from display
@@ -35,8 +37,6 @@ if ((lbCurSel _lbSquad) != -1) then {
 } else {
 	_dataArray set [1, ""];
 };
-
-//hint str _dataArray;
 
 // Get data from profilenamespace
 profileNamespace setVariable [format ["rr_perks_%1", _class], _dataArray];

@@ -8,7 +8,6 @@ scriptName "fn_spawn";
 --------------------------------------------------------------------*/
 #define __filename "fn_spawn.sqf"
 #define KEY_ESC 1
-#define SPAWNCAM_POLAR 60
 #include "..\utils.h"
 
 if (isServer && !hasInterface) exitWith {};
@@ -111,16 +110,6 @@ private _objectives = [sv_stage1_obj, sv_stage2_obj, sv_stage3_obj, sv_stage4_ob
 	};
 } forEach _objectives;
 
-// Get cam pos for spawn menu cam
-private _stage = sv_cur_obj getVariable ["cur_stage", "Stage1"];
-private _pos = getArray(missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> _stage >> "Spawns" >> GAMESIDE(player) >> "HQSpawn" >> "positionATL");
-
-// Determine point between current pos and target pos
-private _targetPos = [_pos, getPos sv_cur_obj] call client_fnc_getSectionCenter;
-private _height = round (100*log(_pos distance2D sv_cur_obj))+50;
-// Set cam pos height
-_pos set[2, _height];
-
 // Display all buildings
 setObjectViewDistance 1000;
 setViewDistance 1250;
@@ -158,8 +147,12 @@ uiSleep 0.05;
 showCinemaBorder false;
 cameraEffectEnableHUD true;
 
-cl_spawnmenu_cam camPreparePos _pos;
-cl_spawnmenu_cam camPrepareTarget _targetPos;
+// Get cam pos for spawn menu cam
+private _stage = sv_cur_obj getVariable ["cur_stage", "Stage1"];
+private _pos = getArray(missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> _stage >> "Spawns" >> GAMESIDE(player) >> "HQSpawn" >> "positionATL");
+private _cameraSet = [_pos] call displays_fnc_spawnMenu_getCameraPosAndTarget;
+cl_spawnmenu_cam camPreparePos (_cameraSet select 0);
+cl_spawnmenu_cam camPrepareTarget (_cameraSet select 1);
 
 // If the camera is new, commit instantly, otherwise zoom out slowly
 if (_created) then {
@@ -194,77 +187,6 @@ if (getNumber(missionConfigFile >> "GeneralConfig" >> "PostProcessing") == 1) th
 
 // Populate the structured texts
 [] call client_fnc_populateSpawnMenu;
-
-/* scaleCtrl = {
-	params [["_ctrl", controlNull, [controlNull]],["_factor", 0, [0]], ["_time", 0, [0]]];
-	private _ctrlPos = ctrlPosition _ctrl;
-	private _delta = ((_ctrlPos select 2)*(_factor - 1))/2;
-	private _newPos = [(_ctrlPos select 0) - _delta, (_ctrlPos select 1) - _delta, (_ctrlPos select 2)*_factor, (_ctrlPos select 3)*_factor];
-  _ctrl ctrlSetPosition _newPos;
-	_ctrl ctrlCommit _time;
-	true
-}; */
-
-// TODO: Move this to PFH
-/* animateCtrl = {
-	params [["_objective", objNUll, [objNull]],["_ctrl", controlNull, [controlNull]],["_factor", 0, [0]], ["_time", 0, [0]]];
-	private _ctrlPos = ctrlPosition _ctrl;
-	if (!isNil "cl_objectiveSpawnAnimation") exitWith {};
-		cl_objectiveSpawnAnimation = true;
-	while {(str _objective) isEqualTo (str sv_cur_obj)} do {
-		[_ctrl, _factor, _time] call scaleCtrl;
-		uiSleep (_time + 0.1);
-		_ctrl ctrlSetPosition _ctrlPos;
-		_ctrl ctrlCommit _time;
-		uiSleep (_time + 0.1);
-	};
-	_ctrl ctrlSetPosition _ctrlPos;
-	_ctrl ctrlCommit 0;
-	cl_objectiveSpawnAnimation = nil;
-	[] call updateObjectiveProgress;
-}; */
-
-// TODO: Move this to PFH
-/* updateObjectiveProgress = {
-	private _display = findDisplay 5000;
-	for "_i" from 1 to 4 do {
-		private _idc = 1200 + _i;
-		private _ctrlObj = _display displayCtrl _idc;
-		private _IntToAlpha = ["", "A", "B", "C", "D"];
-		private _picturePath = WWRUSH_ROOT+"pictures\"+(format["obj_%1_%2", _IntToAlpha select _i, GAMESIDE(player)])+".paa";
-		private _objective = missionNamespace getVariable [format["sv_stage%1_obj", _i], objNull];
-		_ctrlObj ctrlSetText _picturePath;
-		if !(_objective isEqualTo sv_cur_obj) then {
-			_ctrlObj ctrlSetTextColor [1,1,1,0.25];
-		} else {
-			_ctrlObj ctrlSetTextColor [1,1,1,1];
-			[_objective, _ctrlObj, 1.1, 0.5] spawn animateCtrl;
-		};
-		if ((_objective getVariable ["status", OBJ_STATUS_UNARMED]) isEqualTo OBJ_STATUS_DONE) then {
-			_ctrlObj ctrlSetTextColor [-1, -1, -1, 0.25];
-		};
-	};
-	true
-}; */
-
-/* [] spawn updateObjectiveProgress; */
-
-/* (_menuDisplay displayCtrl 1200) ctrlSetFade 1;
-(_menuDisplay displayCtrl 1200) ctrlCommit 0;
-
-{
-	(_menuDisplay displayCtrl _x) ctrlEnable true;
-	(_menuDisplay displayCtrl _x) ctrlAddEventHandler["MouseEnter", {
-		private _display = findDisplay 5000;
-		(_display displayCtrl 1200) ctrlSetFade 0;
-		(_display displayCtrl 1200) ctrlCommit 0.25;
-	}];
-	(_menuDisplay displayCtrl _x) ctrlAddEventHandler["MouseExit", {
-		private _display = findDisplay 5000;
-		(_display displayCtrl 1200) ctrlSetFade 1;
-		(_display displayCtrl 1200) ctrlCommit 0.5;
-	}];
-} forEach [1201,1202,1203,1204]; */
 
 // Add eventhandlers to the dialog and hide the weapon selection
 cl_spawnmenu_currentWeaponSelectionState = 0; // Nothing open
@@ -301,23 +223,6 @@ disableSerialization;
 	}];
 } forEach [15,16];
 
-// Activate weapons' background event handler
-/* (_menuDisplay displayCtrl 2) ctrlEnable true; */
-
-// Close menu upon mouse exit
-/* (_menuDisplay displayCtrl 2) ctrlAddEventHandler ["MouseExit", {
-	if (cl_spawnmenu_currentWeaponSelectionState != 0) then {
-		if (cl_spawnmenu_currentWeaponSelectionState == 1) then {
-			[] spawn client_fnc_spawnMenu_displayPrimaryWeaponSelection;
-		} else {
-			[] spawn client_fnc_spawnMenu_displaySecondaryWeaponSelection;
-		};
-	};
-}]; */
-
-/* (_menuDisplay displayCtrl 12) ctrlAddEventHandler ["ButtonDown",{[] spawn client_fnc_spawnMenu_displayPrimaryAttachmentSelection;}];
-(_menuDisplay displayCtrl 13) ctrlAddEventHandler ["ButtonDown",{[] spawn client_fnc_spawnMenu_displaySecondaryAttachmentSelection;}]; */
-
 // Hide the weapon selection listbox and its background + the attachment listboxes and their backgrounds
 {
 	(_menuDisplay displayCtrl _x) ctrlShow false;
@@ -334,54 +239,6 @@ disableSerialization;
 	waitUntil {(lbSize _spawnCtrl) > 0};
 	_spawnCtrl lbSetCurSel 0;
 };
-
-cl_cam_to_point = {
-	params ["_pos"];
-	private _target = (_pos vectorAdd (getPosATL sv_cur_obj)) vectorMultiply 0.5;
-	private _height = ((_pos distance2D _target)*tan(SPAWNCAM_POLAR)) min 500;
-	cl_spawnmenu_cam camSetPos (_pos vectorAdd [0,0,_height]);
-	cl_spawnmenu_cam camSetTarget _target;
-	cl_spawnmenu_cam camCommit 1;
-	waitUntil {camCommitted cl_spawnmenu_cam};
-};
-
-cl_fnc_follow_unit = {
-	params ["_unit"];
-	while {cl_inSpawnMenu && {!isNull _unit} && {alive _unit}} do {
-		private _newPos = getPosATL _unit;
-		[_newPos] call cl_cam_to_point;
-	};
-	TERMINATE_SCRIPT(cl_cam_follow_unit);
-};
-
-private _spawnCtrl = _menuDisplay displayCtrl 8;
-_spawnCtrl ctrlAddEventHandler ["MouseButtonClick", {
-	params ["_control"];
-	private _spawnDisplay = findDisplay 5000;
-	private _spawnName = _control lbData (lbCurSel _control);
-	if ((_control lbValue (lbCurSel _control)) == -1) then {
-		private _stage = sv_cur_obj getVariable ["cur_stage", "Stage1"];
-		if (_stage == "") exitWith {};
-		private _newPos = getArray(missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> _stage >> "Spawns" >> GAMESIDE(player) >> _spawnName >> "positionATL");
-		[_newPos] spawn cl_cam_to_point;
-	} else {
-		private _unit = objectFromNetId _spawnName;
-		TERMINATE_SCRIPT(cl_cam_follow_unit);
-		cl_cam_follow_unit = [_unit] spawn cl_fnc_follow_unit;
-	};
-
-	(_spawnDisplay displayCtrl 9) lbSetCurSel -1;
-}];
-
-private _vehiclesCtrl = _menuDisplay displayCtrl 9;
-_vehiclesCtrl ctrlAddEventHandler ["MouseButtonClick", {
-	params ["_control"];
-	private _spawnDisplay = findDisplay 5000;
-	private _vehName = _control lbData (lbCurSel _control);
-	private _newPos = getPosATL (missionNamespace getVariable [_vehName, objNull]);
-	[_newPos] spawn cl_cam_to_point;
-	(_spawnDisplay displayCtrl 8) lbSetCurSel -1;
-}];
 
 if (isNil "TEMPWARNING") then {
 	createDialog "rr_info_box";

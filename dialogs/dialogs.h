@@ -71,7 +71,7 @@ class rr_spawnmenu {
 				class AbortButton: RscButtonMenu
 			    {
 			      action = "[] call client_fnc_saveStatistics; endMission 'MatchLeft';";
-			      idc = 303;
+			      idc = 1000;
 			      color[] = {1,1,1,1};
 			      font = "PuristaBold";
 			      size = "1.00 *		 (pixelH * pixelGridNoUIScale * 2.5)";
@@ -194,7 +194,7 @@ class rr_spawnmenu {
 				{
 					idc = 301;
 					style = "0x02 + 0x0c";
-					action = "private _list = (findDisplay 5000) displayCtrl 300; private _class = _list lbData (lbCurSel _list);[_class] call client_fnc_spawnMenu_displayClassCustomization;";
+					action = "[] call displays_fnc_spawnMenu_handleClassCustomize";
 					text = "CUSTOMIZE CLASS ABILITIES"; //--- ToDo: Localize;
 					x = SIDEBAR_BORDER;
 					y = 7 * SIDEBAR_BORDER + 9.5 * SIDEBAR_ITEM_HEIGHT;
@@ -222,15 +222,16 @@ class rr_spawnmenu {
 					y = 9 * SIDEBAR_BORDER + 11.5 * SIDEBAR_ITEM_HEIGHT;
 					w = SIDEBAR_CONTENT_WIDTH;
 					h = SIDEBAR_ITEM_HEIGHT * 3;
-				  sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 1.75)";
-				  rowHeight = "0.60 *     (pixelH * pixelGridNoUIScale * 2.5)";
-				  wholeHeight = "0.60 *     (pixelH * pixelGridNoUIScale * 2.5)";
-				  colorBackground[] = DARK_COLOR;
-				  colorSelect[] = {1, 1, 1, 1};
-				  colorText[] = {1, 1, 1, 0.5};
-				  colorSelect2[] = {1, 1, 1, 1};
-				  colorSelectBackground[] = PRIMARY_COLOR;
-				  colorSelectBackground2[] = PRIMARY_COLOR;
+					sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 1.75)";
+					rowHeight = "0.60 *     (pixelH * pixelGridNoUIScale * 2.5)";
+					wholeHeight = "0.60 *     (pixelH * pixelGridNoUIScale * 2.5)";
+					colorBackground[] = DARK_COLOR;
+					colorSelect[] = {1, 1, 1, 1};
+					colorText[] = {1, 1, 1, 0.5};
+					colorSelect2[] = {1, 1, 1, 1};
+					colorSelectBackground[] = PRIMARY_COLOR;
+					colorSelectBackground2[] = PRIMARY_COLOR;
+					onLBSelChanged = "_this call displays_fnc_spawnMenu_handleSpawnSelect;";
 				};
 
 				class VehiclesHeader: RscText
@@ -252,18 +253,19 @@ class rr_spawnmenu {
 					y = 9 * SIDEBAR_BORDER + 15.0 * SIDEBAR_ITEM_HEIGHT;
 					w = SIDEBAR_CONTENT_WIDTH;
 					h = SIDEBAR_ITEM_HEIGHT * 4;
-				  sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 1.75)";
-				  rowHeight = "0.60 *     (pixelH * pixelGridNoUIScale * 2.5)";
-				  wholeHeight = "0.60 *     (pixelH * pixelGridNoUIScale * 2.5)";
-				  colorBackground[] = DARK_COLOR;
-				  colorSelect[] = {1, 1, 1, 1};
-				  colorText[] = {1, 1, 1, 0.5};
-				  colorSelect2[] = {1, 1, 1, 1};
-				  colorSelectBackground[] = PRIMARY_COLOR;
-				  colorSelectBackground2[] = PRIMARY_COLOR;
+					sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 1.75)";
+					rowHeight = "0.60 *     (pixelH * pixelGridNoUIScale * 2.5)";
+					wholeHeight = "0.60 *     (pixelH * pixelGridNoUIScale * 2.5)";
+					colorBackground[] = DARK_COLOR;
+					colorSelect[] = {1, 1, 1, 1};
+					colorText[] = {1, 1, 1, 0.5};
+					colorSelect2[] = {1, 1, 1, 1};
+					colorSelectBackground[] = PRIMARY_COLOR;
+					colorSelectBackground2[] = PRIMARY_COLOR;
+					onLBSelChanged = "_this call displays_fnc_spawnMenu_handleSpawnSelect;";
 				};
 
-				class Deploy: RscControlsGroup {
+				class Deploy: RscControlsGroupNoScrollbars {
 					idc = -1;
 					x = SIDEBAR_BORDER;
 					y = 10 * SIDEBAR_BORDER + 19.0 * SIDEBAR_ITEM_HEIGHT;
@@ -284,33 +286,45 @@ class rr_spawnmenu {
 							w = SIDEBAR_CONTENT_WIDTH;
 							h = SIDEBAR_ITEM_HEIGHT * 2;
 					    	colorText[] = {0,0,0,1};
-					    	colorBackground[] = PRIMARY_COLOR;
 							colorDisabled[] = DISABLED_COLOR;
+					    	colorBackground[] = PRIMARY_COLOR;
 							colorBackgroundDisabled[] = DARK_COLOR;
 					    };
 						class button_text: RscText {
-							idc = -1;
+							idc = 303;
 							style = 2 + 192;
 							color[] = {0,0,0,1};
-							font = "PuristaMedium";
-							size = "1.00 *		 (pixelH * pixelGridNoUIScale * 2.5)";
-							text = "Deploy"; //--- ToDo: Localize;
+							font = "PuristaLight";
+							size = "2.00 *		 (pixelH * pixelGridNoUIScale * 2.5)";
+							sizeEx = SIDEBAR_CONTENT_WIDTH * 0.2;
+							shadow = 0;
+							text = "DEPLOY"; //--- ToDo: Localize;
 							x = 0;
 							y = 0;
 							w = SIDEBAR_CONTENT_WIDTH;
-							h = SIDEBAR_ITEM_HEIGHT * 2;
+							h = SIDEBAR_ITEM_HEIGHT * 1.9;
 						};
 						class timeLeft: RscStructuredText
 						{
-						  idc = 304;
-						  size = "1.00 *		 (pixelH * pixelGridNoUIScale * 2.5)";
-						  style = 1;
-						  x = 0;
-						  y = 0;
-						  w = SIDEBAR_CONTENT_WIDTH;
-						  h = SIDEBAR_ITEM_HEIGHT * 2;
-						  colorText[] = {1,1,1,1};
-						  colorBackground[] = {0,0,0,0};
+							text = "";
+							idc = 304;
+							size = "1.00 *		 (pixelH * pixelGridNoUIScale * 2.5)";
+							style = 1;
+							x = 0;
+							y = SIDEBAR_ITEM_HEIGHT + SIDEBAR_ITEM_HEIGHT / 4;
+							w = SIDEBAR_CONTENT_WIDTH;
+							h = SIDEBAR_ITEM_HEIGHT;
+							colorText[] = {1,1,1,1};
+							colorBackground[] = {0,0,0,0};
+
+							class Attributes {
+								size = 0.8;
+								font = "PuristaLight";
+								color = "#848a8f";
+								align = "center";
+								valign = "middle";
+								shadow = 0;
+							};
 						};
 					};
 				};
@@ -685,9 +699,9 @@ class rr_class_customization {
 			y = 0.357 * safezoneH + safezoneY;
 			w = 0.20625 * safezoneW;
 			h = 0.308 * safezoneH;
-      sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 2)";
-      rowHeight = "1.00 *     (pixelH * pixelGridNoUIScale * 3.5)";
-      wholeHeight = "1.00 *     (pixelH * pixelGridNoUIScale * 3.5)";
+			sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 2)";
+			rowHeight = "1.00 *     (pixelH * pixelGridNoUIScale * 3.5)";
+			wholeHeight = "1.00 *     (pixelH * pixelGridNoUIScale * 3.5)";
 			shadow = 2;
 			colorBackground[] = {0,0,0,0};
 			colorSelect[] = {1, 1, 1, 1};
@@ -695,6 +709,7 @@ class rr_class_customization {
 		    colorSelect2[] = {1, 1, 1, 1};
 		    colorSelectBackground[] = PRIMARY_COLOR;
 		    colorSelectBackground2[] = PRIMARY_COLOR;
+			onLBSelChanged = "[] call client_fnc_setUsedPerksForClass";
 		};
 		class lbSquadPerks: RscListbox
 		{
@@ -703,9 +718,9 @@ class rr_class_customization {
 			y = 0.357 * safezoneH + safezoneY;
 			w = 0.20625 * safezoneW;
 			h = 0.308 * safezoneH;
-      sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 2)";
-      rowHeight = "1.00 *     (pixelH * pixelGridNoUIScale * 3.5)";
-      wholeHeight = "1.00 *     (pixelH * pixelGridNoUIScale * 3.5)";
+			sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 2)";
+			rowHeight = "1.00 *     (pixelH * pixelGridNoUIScale * 3.5)";
+			wholeHeight = "1.00 *     (pixelH * pixelGridNoUIScale * 3.5)";
 			shadow = 2;
 			colorBackground[] = {0,0,0,0};
 			colorSelect[] = {1, 1, 1, 1};
@@ -713,6 +728,8 @@ class rr_class_customization {
 		    colorSelect2[] = {1, 1, 1, 1};
 		    colorSelectBackground[] = PRIMARY_COLOR;
 		    colorSelectBackground2[] = PRIMARY_COLOR;
+			onLBSelChanged = "[] call client_fnc_setUsedPerksForClass";
+
 		};
 		class RscButtonMenu_2400: RscButtonMenu
 		{

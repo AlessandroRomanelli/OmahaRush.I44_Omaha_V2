@@ -13,7 +13,7 @@ private _class = param[0,"",[""]];
 private _perkData = [];
 
 // Get data from profilenamespace
-switch (_class) do
+switch (toLower _class) do
 {
 	case "medic":
 	{
@@ -38,9 +38,7 @@ switch (_class) do
 };
 
 // Fetch data from config
-_class = _class splitString "";
-_class set [0, toUpper (_class select 0)];
-_class = _class joinString "";
+_class = toUpper (_class select [0,1]) + (_class select [1, count _class - 1]);
 private _classConfigs = "true" configClasses (missionConfigFile >> "CfgPerks" >> "ClassPerks" >> _class);
 
 // Validate class perk // Avoid people loading perks into classes where they dont belong to
