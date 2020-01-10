@@ -223,13 +223,7 @@ disableSerialization;
 	}];
 } forEach [15,16];
 
-// Hide the weapon selection listbox and its background + the attachment listboxes and their backgrounds
-{
-	(_menuDisplay displayCtrl _x) ctrlShow false;
-} forEach [
-	2,3,
-	20,21,22,25,23,24,26,27,28,29
-];
+uiNamespace getVariable ["wwr_loadout_right_col", controlNull] ctrlShow false;
 
 [false] spawn client_fnc_spawnMenu_loadClasses;
 [] spawn {

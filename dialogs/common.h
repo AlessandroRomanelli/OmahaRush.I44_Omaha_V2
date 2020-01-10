@@ -291,12 +291,14 @@ idc = -1;
 
 class RscButton
 {
+	type = 1;
     style = 2;
     x = 0;
     y = 0;
     w = 0.095589;
     h = 0.039216;
     shadow = 2;
+	text = "";
     font = "PuristaMedium";
     sizeEx = "(((((safezoneW / safezoneH) min 1.2) / 1.2) / 25) * 1)";
     colorText[] = {1,1,1,1.0};
@@ -669,7 +671,7 @@ class RscBackground: RscText {
     ColorBackground[] = {0.48, 0.5, 0.35, 1};
     ColorText[] = {0.1, 0.1, 0.1, 1};
     font = "PuristaMedium";
-    SizeEx = 1;
+    sizeEx = (((((safezoneW / safezoneH) min 1.2) / 1.2) / 25) * 1);
 };
 
 class RscHTML {

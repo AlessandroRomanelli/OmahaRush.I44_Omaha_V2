@@ -18,7 +18,12 @@ sv_mcom_thread = [] spawn {
     // Countdown of 60 seconds
     private _time = 60;
     private _soundTime = 60;
-    waitUntil {IS_OBJ_ARMED};
+	private _start = diag_tickTime;
+    waitUntil {IS_OBJ_ARMED || {diag_tickTime - _start > 2.5}};
+	if (diag_tickTime - _start > 2.5) exitWith {
+		terminate sv_mcom_thread;
+		sv_mcom_thread = nil;
+	};
     private _status = OBJ_STATUS_ARMED;
     private _beep = WWRUSH_ROOT + "sounds\beep.ogg";
 

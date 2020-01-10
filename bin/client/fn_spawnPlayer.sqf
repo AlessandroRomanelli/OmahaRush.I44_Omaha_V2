@@ -159,7 +159,7 @@ switch (_value) do
 			if (!isNull _beacon) then {
 				// Give points
 				if (_unit != player) then {
-					[] remoteExecCall ["client_fnc_beaconSpawn", _unit];
+					[player] remoteExecCall ["client_fnc_beaconSpawn", _unit];
 				};
 				[_beacon, false] call client_fnc_spawnPlayerAtObject;
 

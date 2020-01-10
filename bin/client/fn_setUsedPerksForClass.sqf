@@ -40,4 +40,6 @@ if ((lbCurSel _lbSquad) != -1) then {
 
 // Get data from profilenamespace
 profileNamespace setVariable [format ["rr_perks_%1", _class], _dataArray];
+
+[] call client_fnc_populateSpawnMenu;
 true

@@ -11,17 +11,17 @@ class CfgPerks {
 			description = "Dramatically increases your swimming speed";
 		};
 		class ammo {
-			displayName = "Extended Ammunition";
+			displayName = "Extra Ammunition";
 			picture = "";
 			description = "Deploys you with more ammunition for primary and secondary weapon";
 		};
 		class frag {
-			displayName = "Fragmentation Grenade";
+			displayName = "Frag Grenade";
 			picture = "";
 			description = "Deploys you with a frag grenade";
 		};
 		class expl {
-			displayName = "Additional Explosives";
+			displayName = "Extra Explosives";
 			picture = "";
 			description = "Deploys you with extra rockets/explosives/grenades";
 		};

@@ -59,19 +59,34 @@ if ((lbCurSel _listboxClassPerks) == -1 && (lbSize _listboxClassPerks) > 0) then
 };
 
 // Iterate through squad perks and add them to the listbox
+
+private _availableSquadPerks = (missionConfigFile >> "CfgPerks" >> "SquadPerks") call bis_fnc_getCfgSubClasses;
+private _activeSquadPerks = ((units group player) - [player]) apply {
+	private _idx = _x getVariable ["squadPerk", -1];
+	if (_idx == -1) exitWith {""};
+	_availableSquadPerks select _idx;
+};
+
 {
-	_listboxSquadPerks lbAdd (getText(_x >> "displayName"));
-	_listboxSquadPerks lbSetData [(lbSize _listboxSquadPerks) - 1, configName _x];
-	_listboxSquadPerks lbSetTooltip [(lbSize _listboxSquadPerks) - 1, getText(_x >> "description")];
-	_listboxSquadPerks lbSetPicture [(lbSize _listboxSquadPerks) - 1, format ["%1pictures\%2.paa", WWRUSH_ROOT, configName _x]];
-	if ((configName _x) in (cl_squadPerks - [cl_squadPerk])) then {
+	private _perk = _x;
+	private _text = getText(_perk >> "displayName");
+	private _count = {_x == _perk} count _activeSquadPerks;
+	if (_count > 0) then {
+		_text = _text + format [" (%1)", _count];
+	};
+	_listboxSquadPerks lbAdd (getText(_perk >> "displayName"));
+	_listboxSquadPerks lbSetData [(lbSize _listboxSquadPerks) - 1, configName _perk];
+	_listboxSquadPerks lbSetTooltip [(lbSize _listboxSquadPerks) - 1, getText(_perk >> "description")];
+	_listboxSquadPerks lbSetPicture [(lbSize _listboxSquadPerks) - 1, format ["%1pictures\%2.paa", WWRUSH_ROOT, configName _perk]];
+	if (_count > 0) then {
 		_listboxSquadPerks lbSetColor [(lbSize _listboxSquadPerks) -1, [0.96,0.65,0.12,0.8]];
 	};
 	// If this is our active perk, select this entry
-	if (configName _x == (_perkNames select 1)) then {
+	if (configName _perk == (_perkNames select 1)) then {
 		_listboxSquadPerks lbSetCurSel ((lbSize _listboxSquadPerks) - 1);
 	};
 } forEach _squadConfigs;
+
 if ((lbCurSel _listboxSquadPerks) == -1 && (lbSize _listboxSquadPerks) > 0) then {
 	_listboxSquadPerks lbSetCurSel 0;
 };

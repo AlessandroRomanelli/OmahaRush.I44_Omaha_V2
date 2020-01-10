@@ -17,14 +17,19 @@ disableSerialization;
 
 // Get dialog
 private _d = findDisplay 5000;
+private _list = _d displayCtrl 300;
+private _class = _list lbData (lbCurSel _list);
+
 
 private _side = SIDEOF(player);
 
 // Get selected equip to be displayed
 [] call client_fnc_getLoadedEquipment;
 private _equip = player getVariable ["loaded_equipment", [cl_equipClassnames select 0, cl_equipClassnames select 1]];
-private _primary = _equip select 0;
-private _secondary = _equip select 1;
+
+_equip params ["_primary", "_secondary"];
+private _perkData = [_class] call client_fnc_getUsedPerksForClass;
+
 if (_primary == "") then {
 	(_d displayCtrl 5) ctrlSetStructuredText parseText "<t size='4' color='#990000' shadow='2' font='PuristaMedium' align='center'>N/A</t>";
 	(_d displayCtrl 1001) ctrlSetStructuredText parseText "<t size='1.25' color='#990000' shadow='2' font='PuristaMedium' align='center'>NO WEAPON SELECTED</t>";
@@ -43,6 +48,27 @@ if (_secondary == "") then {
 	};
 };
 
+if (_class != "") then {
+	(_d displayCtrl 201) ctrlSetText (format ["%1pictures\%2.paa", WWRUSH_ROOT, _class]);
+	if (count _perkData > 0 && {(_perkData select 0) != ""}) then {
+		private _perkCfg = missionConfigfile >> "CfgPerks" >> "ClassPerks" >> _class >> _perkData select 0;
+		(_d displayCtrl 200) ctrlSetTooltip (getText(_perkCfg >> "description"));
+		(_d displayCtrl 202) ctrlSetText (toUpper getText(_perkCfg >> "displayName"));
+	} else {
+		(_d displayCtrl 202) ctrlSetText "NO CLASS PERK";
+	};
+};
+
+if (count _perkData > 0 && {(_perkData select 1) != ""}) then {
+	(_d displayCtrl 204) ctrlSetText (format ["%1pictures\%2.paa", WWRUSH_ROOT, (_perkData select 1)]);
+	private _perkCfg = missionConfigfile >> "CfgPerks" >> "SquadPerks" >> _perkData select 1;
+	(_d displayCtrl 205) ctrlSetText (toUpper getText(_perkCfg >> "displayName"));
+	(_d displayCtrl 203) ctrlSetTooltip (getText(_perkCfg >> "description"));
+} else {
+	(_d displayCtrl 204) ctrlSetText (WWRUSH_ROOT + "pictures\noperk.paa");
+	(_d displayCtrl 205) ctrlSetText "NO SQUAD PERK";
+};
+
 // Validate
 [] call client_fnc_validateEquipment;
 
@@ -50,45 +76,15 @@ if (_secondary == "") then {
 private _details = [];
 if (_primary != "") then {
 	_details = [_primary] call client_fnc_weaponDetails;
-	(_d displayCtrl 5) ctrlSetStructuredText parseText ("<t align='center' shadow='2' size='5'><img image='" + (_details select 2) + "'/></t>");
-	(_d displayCtrl 1001) ctrlSetStructuredText parseText format ["<t size='1.25' color='#FFFFFF' shadow='2' font='PuristaMedium' align='center'>%1</t>", _details select 1];
+	(_d displayCtrl 5) ctrlSetText (_details select 2);
+	(_d displayCtrl 1005) ctrlSetText (_details select 1);
 };
 
 if (_secondary != "") then {
 	_details = [_secondary] call client_fnc_weaponDetails;
-	(_d displayCtrl 7) ctrlSetStructuredText parseText ("<t align='center' shadow='2' size='5'><img image='" + (_details select 2) + "'/></t>");
-	(_d displayCtrl 1004) ctrlSetStructuredText parseText format ["<t size='1.25' color='#FFFFFF' shadow='2' font='PuristaMedium' align='center'>%1</t>", _details select 1];
+	(_d displayCtrl 7) ctrlSetText (_details select 2);
+	(_d displayCtrl 1007) ctrlSetText (_details select 1);
 };
-
-// Build primary attachments text and display
-/* if (true) then {
-	_prefix = "<t align='center' shadow='2' size='2.5'>";
-	_suffix = "</t>";
-	_center = "";
-
-	{
-		if (_x != "") then {
-			_center = _center + "<img image='" + (([_x] call client_fnc_weaponDetails) select 2) + "'/>";
-		}
-	} forEach (_primary select 1);
-
-	(_d displayCtrl 6) ctrlSetStructuredText parseText (_prefix + _center + _suffix);
-}; */
-
-// Build primary attachments text and display
-/* if (true) then {
-	_prefix = "<t align='center' shadow='2' size='2.5'>";
-	_suffix = "</t>";
-	_center = "";
-
-	{
-		if (_x != "") then {
-			_center = _center + "<img image='" + (([_x] call client_fnc_weaponDetails) select 2) + "'/>";
-		};
-	} forEach (_secondary select 1);
-
-	(_d displayCtrl 8) ctrlSetStructuredText parseText (_prefix + _center + _suffix);
-}; */
 
 // Change the faction flag
 private _flagCtrl = _d displayCtrl 1205;

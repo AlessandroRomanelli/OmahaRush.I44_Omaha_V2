@@ -15,17 +15,10 @@ if (isServer && !hasInterface) exitWith {};
 disableSerialization;
 private _d = findDisplay 5000;
 
-// Hide everything for now
-{
-	((findDisplay 5000) displayCtrl _x) ctrlShow false;
-} forEach [
-	2,3,
-	20,21,22,25,23,24,26,27,28,29
-];
+uiNamespace getVariable ["wwr_loadout_right_col", controlNull] ctrlShow false;
 
 // Exit if this menu is already open
 if (cl_spawnmenu_currentWeaponSelectionState == 1) exitWith {
-	(_d displayCtrl 2002) ctrlSetStructuredText parseText "<t size='0.75' color='#ffffff'' shadow='2' font='PuristaMedium' align='center'>[CLICK ABOVE TO OPEN]</t>";
 	cl_spawnmenu_currentWeaponSelectionState = 0;
 	(_d displayCtrl 207) ctrlSetBackgroundColor [0.12,0.14,0.16,0.8];
 };
@@ -38,8 +31,6 @@ if (cl_spawnmenu_currentWeaponSelectionState == 1) exitWith {
 // Duhh
 cl_spawnmenu_currentWeaponSelectionState = 1;
 
-/* (_d displayCtrl 2001) ctrlSetStructuredText parseText "<t size='0.75' color='#ffffff'' shadow='2' font='PuristaMedium' align='center'>[CLICK ABOVE TO OPEN]</t>"; */
-(_d displayCtrl 2002) ctrlSetStructuredText parseText "<t size='0.75' color='#75ffffff'' shadow='2' font='PuristaMedium' align='center'>[CLICK ABOVE TO CLOSE]</t>";
 
 // Show selection
 (_d displayCtrl 2) ctrlShow true; // Background
@@ -74,5 +65,8 @@ private _primaryWeapons = [];
 } forEach _primaryWeapons;
 
 _listBox lbSetCurSel (profileNamespace getVariable [format["rr_prefPWeaponIdx_%1_%2", cl_class, cl_faction], 0]);
+
+uiNamespace getVariable ["wwr_loadout_right_col", controlNull] ctrlShow true;
+
 
 true

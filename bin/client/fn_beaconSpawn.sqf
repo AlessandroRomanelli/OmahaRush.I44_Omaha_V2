@@ -10,8 +10,11 @@ scriptName "fn_beaconSpawn";
 #define __filename "fn_beaconSpawn.sqf"
 if (isServer && !hasInterface) exitWith {};
 
+params [["_unit", objNull]];
+
 // We are nice, arent we?
-["<t size='1.3' color='#FFFFFF'>SQUAD MEMBER SPAWNED AT RALLY POINT</t>", 20] call client_fnc_pointfeed_add;
+private _name = if (isNull _unit) then {"SQUAD MEMBER"} else {toUpper (_unit getVariable ["name", name _unit])};
+[format["<t size='1.3' color='#FFFFFF'>%1 USED YOUR RALLY POINT</t>", _name], 20] call client_fnc_pointfeed_add;
 [20] call client_fnc_addPoints;
 
 // Increase amount the beacon has been used

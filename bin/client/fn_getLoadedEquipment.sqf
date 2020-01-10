@@ -11,6 +11,10 @@ scriptName "fn_getLoadedEquipment";
 
 if (isServer && !hasInterface) exitWith {};
 
+private _d = findDisplay 5000;
+private _list = _d displayCtrl 300;
+private _class = _list lbData (lbCurSel _list);
+
 cl_equipConfigurations = [];
 
 // Get loaded equipment
@@ -35,13 +39,13 @@ if (_isDebug) then {
 	cl_equipConfigurations = _configs apply {configName _x};
 } else {
 	{
-		private _exp = missionNamespace getVariable [format["cl_exp_%1", cl_class], 0];
-		if ((getNumber(_x >> "exp") <= _exp) || (((getText(_x >> "type")) isEqualTo "secondary") && (_maxExp > (getNumber(_x >> "exp"))))) then {
+		private _classXP = missionNamespace getVariable [format["cl_exp_%1", _class], 0];
+		if ((getNumber(_x >> "exp") <= _classXP) || (((getText(_x >> "type")) == "secondary") && (_maxExp > (getNumber(_x >> "exp"))))) then {
 
 			private _item = configName _x;
 
 			// If no default equipped classname has been set yet
-			if ((getText(_x >> "type") == "primary") && {(cl_equipClassnames select 0) == ""} && {cl_class in getArray(_x >> "roles")}) then {
+			if ((getText(_x >> "type") == "primary") && {(cl_equipClassnames select 0) == ""} && {_class in getArray(_x >> "roles")}) then {
 				cl_equipClassnames set [0, _item];
 			};
 			if ((getText(_x >> "type") == "secondary") && {(cl_equipClassnames select 1) == ""}) then {

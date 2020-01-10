@@ -15,16 +15,9 @@ if (isServer && !hasInterface) exitWith {};
 disableSerialization;
 private _d = findDisplay 5000;
 
-// Hide everything for now
-{
-	((findDisplay 5000) displayCtrl _x) ctrlShow false;
-} forEach [
-	2,3,
-	20,21,22,25,23,24,26,27,28,29
-];
+uiNamespace getVariable ["wwr_loadout_right_col", controlNull] ctrlShow false;
 
 private _secondaryWeapons = cl_equipConfigurations findIf {(getText(missionConfigFile >> 'Unlocks' >> GAMESIDE(player) >> _x >> 'type')) == 'secondary'};
-
 // Exit if this menu is already open
 if (cl_spawnmenu_currentWeaponSelectionState == 2 || _secondaryWeapons < 0) exitWith {
 	{(_d displayCtrl _x) ctrlSetStructuredText parseText "<t size='0.75' color='#ffffff'' shadow='2' font='PuristaMedium' align='center'>[CLICK ABOVE TO OPEN]</t>"} forEach [2001,2002];
@@ -65,3 +58,5 @@ private _secondaryWeapons = cl_equipConfigurations select {(getText(missionConfi
 		_listBox lbSetCurSel _i;
 	};
 } forEach _secondaryWeapons;
+
+uiNamespace getVariable ["wwr_loadout_right_col", controlNull] ctrlShow true;
