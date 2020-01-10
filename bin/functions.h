@@ -197,5 +197,6 @@ class Functions_Admin {
 		class isAdmin {};
 		class spectate {};
 		class setParams {};
+		class selectNextMap {};
 	};
 };
