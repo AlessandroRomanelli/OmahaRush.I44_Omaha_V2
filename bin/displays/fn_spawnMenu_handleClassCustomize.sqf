@@ -44,11 +44,10 @@ private _perkNames = [_class] call client_fnc_getUsedPerksForClass;
 
 // Iterate through class configs and add them to the listbox
 {
-	private _picture = getText(_x >> "picture");
 	_listboxClassPerks lbAdd (getText(_x >> "displayName"));
 	_listboxClassPerks lbSetData [(lbSize _listboxClassPerks) - 1, configName _x];
 	_listboxClassPerks lbSetTooltip [(lbSize _listboxClassPerks) - 1, getText(_x >> "description")];
-	if (_picture != "") then {_listboxSquadPerks lbSetPicture [(lbSize _listboxClassPerks) - 1, _picture]};
+	_listboxClassPerks lbSetPicture [(lbSize _listboxClassPerks) - 1, format ["%1pictures\%2.paa", WWRUSH_ROOT,  toLower _class]];
 
 	// If this is our active perk, select this entry
 	if (configName _x == (_perkNames select 0)) then {
@@ -61,11 +60,10 @@ if ((lbCurSel _listboxClassPerks) == -1 && (lbSize _listboxClassPerks) > 0) then
 
 // Iterate through squad perks and add them to the listbox
 {
-	private _picture = getText(_x >> "picture");
 	_listboxSquadPerks lbAdd (getText(_x >> "displayName"));
 	_listboxSquadPerks lbSetData [(lbSize _listboxSquadPerks) - 1, configName _x];
 	_listboxSquadPerks lbSetTooltip [(lbSize _listboxSquadPerks) - 1, getText(_x >> "description")];
-	if (_picture != "") then {_listboxSquadPerks lbSetPicture [(lbSize _listboxSquadPerks) - 1, _picture]};
+	_listboxSquadPerks lbSetPicture [(lbSize _listboxSquadPerks) - 1, format ["%1pictures\%2.paa", WWRUSH_ROOT, configName _x]];
 	if ((configName _x) in (cl_squadPerks - [cl_squadPerk])) then {
 		_listboxSquadPerks lbSetColor [(lbSize _listboxSquadPerks) -1, [0.96,0.65,0.12,0.8]];
 	};

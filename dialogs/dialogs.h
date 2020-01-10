@@ -1,6 +1,9 @@
 #define PRIMARY_COLOR {0.96,0.65,0.12,0.8}
+#define COLOR_PRIMARY(ALPHA) {0.96,0.65,0.12,ALPHA}
 #define DARK_COLOR {0.12,0.14,0.16,0.8}
+#define COLOR_DARK(ALPHA) {0.12,0.14,0.16,ALPHA}
 #define BRIGHT_COLOR {1,1,1,0.8}
+#define COLOR_BRIGHT(ALPHA) {1,1,1,ALPHA}
 #define WHITE_SHADOW {1,1,1,0.1}
 #define DISABLED_COLOR {0.52,0.54,0.56,1}
 #define DISABLED_SETTING \
@@ -482,6 +485,8 @@ class rr_spawnmenu {
 			color2[] = {0,0,0,0};
 			colorText[] = {1,1,1,0};
 			colorDisabled[] = {1,1,1,0};
+			onMouseEnter = "systemChat _this";
+			onMouseExit = "systemChat _this";
 		};
 
 		/* new ui */
@@ -620,10 +625,10 @@ class rr_info_box {
 		{
 			idc = -1;
 			text = "INFORMATION"; //--- ToDo: Localize;
-			x = 0.34428 * safezoneW + safezoneX;
-			y = 0.3526 * safezoneH + safezoneY;
-			w = 0.0773437 * safezoneW;
-			h = 0.022 * safezoneH;
+			x = 0.340156*safezoneW+safezoneX;
+			y = 0.346*safezoneH+safezoneY;
+			w = 0.309375*safezoneW;
+			h = 0.033*safezoneH;
 			colorText[] = {0,0,0,1};
 			shadow = 0;
 		};
@@ -648,95 +653,113 @@ class rr_info_box {
 	};
 };
 
+#define CLASS_CUSTOMIZE_WIDTH safeZoneW * 0.66
+#define CLASS_CUSTOMIZE_HEIGHT safeZoneH * 0.45
+#define CLASS_CUSTOMIZE_COL_WIDTH CLASS_CUSTOMIZE_WIDTH / 2
+#define CLASS_CUSTOMIZE_HEADER_HEIGHT safeZoneH * 0.04
+
+class WWR_RscListBoxColumn: RscListBox {
+	idc = -1;
+	x = 0;
+	y = CLASS_CUSTOMIZE_HEADER_HEIGHT;
+	w = CLASS_CUSTOMIZE_COL_WIDTH;
+	h = CLASS_CUSTOMIZE_HEIGHT - CLASS_CUSTOMIZE_HEADER_HEIGHT;
+	sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 2)";
+	rowHeight = "1.00 *     (pixelH * pixelGridNoUIScale * 3.5)";
+	wholeHeight = "1.00 *     (pixelH * pixelGridNoUIScale * 3.5)";
+	shadow = 2;
+	colorBackground[] = {0,0,0,0};
+	colorSelect[] = {1, 1, 1, 1};
+	colorText[] = {1, 1, 1, 0.5};
+	colorSelect2[] = {1, 1, 1, 1};
+	colorSelectBackground[] = PRIMARY_COLOR;
+	colorSelectBackground2[] = PRIMARY_COLOR;
+	onLBSelChanged = "[] call client_fnc_setUsedPerksForClass";
+};
+
+class WWR_RscTextHeaderColumn: RscText {
+	idc = -1;
+	x = 0;
+	y = 0;
+	w = CLASS_CUSTOMIZE_COL_WIDTH;
+	h = CLASS_CUSTOMIZE_HEADER_HEIGHT;
+	style = 192;
+	text = "CLASS PERKS";
+	colorText[] = COLOR_DARK(1.0);
+	shadow = 0;
+};
+
 class rr_class_customization {
     idd = 8000;
     movingEnable = 0;
     enableSimulation = 1;
     duration = 999999;
     class controls {
-		class RscText_1000: RscText
-		{
+		class Container: RscControlsGroupNoScrollbars {
 			idc = -1;
-			x = 0.29375 * safezoneW + safezoneX;
-			y = 0.335 * safezoneH + safezoneY;
-			w = 0.4125 * safezoneW;
-			h = 0.33 * safezoneH;
-			colorBackground[] = DARK_COLOR;
-		};
-		class RscText_1001: RscText
-		{
-			idc = -1;
-			x = 0.29375 * safezoneW + safezoneX;
-			y = 0.335 * safezoneH + safezoneY;
-			w = 0.4125 * safezoneW;
-			h = 0.022 * safezoneH;
-			colorBackground[] = {1,1,1,1};
-		};
-		class RscText_1002: RscText
-		{
-			idc = -1;
-			text = "Class Perks"; //--- ToDo: Localize;
-			x = 0.298906 * safezoneW + safezoneX;
-			y = 0.335 * safezoneH + safezoneY;
-			w = 0.108281 * safezoneW;
-			h = 0.022 * safezoneH;
-			shadow = 2;
-		};
-		class RscText_1003: RscText
-		{
-			idc = -1;
-			text = "Secondary Perks"; //--- ToDo: Localize;
-			x = 0.515469 * safezoneW + safezoneX;
-			y = 0.335 * safezoneH + safezoneY;
-			w = 0.108281 * safezoneW;
-			h = 0.022 * safezoneH;
-			shadow = 2;
-		};
-		class lbClassPerks: RscListbox
-		{
-			idc = 0;
-			x = 0.29375 * safezoneW + safezoneX;
-			y = 0.357 * safezoneH + safezoneY;
-			w = 0.20625 * safezoneW;
-			h = 0.308 * safezoneH;
-			sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 2)";
-			rowHeight = "1.00 *     (pixelH * pixelGridNoUIScale * 3.5)";
-			wholeHeight = "1.00 *     (pixelH * pixelGridNoUIScale * 3.5)";
-			shadow = 2;
-			colorBackground[] = {0,0,0,0};
-			colorSelect[] = {1, 1, 1, 1};
-		    colorText[] = {1, 1, 1, 0.5};
-		    colorSelect2[] = {1, 1, 1, 1};
-		    colorSelectBackground[] = PRIMARY_COLOR;
-		    colorSelectBackground2[] = PRIMARY_COLOR;
-			onLBSelChanged = "[] call client_fnc_setUsedPerksForClass";
-		};
-		class lbSquadPerks: RscListbox
-		{
-			idc = 1;
-			x = 0.5 * safezoneW + safezoneX;
-			y = 0.357 * safezoneH + safezoneY;
-			w = 0.20625 * safezoneW;
-			h = 0.308 * safezoneH;
-			sizeEx = "1.00 *     (pixelH * pixelGridNoUIScale * 2)";
-			rowHeight = "1.00 *     (pixelH * pixelGridNoUIScale * 3.5)";
-			wholeHeight = "1.00 *     (pixelH * pixelGridNoUIScale * 3.5)";
-			shadow = 2;
-			colorBackground[] = {0,0,0,0};
-			colorSelect[] = {1, 1, 1, 1};
-		    colorText[] = {1, 1, 1, 0.5};
-		    colorSelect2[] = {1, 1, 1, 1};
-		    colorSelectBackground[] = PRIMARY_COLOR;
-		    colorSelectBackground2[] = PRIMARY_COLOR;
-			onLBSelChanged = "[] call client_fnc_setUsedPerksForClass";
+			x = safeZoneX + safeZoneW / 2 - CLASS_CUSTOMIZE_WIDTH / 2;
+			y = safeZoneY + safeZoneH / 2 - CLASS_CUSTOMIZE_HEIGHT / 2;
+			w = CLASS_CUSTOMIZE_WIDTH;
+			h = CLASS_CUSTOMIZE_HEIGHT;
+			class controls {
+				class Header_Background: RscText {
+					idc = -1;
+					x = 0;
+					y = 0;
+					w = CLASS_CUSTOMIZE_WIDTH;
+					h = CLASS_CUSTOMIZE_HEADER_HEIGHT;
+					colorBackground[] = COLOR_BRIGHT(1.0);
+				};
+				class Background: RscText {
+					idc = -1;
+					x = 0;
+					y = CLASS_CUSTOMIZE_HEADER_HEIGHT;
+					w = CLASS_CUSTOMIZE_WIDTH;
+					h = CLASS_CUSTOMIZE_HEIGHT - CLASS_CUSTOMIZE_HEADER_HEIGHT;
+					colorBackground[] = COLOR_DARK(0.8);
+				};
+				class Left_Column: RscControlsGroupNoScrollbars {
+					idc = -1;
+					x = 0;
+					y = 0;
+					w = CLASS_CUSTOMIZE_COL_WIDTH;
+					h = CLASS_CUSTOMIZE_HEIGHT;
 
+					class controls {
+						class Header: WWR_RscTextHeaderColumn {
+							text = "CLASS PERKS";
+						};
+						class lbClassPerks: WWR_RscListBoxColumn
+						{
+							idc = 0;
+						};
+					};
+				};
+				class Right_Column: RscControlsGroupNoScrollbars {
+					idc = -1;
+					x = CLASS_CUSTOMIZE_COL_WIDTH;
+					y = 0;
+					w = CLASS_CUSTOMIZE_COL_WIDTH;
+					h = CLASS_CUSTOMIZE_HEIGHT;
+
+					class controls {
+						class Header: WWR_RscTextHeaderColumn {
+							text = "SQUAD PERKS";
+						};
+						class lbSquadPerks: WWR_RscListBoxColumn
+						{
+							idc = 1;
+						};
+					};
+				};
+			};
 		};
-		class RscButtonMenu_2400: RscButtonMenu
+		class Return: RscButtonMenu
 		{
 			idc = 1;
 			text = "RETURN"; //--- ToDo: Localize;
-			x = 0.29375 * safezoneW + safezoneX;
-			y = 0.6672 * safezoneH + safezoneY;
+			x = safeZoneX + safeZoneW / 2 - CLASS_CUSTOMIZE_WIDTH / 2;
+			y = safeZoneY + safeZoneH / 2 + CLASS_CUSTOMIZE_HEIGHT / 2;
 			w = 0.0825 * safezoneW;
 			h = 0.022 * safezoneH;
 			colorBackground[] = DARK_COLOR;

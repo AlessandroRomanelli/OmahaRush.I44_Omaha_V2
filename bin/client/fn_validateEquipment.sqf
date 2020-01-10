@@ -12,19 +12,6 @@ scriptName "fn_validateEquipment";
 
 if (isServer && !hasInterface) exitWith {};
 
-// Inline function to find equip by classname in configuration array
-private _find = {
-	private _class = param[0,"",[""]];
-	private _ret = "";
-	{
-		if (_x == _class) then {
-			_ret = _x;
-		};
-	} forEach cl_equipConfigurations;
-
-	_ret
-};
-
 private _exp = missionNamespace getVariable [format["cl_exp_%1", cl_class], 0];
 VARIABLE_DEFAULT(sv_setting_DebugMode, 0);
 private _isDebug = sv_setting_DebugMode == 1;
@@ -55,21 +42,18 @@ if (count cl_equipConfigurations != 0) then {
 };
 
 // Cycle through all unlocked weapons and check if they should be unlocked // This prevents users from having weapons which are pushed to a different exp level
-/* if (sv_usingDatabase) then { */
-if (true) then {
-	private _validatedArray = [];
-	{
-		// Check if unlocked
-		private _isConfig = isClass(missionConfigFile >> "Unlocks" >> _side >> _x);
-		private _isUnlocked = (getNumber(missionConfigFile >> "Unlocks" >> _side >> _x >> "exp")) <= _exp;
-		private _isRightClass = cl_class in (getArray(missionConfigFile >> "Unlocks" >> _side >> _x >> "roles"));
+private _validatedArray = [];
+{
+	// Check if unlocked
+	private _isConfig = isClass(missionConfigFile >> "Unlocks" >> _side >> _x);
+	private _isUnlocked = (getNumber(missionConfigFile >> "Unlocks" >> _side >> _x >> "exp")) <= _exp;
+	private _isRightClass = cl_class in (getArray(missionConfigFile >> "Unlocks" >> _side >> _x >> "roles"));
 
-		if (_isDebug || {_isConfig && _isUnlocked && _isRightClass}) then {
-			_validatedArray pushBackUnique _x;
-		};
-	} forEach cl_equipConfigurations;
+	if (_isDebug || {_isConfig && _isUnlocked && _isRightClass}) then {
+		_validatedArray pushBackUnique _x;
+	};
+} forEach cl_equipConfigurations;
 
-	cl_equipConfigurations = _validatedArray;
-};
+cl_equipConfigurations = _validatedArray;
 
 true
