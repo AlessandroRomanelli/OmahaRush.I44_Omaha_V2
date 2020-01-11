@@ -24,20 +24,16 @@ if (_matchStart) then {
 	};
 };
 
-private _objective = sv_cur_obj;
-
 // While there's time left and the game is ongoing
 for "_time" from sv_matchTime to 0 step -1 do {
 	if (sv_gameStatus != 2) exitWith {};
-	private _status = _objective getVariable ["status", OBJ_STATUS_UNARMED];
-	if (_status in [OBJ_STATUS_IN_USE, OBJ_STATUS_ARMED]) then {
+	if (IS_OBJ_ARMED) then {
 		_time = _time + 1;
 	};
-	if (_time % 5 == 0) then {
-		sv_cur_obj setVariable ["status", _status, true];
+	if (_time != sv_matchTime) then {
+		sv_matchTime = _time;
+		publicVariable "sv_matchTime";
 	};
-	sv_matchTime = _time;
-	publicVariable "sv_matchTime";
 	if (_time == 0) exitWith {
 		[] call server_fnc_endRound;
 	};

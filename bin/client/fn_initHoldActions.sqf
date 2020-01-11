@@ -113,28 +113,26 @@ private _text = "";
 private _completion = {};
 private _interruption = {};
 private _duration = if (cl_classPerk == "saboteur") then {1} else {4};
-if ((player getVariable ["side", side player]) == WEST) then {
+if (IS_DEFENDING(player)) then {
 	_icon = _icon + "bombDefuse.paa";
 	_text = "Disarm Explosives";
-	_cond = "player inArea playArea && {(player distance sv_cur_obj) < ceil(([sv_cur_obj] call client_fnc_getObjectiveDistance) + 1.5)} && {(sv_cur_obj getVariable ['status',-1] == 1) || {sv_cur_obj getVariable ['status', -1] == 0 && {sv_cur_obj getVariable ['arming', false]}}}";
+	_cond = "player inArea playArea && {(player distance sv_cur_obj) < ceil(([sv_cur_obj] call client_fnc_getObjectiveDistance) + 1.5)} && {(sv_cur_obj getVariable ['status',-1] == 1)}";
 	_completion = {
 		if ((player distance sv_cur_obj) < ceil(([sv_cur_obj] call client_fnc_getObjectiveDistance) + 1.5)) then {
-			[] call client_fnc_disarmMCOM;
+			[] spawn client_fnc_disarmMCOM;
 		};
 	};
-	_interruption = {
-		sv_cur_obj setVariable ["status", OBJ_STATUS_ARMED, true];
-		sv_cur_obj setVariable ["arming", false];
-	};
+	_interruption = {};
 } else {
 	_icon = _icon + "bombPlant.paa";
 	_text = "Plant Explosives";
-	_cond = "player inArea playArea && {(player distance sv_cur_obj) < ceil(([sv_cur_obj] call client_fnc_getObjectiveDistance) + 1.5)} && {((sv_cur_obj getVariable ['status',-1]) in [-1, 2]) || {(sv_cur_obj getVariable ['status', -1] == 0) && {sv_cur_obj getVariable ['arming', false]}}}";
-	_completion = {if ((sv_cur_obj distance player) < ceil(([sv_cur_obj] call client_fnc_getObjectiveDistance) + 1.5)) then {[] call client_fnc_armMCOM;};};
-	_interruption = {
-		sv_cur_obj setVariable ["status", OBJ_STATUS_UNARMED, true];
-		sv_cur_obj setVariable ["arming", false];
+	_cond = "player inArea playArea && {(player distance sv_cur_obj) < ceil(([sv_cur_obj] call client_fnc_getObjectiveDistance) + 1.5)} && {((sv_cur_obj getVariable ['status',-1]) == -1)}";
+	_completion = {
+		if ((sv_cur_obj distance player) < ceil(([sv_cur_obj] call client_fnc_getObjectiveDistance) + 1.5)) then {
+			[] spawn client_fnc_armMCOM;
+		};
 	};
+	_interruption = {};
 };
 
 // Add action to objectives
@@ -147,8 +145,6 @@ private _id = [
 /* 5 condition for action */			"player distance sv_cur_obj < ceil(([sv_cur_obj] call client_fnc_getObjectiveDistance) + 2)",
 /* 6 code executed on start */			{
 	playSound3D[WWRUSH_ROOT + "sounds\arm.ogg", sv_cur_obj];
-	sv_cur_obj setVariable ["status", OBJ_STATUS_IN_USE, true];
-	sv_cur_obj setVariable ["arming", true];
 	cl_action_obj = sv_cur_obj;
 },
 /* 7 code executed per tick */			{},

@@ -9,6 +9,8 @@
 #define OBJ_STATUS_DISARMED 	2
 #define OBJ_STATUS_DONE			3
 #define IS_OBJ_ARMED (sv_cur_obj getVariable ["status", OBJ_STATUS_UNARMED] == OBJ_STATUS_ARMED)
+#define IS_OBJ_UNARMED (sv_cur_obj getVariable ["status", OBJ_STATUS_UNARMED] == OBJ_STATUS_UNARMED)
+#define SET_OBJ_STATUS(STATUS) (sv_cur_obj setVariable ["status", STATUS, true]);
 
 // DECLARATIONS
 #define VARIABLE_DEFAULT(VAR_NAME,DEFAULT) if (isNil QUOTE(VAR_NAME)) then {VAR_NAME = DEFAULT;}

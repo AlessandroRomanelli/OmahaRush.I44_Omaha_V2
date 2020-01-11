@@ -16,8 +16,8 @@ TERMINATE_SCRIPT(sv_mcom_thread);
 
 sv_mcom_thread = [] spawn {
     // Countdown of 60 seconds
-    private _time = 60;
-    private _soundTime = 60;
+	private _reduction = ((sv_cur_obj getVariable ["times_armed", 0]) * 5) min 30;
+    private _time = 60 - _reduction;
 	private _start = diag_tickTime;
     waitUntil {IS_OBJ_ARMED || {diag_tickTime - _start > 2.5}};
 	if (diag_tickTime - _start > 2.5) exitWith {
@@ -31,25 +31,20 @@ sv_mcom_thread = [] spawn {
     // If the objective is armed and there's still time on the clock
     playSound3D [_beep, _obj, false, getPosATL _obj, 3, 1, 500];
     while {
-		_status = sv_cur_obj getVariable ["status", OBJ_STATUS_UNARMED];
-		(_status in [OBJ_STATUS_IN_USE, OBJ_STATUS_ARMED]) && _time >= 0 && _obj == sv_cur_obj
+		IS_OBJ_ARMED && _time >= 0 && _obj == sv_cur_obj
 	} do {
-        // Count down only if the objective is being armed
-        if (_status == OBJ_STATUS_ARMED) then {
-            _time = _time - 1;
-        };
+        _time = _time - 1;
         private _timeFrame = (((floor (_time / 10)) min 2) + 1) max 1;
-        if (_soundTime % _timeFrame == 0) then {
+        if (_time % _timeFrame == 0) then {
             playSound3D [_beep, _obj, false, getPosATL _obj, 2, 1, 500];
         };
-        _soundTime = _soundTime - 1;
         uiSleep 1;
     };
 
 	if (_obj != sv_cur_obj) exitWith {};
 
     // was the mcom disarmed? If yes, just exit here, players will get a text displayed by the player who disarmed
-    if (_time > 0 || {!(_status in [OBJ_STATUS_IN_USE, OBJ_STATUS_ARMED])}) exitWith {
+    if (_time > 0 || {_status != OBJ_STATUS_ARMED}) exitWith {
         uiSleep 1;
         _obj setVariable ["status", OBJ_STATUS_UNARMED,true];
     };
@@ -60,7 +55,7 @@ sv_mcom_thread = [] spawn {
     // Display message
     if (_obj != sv_stage4_obj) then {
         // Mcom has been destroyed
-        [true] remoteExec ["client_fnc_MCOMdestroyed", 0];
+        [true] remoteExec ["client_fnc_MCOMdestroyed", -2];
     };
 
     private _pos = getPosATL _obj;

@@ -12,9 +12,15 @@ scriptName "fn_MCOMarmed";
 if (isServer && !hasInterface) exitWith {};
 
 // Planter
-private _planter = param[0,objNull,[objNull]];
+private _netId = param[0,0,[0]];
 
 WAIT_IF_NOT(cl_init_done);
+
+if (clientOwner == _netId) then {
+	// Give points
+	["<t size='1.3' color='#FFFFFF'>EXPLOSIVES ARMED</t><br/><t size='1.0' color='#FFFFFF'>Objective Attacker</t>", 250] call client_fnc_pointfeed_add;
+	[250] call client_fnc_addPoints;
+};
 
 
 // Display warning
@@ -23,7 +29,7 @@ WAIT_IF_NOT(cl_init_done);
 ["EXPLOSIVES ARMED","The objective has been armed. Attackers will not lose tickets while it is."] spawn client_fnc_hint;
 
 // Did we plant? Should be give ourself points?
-if (_planter == player) then {
+if (clientOwner == _netId) then {
 	// Wait until estimated explosion time
 	private _objective = sv_cur_obj;
 	waitUntil {(_objective getVariable ["status", OBJ_STATUS_UNARMED] == OBJ_STATUS_DONE) || (_objective != sv_cur_obj)};

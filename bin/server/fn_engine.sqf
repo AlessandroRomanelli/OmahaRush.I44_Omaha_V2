@@ -28,26 +28,6 @@ if (sv_setting_MapWeather == 0) then {
 
 // Initial start, make sure units requesting time will also not be able to spawn for a certain amount of seconds
 
-REMOVE_EXISTING_MEH("EachFrame", sv_eventObserverID);
-sv_obj_status = OBJ_STATUS_UNARMED;
-sv_eventObserverID = addMissionEventHandler ["EachFrame", {
-	private ["_data"];
-	if (!isNil "sv_cur_obj") then {
-		_data = sv_cur_obj getVariable ["status", OBJ_STATUS_UNARMED];
-		if (_data != sv_obj_status) then {
-			sv_cur_obj setVariable ["prev_status", sv_obj_status];
-			if (_data == OBJ_STATUS_IN_USE) then {
-				sv_cur_obj setVariable ["last_armed", diag_tickTime];
-			};
-			sv_obj_status = _data;
-		};
-		private _lastArmed = sv_cur_obj getVariable ["last_armed", diag_tickTime];
-		if (_data == OBJ_STATUS_IN_USE && (diag_tickTime - _lastArmed) > 5) then {
-			sv_cur_obj setVariable ["status", sv_cur_obj getVariable ["prev_status", OBJ_STATUS_UNARMED], true];
-		};
-	};
-}];
-
 if (!isNil "sv_east_group") then {
 	deleteGroup sv_east_group;
 };

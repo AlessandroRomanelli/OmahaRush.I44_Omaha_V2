@@ -13,18 +13,9 @@ if (isServer && !hasInterface) exitWith {};
 
 // If it wasn't armed, there's nothing to disarm!
 private _status = sv_cur_obj getVariable ["status", OBJ_STATUS_UNARMED];
-if (_status == OBJ_STATUS_UNARMED || _status > OBJ_STATUS_ARMED) exitWith {};
-if (!alive player || {cl_action_obj != sv_cur_obj}) exitWith {};
+if (IS_OBJ_UNARMED || {_status > OBJ_STATUS_ARMED} || {!alive player} || {cl_action_obj != sv_cur_obj}) exitWith {};
 
-// Set disarmed
-sv_cur_obj setVariable ["status", OBJ_STATUS_DISARMED, true];
-
-// Send message to everyone
-["THE EXPLOSIVES HAVE BEEN DEFUSED"] remoteExecCall ["client_fnc_displayObjectiveMessage", -2];
-
-// Give points
-["<t size='1.3' color='#FFFFFF'>EXPLOSIVES DISARMED</t><br/><t size='1.0' color='#FFFFFF'>Objective Defender</t>", 425] call client_fnc_pointfeed_add;
-[425] call client_fnc_addPoints;
+[] remoteExecCall ["server_fnc_disarmMCOM", 2];
 true
 
 //Todo Add MLG version

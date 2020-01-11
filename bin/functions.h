@@ -34,6 +34,7 @@ class Functions_Client {
 		class equipAll {};
 		class regenerateHP {};
 		class MCOMarmed {};
+		class MCOMdisarmed {};
 		class armMCOM {};
 		class disarmMCOM {};
 		class MCOMdestroyed {};
@@ -176,6 +177,8 @@ class Functions_Server {
 		class selectNextMap {};
 		class setParams {};
 		class initParams {};
+		class armMCOM {};
+		class disarmMCOM {};
 		class MCOMarmed {};
 
 
