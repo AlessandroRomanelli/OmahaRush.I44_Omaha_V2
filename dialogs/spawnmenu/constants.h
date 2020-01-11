@@ -14,7 +14,7 @@
 #define SIDEBAR_WIDTH safeZoneW * 0.2
 #define SIDEBAR_BORDER safeZoneW * 0.0025
 #define SIDEBAR_CONTENT_WIDTH (SIDEBAR_WIDTH - 2 * SIDEBAR_BORDER)
-#define SIDEBAR_ITEM_HEIGHT safeZoneH * 0.04555556
+#define SIDEBAR_ITEM_HEIGHT safeZoneH * 0.045
 
 #define LOADOUT_WIDTH safeZoneW * 0.45
 #define LOADOUT_HEIGHT safeZoneH * 0.66

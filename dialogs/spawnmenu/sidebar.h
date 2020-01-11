@@ -17,7 +17,7 @@ class Sidebar_Container: RscControlsGroupNoScrollbars
 		size = "1.00 *		 (pixelH * pixelGridNoUIScale * 2.5)";
 		color[] = {0,0,0,1};
 		text = ""; //--- ToDo: Localize;
-		x = 0;
+		x = SIDEBAR_BORDER;
 		y = 0;
 		w = SIDEBAR_WIDTH - 2 * SIDEBAR_BORDER;
 		h = SIDEBAR_ITEM_HEIGHT;
@@ -31,7 +31,7 @@ class Sidebar_Container: RscControlsGroupNoScrollbars
 	{
 	  idc = -1;
 	  text = ""; //--- ToDo: Localize;
-	  x = 0;
+	  x = SIDEBAR_BORDER;
 	  y = 0;
 	  w = SIDEBAR_CONTENT_WIDTH;
 	  h = SIDEBAR_ITEM_HEIGHT / 2;
@@ -61,7 +61,6 @@ class Sidebar_Container: RscControlsGroupNoScrollbars
 		  action = "[] call client_fnc_saveStatistics; endMission 'MatchLeft';";
 		  idc = 1000;
 		  text = "QUIT TO LOBBY"; //--- ToDo: Localize;
-		  x = SIDEBAR_BORDER;
 		  y = SIDEBAR_BORDER;
 		};
 
@@ -70,14 +69,22 @@ class Sidebar_Container: RscControlsGroupNoScrollbars
 			action = "[] call client_fnc_displayAdminArea";
 			idc = 1301;
 			text = "ADMIN AREA"; //--- ToDo: Localize;
-			x = SIDEBAR_BORDER;
 			y = 2 * SIDEBAR_BORDER + SIDEBAR_ITEM_HEIGHT;
+		};
+
+		class settings: WWR_Sidebar_Item
+		{
+			idc = -1;
+			style = "0x02 + 0x0c";
+			action = "[] call displays_fnc_spawnMenu_handleSettingsTab";
+			text = "SETTINGS"; //--- ToDo: Localize;
+			y = 4 * SIDEBAR_BORDER + 3 * SIDEBAR_ITEM_HEIGHT;
 		};
 
 		class side_switch: RscControlsGroupNoScrollbars {
 			idc = -1;
 			x = SIDEBAR_BORDER;
-			y = 4 * SIDEBAR_BORDER + 3 * SIDEBAR_ITEM_HEIGHT;
+			y = 5 * SIDEBAR_BORDER + 4 * SIDEBAR_ITEM_HEIGHT;
 			w = SIDEBAR_CONTENT_WIDTH;
 			h = SIDEBAR_ITEM_HEIGHT;
 			font = "PuristaMedium";
@@ -118,20 +125,19 @@ class Sidebar_Container: RscControlsGroupNoScrollbars
 			idc = 100;
 			text = "VIEW GROUPS"; //--- ToDo: Localize;
 			x = SIDEBAR_BORDER;
-			y = 5 * SIDEBAR_BORDER + 4 * SIDEBAR_ITEM_HEIGHT;
+			y = 6 * SIDEBAR_BORDER + 5 * SIDEBAR_ITEM_HEIGHT;
 		};
 
 		class ClassHeader: WWR_Sidebar_Header
 		{
 		  text = "CLASS SELECTION"; //--- ToDo: Localize;
-		  x = SIDEBAR_BORDER;
-		  y = 7 * SIDEBAR_BORDER + 6 * SIDEBAR_ITEM_HEIGHT;
+		  y = 8 * SIDEBAR_BORDER + 7 * SIDEBAR_ITEM_HEIGHT;
 		};
 
 		class Classes: WWR_Sidebar_Listbox
 		{
 			idc = 300;
-			y = 7 * SIDEBAR_BORDER + 6.5 * SIDEBAR_ITEM_HEIGHT;
+			y = 8 * SIDEBAR_BORDER + 7.5 * SIDEBAR_ITEM_HEIGHT;
 			h = SIDEBAR_ITEM_HEIGHT * 3;
 			onLBSelChanged = "_this call displays_fnc_spawnMenu_handleClassSelect";
 		};
@@ -153,7 +159,6 @@ class Sidebar_Container: RscControlsGroupNoScrollbars
 		class SpawnHeader: WWR_Sidebar_Header
 		{
 			text = "SPAWN POINTS"; //--- ToDo: Localize;
-			x = SIDEBAR_BORDER;
 			y = 9 * SIDEBAR_BORDER + 11 * SIDEBAR_ITEM_HEIGHT;
 		};
 
@@ -168,7 +173,6 @@ class Sidebar_Container: RscControlsGroupNoScrollbars
 		class VehiclesHeader: WWR_Sidebar_Header
 		{
 			text = "VEHICLES"; //--- ToDo: Localize;
-			x = SIDEBAR_BORDER;
 			y = 9 * SIDEBAR_BORDER + 14.5 * SIDEBAR_ITEM_HEIGHT;
 		};
 

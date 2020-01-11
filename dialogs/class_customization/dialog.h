@@ -1,4 +1,6 @@
+#include "..\globals.h"
 #include "constants.h"
+
 
 class rr_class_customization {
     idd = 8000;

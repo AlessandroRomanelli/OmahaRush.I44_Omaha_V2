@@ -1,0 +1,12 @@
+#define PRIMARY_COLOR {0.96,0.65,0.12,0.8}
+#define COLOR_PRIMARY(ALPHA) {0.96,0.65,0.12,ALPHA}
+#define DARK_COLOR {0.12,0.14,0.16,0.8}
+#define COLOR_DARK(ALPHA) {0.12,0.14,0.16,ALPHA}
+#define BRIGHT_COLOR {1,1,1,0.8}
+#define COLOR_BRIGHT(ALPHA) {1,1,1,ALPHA}
+#define WHITE_SHADOW {1,1,1,0.1}
+#define COLOR_BLACK(ALPHA) {0,0,0,ALPHA}
+#define DISABLED_COLOR {0.52,0.54,0.56,1}
+#define DISABLED_SETTING \
+	colorDisabled[] = DISABLED_COLOR;\
+	colorBackgroundDisabled[] = DARK_COLOR

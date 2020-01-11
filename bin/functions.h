@@ -139,6 +139,7 @@ class Functions_Displays {
 			class spawnMenu_handleClassSelect {};
 			class spawnMenu_handleSpawnSelect {};
 			class spawnMenu_handleClassCustomize {};
+			class spawnMenu_handleSettingsTab {};
 			class spawnMenu_getCameraPosAndTarget {};
 			class objectiveGUI_update {};
 			class getScreenCoords {};
