@@ -22,19 +22,20 @@ params [
 cl_map_showAI = _showAI;
 
 cl_map_fnc_updtMkr = {
-	params ["_marker", "_pos", "_dir", "_type", "_name", "_size", "_alpha"];
+	params ["_marker", "_pos", "_dir", "_type", ["_name", ""], ["_size", [1,1]], ["_alpha", 1], ["_color", "Default"]];
 	_marker setMarkerSizeLocal _size;
 	_marker setMarkerPosLocal _pos;
 	_marker setMarkerDirLocal _dir;
 	_marker setMarkerTypeLocal _type;
 	_marker setMarkerTextLocal _name;
-	_marker setMarkerAlphaLocal _alpha
+	_marker setMarkerAlphaLocal _alpha;
+	_marker setMarkerColorLocal _color;
 };
 
 cl_map_fnc_getMarkerColor = {
 	params ["_unit"];
 	private _color = ENEMY_COLOR;
-	if ((_unit getVariable ["side", side _unit]) isEqualTo (player getVariable ["side", side player])) exitWith {
+	if (SAME_SIDE(_unit, player)) exitWith {
 		_color = if ((group _unit) isEqualTo (group player)) then {TEAM_COLOR} else {SIDE_COLOR};
 		if (!alive _unit) then {
 			_color = REVIVE_COLOR;
@@ -69,9 +70,19 @@ cl_map_draw = addMissionEventHandler ["EachFrame", {
 			cl_map_markers pushBack (createMarkerLocal [_marker, visiblePositionASL _x]);
 		};
 
-		_marker setMarkerColorLocal _color;
+		if (SAME_SIDE(_x, player)) then {
+			if ((group _x) isEqualTo (group player)) then {
+				private _beacon = _x getVariable ["assault_beacon_obj", objNull];
+				if (!isNull _beacon) then {
+					private _beacon_marker = _marker + "_beacon";
+					private _pos = visiblePositionASL _beacon;
+					if !(_beacon_marker in cl_map_markers) then {
+						cl_map_markers pushBack (createMarkerLocal [_beacon_marker, _pos]);
+					};
+					[_beacon_marker, _pos, 0, "respawn_para", format["%1's Rallypoint", NAMEOF(_x)], [0.75, 0.75], 1, TEAM_COLOR] call cl_map_fnc_updtMkr;
+				};
+			};
 
-		if ((_x getVariable ["side", side _x]) isEqualTo (player getVariable ["side", side player])) then {
 			if !(alive _x) then {
 				_icon = "loc_hospital";
 				_dir = 0;
@@ -100,7 +111,7 @@ cl_map_draw = addMissionEventHandler ["EachFrame", {
 				_icon = "Empty";
 			};
 		};
-		[_marker, _pos, _dir, _icon, _name, _size, _alpha] spawn cl_map_fnc_updtMkr;
+		[_marker, _pos, _dir, _icon, _name, _size, _alpha, _color] call cl_map_fnc_updtMkr;
 	} forEach _units;
 }];
 

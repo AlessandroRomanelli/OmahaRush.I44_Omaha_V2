@@ -74,9 +74,6 @@ cl_viewDistance = viewDistance;
 // Do all the cool stuff!
 [] spawn client_fnc_resetVariables;
 
-// Give onEachFrame data
-[] spawn client_fnc_onEachFramePreparation;
-
 // Init group client
 ["InitializePlayer", [player]] call BIS_fnc_dynamicGroups;
 

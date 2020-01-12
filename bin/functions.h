@@ -88,7 +88,7 @@ class Functions_Client {
 		class validatePointsEarned {};
 		class updateSpawnMenuCam {};
 		class revealFriendlyUnits {};
-		class onEachFramePreparation {};
+		class UIPreparation {};
 		class displaySpawnRestriction {};
 		class moveUnitIntoVehicle {};
 		class teleport {};

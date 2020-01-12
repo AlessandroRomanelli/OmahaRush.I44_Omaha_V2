@@ -12,6 +12,8 @@
 #define IS_OBJ_UNARMED (sv_cur_obj getVariable ["status", OBJ_STATUS_UNARMED] == OBJ_STATUS_UNARMED)
 #define SET_OBJ_STATUS(STATUS) (sv_cur_obj setVariable ["status", STATUS, true]);
 
+#define AMMOBOX_CLASSNAME "LIB_AmmoCrates_NoInteractive_Large"
+
 // DECLARATIONS
 #define VARIABLE_DEFAULT(VAR_NAME,DEFAULT) if (isNil QUOTE(VAR_NAME)) then {VAR_NAME = DEFAULT;}
 
@@ -54,6 +56,7 @@
 #define DEFEND_STR "defenders"
 
 #define SIDEOF(UNIT) (UNIT getVariable ["side", side UNIT])
+#define NAMEOF(UNIT) (UNIT getVariable ["name", name UNIT])
 
 #define SAME_SIDE(A,B) (SIDEOF(A) == SIDEOF(B))
 

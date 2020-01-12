@@ -33,7 +33,6 @@ cl_onEachFrame_squad_members = [];
 cl_onEachFrame_squad_beacons = [];
 cl_onEachFrame_team_members = [];
 cl_onEachFrame_team_reviveable = [];
-cl_onEachFramePreparationID = -1;
 cl_onEachFrameIconRenderedID = -1;
 cl_eventObserverID = -1;
 cl_mapObserverID = -1;

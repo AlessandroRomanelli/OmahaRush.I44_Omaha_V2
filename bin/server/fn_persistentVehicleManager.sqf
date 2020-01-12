@@ -108,7 +108,7 @@ sv_spawnVehicle = {
 		_vehicle setDir _dir;
 		_vehicle setPosATL _posATL;
 	};
-	_vehicle setVariable ["id", configName (_config), true];
+	_vehicle setVariable ["id", configName (_config)];
 	_vehicle setVariable ["config", _config];
 
 	// Clear vehicle

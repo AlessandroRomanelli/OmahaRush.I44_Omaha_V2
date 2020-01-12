@@ -65,7 +65,7 @@ private _sv_stage_spawnVehicle = {
 	_vehicle allowDamage false;
 	_vehicle setDir _dir;
 	_vehicle setPosATL _posATL;
-	_vehicle setVariable ["id", configName (_config), true];
+	_vehicle setVariable ["id", configName (_config)];
 	_vehicle setVariable ["config", _config];
 	_vehicle enableSimulationGlobal true;
 	_vehicle allowDamage true;

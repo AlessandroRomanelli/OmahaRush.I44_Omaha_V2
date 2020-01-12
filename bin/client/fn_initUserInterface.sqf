@@ -124,14 +124,13 @@ private _event = addMissionEventHandler["EachFrame", {
 
 	// 3D Spotted enemies
 	{
-		private _unit = _x select 0;
-		private _time = _x select 1;
+		private _unit = _x;
+		private _time = _x getVariable ["isSpotted", 0];
 		private _pos = _unit modelToWorldVisual [0,0,2.5];
 		if (serverTime - _time > 10) then {
 			_unit setVariable ["isSpotted", nil];
-			_unit setVariable ["3dspotted", false];
 		} else {
-			if ((_unit getVariable ["isSpotted", -1]) > 0) then {
+			if ((_unit getVariable ["isSpotted", 0]) > 0) then {
 				private _alpha = ((10 + _time - serverTime)/10)*0.66;
 				if (_alpha < 0 || ([player, "VIEW", _unit] checkVisibility [eyePos player, eyePos _unit] < 0.2)) then {
 					_alpha = 0;

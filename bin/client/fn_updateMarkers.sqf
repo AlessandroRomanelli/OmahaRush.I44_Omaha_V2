@@ -18,18 +18,35 @@ private _objMarkerStatusUpdate = param[0, false, [false]];
 private _spawnsConfig = (missionConfigFile >> "MapSettings" >> sv_mapSize >> "Stages" >> (sv_cur_obj getVariable ["cur_stage", "Stage1"]) >> "Spawns");
 private _spawns = "true" configClasses (_spawnsConfig >> GAMESIDE(player));
 
-_spawns deleteAt 0;
+private _idx = _spawns findIf {configName _x == "HQSpawn"};
+_spawns deleteAt _idx;
 
-if (isNil "cl_spawnMarkers") then {
-	cl_spawnMarkers = [];
-} else {
+if (!isNil "cl_spawnMarkers") then {
 	{ deleteMarkerLocal _x } forEach cl_spawnMarkers;
 };
+cl_spawnMarkers = [];
+
+if (!isNil "cl_ammoboxMarkers") then {
+	{ deleteMarkerLocal _x } forEach cl_ammoboxMarkers;
+};
+
+cl_ammoboxMarkers = [];
+{
+	private _marker = "";
+	if (_x inArea playArea) then {
+		_marker = createMarkerLocal [format["ammobox_%1", _forEachIndex], getPos _x];
+		_marker setMarkerTypeLocal "o_Ordnance";
+		_marker setMarkerTextLocal "Ammo";
+		_marker setMarkerColorLocal "ColorWhiteAlpha";
+		_marker setMarkerSizeLocal [0.66, 0.66];
+		cl_ammoboxMarkers pushBack _marker;
+	};
+
+} forEach allMissionObjects AMMOBOX_CLASSNAME;
 
 {
 	private _markerName = configName _x;
 	createMarkerLocal [_markerName, getArray(_x >> "positionATL")];
-	_markerName setMarkerPosLocal (getArray(_x >> "positionATL"));
 	_markerName setMarkerTypeLocal "respawn_inf";
 	_markerName setMarkerTextLocal (getText(_x >> "name"));
 	_markerName setMarkerSizeLocal [0.75, 0.75];

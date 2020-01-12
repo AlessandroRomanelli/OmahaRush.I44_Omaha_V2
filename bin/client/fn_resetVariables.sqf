@@ -7,6 +7,7 @@ scriptName "fn_resetVariables";
     You're not allowed to use this file without permission from the author!
 --------------------------------------------------------------------*/
 #define __filename "fn_resetVariables.sqf"
+#include "..\utils.h"
 if (isServer && !hasInterface) exitWith {};
 
 // Vars
@@ -44,11 +45,11 @@ if (!isNull _beacon) then {
 /* waitUntil {!isNil "sv_tickets" && !isNil "sv_tickets_total"}; */
 
 // Display teammates and objective
-if (isNil "rr_iconrenderer_executed") then {
-	rr_iconrenderer_executed = true;
-	removeMissionEventHandler["EachFrame", cl_onEachFrameIconRenderedID];
-	cl_onEachFrameIconRenderedID = [] call client_fnc_initUserInterface;
-};
+
+[] call client_fnc_UIPreparation;
+
+REMOVE_EXISTING_MEH("EachFrame", cl_onEachFrameIconRenderedID);
+cl_onEachFrameIconRenderedID = [] call client_fnc_initUserInterface;
 
 // Pointfeed init
 cl_pointfeed_text = "";

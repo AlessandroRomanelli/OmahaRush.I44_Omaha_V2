@@ -28,6 +28,18 @@ class CfgPerks {
 	};
 
 	class ClassPerks {
+		class spawnbeacon {
+			displayName = "Rally points";
+			picture = "";
+			description = "Allows you to create spawn points for your squad to deploy at more efficient locations";
+			instructions[] = {"RALLYPOINT", "Press [H] to deploy your spawn beacon. Only one rallypoint is allowed per squad. Squad members will then be able to spawn on it."};
+		};
+		class smoke_grenades {
+			displayName = "Smoke Screen";
+			picture = "";
+			description = "Deploys you with two smoke grenades to conceal your allies";
+			instructions[] = {"SMOKE SCREEN","Deploys you with two smoke grenades to create dynamic cover and avoid enemy fire or conceal movements."};
+		};
 		class Medic {
 			class defibrillator {
 				displayName = "Epinephrine";
@@ -35,18 +47,8 @@ class CfgPerks {
 				description = "Bring back fallen teammates to life again with your combat ready epinephrine injector";
 				instructions[] = {"EPINEPHRINE", "Downed friendly units will be marked on your screen. Get to their body and use your ACTION key (Space) to revive them."};
 			};
-			class smoke_grenades {
-				displayName = "Smoke Screen";
-				picture = "";
-				description = "Deploys you with two smoke grenades to conceal your allies";
-				instructions[] = {"SMOKE SCREEN","Deploys you with two smoke grenades to create dynamic cover and avoid enemy fire or conceal movements."};
-			};
-			class spawnbeacon {
-				displayName = "Rally points";
-				picture = "";
-				description = "Allows you to create spawn points for your squad to deploy at more efficient locations";
-				instructions[] = {"RALLYPOINT", "Press [H] to deploy your spawn beacon. Only one spawnbeacon is allowed per squad. Squad members will then be able to spawn on it."};
-			};
+			class smoke_grenades: smoke_grenades {};
+			class spawnbeacon: spawnbeacon {};
 		};
 		class Support {
 			class ammo {
@@ -55,12 +57,7 @@ class CfgPerks {
 				description = "Allows you replenish ammunition on yourself, friendly units and vehicles";
 				instructions[] = {"AMMUNITION PACK", "Hold your ACTION key (Space) to replenish other units/vehicles ammunition. If you are out of ammo you may replenish your own."};
 			};
-			class spawnbeacon {
-				displayName = "Rally points";
-				picture = "";
-				description = "Allows you to create spawn points for your squad to deploy at more efficient locations";
-				instructions[] = {"RALLYPOINT", "Press H to deploy your spawn beacon. Only one spawnbeacon is allowed per squad. Squad members will then be able to spawn on it."};
-			};
+			class spawnbeacon: spawnbeacon {};
 		};
 		class Assault {
 			class grenadier {
@@ -75,12 +72,7 @@ class CfgPerks {
 				description = "Allows you to plant or defuse explosives at a greatly faster speed than normal";
 				instructions[] = {"QUICK HANDS", "The time taken to plant or defuse explosives is going to be less than a second: a perfect chance to clutch the situation."};
 			};
-			class smoke_grenades {
-				displayName = "Smoke Screen";
-				picture = "";
-				description = "Deploys you with two smoke grenades to conceal your allies";
-				instructions[] = {"SMOKE SCREEN","Deploys you with two smoke grenades to create dynamic cover and avoid enemy fire or conceal movements."};
-			};
+			class smoke_grenades: smoke_grenades {};
 		};
 		class Engineer {
 			class perkAT {
@@ -97,18 +89,8 @@ class CfgPerks {
 			};
 		};
 		class Recon {
-			class spawnbeacon {
-				displayName = "Rally points";
-				picture = "";
-				description = "Allows you to create spawn points for your squad to deploy at more efficient locations";
-				instructions[] = {"RALLYPOINT", "Press H to deploy your spawn beacon. Only one spawn beacon is allowed per squad. Squad members will then be able to spawn on it."};
-			};
-			class smoke_grenades {
-				displayName = "Smoke Screen";
-				picture = "";
-				description = "Deploys you with two smoke grenades to conceal your allies";
-				instructions[] = {"SMOKE SCREEN","Deploys you with two smoke grenades to create dynamic cover and avoid enemy fire or conceal movements."};
-			};
+			class spawnbeacon: spawnbeacon {};
+			class smoke_grenades: smoke_grenades {};
 		};
 	};
 };
