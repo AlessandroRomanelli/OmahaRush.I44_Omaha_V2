@@ -181,13 +181,6 @@ class Functions_Server {
 		class disarmMCOM {};
 		class MCOMarmed {};
 
-
-		// Database
-		class db_getPlayer {};
-		class db_setPlayer {};
-		class db_connect {};
-		class db_asyncCall {};
-		class db_prepareString {};
 	};
 };
 

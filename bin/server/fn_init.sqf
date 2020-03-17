@@ -22,23 +22,10 @@ sv_dedicatedEnvironment = isDedicated;
 sv_serverReady = false; // Waiting for server to be ready
 sv_gameStatus = 1; // Waiting for map selection
 sv_gameCycle = 0;
-sv_db_connected = false;
 
 // Init Groups
 ["Initialize", [false, 5]] call BIS_fnc_dynamicGroups;
 ["Groups initialized"] call server_fnc_log;
-
-// Initialize Database Connection
-/* if (("extDB3" callExtension "9:VERSION") != "") then {
-	["Attempting to connect to database"] spawn server_fnc_log;
-	[] spawn server_fnc_db_connect;
-	waitUntil {sv_db_connected};
-	["Successfully connected to database"] spawn server_fnc_log;
-
-	sv_usingDatabase = true;
-} else {
-	sv_usingDatabase = false;
-}; */
 
 sv_usingDatabase = false;
 
