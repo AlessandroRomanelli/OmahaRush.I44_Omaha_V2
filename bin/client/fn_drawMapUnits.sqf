@@ -125,7 +125,7 @@ cl_map_markers_check = [] spawn {
 			private _sub = _marker splitString "_";
 			if ((_sub select 0) isEqualTo "Unit") then {
 				private _obj = (_sub select 1) call BIS_fnc_objectFromNetId;
-				if (isNull _obj) then {
+				if (isNull _obj || {!(_obj inArea playArea)}) then {
 					deleteMarker _marker;
 					_indices pushBack (cl_map_markers findIf {_x isEqualTo _marker});
 				};

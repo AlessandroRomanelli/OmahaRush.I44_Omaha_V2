@@ -40,7 +40,8 @@ if (_isDebug) then {
 } else {
 	{
 		private _classXP = missionNamespace getVariable [format["cl_exp_%1", _class], 0];
-		if ((getNumber(_x >> "exp") <= _classXP) || (((getText(_x >> "type")) == "secondary") && (_maxExp > (getNumber(_x >> "exp"))))) then {
+		private _expReq = getNumber(_x >> "exp");
+		if (_classXP >= _expReq || (((getText(_x >> "type")) == "secondary") && (_maxExp > _expReq))) then {
 
 			private _item = configName _x;
 

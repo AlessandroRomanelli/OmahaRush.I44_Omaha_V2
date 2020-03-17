@@ -58,7 +58,7 @@ private _validatedArray = [];
 		_exp = _maxExp;
 		_isRightClass = true;
 	};
-	_isUnlocked = _exp > _expReq;
+	_isUnlocked = _exp >= _expReq;
 
 	if (_isDebug || {_isConfig && _isUnlocked && _isRightClass}) then {
 		_validatedArray pushBackUnique _x;

@@ -14,6 +14,12 @@ disableSerialization;
 
 private _isRefreshing = param[0, false, [false]];
 
+VARIABLE_DEFAULT(cl_upd_classes, false);
+
+if (cl_upd_classes) exitWith {};
+
+cl_upd_classes = true;
+
 // Spawn menu display listbox
 private _d = findDisplay 5000;
 private _l = _d displayCtrl 300;
@@ -79,4 +85,6 @@ if (!_isRefreshing) then {
 		};
 	};
 };
+
+cl_upd_classes = false;
 true
